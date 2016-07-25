@@ -3,9 +3,6 @@ Created on 22.07.2016
 
 @author: Jonas
 '''
-
-from enum import Enum
-
 from flask import Blueprint
 from flask.globals import request
 from son.editor.app.constants import get_parent
