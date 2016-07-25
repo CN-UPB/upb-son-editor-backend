@@ -5,13 +5,18 @@ Created on 22.07.2016
 '''
 from enum import Enum
 
+from sys import platform
+
+
 WORKSPACES = "workspaces"
 PROJECTS = "projects"
 PLATFORMS = "platforms"
 CATALOGUES = "catalogues"
 SERVICES = "services"
 VNFS = "vnfs"
-DATABASE_SQLITE_FILE = "sqlite:////tmp/test.db"
+
+DATABASE_SQLITE_FILE = "production.db"
+DATABASE_SQLITE_URI = "sqlite:///%s" % DATABASE_SQLITE_FILE
 
 
 class Category(Enum):

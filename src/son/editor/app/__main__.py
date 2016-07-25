@@ -4,16 +4,16 @@ Created on 18.07.2016
 @author: Jonas
 '''
 from flask import Flask
+from os import path
 
-from son.editor.app.constants import WORKSPACES, CATALOGUES, PLATFORMS, PROJECTS
-from son.editor.app.database import db_session
+from son.editor.app.constants import WORKSPACES, CATALOGUES, PLATFORMS, PROJECTS, DATABASE_SQLITE_FILE
+from son.editor.app.database import db_session, init_db
 from son.editor.catalogues.cataloguesapi import catalogues_api
 from son.editor.platforms.platformsapi import platforms_api
 from son.editor.projects.projectsapi import projects_api
 from son.editor.services.servicesapi import services_api
 from son.editor.vnfs.vnfsapi import vnfs_api
 from son.editor.workspaces.workspacesapi import workspaces_api
-
 
 app = Flask(__name__)
 WORKSPACE_PATH = '/' + WORKSPACES + '/<wsID>/'
@@ -41,6 +41,21 @@ def hello_world():
     return "hello world!"
 
 
+# Main entry point
+def main(args=None):
+
+    # Check check if database exists, otherwise create sqlite file
+    if path.exists(DATABASE_SQLITE_FILE):
+        print('Using database file "%s"' % DATABASE_SQLITE_FILE)
+    else:
+        print('Init database on "%s"' % DATABASE_SQLITE_FILE)
+        init_db()
+
+    # Start the flask server
+    print("Launch flask server")
+    app.run()
+
+
 '''start the flask service: '''
 if __name__ == "__main__":
-    app.run()
+    main()
