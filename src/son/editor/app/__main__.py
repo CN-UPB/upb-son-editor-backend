@@ -43,7 +43,6 @@ def hello_world():
 
 # Main entry point
 def main(args=None):
-
     # Check check if database exists, otherwise create sqlite file
     if path.exists(DATABASE_SQLITE_FILE):
         print('Using database file "%s"' % DATABASE_SQLITE_FILE)
@@ -56,6 +55,5 @@ def main(args=None):
     app.run()
 
 
-'''start the flask service: '''
 if __name__ == "__main__":
     main()
