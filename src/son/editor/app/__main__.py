@@ -8,9 +8,8 @@ from os import path
 
 from flask import Flask, redirect, session
 from flask.globals import request
+from pkg_resources import Requirement, resource_filename
 import requests
-import yaml
-
 from son.editor.app.constants import WORKSPACES, CATALOGUES, PLATFORMS, PROJECTS, DATABASE_SQLITE_FILE
 from son.editor.app.database import db_session, init_db
 from son.editor.catalogues.cataloguesapi import catalogues_api
@@ -19,11 +18,13 @@ from son.editor.projects.projectsapi import projects_api
 from son.editor.services.servicesapi import services_api
 from son.editor.vnfs.vnfsapi import vnfs_api
 from son.editor.workspaces.workspacesapi import workspaces_api
+import yaml
 
 
 app = Flask(__name__)
 WORKSPACE_PATH = '/' + WORKSPACES + '/<wsID>/'
-CONFIG = yaml.safe_load(open("config.yaml"))
+configFileName = resource_filename(Requirement.parse("sonata_editor"), "config.yaml")
+CONFIG = yaml.safe_load(open(str(configFileName)))
 
 
 # registering all the to class modules here

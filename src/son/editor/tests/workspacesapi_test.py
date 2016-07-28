@@ -3,6 +3,7 @@ Created on 26.07.2016
 
 @author: Jonas
 '''
+import json
 import os
 import tempfile
 import unittest
@@ -26,7 +27,7 @@ class WorkspacesTest(unittest.TestCase):
 
     def testCreateWorkSpace(self):
         # when making post requests the '/' at the end seems important, else it defaults to GET oO
-        rv = self.app.post('/' + WORKSPACES + '/', data={"name":"workspaceName"}, follow_redirects=True)
+        rv = self.app.post('/' + WORKSPACES + '/', data=json.dumps({"name":"workspaceName"}), content_type='application/json', follow_redirects=True)
         print(rv.data)
 
     def testGetWorkSpaces(self):
