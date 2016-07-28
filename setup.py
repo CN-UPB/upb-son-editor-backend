@@ -51,7 +51,7 @@ setup(
         packages=find_packages('src'),  # dependency resolution
         namespace_packages=['son', ],
         include_package_data=True,
-        install_requires=['flask', 'sqlalchemy'],
+        install_requires=['flask', 'sqlalchemy', 'requests'],
         zip_safe=False,
         entry_points={
             'console_scripts': [
