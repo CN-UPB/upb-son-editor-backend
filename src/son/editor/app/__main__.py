@@ -8,7 +8,6 @@ from os import path
 
 from flask import Flask, redirect, session
 from flask.globals import request
-from flask.helpers import url_for
 import requests
 import yaml
 
