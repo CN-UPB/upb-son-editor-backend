@@ -1,0 +1,8 @@
+authentication:
+    ClientID: clientIDHere
+    ClientSecret: clientSecretHere
+
+session:
+    secretKey: randomSecretKeyHere
+
+frontend-home: "http://localhost:5000"

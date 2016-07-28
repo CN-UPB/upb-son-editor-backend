@@ -3,15 +3,21 @@ Created on 18.07.2016
 
 @author: Jonas
 '''
-from flask import Blueprint
+import json
+
+from flask import Blueprint, Response
+
 from son.editor.app.constants import WORKSPACES, PROJECTS
+
 
 projects_api = Blueprint("projects_api", __name__, url_prefix='/' + WORKSPACES + '/<wsID>/' + PROJECTS)
 
 
 @projects_api.route('/', methods=['GET'])
 def get_projects(wsID):
-    return "List of projects in workspace"
+    response = Response(json.dumps({"projects":[{"name":"project1", "id":"1234"}, {"name":"project2", "id":"4321"}]}))
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    return response
 
 
 @projects_api.route('/', methods=['POST'])
