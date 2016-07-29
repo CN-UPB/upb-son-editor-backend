@@ -55,7 +55,7 @@ setup(
         zip_safe=False,
         entry_points={
             'console_scripts': [
-                'son-workspace=son.editor.app:main',
+                'son-editor=son.editor.app:main',
             ],
         },
         test_suite='son',
