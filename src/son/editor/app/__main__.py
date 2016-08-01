@@ -5,8 +5,8 @@ Created on 18.07.2016
 '''
 import json
 from os import path, urandom
-import urllib
 from sys import platform
+import urllib
 
 from flask import Flask, redirect, session, logging
 from flask.globals import request
@@ -51,7 +51,7 @@ def shutdown_session(exception=None):
 
 @app.before_request
 def checkLoggedIn():
-    if  not 'access_token' in session and request.endpoint != 'login':
+    if  not 'access_token' in session and request.endpoint != 'login' and request.endpoint != 'static':
         args = {"scope":"user:email",
                 "client_id":CONFIG['authentication']['ClientID']}
         session["requested_endpoint"] = request.endpoint
@@ -71,7 +71,8 @@ def login():
     if request_access_token() and load_user_data():
         app.logger.info("User " + session['userData']['login'] + " logged in")
         # return redirect(url_for(session["requested_endpoint"]))
-        return redirect(url_for("home"))
+        return redirect(CONFIG['frontend-host'] + CONFIG['frontend-redirect'])
+
 
 def request_access_token():
     # TODO add error handling

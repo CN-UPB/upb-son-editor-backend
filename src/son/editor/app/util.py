@@ -15,6 +15,7 @@ CONFIG = yaml.safe_load(open(str(configFileName)))
 
 def prepareResponse(data):
     response = Response(json.dumps(data))
-    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Origin'] = CONFIG["frontend-host"]
+    response.headers['Access-Control-Allow-Credentials'] = "true"
     response.headers['contentType'] = 'application/json'
     return response

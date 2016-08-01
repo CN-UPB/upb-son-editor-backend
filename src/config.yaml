@@ -5,4 +5,7 @@ authentication:
 session:
     secretKey: randomSecretKeyHere
 
-frontend-home: "http://localhost:5000"
+frontend-redirect: "/src/loginRedirect.html"
+frontend-host: "http://jonas-msi:8000"
+
+workspaces-location: "/son-editor/workspaces/"
