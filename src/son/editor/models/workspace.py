@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 
 from son.editor.app.database import Base
+from . import project
 
 
 class Workspace(Base):
@@ -17,3 +18,6 @@ class Workspace(Base):
 
     def __repr__(self):
         return '<Workspace %r:%r>' % (self.name, self.path)
+
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}

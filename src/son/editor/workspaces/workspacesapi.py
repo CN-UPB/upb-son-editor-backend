@@ -5,31 +5,33 @@ Created on 18.07.2016
 '''
 import json
 
-from flask import Blueprint
+from flask import Blueprint, session
 from flask.globals import request
 
 from son.editor.app import util
 from son.editor.app.constants import WORKSPACES
+from . import workspaceimpl
 
 
 workspaces_api = Blueprint("workspaces_api", __name__, url_prefix='/' + WORKSPACES)
 
-
 @workspaces_api.route('/', methods=['GET'])
 def get_workspaces():
-    workspaces = {"workspaces":
-        [
-            {"name":"workspace1", "id":"1234"},
-            {"name":"workspace2", "id":"4321"}
-        ]
-    }
-    return util.prepareResponse(workspaces)
+    workspaces = workspaceimpl.get_workspaces(session['userData']['login'])
+    return util.prepareResponse({"workspaces":workspaces})
 
 @workspaces_api.route('/', methods=['POST'])
 def create_workspace():
-    workspaceData = request.get_json()
-    workspaceData['id'] = "4422"
-    return json.dumps(workspaceData)
+    if request.content_type == "application/json":
+        workspaceData = request.get_json()
+    if workspaceData == None:
+        workspaceData = json.loads(request.get_data().decode("utf8"))
+    print(request.get_data())
+    try:
+        ws = workspaceimpl.create_workspace(session['userData']['login'], workspaceData)
+        return util.prepareResponse(json.dumps(ws))
+    except Exception as err:
+        return err.args[0], 409
 
 @workspaces_api.route('/<wsID>', methods=['GET'])
 def get_workspace(wsID):

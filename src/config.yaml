@@ -6,3 +6,4 @@ session:
     secretKey: randomSecretKeyHere
 
 frontend-home: "http://localhost:5000"
+workspaces-location: "/son-editor/workspaces/"

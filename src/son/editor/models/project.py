@@ -10,7 +10,7 @@ class Project(Base):
     name = Column(String(50), unique=True)
     rel_path = Column(String(255), unique=True)
     workspace_id = Column(Integer, ForeignKey('workspaces.id'))
-    workspace = relationship("Workspace", back_populates="projects")
+    workspaces = relationship("Workspace", back_populates="projects")
 
     def __init__(self, name=None, rel_path=None):
         self.name = name
