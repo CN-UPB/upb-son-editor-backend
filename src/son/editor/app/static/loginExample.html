@@ -12,15 +12,41 @@
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
       <script>
-          $( function() {
-            $( "#dialog" ).dialog();
+          $.getJSON( 'http://localhost:5000', function() {
+            console.log("Data:" +data)
           } );
+          $( document ).ajaxError(function(event, response, request) {
+            console.log(event);
+            console.log(request);
+            console.log(response);
+            if (response.status == 401)//not authorized
+            {
+                //$( "#dialog" ).dialog();
+                var json= response.responseJSON;
+                console.log(json)
+                var authUrl = json.authorizationUrl;
+                //this.location.href = authUrl;
+                //$( "#url" ).attr("src",authUrl)
+                // popup:
+                //window.opener.postMessage('authUrl', '*');
+                window.open(authUrl)
+                // opener:
+                window.onmessage = function (e) {
+                  if (e.data === 'replace your location') {
+                    window.location.replace(...);
+                  }
+                };
+            }
+        });
+
+
+
     </script>
       <title>Login example</title>
 </head>
 <body>
 <div id="dialog" title="Basic dialog">
-  <iframe src="http://www.w3schools.com"></iframe>
+  <iframe id="url" src="http://www.w3schools.com"></iframe>
 </div>
 
 </body>

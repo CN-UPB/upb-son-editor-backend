@@ -4,28 +4,29 @@ Created on 18.07.2016
 @author: Jonas
 '''
 import json
-from os import path
 from sys import platform
+from os import path, urandom
+import urllib
 
-from flask import Flask, redirect, session
+from flask import Flask, redirect, session, logging
 from flask.globals import request
-from pkg_resources import Requirement, resource_filename
+from flask.helpers import url_for
 import requests
+from sqlalchemy.exc import StatementError
+
 from son.editor.app.constants import WORKSPACES, CATALOGUES, PLATFORMS, PROJECTS, DATABASE_SQLITE_FILE
 from son.editor.app.database import db_session, init_db
+from son.editor.app.util import CONFIG, prepareResponse
 from son.editor.catalogues.cataloguesapi import catalogues_api
 from son.editor.platforms.platformsapi import platforms_api
 from son.editor.projects.projectsapi import projects_api
 from son.editor.services.servicesapi import services_api
 from son.editor.vnfs.vnfsapi import vnfs_api
 from son.editor.workspaces.workspacesapi import workspaces_api
-import yaml
 
 
 app = Flask(__name__)
 WORKSPACE_PATH = '/' + WORKSPACES + '/<wsID>/'
-configFileName = resource_filename(Requirement.parse("sonata_editor"), "config.yaml")
-CONFIG = yaml.safe_load(open(str(configFileName)))
 
 
 # registering all the to class modules here
@@ -48,34 +49,49 @@ app.secret_key = CONFIG['session']['secretKey']
 def shutdown_session(exception=None):
     db_session.remove()
 
+@app.before_request
+def checkLoggedIn():
+    if  not 'access_token' in session and request.endpoint != 'login' and request.endpoint != 'static':
+        args = {"scope":"user:email",
+                "client_id":CONFIG['authentication']['ClientID']}
+        session["requested_endpoint"] = request.endpoint
+        return prepareResponse({'authorizationUrl':'https://github.com/login/oauth/authorize/?' + urllib.parse.urlencode(args)}), 401
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
     # this is only code to test the github login process!
-    if True:
-        print(request.method)
-        return "test"
-    if 'access_token' in session:
-        headers = {"Accept": "application/json"}
-        result = requests.get('https://api.github.com/user?access_token=' + session['access_token'], headers=headers)
-        userData = json.loads(result.text)
-        session['userData'] = userData
-        return "Welcome " + userData['login'] + "! you are logged in!<br/>" + '<img src="' + userData['avatar_url'] + '">'
+    if 'userData' in session:
+        return "<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js'></script> Welcome " + session['userData']['login'] + "! you are logged in!<br/>" + '<img src="' + session['userData']['avatar_url'] + '">'
     else:
         return redirect('https://github.com/login/oauth/authorize?scope=user:email&client_id=' + CONFIG['authentication']['ClientID'])
 
 @app.route('/login', methods=['GET'])
 def login():
     session['session_code'] = request.args.get('code');
+    if request_access_token() and load_user_data():
+        app.logger.info("User " + session['userData']['login'] + " logged in")
+        # return redirect(url_for(session["requested_endpoint"]))
+        return redirect(url_for("home"))
+
+def request_access_token():
+    # TODO add error handling
     data = {'client_id':     CONFIG['authentication']['ClientID'],
             'client_secret': CONFIG['authentication']['ClientSecret'],
             'code':          session['session_code']}
     headers = {"Accept": "application/json"}
-    result = requests.post('https://github.com/login/oauth/access_token',
+    accessResult = requests.post('https://github.com/login/oauth/access_token',
                            json=data, headers=headers)
-    session['access_token'] = json.loads(result.text)['access_token']
-    print(session['access_token'])
-    return redirect(CONFIG['frontend-home'])
+    session['access_token'] = json.loads(accessResult.text)['access_token']
+    return True
+
+def load_user_data():
+    # TODO add error handling
+    headers = {"Accept": "application/json",
+               "Authorization": "token " + session['access_token']}
+    userDataResult = requests.get('https://api.github.com/user' , headers=headers)
+    userData = json.loads(userDataResult.text)
+    session['userData'] = userData
+    return True
 
 # Main entry point
 def main(args=None):
