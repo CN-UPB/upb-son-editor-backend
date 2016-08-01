@@ -5,6 +5,7 @@ Created on 18.07.2016
 '''
 import json
 from os import path
+from sys import platform
 
 from flask import Flask, redirect, session
 from flask.globals import request
@@ -87,7 +88,10 @@ def main(args=None):
 
     # Start the flask server
     print("Launch flask server")
-    app.run('0.0.0.0')
+    if platform == "darwin":
+        app.run('0.0.0.0', debug=True)
+    else:
+        app.run('0.0.0.0')
 
 
 if __name__ == "__main__":
