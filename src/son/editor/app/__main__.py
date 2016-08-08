@@ -9,6 +9,7 @@ from sys import platform
 import urllib
 
 from flask import Flask, redirect, session, logging
+from flask import Response
 from flask.globals import request
 from flask.helpers import url_for
 import requests
@@ -24,10 +25,8 @@ from son.editor.services.servicesapi import services_api
 from son.editor.vnfs.vnfsapi import vnfs_api
 from son.editor.workspaces.workspacesapi import workspaces_api
 
-
 app = Flask(__name__)
 WORKSPACE_PATH = '/' + WORKSPACES + '/<wsID>/'
-
 
 # registering all the to class modules here
 app.register_blueprint(workspaces_api)
@@ -42,6 +41,8 @@ app.register_blueprint(services_api, url_prefix=WORKSPACE_PATH + CATALOGUES)
 app.register_blueprint(vnfs_api, url_prefix=WORKSPACE_PATH + CATALOGUES)
 # load secret key from config
 app.secret_key = CONFIG['session']['secretKey']
+
+
 # print(app.url_map)
 
 
@@ -49,21 +50,31 @@ app.secret_key = CONFIG['session']['secretKey']
 def shutdown_session(exception=None):
     db_session.remove()
 
+
 @app.before_request
 def checkLoggedIn():
-    if  not 'access_token' in session and request.endpoint != 'login' and request.endpoint != 'static':
-        args = {"scope":"user:email",
-                "client_id":CONFIG['authentication']['ClientID']}
+    if request.method == 'OPTIONS':
+        return prepareResponse()
+    elif not 'access_token' in session and request.endpoint != 'login' and request.endpoint != 'static':
+        args = {"scope": "user:email",
+                "client_id": CONFIG['authentication']['ClientID']}
         session["requested_endpoint"] = request.endpoint
-        return prepareResponse({'authorizationUrl':'https://github.com/login/oauth/authorize/?' + urllib.parse.urlencode(args)}), 401
+        return prepareResponse(
+            {'authorizationUrl': 'https://github.com/login/oauth/authorize/?' + urllib.parse.urlencode(args)}), 401
+
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
     # this is only code to test the github login process!
     if 'userData' in session:
-        return "<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js'></script> Welcome " + session['userData']['login'] + "! you are logged in!<br/>" + '<img src="' + session['userData']['avatar_url'] + '">'
+        return "<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js'></script> Welcome " + \
+               session['userData']['login'] + "! you are logged in!<br/>" + '<img src="' + session['userData'][
+                   'avatar_url'] + '">'
     else:
-        return redirect('https://github.com/login/oauth/authorize?scope=user:email&client_id=' + CONFIG['authentication']['ClientID'])
+        return redirect(
+            'https://github.com/login/oauth/authorize?scope=user:email&client_id=' + CONFIG['authentication'][
+                'ClientID'])
+
 
 @app.route('/login', methods=['GET'])
 def login():
@@ -76,23 +87,25 @@ def login():
 
 def request_access_token():
     # TODO add error handling
-    data = {'client_id':     CONFIG['authentication']['ClientID'],
+    data = {'client_id': CONFIG['authentication']['ClientID'],
             'client_secret': CONFIG['authentication']['ClientSecret'],
-            'code':          session['session_code']}
+            'code': session['session_code']}
     headers = {"Accept": "application/json"}
     accessResult = requests.post('https://github.com/login/oauth/access_token',
-                           json=data, headers=headers)
+                                 json=data, headers=headers)
     session['access_token'] = json.loads(accessResult.text)['access_token']
     return True
+
 
 def load_user_data():
     # TODO add error handling
     headers = {"Accept": "application/json",
                "Authorization": "token " + session['access_token']}
-    userDataResult = requests.get('https://api.github.com/user' , headers=headers)
+    userDataResult = requests.get('https://api.github.com/user', headers=headers)
     userData = json.loads(userDataResult.text)
     session['userData'] = userData
     return True
+
 
 # Main entry point
 def main(args=None):

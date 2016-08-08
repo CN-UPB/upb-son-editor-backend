@@ -1,0 +1,14 @@
+authentication:
+    ClientID: clientIDHere
+    ClientSecret: clientSecretHere
+
+session:
+    secretKey: randomSecretKeyHere
+
+frontend-redirect: "/src/loginRedirect.html"
+frontend-host: "http://localhost:8000"
+
+workspaces-location: "/son-editor/workspaces/"
+
+database:
+    location: "production.db"
