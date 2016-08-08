@@ -2,9 +2,6 @@ from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy import UniqueConstraint
 from sqlalchemy.orm import relationship
 
-from son.editor.models.service import Service
-from son.editor.models.workspace import Workspace
-
 from son.editor.app.database import Base
 
 
@@ -17,7 +14,7 @@ class Project(Base):
     workspace = relationship("Workspace", back_populates="projects")
 
     UniqueConstraint('workspace_id', 'name', name='uix_1')
-    service = relationship("Service", back_populates="project")
+    services = relationship("Service", back_populates="project")
 
     def __init__(self, name=None, rel_path=None, workspace=None):
         self.name = name

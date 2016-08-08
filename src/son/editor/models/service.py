@@ -9,9 +9,9 @@ class Service(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(50), unique=True)
     project_id = Column(Integer, ForeignKey('project.id'))
-    project = relationship("Project", back_populates="service")
+    project = relationship("Project", back_populates="services")
 
-    def __init__(self, name=None,project=None):
+    def __init__(self, name=None, project=None):
         self.name = name
         if project:
             self.project_id = project.id
