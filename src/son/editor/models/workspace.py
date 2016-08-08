@@ -6,11 +6,11 @@ from . import project
 
 
 class Workspace(Base):
-    __tablename__ = 'workspaces'
+    __tablename__ = 'workspace'
     id = Column(Integer, primary_key=True)
     name = Column(String(50), unique=True)
     path = Column(String(255), unique=True)
-    projects = relationship("Project", back_populates="workspaces")
+    project = relationship("Project", back_populates="workspace")
 
     def __init__(self, name=None, path=None):
         self.name = name
