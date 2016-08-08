@@ -6,25 +6,31 @@ Created on 22.07.2016
 from flask import Blueprint
 from flask.globals import request
 from son.editor.app.constants import get_parent
+from son.editor.app.util import prepareResponse, getJSON
 
 vnfs_api = Blueprint("vnfs_api", __name__)
 
-@vnfs_api.route('/<parentID>/vnfs', methods=['GET'])
+@vnfs_api.route('/<parentID>/functions/', methods=['GET'])
 
 def get_vnfs(wsID, parentID):
-    return "list of vnfs in this " + str(get_parent(request))
+    #TODO actual implementation
+    functions = {"functions": [{"name": "vnf1","id":1, "description":"blalalblaald"}]}
+    return prepareResponse(functions)
 
 
-@vnfs_api.route('/<parentID>/vnfs', methods=['POST'])
+@vnfs_api.route('/<parentID>/functions/', methods=['POST'])
 def create_vnf(wsID, parentID):
-    return "publish new vnf in project"
+    #TODO actual implementation
+    vnfData = getJSON(request)
+    vnfData["id"] = 2
+    return prepareResponse(vnfData)
 
 
-@vnfs_api.route('/<parentID>/vnfs/<vnfID>', methods=['PUT'])
+@vnfs_api.route('/<parentID>/functions/<vnfID>', methods=['PUT'])
 def update_vnf(wsID, parentID, vnfID):
     return "update vnf in project with id " + parentID
 
 
-@vnfs_api.route('/<parentID>/vnfs/<vnfID>', methods=['DELETE'])
+@vnfs_api.route('/<parentID>/functions/<vnfID>', methods=['DELETE'])
 def delete_vnf(wsID, parentID, vnfID):
     return "deleted vnf from project with id " + parentID

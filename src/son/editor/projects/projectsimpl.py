@@ -19,7 +19,7 @@ def get_projects(user_data, ws_id):
     user = get_user(user_data)
 
     session = db_session()
-    projects = session.query(Project). \
+    projects = session.query(Project).\
         join(Workspace). \
         filter(Workspace.id == ws_id). \
         filter(Workspace.owner == user).all()
@@ -55,14 +55,14 @@ def create_project(user_data, ws_id, project_data):
         raise Exception("No workspace with id %s was found for this user" % ws_id)
 
     existing_projects = list(session.query(Project)
-                             .filter(Project.workspace_id == workspace)
+                             .filter(Project.workspace == workspace)
                              .filter(Project.name == project_name))
     if len(existing_projects) > 0:
         raise Exception("Project with name %s already exists in this workspace" % project_name)
 
     # prepare db insert
     try:
-        project = Project(name=project_name, rel_path=project_name)
+        project = Project(name=project_name, rel_path=project_name, workspace=workspace)
         session.add(project)
     except:
         session.rollback

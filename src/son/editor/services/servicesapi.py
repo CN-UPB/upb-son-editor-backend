@@ -6,16 +6,18 @@ Created on 22.07.2016
 from flask import Blueprint
 from flask.globals import request
 from son.editor.app.constants import get_parent
+from son.editor.app.util import prepareResponse
 from . import servicesimpl
 
 services_api = Blueprint("services_api", __name__)  # , url_prefix='/workspaces/<wsID>/projects'
 
-@services_api.route('/<parentID>/services', methods=['GET'])
+@services_api.route('/<parentID>/services/', methods=['GET'])
 def get_services(wsID, parentID):
-    return servicesimpl.get_services_impl(wsID, parentID)
+    services = {"services":[{"name":"service1", "id":1, "description":"blalalblaald"}]}
+    return prepareResponse(services)
 
 
-@services_api.route('/<parentID>/services', methods=['POST'])
+@services_api.route('/<parentID>/services/', methods=['POST'])
 def create_service(wsID, parentID):
     return servicesimpl.create_service(wsID, parentID)
 

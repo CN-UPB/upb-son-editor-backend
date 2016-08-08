@@ -27,7 +27,7 @@ def create_workspace():
     workspaceData = getJSON(request)
     try:
         ws = workspaceimpl.create_workspace(session['userData'], workspaceData)
-        return prepareResponse(json.dumps(ws))
+        return prepareResponse(ws)
     except Exception as err:
         return prepareResponse(err.args[0]), 409
 
