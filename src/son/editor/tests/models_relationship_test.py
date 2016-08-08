@@ -1,18 +1,6 @@
 import unittest
 
-from son.editor.models.workspace import Workspace
-from son.editor.models.project import Project
-from son.editor.models.service import Service
-from son.editor.models.user import User
-
-
-class ModelsTestCase(unittest.TestCase):
-    # Setup basic stuff
-    def setUp(self):
-        self.project = Project()
-        self.workspace = Workspace()
-        self.service = Service()
-        self.user = User()
+from son.editor.tests.model_fixture_test import ModelsTestCase
 
 
 class ModelsRelationshipTest(ModelsTestCase):
