@@ -30,7 +30,6 @@ from setuptools import setup, find_packages
 
 import os.path as path
 
-
 # buildout build system
 # http://www.buildout.org/en/latest/docs/tutorial.html
 # setup() documentation:
@@ -41,24 +40,24 @@ longdesc = codecs.open(path.join(cwd, 'README.md'), 'r', 'utf-8').read()
 
 name = 'sonata-editor'
 setup(
-        name=name,
-        license='Apache License, Version 2.0',
-        version='0.9',
-        url='https://github.com/CN-UPB/upb-son-editor-backend',
-        author_email='sonata-dev@sonata-nfv.eu',
-        long_description=longdesc,
-        package_dir={'': 'src'},
-        packages=find_packages('src'),  # dependency resolution
-        namespace_packages=['son', ],
-        include_package_data=True,
-        install_requires=['flask', 'sqlalchemy', 'requests', 'pyyaml'],
-        zip_safe=False,
-        entry_points={
-            'console_scripts': [
-                'son-editor=son.editor.app:main',
-            ],
-        },
-        test_suite='son',
-        setup_requires=['pytest-runner'],
-        tests_require=['pytest']
-    )
+    name=name,
+    license='Apache License, Version 2.0',
+    version='0.9',
+    url='https://github.com/CN-UPB/upb-son-editor-backend',
+    author_email='sonata-dev@sonata-nfv.eu',
+    long_description=longdesc,
+    package_dir={'': 'src'},
+    packages=find_packages('src'),  # dependency resolution
+    namespace_packages=['son', ],
+    include_package_data=True,
+    install_requires=['flask', 'sqlalchemy', 'requests', 'pyyaml'],
+    zip_safe=False,
+    entry_points={
+        'console_scripts': [
+            'son-editor=son.editor.app:main',
+        ],
+    },
+    test_suite='son',
+    setup_requires=['pytest-runner'],
+    tests_require=['pytest']
+)
