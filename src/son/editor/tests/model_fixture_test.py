@@ -13,3 +13,6 @@ class ModelsTestCase(unittest.TestCase):
         self.workspace = Workspace(name="Workspace A")
         self.service = Service(name="Service A")
         self.user = User(name="User A")
+
+    def test(self):
+        self.assertTrue(self,False)
