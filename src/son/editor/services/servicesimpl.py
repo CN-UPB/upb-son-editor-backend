@@ -10,8 +10,11 @@ session = db_session()
 
 def get_services(wsID, parentID):
     project = Project.query.filter_by(id=parentID).first()
-    response = Response(json.dumps(project.service))
-    return response
+    if project is None:
+        return "No project matching ID %i" % parentID
+    else:
+        response = Response(json.dumps(project.service))
+        return response
 
 
 def create_service(wsID, parentID, serviceData):
@@ -23,8 +26,6 @@ def create_service(wsID, parentID, serviceData):
     session.add(service)
     session.commit()
     return "create new service in project"
-
-
 
 
 def update_service(wsID, parentID, serviceID, serviceData):
