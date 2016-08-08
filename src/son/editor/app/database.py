@@ -18,6 +18,5 @@ def init_db():
     import son.editor.models.project
     import son.editor.models.user
     import son.editor.models.workspace
-
-
+    import son.editor.models.service
     Base.metadata.create_all(bind=engine)

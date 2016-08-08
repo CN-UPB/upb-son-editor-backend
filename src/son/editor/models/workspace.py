@@ -6,7 +6,7 @@ from son.editor.app.database import Base
 
 
 class Workspace(Base):
-    __tablename__ = 'workspaces'
+    __tablename__ = 'workspace'
     id = Column(Integer, primary_key=True)
     name = Column(String(50))
     path = Column(String(255), unique=True)
