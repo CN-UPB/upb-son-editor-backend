@@ -11,7 +11,6 @@ class User(Base):
     email = Column(String(120), unique=True)
     workspaces = relationship("Workspace", back_populates="owner")
 
-
     def __init__(self, name=None, email=None):
         self.name = name
         self.email = email
