@@ -89,7 +89,7 @@ ENV/
 .ropeproject
 
 # Ignore config.yaml
-.yaml
+config.yaml
 
 # SQLitedb
 .db
