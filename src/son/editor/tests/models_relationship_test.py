@@ -1,9 +1,18 @@
 import unittest
 
-from son.editor.tests.model_fixture_test import ModelsTestCase
+from son.editor.models.workspace import Workspace
+from son.editor.models.project import Project
+from son.editor.models.service import Service
+from son.editor.models.user import User
 
 
-class ModelsRelationshipTest(ModelsTestCase):
+class ModelsRelationshipTest(unittest.TestCase):
+    def setUp(self):
+        self.project = Project(name="Project A")
+        self.workspace = Workspace(name="Workspace A")
+        self.service = Service(name="Service A")
+        self.user = User(name="User A")
+
     def test_service(self):
         self.service.project = self.project
         self.assertTrue(self.service in self.service.project.services)
