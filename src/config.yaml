@@ -1,9 +1,0 @@
-authentication:
-    ClientID: 9d6665533bcf1495e986
-    ClientSecret: fabdcb65bd3d226374bb6b1791c2451d05bdba54
-
-session:
-    secretKey: ydlˆIHKGktvj9430u5vﬂ2ir
-
-frontend-home: "http://localhost:5000"
-workspaces-location: "/son-editor/workspaces/"
