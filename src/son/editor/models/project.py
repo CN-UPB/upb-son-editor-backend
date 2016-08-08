@@ -16,9 +16,10 @@ class Project(Base):
     UniqueConstraint('workspace_id', 'name', name='uix_1')
     services = relationship("Service", back_populates="project")
 
-    def __init__(self, name=None, rel_path=None):
+    def __init__(self, name=None, rel_path=None, workspace=None):
         self.name = name
         self.rel_path = rel_path
+        self.workspace = workspace
 
     def __repr__(self):
         return '<Project %r:%r>' % (self.name, self.rel_path)

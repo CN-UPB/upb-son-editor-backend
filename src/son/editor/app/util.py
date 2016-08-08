@@ -21,18 +21,21 @@ def prepareResponse(data=None):
     headers['Access-Control-Allow-Headers'] = "Content-Type, Authorization, X-Requested-With"
     headers['Access-Control-Allow-Credentials'] = "true"
     headers['Access-Control-Max-Age'] = 1000
-    if isinstance(data, str):
-        response.set_data(data)
-        headers['contentType'] = 'text/plain'
-    elif data is not None:
-        response.set_data(json.dumps(data))
-        headers['contentType'] = 'application/json'
+    if data is not None:
+        try:
+            response.set_data(json.dumps(data))
+            headers['contentType'] = 'application/json'
+        except:
+            response.set_data(data)
+            headers['contentType'] = 'text/plain'
     response.headers = headers
     return response
 
 
 def getJSON(request):
     jsonData = request.get_json()
+    if jsonData is None:
+        jsonData = request.form
     if jsonData is None:
         jsonData = json.loads(request.get_data().decode("utf8"))
     return jsonData
