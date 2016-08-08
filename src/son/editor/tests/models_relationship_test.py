@@ -1,6 +1,6 @@
 import unittest
 
-from son.editor.tests.model_fixture_test import ModelsTestCase
+from .model_fixture_test import ModelsTestCase
 
 
 class ModelsRelationshipTest(ModelsTestCase):
