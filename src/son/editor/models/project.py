@@ -13,12 +13,10 @@ class Project(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(50))
     rel_path = Column(String(255), unique=True)
-    workspace_id = Column(Integer, ForeignKey('workspaces.id'))
+    workspace_id = Column(Integer, ForeignKey('workspace.id'))
     workspace = relationship("Workspace", back_populates="projects")
 
     UniqueConstraint('workspace_id', 'name', name='uix_1')
-    workspace_id = Column(Integer, ForeignKey('workspace.id'))
-    workspace = relationship("Workspace", back_populates="project")
     service = relationship("Service", back_populates="project")
 
     def __init__(self, name=None, rel_path=None):
