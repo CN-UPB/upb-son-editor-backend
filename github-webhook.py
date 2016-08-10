@@ -70,8 +70,11 @@ def redeploy():
     runProcess(['git','pull'])
     runProcess(['python', 'setup.py', 'build'])
     runProcess(['python', 'setup.py', 'install'])
-    runProcess(['son-editor','&'])
-		
+    runInBackground(['son-editor'])
+
+def runInBackground(exe):
+    subprocess.Popen(exe)
+
 def runProcess(exe):
     p = subprocess.Popen(exe, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     while(True):
