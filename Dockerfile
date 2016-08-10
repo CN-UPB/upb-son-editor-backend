@@ -1,5 +1,13 @@
 FROM python:3
 
+#install son-cli tools
+RUN git clone https://github.com/CN-UPB/son-cli
+WORKDIR /son-cli
+RUN python bootstrap.py
+RUN bin/buildout
+WORKDIR ..
+
+#install son-editor-backend
 RUN git clone https://github.com/CN-UPB/upb-son-editor-backend
 
 # Set the default directory where CMD will execute
