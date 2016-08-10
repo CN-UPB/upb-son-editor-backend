@@ -21,7 +21,8 @@ RUN python3 setup.py build
 RUN python3 setup.py install
 
 # Expose ports
-EXPOSE 5000
+EXPOSE 5000 #son-editor-backend
+EXPOSE 5050 #github-webhook
 
 # Set the default command to execute
-CMD son-editor
+CMD son-editor & github-webhook &
