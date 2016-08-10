@@ -10,6 +10,7 @@ import requests
 from threading import Thread
 # https://pythonhosted.org/Flask-Mail/
 import logging
+
 # set up logging to file - see previous section for more details
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
@@ -30,6 +31,7 @@ logger = logging.getLogger("github-webhook")
 
 app = Flask(__name__)
 
+
 def verify_hmac_hash(data, signature):
     github_secret = bytes('slkjhsdfvjasdvffaskldfkasn23o423kl', 'UTF-8')
     mac = hmac.new(github_secret, msg=data, digestmod=hashlib.sha1)
@@ -49,10 +51,10 @@ def github_payload():
                 if payload['commits'][0]['distinct'] == True:
                     try:
                         logger.info(str(request))
-                        redeploy()
-                        return Response("started deploying!", mimetype='text/plain')
+                        result = redeploy()
+                        return Response(result, mimetype='text/plain')
                     except subprocess.CalledProcessError as error:
-                        print("Code deployment failed:"+ error.output)
+                        print("Code deployment failed:" + error.output)
                         return jsonify({'msg': str(error.output)})
                 else:
                     return jsonify({'msg': 'nothing to commit'})
@@ -62,24 +64,50 @@ def github_payload():
     except Exception as err:
         traceback.print_exc()
 
+
 def redeploy():
+    result = "shutting down son-editor\n"
     logger.info("shutting down son-editor")
-    res = requests.get('http://localhost:5000/shutdown')
-    logger.info("Response was:" +res.text)
+    try:
+        res = requests.get('http://localhost:5000/shutdown')
+        result += "Response was:" + res.text+"\n"
+        logger.info("Response was:" + res.text)
+    except Exception as err:
+        result += "exception while trying to restart:\n"+str(err) + "\n"
+        logger.warning("exception while trying to restart:")
+        logger.warning(err)
+    result += "starting deployment\n"
     logger.info("starting deployment")
-    runProcess(['git','pull'])
-    runProcess(['python', 'setup.py', 'build'])
-    runProcess(['python', 'setup.py', 'install'])
-    runProcess(['python', 'son-editor','&'])
-		
+    result += runProcess(['git', 'pull'])
+    result += runProcess(['python', 'setup.py', 'build'])
+    result += runProcess(['python', 'setup.py', 'install'])
+    result += runInBackground(['son-editor'])
+    return result
+
+
+def runInBackground(exe):
+    subprocess.Popen(exe)
+    return str(exe)+"\n"
+
+
 def runProcess(exe):
+    result = str(exe)+"\n"
     p = subprocess.Popen(exe, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    while(True):
-      retcode = p.poll() #returns None while subprocess is running
-      line = p.stdout.readline()
-      logger.info(line)
-      if(retcode is not None):
-        break
+    while True:
+        retcode = p.poll()  # returns None while subprocess is running
+        line = p.stdout.readline()
+        try:
+            logger.info(line.decode("utf-8"))
+            result += line.decode("utf-8")
+        except:
+            logger.info(line)
+            result += str(line)+"\n"
+        if retcode is not None:
+            logger.info("Returncode: {}".format(retcode))
+            result += "Returncode: {}".format(retcode)+"\n"
+            break
+    return result
+
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0",port=5050)
+    app.run(host="0.0.0.0", port=5050)
