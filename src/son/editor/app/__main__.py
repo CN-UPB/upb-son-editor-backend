@@ -55,7 +55,7 @@ def shutdown_session(exception=None):
 def checkLoggedIn():
     if request.method == 'OPTIONS':
         return prepareResponse()
-    elif not 'access_token' in session and request.endpoint != 'login' and request.endpoint != 'static':
+    elif not 'access_token' in session and request.endpoint not in ['login','static','shutdown']:
         args = {"scope": "user:email",
                 "client_id": CONFIG['authentication']['ClientID']}
         session["requested_endpoint"] = request.endpoint
@@ -74,6 +74,16 @@ def home():
         return redirect(
             'https://github.com/login/oauth/authorize?scope=user:email&client_id=' + CONFIG['authentication'][
                 'ClientID'])
+
+@app.route('/shutdown', methods=['GET'])
+def shutdown():
+    if request.remote_addr in ['127.0.0.1','localhost']:
+        func = request.environ.get('werkzeug.server.shutdown')
+        if func is None:
+            raise RuntimeError('Not running with the Werkzeug Server')
+        app.logger.info("Shutting down!")
+        func()
+        return "Shutting down..."
 
 
 @app.route('/login', methods=['GET'])
