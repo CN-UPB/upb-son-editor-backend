@@ -25,4 +25,7 @@ EXPOSE 5000
 #github-webhook
 EXPOSE 5050
 
+#make sure entrypoint is executable
+RUN chmod +x entrypoint.sh
+
 ENTRYPOINT ["./entrypoint.sh"]
