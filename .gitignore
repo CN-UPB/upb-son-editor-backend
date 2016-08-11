@@ -96,3 +96,4 @@ config.yaml
 .project
 .pydevproject
 *.db
+.idea/
