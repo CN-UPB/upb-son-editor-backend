@@ -1,15 +1,11 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify, Response
-# http://pymotw.com/2/hmac/
-import hmac
 import hashlib
-# http://techarena51.com/index.php/how-to-install-python-3-and-flask-on-linux/
-import subprocess
-import os
-import traceback
-import requests
-from threading import Thread
-# https://pythonhosted.org/Flask-Mail/
+import hmac
 import logging
+import subprocess
+import traceback
+
+import requests
+from flask import Flask, request, jsonify, Response
 
 # set up logging to file - see previous section for more details
 logging.basicConfig(level=logging.DEBUG,
@@ -78,7 +74,9 @@ def redeploy():
         logger.warning(err)
     result += "starting deployment\n"
     logger.info("starting deployment")
+    result += runProcess(['git', 'stash'])  # saving config
     result += runProcess(['git', 'pull'])
+    result += runProcess(['git', 'stash', 'pop'])  #restoring config
     result += runProcess(['python', 'setup.py', 'build'])
     result += runProcess(['python', 'setup.py', 'install'])
     result += runInBackground(['son-editor'])

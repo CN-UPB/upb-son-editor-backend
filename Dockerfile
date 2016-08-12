@@ -3,8 +3,8 @@ FROM python:3
 #install son-cli tools
 RUN git clone https://github.com/CN-UPB/son-cli
 WORKDIR /son-cli
-RUN python bootstrap.py
-RUN bin/buildout
+RUN python3 setup.py build
+RUN python3 setup.py install
 WORKDIR ..
 
 #install son-editor-backend
