@@ -4,12 +4,13 @@ Created on 18.07.2016
 @author: Jonas
 '''
 import json
+import logging
 import urllib
 from os import path
 from sys import platform
 
 import requests
-from flask import Flask, redirect, session, logging
+from flask import Flask, redirect, session
 from flask.globals import request
 
 from son.editor.app.constants import WORKSPACES, CATALOGUES, PLATFORMS, PROJECTS, DATABASE_SQLITE_FILE
@@ -23,7 +24,6 @@ from son.editor.vnfs.vnfsapi import vnfs_api
 from son.editor.workspaces.workspacesapi import workspaces_api
 
 app = Flask(__name__)
-logger = None
 
 WORKSPACE_PATH = '/' + WORKSPACES + '/<wsID>/'
 
@@ -127,13 +127,14 @@ def main(args=None):
         init_db()
 
     # Start the flask server
-    print("Launch flask server")
+    logger.info("Launch flask server")
     if platform == "darwin":
         app.run('0.0.0.0', debug=True)
     else:
         app.run('0.0.0.0')
 
 
+logger = None
 def setup_logging():
     # set up logging to file - see previous section for more details
     logging.basicConfig(level=logging.DEBUG,
@@ -150,6 +151,7 @@ def setup_logging():
     console.setFormatter(formatter)
     # add the handler to the root logger
     logging.getLogger('').addHandler(console)
+    global logger
     logger = logging.getLogger("son-editor.__main__")
 
 if __name__ == "__main__":
