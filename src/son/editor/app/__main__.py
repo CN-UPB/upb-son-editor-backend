@@ -4,16 +4,13 @@ Created on 18.07.2016
 @author: Jonas
 '''
 import json
-from os import path, urandom
-from sys import platform
 import urllib
+from os import path
+from sys import platform
 
-from flask import Flask, redirect, session, logging
-from flask import Response
-from flask.globals import request
-from flask.helpers import url_for
 import requests
-from sqlalchemy.exc import StatementError
+from flask import Flask, redirect, session, logging
+from flask.globals import request
 
 from son.editor.app.constants import WORKSPACES, CATALOGUES, PLATFORMS, PROJECTS, DATABASE_SQLITE_FILE
 from son.editor.app.database import db_session, init_db
@@ -26,6 +23,8 @@ from son.editor.vnfs.vnfsapi import vnfs_api
 from son.editor.workspaces.workspacesapi import workspaces_api
 
 app = Flask(__name__)
+logger = None
+
 WORKSPACE_PATH = '/' + WORKSPACES + '/<wsID>/'
 
 # registering all the to class modules here
@@ -81,7 +80,7 @@ def shutdown():
         func = request.environ.get('werkzeug.server.shutdown')
         if func is None:
             raise RuntimeError('Not running with the Werkzeug Server')
-        app.logger.info("Shutting down!")
+        logger.info("Shutting down!")
         func()
         return "Shutting down..."
 
@@ -90,7 +89,7 @@ def shutdown():
 def login():
     session['session_code'] = request.args.get('code');
     if request_access_token() and load_user_data():
-        app.logger.info("User " + session['userData']['login'] + " logged in")
+        logger.info("User " + session['userData']['login'] + " logged in")
         # return redirect(url_for(session["requested_endpoint"]))
         return redirect(CONFIG['frontend-host'] + CONFIG['frontend-redirect'])
 
@@ -119,11 +118,12 @@ def load_user_data():
 
 # Main entry point
 def main(args=None):
+    setup_logging()
     # Check check if database exists, otherwise create sqlite file
     if path.exists(DATABASE_SQLITE_FILE):
-        print('Using database file "%s"' % DATABASE_SQLITE_FILE)
+        logger.info('Using database file "%s"' % DATABASE_SQLITE_FILE)
     else:
-        print('Init database on "%s"' % DATABASE_SQLITE_FILE)
+        logger.info('Init database on "%s"' % DATABASE_SQLITE_FILE)
         init_db()
 
     # Start the flask server
@@ -133,6 +133,24 @@ def main(args=None):
     else:
         app.run('0.0.0.0')
 
+
+def setup_logging():
+    # set up logging to file - see previous section for more details
+    logging.basicConfig(level=logging.DEBUG,
+                        format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
+                        datefmt='%m-%d %H:%M',
+                        filename='editor-backend.log',
+                        filemode='w')
+    # define a Handler which writes INFO messages or higher to the sys.stderr
+    console = logging.StreamHandler()
+    console.setLevel(logging.INFO)
+    # set a format which is simpler for console use
+    formatter = logging.Formatter('%(name)-12s: %(levelname)-8s %(message)s')
+    # tell the handler to use this format
+    console.setFormatter(formatter)
+    # add the handler to the root logger
+    logging.getLogger('').addHandler(console)
+    logger = logging.getLogger("son-editor.__main__")
 
 if __name__ == "__main__":
     main()
