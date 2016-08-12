@@ -5,6 +5,7 @@ Created on 28.07.2016
 '''
 import json
 
+from flask import request
 from flask.wrappers import Response
 from pkg_resources import Requirement, resource_filename
 import yaml
@@ -16,7 +17,8 @@ CONFIG = yaml.safe_load(open(str(configFileName)))
 def prepareResponse(data=None):
     response = Response()
     headers = response.headers
-    headers['Access-Control-Allow-Origin'] = CONFIG["frontend-host"]
+    if allowed_origin():
+        headers['Access-Control-Allow-Origin'] = request.headers['Origin']
     headers['Access-Control-Allow-Methods'] = "GET,POST,PUT,DELETE,OPTIONS"
     headers['Access-Control-Allow-Headers'] = "Content-Type, Authorization, X-Requested-With"
     headers['Access-Control-Allow-Credentials'] = "true"
@@ -30,6 +32,15 @@ def prepareResponse(data=None):
             headers['contentType'] = 'text/plain'
     response.headers = headers
     return response
+
+
+def allowed_origin():
+    if 'Origin' in request.headers:
+        origin = request.headers['Origin'].replace("http://", "").replace("https://", "")
+        origin_parts = origin.split(":")
+        if len(origin_parts) > 1:
+            origin = origin_parts[0]
+        return origin in CONFIG['allowed-hosts']
 
 
 def getJSON(request):

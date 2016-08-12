@@ -91,8 +91,12 @@ def login():
     if request_access_token() and load_user_data():
         logger.info("User " + session['userData']['login'] + " logged in")
         # return redirect(url_for(session["requested_endpoint"]))
-        return redirect(CONFIG['frontend-host'] + CONFIG['frontend-redirect'])
+        origin = origin_from_referrer(request.referrer)
+        return redirect(origin + CONFIG['frontend-redirect'])
 
+def origin_from_referrer(referrer):
+    doubleSlashIndex = referrer.find("//")
+    return referrer[0:referrer.find("/",doubleSlashIndex+2)]
 
 def request_access_token():
     # TODO add error handling
