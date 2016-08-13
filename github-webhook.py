@@ -52,6 +52,9 @@ def github_payload():
                     except subprocess.CalledProcessError as error:
                         print("Code deployment failed:" + error.output)
                         return jsonify({'msg': str(error.output)})
+                    except Exception as fail:
+                        return Response("Deployment failed with statuscode {}\nLog:\n{}".format(fail.args[1], fail.args[0])), 500
+
                 else:
                     return jsonify({'msg': 'nothing to commit'})
 
@@ -66,17 +69,17 @@ def redeploy():
     logger.info("shutting down son-editor")
     try:
         res = requests.get('http://localhost:5000/shutdown')
-        result += "Response was:" + res.text+"\n"
+        result += "Response was:" + res.text + "\n"
         logger.info("Response was:" + res.text)
     except Exception as err:
-        result += "exception while trying to restart:\n"+str(err) + "\n"
+        result += "exception while trying to restart:\n" + str(err) + "\n"
         logger.warning("exception while trying to restart:")
         logger.warning(err)
     result += "starting deployment\n"
     logger.info("starting deployment")
     result += runProcess(['git', 'stash'])  # saving config
     result += runProcess(['git', 'pull'])
-    result += runProcess(['git', 'stash', 'pop'])  #restoring config
+    result += runProcess(['git', 'stash', 'pop'])  # restoring config
     result += runProcess(['python', 'setup.py', 'build'])
     result += runProcess(['python', 'setup.py', 'install'])
     result += runInBackground(['son-editor'])
@@ -85,11 +88,11 @@ def redeploy():
 
 def runInBackground(exe):
     subprocess.Popen(exe)
-    return str(exe)+"\n"
+    return "Starting " +str(exe) + "\n"
 
 
 def runProcess(exe):
-    result = str(exe)+"\n"
+    result = "Running " + str(exe) + "\n"
     p = subprocess.Popen(exe, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     while True:
         retcode = p.poll()  # returns None while subprocess is running
@@ -99,11 +102,13 @@ def runProcess(exe):
             result += line.decode("utf-8")
         except:
             logger.info(line)
-            result += str(line)+"\n"
+            result += str(line) + "\n"
         if retcode is not None:
             logger.info("Returncode: {}".format(retcode))
-            result += "Returncode: {}".format(retcode)+"\n"
+            result += "Returncode: {}".format(retcode) + "\n"
             break
+    if not retcode == 0:
+        raise Exception(result, retcode)
     return result
 
 

@@ -8,7 +8,11 @@ RUN python3 setup.py install
 WORKDIR ..
 
 #install son-editor-backend
-RUN git clone https://github.com/CN-UPB/upb-son-editor-backend
+RUN git clone https://github.com/CN-UPB/upb-son-editor-backend#
+
+#set git a dummy user to be enable stashing the config file
+RUN git config user.email dummy@user.com
+RUN git config user.name "Dummy User"
 
 # Set the default directory where CMD will execute
 WORKDIR /upb-son-editor-backend
