@@ -15,9 +15,6 @@ CATALOGUES = "catalogues"
 SERVICES = "services"
 VNFS = "vnfs"
 
-# Database constants
-DATABASE_SQLITE_FILE = "production.db"
-DATABASE_SQLITE_URI = "sqlite:///%s" % DATABASE_SQLITE_FILE
 
 
 class Category(Enum):

@@ -18,8 +18,11 @@ workspaces_api = Blueprint("workspaces_api", __name__, url_prefix='/' + WORKSPAC
 
 @workspaces_api.route('/', methods=['GET'])
 def get_workspaces():
-    workspaces = workspaceimpl.get_workspaces(session['userData'])
-    return prepareResponse({"workspaces": workspaces})
+    try:
+        workspaces = workspaceimpl.get_workspaces(session['userData'])
+        return prepareResponse({"workspaces": workspaces})
+    except KeyError as err:
+        return prepareResponse(err.args[0]), 403
 
 
 @workspaces_api.route('/', methods=['POST'])
@@ -37,8 +40,10 @@ def get_workspace(wsID):
     try:
         workspace = workspaceimpl.get_workspace(session['userData'], wsID)
         return prepareResponse(workspace)
+    except KeyError as err:
+        return prepareResponse(err.args[0]), 403
     except Exception as err:
-        return prepareResponse(str_data=err.args[0]), 409
+        return prepareResponse(err.args[0]), 409
 
 
 @workspaces_api.route('/<wsID>', methods=['PUT'])

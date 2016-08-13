@@ -15,7 +15,7 @@ from flask.helpers import url_for
 import requests
 from sqlalchemy.exc import StatementError
 
-from son.editor.app.constants import WORKSPACES, CATALOGUES, PLATFORMS, PROJECTS, DATABASE_SQLITE_FILE
+from son.editor.app.constants import WORKSPACES, CATALOGUES, PLATFORMS, PROJECTS
 from son.editor.app.database import db_session, init_db
 from son.editor.app.util import CONFIG, prepareResponse
 from son.editor.catalogues.cataloguesapi import catalogues_api
@@ -55,6 +55,8 @@ def shutdown_session(exception=None):
 def checkLoggedIn():
     if request.method == 'OPTIONS':
         return prepareResponse()
+    elif app.config['TESTING'] == True:
+        return
     elif not 'access_token' in session and request.endpoint != 'login' and request.endpoint != 'static':
         args = {"scope": "user:email",
                 "client_id": CONFIG['authentication']['ClientID']}
@@ -110,10 +112,11 @@ def load_user_data():
 # Main entry point
 def main(args=None):
     # Check check if database exists, otherwise create sqlite file
-    if path.exists(DATABASE_SQLITE_FILE):
-        print('Using database file "%s"' % DATABASE_SQLITE_FILE)
+    dbFile = CONFIG['database']['location']
+    if path.exists(dbFile):
+        print('Using database file "%s"' % dbFile)
     else:
-        print('Init database on "%s"' % DATABASE_SQLITE_FILE)
+        print('Init database on "%s"' % dbFile)
         init_db()
 
     # Start the flask server
