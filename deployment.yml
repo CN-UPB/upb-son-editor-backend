@@ -1,6 +1,8 @@
 github-token: "please generate 'Personal Access Token' at Github.com"
 github-secret: "randomSecretString(set as secret in webhook config)"
 
+environment_url: http://fg-cn-sandman1.cs.upb.de/src/homeView.html
+
 deployment-script:
   #sends a deployment pending status to github
   - update-status: "starting deployment"
