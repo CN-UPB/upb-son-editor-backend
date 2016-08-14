@@ -124,17 +124,20 @@ def redeploy(payload, build_log_url):
                     update_deployment_status(payload, "failure",
                                              "Deployment failed with statuscode {}".format(fail.args[1]), build_log_url)
                     return
-    update_deployment_status(payload, "success", "Deployment finished", build_log_url)
+    update_deployment_status(payload, "success", "Deployment finished", build_log_url, CONFIG['environment_url'])
     logger.info("Deploy finished!")
 
 
-def update_deployment_status(payload, state, description, log_url):
+def update_deployment_status(payload, state, description, log_url, environment_url=None):
     headers = {"Accept": "application/vnd.github.ant-man-preview+json",
                "Authorization": "token " + CONFIG['github-token']}
+    jsondata = {"state": state,
+                "description": description,
+                "log_url": log_url}
+    if environment_url is not None:
+        jsondata['environment_url'] = environment_url
     res = requests.post(payload["deployment"]["url"] + "/statuses",
-                        json={"state": state,
-                              "description": description,
-                              "log_url": log_url},
+                        json=jsondata,
                         headers=headers)
     logger.debug(res.text)
 
