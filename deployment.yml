@@ -1,0 +1,27 @@
+github-token: "please generate 'Personal Access Token' at Github.com"
+github-secret: "randomSecretString(set as secret in webhook config)"
+
+deployment-script:
+  #sends a deployment pending status to github
+  - update-status: "starting deployment"
+  #make an http request
+  - request: "shutting down son-editor"
+    method : GET
+    url: 'http://localhost:5000/shutdown'
+    #do not abort build on error
+    required: false
+    #run an arbitrary shell command
+  - run: "updating code from repository"
+    #sync: wait for termination
+    sync: 'git stash'
+  - run:
+    sync: 'git pull'
+  - run:
+    sync: 'git stash pop'
+  - run: "building son-editor"
+    sync: 'python setup.py build'
+  - run: "installing son-editor"
+    sync: 'python setup.py install'
+  - run: "starting son editor"
+    #async: do not wait for termination (gives no feedback(no exitcode))
+    async: 'son-editor'
