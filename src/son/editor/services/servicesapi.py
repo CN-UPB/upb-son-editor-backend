@@ -15,14 +15,12 @@ services_api = Blueprint("services_api", __name__)  # , url_prefix='/workspaces/
 
 @services_api.route('/<parentID>/services/', methods=['GET'])
 def get_services(wsID, parentID):
-    services = {"services":[{"name":"service1", "id":1, "description":"blalalblaald"}]}
-    return prepareResponse(services)
+    return servicesimpl.get_services(wsID,parentID)
 
 
 @services_api.route('/<parentID>/services/', methods=['POST'])
 def create_service(wsID, parentID):
-    serviceData = getJSON(request)
-    return servicesimpl.create_service(wsID, parentID, serviceData)
+    return servicesimpl.create_service(wsID, parentID)
 
 
 @services_api.route('/<parentID>/services/<serviceID>', methods=['PUT'])

@@ -6,6 +6,8 @@ Created on 25.07.2016
 import logging
 import os
 import shlex
+import platform
+
 from subprocess import Popen, PIPE
 
 from son.editor.app.database import db_session
@@ -61,7 +63,14 @@ def create_workspace(user_data, workspaceData):
         session.rollback
         raise
     #create workspace on disk
-    proc = Popen(['son-workspace', '--init', '--workspace', wsPath], stdout=PIPE, stderr=PIPE)
+    from sys import platform as _platform
+
+    if _platform == "linux" or _platform == "linux2" or _platform == "darwin":
+        # linux, mac
+        proc = Popen(['son-workspace', '--init', '--workspace', wsPath], stdout=PIPE, stderr=PIPE, shell=True)
+    else:
+        #win
+        proc = Popen(['son-workspace', '--init', '--workspace', wsPath], stdout=PIPE, stderr=PIPE)
     out, err = proc.communicate()
     exitcode = proc.returncode
     if exitcode == 0:

@@ -1,9 +1,11 @@
 import json
 import shlex
 from flask import Response
+from flask.globals import request
 from son.editor.models.project import Project
 from son.editor.models.service import Service, ServiceEncoder
 from son.editor.app.database import db_session
+from son.editor.app.util import getJSON
 
 session = db_session()
 
@@ -17,7 +19,8 @@ def get_services(wsID, parentID):
         return response
 
 
-def create_service(wsID, parentID, serviceData):
+def create_service(wsID, parentID):
+    serviceData = getJSON(request)
     # Retrieve post parameters
     servicename = shlex.quote(serviceData["name"])
     vendorname = shlex.quote(serviceData["vendor"])

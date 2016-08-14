@@ -4,14 +4,11 @@ Created on 18.07.2016
 @author: Jonas
 '''
 import json
-from os import path, urandom
-from sys import platform
 import urllib
+from os import path
+from sys import platform
 
-from flask import Flask, redirect, session, logging
-from flask import Response
-from flask.globals import request
-from flask.helpers import url_for
+import logging
 import requests
 from flask import Flask, redirect, session
 from flask.globals import request
@@ -43,7 +40,7 @@ app.register_blueprint(services_api, url_prefix=WORKSPACE_PATH + CATALOGUES)
 app.register_blueprint(vnfs_api, url_prefix=WORKSPACE_PATH + CATALOGUES)
 # load secret key from config
 app.secret_key = CONFIG['session']['secretKey']
-
+# Set initial testing flag to false
 
 # print(app.url_map)
 
@@ -57,6 +54,8 @@ def shutdown_session(exception=None):
 def checkLoggedIn():
     if request.method == 'OPTIONS':
         return prepareResponse()
+    elif CONFIG['testing']:
+        return
     elif not 'access_token' in session and request.endpoint != 'login' and request.endpoint != 'static':
         args = {"scope": "user:email",
                 "client_id": CONFIG['authentication']['ClientID']}
@@ -77,9 +76,10 @@ def home():
             'https://github.com/login/oauth/authorize?scope=user:email&client_id=' + CONFIG['authentication'][
                 'ClientID'])
 
+
 @app.route('/shutdown', methods=['GET'])
 def shutdown():
-    if request.remote_addr in ['127.0.0.1','localhost']:
+    if request.remote_addr in ['127.0.0.1', 'localhost']:
         func = request.environ.get('werkzeug.server.shutdown')
         if func is None:
             raise RuntimeError('Not running with the Werkzeug Server')
@@ -97,9 +97,11 @@ def login():
         origin = origin_from_referrer(request.referrer)
         return redirect(origin + CONFIG['frontend-redirect'])
 
+
 def origin_from_referrer(referrer):
     doubleSlashIndex = referrer.find("//")
-    return referrer[0:referrer.find("/",doubleSlashIndex+2)]
+    return referrer[0:referrer.find("/", doubleSlashIndex + 2)]
+
 
 def request_access_token():
     # TODO add error handling
@@ -120,6 +122,7 @@ def load_user_data():
     userDataResult = requests.get('https://api.github.com/user', headers=headers)
     userData = json.loads(userDataResult.text)
     session['userData'] = userData
+    logger.info("userdata: %s" % userData)
     return True
 
 
@@ -143,6 +146,8 @@ def main(args=None):
 
 
 logger = None
+
+
 def setup_logging():
     # set up logging to file - see previous section for more details
     logging.basicConfig(level=logging.DEBUG,
@@ -161,6 +166,7 @@ def setup_logging():
     logging.getLogger('').addHandler(console)
     global logger
     logger = logging.getLogger("son-editor.__main__")
+
 
 if __name__ == "__main__":
     main()

@@ -20,7 +20,7 @@ class ServiceAPITest(unittest.TestCase):
         # Add some dummy objects
         self.project = Project(name="Project A")
         self.workspace = Workspace(name="Workspace A")
-        self.user = User(name="User C", email="foo@bar.com")
+        self.user = User(name="username", email="foo@bar.com")
 
         # Add some relationships
         self.workspace.owner = self.user;
@@ -31,10 +31,19 @@ class ServiceAPITest(unittest.TestCase):
         db_session.add(self.user)
         db_session.commit()
 
+    def tearDown(self):
+        db_session.delete(self.project)
+        db_session.delete(self.workspace)
+        db_session.delete(self.user)
+        db_session.commit()
+
     def test_create(self):
         postArg = json.dumps({"vendor": "de.upb.cs.cn.pgsandman",
                               "name": "Service Name",
                               "version": "0.0.1"})
-        response = self.app.post("/" + constants.WORKSPACES + "/" + str(self.workspace.id) + "/" + constants.PROJECTS
-                                 + "/" + str(self.project.id) + "/" + constants.SERVICES, data=postArg)
-        self.assertTrue(response.status_code==201)
+
+        response = self.app.post("/" + constants.WORKSPACES + "/" + str(self.workspace.id)
+                                 + "/" + constants.PROJECTS + "/" + str(self.project.id)
+                                 + "/" + constants.SERVICES + "/", headers={'Content-Type': 'application/json'},
+                                 data=postArg)
+        self.assertTrue(response.status_code == 201)
