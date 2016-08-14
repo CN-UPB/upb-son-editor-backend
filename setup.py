@@ -49,12 +49,13 @@ setup(
     package_dir={'': 'src'},
     packages=find_packages('src'),  # dependency resolution
     namespace_packages=['son', ],
+	data_files=[('', ['src/config.yaml'])],
     include_package_data=True,
-    install_requires=['flask', 'sqlalchemy', 'requests', 'pyyaml'],
+    install_requires=['flask', 'sqlalchemy', 'requests', 'pyaml'],
     zip_safe=False,
     entry_points={
         'console_scripts': [
-            'son-editor=son.editor.app:main',
+            'son-editor=son.editor.app.__main__:main',
         ],
     },
     test_suite='son',

@@ -10,5 +10,8 @@ frontend-host: "http://localhost:8000"
 
 workspaces-location: "/son-editor/workspaces/"
 
+allowed-hosts:
+  - "localhost"
+  - "fg-cn-sandman1.cs.upb.de"
 database:
     location: "production.db"

@@ -5,11 +5,12 @@ Created on 18.07.2016
 '''
 import json
 
-from flask import Blueprint, Response
+from flask import Blueprint
+from flask import request
 from flask import session
 
 from son.editor.app.constants import WORKSPACES, PROJECTS
-from son.editor.app.util import prepareResponse
+from son.editor.app.util import prepareResponse, getJSON
 from . import projectsimpl
 
 projects_api = Blueprint("projects_api", __name__, url_prefix='/' + WORKSPACES + '/<wsID>/' + PROJECTS)
@@ -23,7 +24,12 @@ def get_projects(wsID):
 
 @projects_api.route('/', methods=['POST'])
 def create_project(wsID):
-    return "create new project and return id"
+    projectData = getJSON(request)
+    try:
+        pj = projectsimpl.create_project(session['userData'],wsID, projectData)
+        return prepareResponse(pj)
+    except Exception as err:
+        return prepareResponse(err.args[0]), 409
 
 
 @projects_api.route('/<projectID>', methods=['PUT'])

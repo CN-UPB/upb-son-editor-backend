@@ -3,18 +3,18 @@ Created on 25.07.2016
 
 @author: Jonas
 '''
+import logging
 import os
 import shlex
 from subprocess import Popen, PIPE
 
 from son.editor.app.database import db_session
 from son.editor.app.util import CONFIG
-from son.editor.models.user import User
 from son.editor.models.workspace import Workspace
 from son.editor.users.usermanagement import get_user
 
 WORKSPACES_DIR = os.path.expanduser("~") + CONFIG["workspaces-location"]
-
+logger = logging.getLogger("son-editor.workspaceimpl")
 
 def get_workspaces(user_data):
     session = db_session()
@@ -57,6 +57,7 @@ def create_workspace(user_data, workspaceData):
         ws = Workspace(name=wsName, path=wsPath, owner=user)
         session.add(ws)
     except:
+        logger.exception()
         session.rollback
         raise
     #create workspace on disk
