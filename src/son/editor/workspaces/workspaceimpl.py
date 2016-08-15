@@ -6,20 +6,25 @@ Created on 25.07.2016
 import logging
 import os
 import shlex
+import tempfile
+import shutil
 import re
-import platform
 
 from subprocess import Popen, PIPE
-from sys import platform
 
 from son.editor.app.database import db_session
 from son.editor.app.util import CONFIG
 from son.editor.models.workspace import Workspace
 from son.editor.users.usermanagement import get_user
-from flask import Response
 
-WORKSPACES_DIR = os.path.expanduser(CONFIG["workspaces-location"])
+# If its testing, don't mess up workspace location
+if CONFIG['testing']:
+    WORKSPACES_DIR = tempfile.mkdtemp()
+else:
+    WORKSPACES_DIR = os.path.expanduser(CONFIG["workspaces-location"])
+
 logger = logging.getLogger("son-editor.workspaceimpl")
+
 
 def get_workspaces(user_data):
     session = db_session()
@@ -57,7 +62,7 @@ def create_workspace(user_data, workspaceData):
         raise Exception("Workspace with name " + wsName + " already exists")
 
     wsPath = WORKSPACES_DIR + user.name + "/" + wsName
-    #prepare db insert
+    # prepare db insert
     try:
         ws = Workspace(name=wsName, path=wsPath, owner=user)
         session.add(ws)
@@ -65,21 +70,63 @@ def create_workspace(user_data, workspaceData):
         logger.exception()
         session.rollback
         raise
-    #create workspace on disk
+    # create workspace on disk
     proc = Popen(['son-workspace', '--init', '--workspace', wsPath], stdout=PIPE, stderr=PIPE)
 
     out, err = proc.communicate()
     exitcode = proc.returncode
 
-    if out.decode().find('existing'):
+    if out.decode().find('existing') >= 0:
         workspace_exists = True
     else:
         workspace_exists = False
 
     if exitcode == 0 or workspace_exists:
         session.commit()
-        resp = Response(content_type={'application/json'},response=ws.as_dict(),status=201)
         return ws.as_dict()
     else:
         session.rollback()
         raise Exception(err, out)
+
+
+def rreplace(s, old, new, occurrence):
+    li = s.rsplit(old, occurrence)
+    return new.join(li)
+
+
+def update_workspace(workspaceData, wsid):
+    session = db_session()
+    workspace = session.query(Workspace).filter(Workspace.id == int(wsid)).first()
+
+    # Update name
+    if 'name' in workspaceData:
+        if os.path.exists(workspace.path):
+            new_name = workspaceData['name']
+            old_path = workspace.path
+            new_path = rreplace(workspace.path, workspace.name, new_name, 1)
+
+            if os.path.exists(new_path):
+                raise Exception("Invalid name parameter, workspace name already exists")
+
+            # Do not allow move directories outside of the workspaces_dir
+            if not new_path.startswith(WORKSPACES_DIR):
+                raise Exception("Invalid path parameter, you are not allowed to break out of %s" % WORKSPACES_DIR)
+            else:
+                # Move the directory
+                shutil.move(old_path, new_path)
+                workspace.name = new_name
+                workspace.path = new_path
+
+    db_session.commit()
+    return workspace.as_dict()
+
+
+def delete_workspace(wsid):
+    session = db_session()
+    workspace = session.query(Workspace).filter(Workspace.id == int(wsid)).first()
+    if workspace:
+        path = workspace.path
+        shutil.rmtree(path)
+        session.delete(workspace)
+    db_session.commit()
+    return workspace.as_dict()
