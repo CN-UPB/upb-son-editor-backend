@@ -15,3 +15,4 @@ allowed-hosts:
   - "fg-cn-sandman1.cs.upb.de"
 database:
     location: "production.db"
+testing: False
