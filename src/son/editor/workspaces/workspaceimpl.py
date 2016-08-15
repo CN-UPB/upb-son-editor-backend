@@ -9,6 +9,7 @@ import shlex
 import platform
 
 from subprocess import Popen, PIPE
+from sys import platform
 
 from son.editor.app.database import db_session
 from son.editor.app.util import CONFIG
@@ -63,9 +64,9 @@ def create_workspace(user_data, workspaceData):
         session.rollback
         raise
     #create workspace on disk
-    from sys import platform as _platform
 
-    if _platform == "linux" or _platform == "linux2" or _platform == "darwin":
+
+    if platform == "linux" or platform == "linux2" or platform == "darwin":
         # linux, mac
         proc = Popen(['son-workspace', '--init', '--workspace', wsPath], stdout=PIPE, stderr=PIPE, shell=True)
     else:
