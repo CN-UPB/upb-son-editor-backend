@@ -27,8 +27,11 @@ def create_workspace():
     try:
         ws = workspaceimpl.create_workspace(session['userData'], workspaceData)
         return prepareResponse(ws)
+    except KeyError as err:
+        logger.exception(err.args[0])
+        return prepareResponse(err.args[0]), 403
     except Exception as err:
-        logger.exception()
+        logger.exception(err.args[0])
         return prepareResponse(err.args[0]), 409
 
 
@@ -37,9 +40,12 @@ def get_workspace(wsID):
     try:
         workspace = workspaceimpl.get_workspace(session['userData'], wsID)
         return prepareResponse(workspace)
+    except KeyError as err:
+        logger.exception(err.args[0])
+        return prepareResponse(err.args[0]), 403
     except Exception as err:
-        logger.exception()
-        return prepareResponse(str_data=err.args[0]), 409
+        logger.exception(err.args[0])
+        return prepareResponse(err.args[0]), 409
 
 
 @workspaces_api.route('/<wsID>', methods=['PUT'])

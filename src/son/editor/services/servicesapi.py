@@ -9,12 +9,13 @@ from son.editor.app.constants import get_parent
 from son.editor.app.util import prepareResponse
 from . import servicesimpl
 
+from son.editor.app.util import getJSON
+
 services_api = Blueprint("services_api", __name__)  # , url_prefix='/workspaces/<wsID>/projects'
 
 @services_api.route('/<parentID>/services/', methods=['GET'])
 def get_services(wsID, parentID):
-    services = {"services":[{"name":"service1", "id":1, "description":"blalalblaald"}]}
-    return prepareResponse(services)
+    return servicesimpl.get_services(wsID,parentID)
 
 
 @services_api.route('/<parentID>/services/', methods=['POST'])

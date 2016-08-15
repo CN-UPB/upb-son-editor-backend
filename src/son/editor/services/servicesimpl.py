@@ -1,9 +1,11 @@
 import json
 import shlex
 from flask import Response
+from flask.globals import request
 from son.editor.models.project import Project
-from son.editor.models.service import Service
+from son.editor.models.service import Service, ServiceEncoder
 from son.editor.app.database import db_session
+from son.editor.app.util import getJSON
 
 session = db_session()
 
@@ -13,19 +15,24 @@ def get_services(wsID, parentID):
     if project is None:
         return "No project matching ID %i" % parentID
     else:
-        response = Response(json.dumps(project.service))
+        response = Response(json.dumps(project.services))
         return response
 
 
-def create_service(wsID, parentID, serviceData):
+def create_service(wsID, parentID):
+    serviceData = getJSON(request)
     # Retrieve post parameters
-    serviceName = shlex.quote(serviceData["name"])
+    servicename = shlex.quote(serviceData["name"])
+    vendorname = shlex.quote(serviceData["vendor"])
+    version = shlex.quote(serviceData["version"])
 
     # Create db object
-    service = Service(name=serviceName)
+    service = Service(name=servicename, vendor = vendorname, version = version)
     session.add(service)
+
     session.commit()
-    return "create new service in project"
+    response = Response(mimetype='application/json',response=ServiceEncoder().encode(service), status=201)
+    return response
 
 
 def update_service(wsID, parentID, serviceID, serviceData):
