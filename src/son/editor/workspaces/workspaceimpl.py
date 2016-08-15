@@ -6,6 +6,7 @@ Created on 25.07.2016
 import logging
 import os
 import shlex
+import re
 import platform
 
 from subprocess import Popen, PIPE
@@ -15,8 +16,9 @@ from son.editor.app.database import db_session
 from son.editor.app.util import CONFIG
 from son.editor.models.workspace import Workspace
 from son.editor.users.usermanagement import get_user
+from flask import Response
 
-WORKSPACES_DIR = os.path.expanduser("~") + CONFIG["workspaces-location"]
+WORKSPACES_DIR = os.path.expanduser(CONFIG["workspaces-location"])
 logger = logging.getLogger("son-editor.workspaceimpl")
 
 def get_workspaces(user_data):
@@ -68,8 +70,15 @@ def create_workspace(user_data, workspaceData):
 
     out, err = proc.communicate()
     exitcode = proc.returncode
-    if exitcode == 0:
+
+    if out.decode().find('existing'):
+        workspace_exists = True
+    else:
+        workspace_exists = False
+
+    if exitcode == 0 or workspace_exists:
         session.commit()
+        resp = Response(content_type={'application/json'},response=ws.as_dict(),status=201)
         return ws.as_dict()
     else:
         session.rollback()
