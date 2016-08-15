@@ -4,10 +4,11 @@ language: python
 python:
   - "3.5"
 before_install:
-  - sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys D0DF34A30A4FE3F8
-  - echo "deb http://registry.sonata-nfv.eu:8080 ubuntu-trusty main" | sudo tee -a /etc/apt/sources.list
-  - sudo apt-get update
-  - sudo apt-get install sonata-cli
+  - git clone https://github.com/sonata-nfv/son-cli
+  - cd son-cli
+  - python setup.py build
+  - python setup.py install
+  - cd ..
 install:
   - "python setup.py install"
 script:
