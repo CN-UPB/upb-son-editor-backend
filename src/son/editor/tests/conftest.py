@@ -3,7 +3,7 @@ import logging
 
 from son.editor.app.util import CONFIG
 
-print("Setting up config for temporary db")
+logging.info("Setting up config for temporary db")
 
 # Set the temp db location
 handle, CONFIG['database']['location'] = tempfile.mkstemp()

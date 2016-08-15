@@ -1,13 +1,9 @@
-import json
 import shlex
-from flask import Response
 from flask.globals import request
 from son.editor.models.project import Project
-from son.editor.models.service import Service, ServiceEncoder
+from son.editor.models.service import Service
 from son.editor.app.database import db_session
 from son.editor.app.util import getJSON
-
-session = db_session()
 
 
 def get_services(wsID, parentID):
@@ -15,11 +11,11 @@ def get_services(wsID, parentID):
     if project is None:
         return "No project matching ID %i" % parentID
     else:
-        response = Response(json.dumps(project.services))
-        return response
+        return list(map(lambda x: x.as_dict(), project.services))
 
 
 def create_service(wsID, parentID):
+    session = db_session()
     serviceData = getJSON(request)
     # Retrieve post parameters
     servicename = shlex.quote(serviceData["name"])
@@ -29,24 +25,37 @@ def create_service(wsID, parentID):
     # Create db object
     service = Service(name=servicename, vendor = vendorname, version = version)
     session.add(service)
-
     session.commit()
-    response = Response(mimetype='application/json',response=ServiceEncoder().encode(service), status=201)
-    return response
+
+    return service.as_dict()
 
 
-def update_service(wsID, parentID, serviceID, serviceData):
-    service = Service.query.filter.filter_by(id=serviceID).first()
+def update_service(wsID, parentID, serviceID):
+    session = db_session()
+    serviceData = getJSON(request)
+    service = session.query(Service).filter_by(id=serviceID).first()
     if service:
         # Parse parameters and update record
-        serviceName = shlex.quote(serviceData["name"])
-        if serviceName:
-            service.name = serviceName
+        servicename = shlex.quote(serviceData["name"])
+        vendorname = shlex.quote(serviceData["vendor"])
+        version = shlex.quote(serviceData["version"])
+        if servicename:
+            service.name = servicename
+        if vendorname:
+            service.vendor = vendorname
+        if version:
+            service.version = version
+        session.commit()
+        return service.as_dict()
     else:
-        return "Could not update service %i, because no record was found" % serviceID
-
-    return "update service in project with id " + parentID
+        return "Could not update service '%i', because no record was found" % serviceID
 
 
-def delete_service(wsID, parentID, serviceID):
-    return "deleted service from project with id " + parentID
+def delete_service(serviceID):
+    session = db_session()
+    service = session.query(Service).filter_by(id=serviceID).first()
+    if service:
+        session.delete(service)
+        session.commit()
+    else:
+        raise Exception("Delete service did not work, %s not found" % serviceID)

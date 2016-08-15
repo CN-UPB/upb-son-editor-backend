@@ -26,7 +26,7 @@ def create_workspace():
     workspaceData = getJSON(request)
     try:
         ws = workspaceimpl.create_workspace(session['userData'], workspaceData)
-        return prepareResponse(ws)
+        return prepareResponse(ws), 201
     except KeyError as err:
         logger.exception(err.args[0])
         return prepareResponse(err.args[0]), 403
@@ -50,9 +50,26 @@ def get_workspace(wsID):
 
 @workspaces_api.route('/<wsID>', methods=['PUT'])
 def update_workspace(wsID):
-    return "updating workspace " + wsID
+    workspaceData = getJSON(request)
+    try:
+        workspace = workspaceimpl.update_workspace(workspaceData, wsID)
+        return prepareResponse(workspace)
+    except KeyError as err:
+        logger.exception(err.args[0])
+        return prepareResponse(err.args[0]), 403
+    except Exception as err:
+        logger.exception(err.args[0])
+        return prepareResponse(err.args[0]), 409
 
 
 @workspaces_api.route('/<wsID>', methods=['DELETE'])
 def delete_workspace(wsID):
-    return "deleting workspace " + wsID
+    try:
+        workspace = workspaceimpl.delete_workspace(wsID)
+        return prepareResponse(workspace)
+    except KeyError as err:
+        logger.exception(err.args[0])
+        return prepareResponse(err.args[0]), 403
+    except Exception as err:
+        logger.exception(err.args[0])
+        return prepareResponse(err.args[0]), 409

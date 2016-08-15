@@ -26,52 +26,71 @@ class WorkspacesTest(unittest.TestCase):
 
         # Add some dummy objects
         self.project = Project(name="Project A")
-        self.workspace = Workspace(name="Workspace A")
         self.user = User(name="user", email="foo@bar.com")
+        self.workspace = Workspace(name="Workspace A", owner=self.user)
 
         # Add some relationships
-        self.workspace.owner = self.user;
-        self.project.workspace = self.workspace
 
-        db_session.add(self.project)
-        db_session.add(self.workspace)
         db_session.add(self.user)
+        db_session.add(self.workspace)
         db_session.commit()
+
+        # Add some session stuff ( need for finding the user's workspace )
         with self.app as c:
             with c.session_transaction() as session:
                 session['userData'] = {'login': 'user'}
 
     def tearDown(self):
-        db_session.delete(self.project)
-        db_session.delete(self.workspace)
         db_session.delete(self.user)
+        db_session.delete(self.workspace)
         db_session.commit()
 
     def testCreateWorkSpace(self):
         # when making post requests the '/' at the end seems important, else it defaults to GET oO
-        rv = self.app.post('/' + WORKSPACES + '/', data=json.dumps({"name":"workspaceName"}), content_type='application/json', follow_redirects=True)
+        request_dict = {"name": "workspaceName"}
+        rv = self.app.post('/' + WORKSPACES + '/', data=json.dumps(request_dict), content_type='application/json',
+                           follow_redirects=True)
         # Expect workspace gets created
-        self.assertEqual(200,rv.status_code)
+        self.assertEqual(request_dict['name'], json.loads(rv.data.decode())['name'])
+        self.assertEqual(201, rv.status_code)
 
     def getWSID(self):
         rv = self.app.get('/' + WORKSPACES + '/', follow_redirects=True)
+
+        # Only one workspace was created beforehand
         return int(json.loads(rv.data.decode())['workspaces'][0]['id'])
 
     def testGetWorkSpaces(self):
         rv = self.app.get('/' + WORKSPACES + '/', follow_redirects=True)
-        print(rv.data)
+        self.assertEqual(json.loads(rv.data.decode())['workspaces'][0]['name'], "Workspace A")
 
     def testGetWorkSpace(self):
         rv = self.app.get('/' + WORKSPACES + '/%i' % self.getWSID(), follow_redirects=True)
-        print(rv.data)
+        self.assertEqual(json.loads(rv.data.decode())['name'], "Workspace A")
 
     def testUpdateWorkSpace(self):
-        rv = self.app.put('/' + WORKSPACES + '/%i' % self.getWSID(), data={"name":"workspaceName"}, follow_redirects=True)
-        print(rv.data)
+        request_dict = {"name": "workspaceToMove"}
+        rv = self.app.post('/' + WORKSPACES + '/', data=json.dumps(request_dict), content_type='application/json',
+                           follow_redirects=True)
+        id = json.loads(rv.data.decode())['id']
+
+        rv = self.app.put('/' + WORKSPACES + '/%i' % id, data={"name": "workspaceToMove"},
+                          follow_redirects=True)
+
+        self.assertEqual(rv.status_code, 409)
+
+        rv = self.app.put('/' + WORKSPACES + '/%i' % id, data={"name": "workspaceToMove2"},
+                          follow_redirects=True)
+        self.assertEqual(json.loads(rv.data.decode())['name'], "workspaceToMove2")
 
     def testDeleteWorkspace(self):
-        rv = self.app.delete('/' + WORKSPACES + '/%i' % self.getWSID(), follow_redirects=True)
-        print(rv.data)
+        # Create at first a workspace
+        request_dict = {"name": "workspaceToDelete"}
+        rv = self.app.post('/' + WORKSPACES + '/', data=json.dumps(request_dict), content_type='application/json',
+                           follow_redirects=True)
+        id = json.loads(rv.data.decode())['id']
+        rv = self.app.delete('/' + WORKSPACES + '/%i' % id, follow_redirects=True)
+        self.assertEqual(200, rv.status_code)
 
 
 if __name__ == '__main__':
