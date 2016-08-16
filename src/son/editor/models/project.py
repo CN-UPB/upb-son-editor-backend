@@ -15,6 +15,8 @@ class Project(Base):
 
     UniqueConstraint('workspace_id', 'name', name='uix_1')
     services = relationship("Service", back_populates="project")
+    functions = relationship("Function", back_populates="project")
+
 
     def __init__(self, name=None, rel_path=None, workspace=None):
         self.name = name

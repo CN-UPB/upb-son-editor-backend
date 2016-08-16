@@ -20,7 +20,7 @@ from son.editor.catalogues.cataloguesapi import catalogues_api
 from son.editor.platforms.platformsapi import platforms_api
 from son.editor.projects.projectsapi import projects_api
 from son.editor.services.servicesapi import services_api
-from son.editor.vnfs.vnfsapi import vnfs_api
+from son.editor.vnfs.functionsapi import vnfs_api
 from son.editor.workspaces.workspacesapi import workspaces_api
 
 app = Flask(__name__)
