@@ -24,12 +24,12 @@ def prepareResponse(data=None):
     headers['Access-Control-Allow-Credentials'] = "true"
     headers['Access-Control-Max-Age'] = 1000
     if data is not None:
-        try:
+        if type(data) is dict:
             response.set_data(json.dumps(data))
-            headers['contentType'] = 'application/json'
-        except:
+            headers['Content-Type'] = 'application/json'
+        else:
             response.set_data(data)
-            headers['contentType'] = 'text/plain'
+            headers['Content-Type'] = 'text/plain; charset=utf-8'
     response.headers = headers
     return response
 
