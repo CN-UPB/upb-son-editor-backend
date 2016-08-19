@@ -13,6 +13,7 @@ import re
 from subprocess import Popen, PIPE
 
 from son.editor.app.database import db_session
+from son.editor.app.exceptions import NameConflict, NotFound
 from son.editor.app.util import CONFIG
 from son.editor.models.workspace import Workspace
 from son.editor.users.usermanagement import get_user
@@ -45,7 +46,7 @@ def get_workspace(user_data, ws_id):
     if workspace is not None:
         return workspace.as_dict()
     else:
-        raise Exception("No workspace with id " + ws_id + " exists")
+        raise NotFound("No workspace with id " + ws_id + " exists")
 
 
 def create_workspace(user_data, workspaceData):
@@ -59,7 +60,7 @@ def create_workspace(user_data, workspaceData):
                               .filter(Workspace.owner == user)
                               .filter(Workspace.name == wsName))
     if len(existingWorkspaces) > 0:
-        raise Exception("Workspace with name " + wsName + " already exists")
+        raise NameConflict("Workspace with name " + wsName + " already exists")
 
     wsPath = WORKSPACES_DIR + user.name + "/" + wsName
     # prepare db insert
@@ -86,6 +87,8 @@ def create_workspace(user_data, workspaceData):
         return ws.as_dict()
     else:
         session.rollback()
+        if workspace_exists:
+            raise NameConflict(out.decode())
         raise Exception(err, out)
 
 
@@ -97,6 +100,8 @@ def rreplace(s, old, new, occurrence):
 def update_workspace(workspaceData, wsid):
     session = db_session()
     workspace = session.query(Workspace).filter(Workspace.id == int(wsid)).first()
+    if workspace is None:
+        raise NotFound("Workspace with id {} could not be found".format(wsid))
 
     # Update name
     if 'name' in workspaceData:
@@ -106,11 +111,11 @@ def update_workspace(workspaceData, wsid):
             new_path = rreplace(workspace.path, workspace.name, new_name, 1)
 
             if os.path.exists(new_path):
-                raise Exception("Invalid name parameter, workspace name already exists")
+                raise NameConflict("Invalid name parameter, workspace '{}' already exists".format(new_name))
 
             # Do not allow move directories outside of the workspaces_dir
             if not new_path.startswith(WORKSPACES_DIR):
-                raise Exception("Invalid path parameter, you are not allowed to break out of %s" % WORKSPACES_DIR)
+                raise Exception("Invalid path parameter, you are not allowed to break out of {}".format(WORKSPACES_DIR))
             else:
                 # Move the directory
                 shutil.move(old_path, new_path)
@@ -129,4 +134,7 @@ def delete_workspace(wsid):
         shutil.rmtree(path)
         session.delete(workspace)
     db_session.commit()
-    return workspace.as_dict()
+    if workspace:
+        return workspace.as_dict()
+    else:
+        raise NotFound("Workspace with id {} was not found".format(wsid))

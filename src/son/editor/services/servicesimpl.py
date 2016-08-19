@@ -1,5 +1,7 @@
 import shlex
 from flask.globals import request
+
+from son.editor.app.exceptions import NotFound
 from son.editor.models.project import Project
 from son.editor.models.service import Service
 from son.editor.app.database import db_session
@@ -23,7 +25,7 @@ def create_service(wsID, parentID):
     version = shlex.quote(serviceData["version"])
 
     # Create db object
-    service = Service(name=servicename, vendor = vendorname, version = version)
+    service = Service(name=servicename, vendor=vendorname, version=version)
     session.add(service)
     session.commit()
 
@@ -48,14 +50,14 @@ def update_service(wsID, parentID, serviceID):
         session.commit()
         return service.as_dict()
     else:
-        return "Could not update service '%i', because no record was found" % serviceID
+        raise NotFound("Could not update service '{}', because no record was found".format(serviceID))
 
 
 def delete_service(serviceID):
     session = db_session()
-    service = session.query(Service).filter_by(id=serviceID).first()
+    service = session.query(Service).filter(Service.id == serviceID).first()
     if service:
         session.delete(service)
         session.commit()
     else:
-        raise Exception("Delete service did not work, %s not found" % serviceID)
+        raise NotFound("Delete service did not work, {} not found".format(serviceID))
