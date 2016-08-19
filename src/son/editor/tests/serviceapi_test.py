@@ -29,18 +29,20 @@ class ServiceAPITest(unittest.TestCase):
         self.project.workspace = self.workspace
         self.service.project = self.project
 
-        db_session.add(self.project)
-        db_session.add(self.service)
-        db_session.add(self.workspace)
-        db_session.add(self.user)
-        db_session.commit()
+        session = db_session()
+        session.add(self.project)
+        session.add(self.service)
+        session.add(self.workspace)
+        session.add(self.user)
+        session.commit()
 
     def tearDown(self):
-        db_session.delete(self.project)
-        db_session.delete(self.workspace)
-        db_session.delete(self.user)
-        db_session.delete(self.service)
-        db_session.commit()
+        session = db_session()
+        session.delete(self.project)
+        session.delete(self.workspace)
+        session.delete(self.user)
+        session.delete(self.service)
+        session.commit()
 
     def test_create_service(self):
         postArg = json.dumps({"vendor": "de.upb.cs.cn.pgsandman",
@@ -75,9 +77,18 @@ class ServiceAPITest(unittest.TestCase):
         service = json.loads(response.data.decode())
         self.assertEqual(service['vendor'], "de.upb.cs")
 
-    def test_delete_service(self):
+    def test_delete_exists_service(self):
+        # delete existing
         response = self.app.delete("/" + constants.WORKSPACES + "/" + str(self.workspace.id)
                                    + "/" + constants.PROJECTS + "/" + str(self.project.id)
                                    + "/" + constants.SERVICES + "/" + str(self.service.id),
                                    headers={'Content-Type': 'application/json'})
         self.assertEqual(response.status_code, 200)
+
+    def test_delete_non_exists_service(self):
+        # delete non existing
+        response = self.app.delete("/" + constants.WORKSPACES + "/" + str(self.workspace.id)
+                                   + "/" + constants.PROJECTS + "/" + str(self.project.id)
+                                   + "/" + constants.SERVICES + "/" + str(1337),
+                                   headers={'Content-Type': 'application/json'})
+        self.assertEqual(response.status_code, 404)

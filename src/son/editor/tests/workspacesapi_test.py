@@ -70,7 +70,9 @@ class WorkspacesTest(unittest.TestCase):
 
     def testUpdateWorkSpace(self):
         request_dict = {"name": "workspaceToMove"}
-        rv = self.app.post('/' + WORKSPACES + '/', data=json.dumps(request_dict), content_type='application/json',
+        rv = self.app.post('/' + WORKSPACES + '/',
+                           data=json.dumps(request_dict),
+                           content_type='application/json',
                            follow_redirects=True)
         id = json.loads(rv.data.decode())['id']
 

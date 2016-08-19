@@ -25,7 +25,7 @@ class Function(Base):
             self.project_id = project.id
 
     def __repr__(self):
-        return '<Function %r>' % (self.name)
+        return '<Function {}>'.format(self.name)
 
     def as_dict(self):
         return {'id': self.id, 'name': self.name, 'descriptor': json.loads(self.descriptor)}

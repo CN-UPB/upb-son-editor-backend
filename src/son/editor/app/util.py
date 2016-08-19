@@ -24,7 +24,7 @@ def prepareResponse(data=None):
     headers['Access-Control-Allow-Credentials'] = "true"
     headers['Access-Control-Max-Age'] = 1000
     if data is not None:
-        if type(data) is dict:
+        if type(data) is dict or type(data) is list:
             response.set_data(json.dumps(data))
             headers['Content-Type'] = 'application/json'
         else:

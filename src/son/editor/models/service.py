@@ -1,5 +1,5 @@
 from json import JSONEncoder
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey, Text
 from sqlalchemy.orm import relationship
 
 from son.editor.app.database import Base
@@ -14,17 +14,19 @@ class Service(Base):
     uid = Column(String(150), unique=True)
     project_id = Column(Integer, ForeignKey('project.id'))
     project = relationship("Project", back_populates="services")
+    descriptor = Column(Text())
 
-    def __init__(self, name=None, project=None, version=None, vendor=None):
+    def __init__(self, name=None, project=None, version=None, vendor=None, descriptor=None):
         self.name = name
         self.vendor = vendor
         self.version = version
-        self.uid = "%s:%s:%s" % (vendor, name, version)
+        self.uid = "{}:{}:{}".format(vendor, name, version)
+        self.descriptor = descriptor
         if project:
             self.project_id = project.id
 
     def __repr__(self):
-        return '<Service %r>' % (self.name)
+        return '<Service {}>'.format(self.name)
 
     def as_dict(self):
         return {'id': self.id, 'name': self.name, 'vendor': self.vendor, 'version': self.version, 'uid': self.uid}
