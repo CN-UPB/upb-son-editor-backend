@@ -56,7 +56,7 @@ def checkLoggedIn():
         return prepareResponse()
     elif CONFIG['testing']:
         return
-    elif not 'access_token' in session and request.endpoint != 'login' and request.endpoint != 'static':
+    elif 'access_token' not in session and request.endpoint not in ['login', 'static', 'shutdown']:
         args = {"scope": "user:email",
                 "client_id": CONFIG['authentication']['ClientID']}
         session["requested_endpoint"] = request.endpoint
