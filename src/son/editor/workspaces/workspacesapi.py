@@ -58,7 +58,6 @@ def get_workspace(wsID):
     except KeyError as err:
         logger.exception(err.args[0])
         return prepareResponse(err.args), 403
-
     except Exception as err:
         logger.exception(err.args[0])
         return prepareResponse(err.args), 500
