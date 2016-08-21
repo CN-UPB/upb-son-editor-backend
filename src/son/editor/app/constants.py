@@ -13,7 +13,7 @@ PROJECTS = "projects"
 PLATFORMS = "platforms"
 CATALOGUES = "catalogues"
 SERVICES = "services"
-VNFS = "vnfs"
+VNFS = "functions"
 
 
 
