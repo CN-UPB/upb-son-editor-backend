@@ -8,6 +8,7 @@ import shlex
 from subprocess import Popen, PIPE
 
 from son.editor.app.database import db_session
+from son.editor.app.exceptions import NotFound, NameConflict
 from son.editor.app.util import CONFIG
 from son.editor.models.user import User
 from son.editor.models.workspace import Workspace
@@ -38,7 +39,10 @@ def get_project(user_data, ws_id, pj_id):
         filter(Project.id == pj_id). \
         first()
     session.commit()
-    return project.as_dict()
+    if project:
+        return project.as_dict()
+    else:
+        raise NotFound("No project with id {} could be found".format(pj_id))
 
 
 def create_project(user_data, ws_id, project_data):
@@ -52,13 +56,13 @@ def create_project(user_data, ws_id, project_data):
         filter(Workspace.owner == user). \
         filter(Workspace.id == ws_id).first()
     if workspace is None:
-        raise Exception("No workspace with id %s was found for this user" % ws_id)
+        raise NotFound("No workspace with id {} was found".format(ws_id))
 
     existing_projects = list(session.query(Project)
                              .filter(Project.workspace == workspace)
                              .filter(Project.name == project_name))
     if len(existing_projects) > 0:
-        raise Exception("Project with name %s already exists in this workspace" % project_name)
+        raise Exception("Project with name {} already exists in this workspace".format(project_name))
 
     # prepare db insert
     try:
@@ -74,9 +78,17 @@ def create_project(user_data, ws_id, project_data):
                  stdout=PIPE, stderr=PIPE)
     out, err = proc.communicate()
     exitcode = proc.returncode
-    if exitcode == 0:
+
+    if out.decode().find('existing') >= 0:
+        project_exists = True
+    else:
+        project_exists = False
+
+    if exitcode == 0 or project_exists:
         session.commit()
         return project.as_dict()
     else:
         session.rollback()
+        if project_exists:
+            raise NameConflict(out.decode())
         raise Exception(err, out)
