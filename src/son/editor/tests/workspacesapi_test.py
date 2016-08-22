@@ -76,7 +76,7 @@ class WorkspacesTest(unittest.TestCase):
                            follow_redirects=True)
         id = json.loads(rv.data.decode())['id']
 
-        rv = self.app.put('/' + WORKSPACES + '/%i' % id, data={"name": "workspaceToMove2"},
+        rv = self.app.put('/' + WORKSPACES + '/{}'.format(id), data={"name": "workspaceToMove2"},
                           follow_redirects=True)
         self.assertEqual(json.loads(rv.data.decode())['name'], "workspaceToMove2")
 

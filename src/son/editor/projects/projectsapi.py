@@ -20,7 +20,7 @@ logger = logging.getLogger("son-editor.projectsapi")
 
 @projects_api.route('/', methods=['GET'])
 def get_projects(wsID):
-    projects = {projectsimpl.get_projects(session['userData'], wsID)}
+    projects = projectsimpl.get_projects(session['userData'], wsID)
     return prepareResponse(projects)
 
 
@@ -29,7 +29,7 @@ def create_project(wsID):
     projectData = getJSON(request)
     try:
         pj = projectsimpl.create_project(session['userData'],wsID, projectData)
-        return prepareResponse(pj)
+        return prepareResponse(pj), 201
     except NameConflict as err:
         logger.exception(err.args[0])
         return prepareResponse(err.args), 409
