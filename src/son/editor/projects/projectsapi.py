@@ -10,7 +10,7 @@ from flask import request
 from flask import session
 
 from son.editor.app.constants import WORKSPACES, PROJECTS
-from son.editor.app.exceptions import NotFound
+from son.editor.app.exceptions import NotFound, NameConflict
 from son.editor.app.util import prepareResponse, getJSON
 from . import projectsimpl
 
@@ -30,8 +30,15 @@ def create_project(wsID):
     try:
         pj = projectsimpl.create_project(session['userData'],wsID, projectData)
         return prepareResponse(pj)
+    except NameConflict as err:
+        logger.exception(err.args[0])
+        return prepareResponse(err.args), 409
+    except KeyError as err:
+        logger.exception(err.args[0])
+        return prepareResponse(err.args), 400
     except Exception as err:
-        return prepareResponse(err.args[0]), 409
+        logger.exception(err.args[0])
+        return prepareResponse(err.args), 500
 
 
 @projects_api.route('/<projectID>', methods=['PUT'])

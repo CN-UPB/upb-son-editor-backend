@@ -58,11 +58,11 @@ class WorkspacesTest(unittest.TestCase):
         rv = self.app.get('/' + WORKSPACES + '/', follow_redirects=True)
 
         # Only one workspace was created beforehand
-        return int(json.loads(rv.data.decode())['workspaces'][0]['id'])
+        return int(json.loads(rv.data.decode())[0]['id'])
 
     def testGetWorkSpaces(self):
         rv = self.app.get('/' + WORKSPACES + '/', follow_redirects=True)
-        self.assertEqual(json.loads(rv.data.decode())['workspaces'][0]['name'], "Workspace A")
+        self.assertEqual(json.loads(rv.data.decode())[0]['name'], "Workspace A")
 
     def testGetWorkSpace(self):
         rv = self.app.get('/' + WORKSPACES + '/%i' % self.getWSID(), follow_redirects=True)
@@ -75,11 +75,6 @@ class WorkspacesTest(unittest.TestCase):
                            content_type='application/json',
                            follow_redirects=True)
         id = json.loads(rv.data.decode())['id']
-
-        rv = self.app.put('/' + WORKSPACES + '/%i' % id, data={"name": "workspaceToMove"},
-                          follow_redirects=True)
-
-        self.assertEqual(rv.status_code, 409)
 
         rv = self.app.put('/' + WORKSPACES + '/%i' % id, data={"name": "workspaceToMove2"},
                           follow_redirects=True)
