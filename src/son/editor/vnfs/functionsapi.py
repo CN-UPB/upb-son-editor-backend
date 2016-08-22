@@ -17,7 +17,7 @@ vnfs_api = Blueprint("vnfs_api", __name__)
 def get_vnfs(wsID, parentID):
     if get_parent(request) is Category.project:
         functions = functionsimpl.get_functions(session["userData"], wsID, parentID)
-        return prepareResponse({"functions": functions})
+        return prepareResponse(functions)
     return prepareResponse("not yet implemented")
 
 
@@ -27,7 +27,7 @@ def create_vnf(wsID, parentID):
         if get_parent(request) is Category.project:
             vnf_data = getJSON(request)
             vnf_data = functionsimpl.create_function(session['userData'], wsID, parentID, vnf_data)
-            return prepareResponse({"created": vnf_data}), 201
+            return prepareResponse(vnf_data), 201
         # TODO implement for catalog and platform
         return prepareResponse("not implemented yet")
     except NameConflict as err:
@@ -54,6 +54,6 @@ def update_vnf(wsID, parentID, vnf_id):
 def delete_vnf(wsID, parentID, vnfID):
     try:
         deleted = functionsimpl.delete_function(session['userData'], wsID, parentID, vnfID)
-        return prepareResponse({"deleted": deleted})
+        return prepareResponse(deleted)
     except NotFound as err:
         return prepareResponse(err.msg), 404

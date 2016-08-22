@@ -9,9 +9,11 @@ from son.editor.app.util import getJSON
 
 
 def get_services(wsID, parentID):
-    project = Project.query.filter_by(id=parentID).first()
+    session = db_session()
+    project = session.query(Project).filter_by(id=parentID).first()
+    session.commit()
     if project is None:
-        return "No project matching ID %i" % parentID
+        raise NotFound("No project matching id {}".format(parentID))
     else:
         return list(map(lambda x: x.as_dict(), project.services))
 

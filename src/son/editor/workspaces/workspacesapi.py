@@ -21,7 +21,7 @@ logger = logging.getLogger("son-editor.workspacesapi")
 def get_workspaces():
     try:
         workspaces = workspaceimpl.get_workspaces(session['userData'])
-        return prepareResponse({"workspaces": workspaces})
+        return prepareResponse(workspaces)
     except KeyError as err:
         logger.exception(err.args[0])
         return prepareResponse(err.args), 403
@@ -37,11 +37,11 @@ def create_workspace():
         ws = workspaceimpl.create_workspace(session['userData'], workspaceData)
         return prepareResponse(ws), 201
     except NameConflict as err:
-        logger.warn(err.msg)
-        return prepareResponse(err.msg), 409
+        logger.exception(err.args[0])
+        return prepareResponse(err.args), 409
     except KeyError as err:
         logger.exception(err.args[0])
-        return prepareResponse(err.args), 403
+        return prepareResponse(err.args), 400
     except Exception as err:
         logger.exception(err.args[0])
         return prepareResponse(err.args), 500
@@ -69,15 +69,12 @@ def update_workspace(wsID):
     try:
         workspace = workspaceimpl.update_workspace(workspaceData, wsID)
         return prepareResponse(workspace)
-    except NotFound as err:
-        logger.warn(err.msg)
-        return prepareResponse(err.msg), 404
     except NameConflict as err:
-        logger.warn(err.msg)
-        return prepareResponse(err.msg), 409
+        logger.exception(err.args[0])
+        return prepareResponse(err.args), 409
     except KeyError as err:
         logger.exception(err.args[0])
-        return prepareResponse(err.args), 403
+        return prepareResponse(err.args), 400
     except Exception as err:
         logger.exception(err.args[0])
         return prepareResponse(err.args), 500
@@ -88,12 +85,12 @@ def delete_workspace(wsID):
     try:
         workspace = workspaceimpl.delete_workspace(wsID)
         return prepareResponse(workspace)
-    except NotFound as err:
-        logger.warn(err.msg)
-        return prepareResponse(err.msg), 404
+    except NameConflict as err:
+        logger.exception(err.args[0])
+        return prepareResponse(err.args), 409
     except KeyError as err:
         logger.exception(err.args[0])
-        return prepareResponse(err.args[0]), 403
+        return prepareResponse(err.args), 400
     except Exception as err:
         logger.exception(err.args[0])
         return prepareResponse(err.args), 500

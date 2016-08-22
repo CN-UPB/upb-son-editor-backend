@@ -61,7 +61,7 @@ class FunctionTest(unittest.TestCase):
                                  + "/" + constants.PROJECTS + "/" + str(self.pjid)
                                  + "/" + constants.VNFS + "/", headers={'Content-Type': 'application/json'},
                                  data=post_arg)
-        function = json.loads(response.data.decode())['created']
+        function = json.loads(response.data.decode())
         self.assertTrue(response.status_code == 201)
         self.assertTrue(function['descriptor']['name'] == dict['name'])
         self.assertTrue(function['descriptor']['version'] == dict['version'])
@@ -84,7 +84,51 @@ class FunctionTest(unittest.TestCase):
                                 + "/" + constants.PROJECTS + "/" + str(self.project.id)
                                 + "/" + constants.VNFS + "/")
         functions = json.loads(response.data.decode())
-        result = functions['functions'][0]
+        result = functions[0]
         self.assertTrue(result['descriptor']['name'] == dict['name'])
         self.assertTrue(result['descriptor']['version'] == dict['version'])
         self.assertTrue(result['descriptor']['vendor'] == dict['vendor'])
+
+    def test_update_function(self):
+        # put vnf in table
+        dict = {"vendor": "de.upb.cs.cn.pgsandman",
+                "name": "vnf_2",
+                "version": "0.0.1"}
+        postArg = json.dumps(dict)
+        response = self.app.post("/" + constants.WORKSPACES + "/" + str(self.workspace.id)
+                                 + "/" + constants.PROJECTS + "/" + str(self.project.id)
+                                 + "/" + constants.VNFS + "/", headers={'Content-Type': 'application/json'},
+                                 data=postArg)
+        js = json.loads(response.data.decode())
+        js['descriptor']
+        updateDict = {"vendor": "de.upb.cs.cn.pgsandman1",
+                      "name": "vnf_3",
+                      "version": "0.0.2"}
+        updateArg = json.dumps(updateDict)
+        response = self.app.post("/" + constants.WORKSPACES + "/" + str(self.workspace.id)
+                                 + "/" + constants.PROJECTS + "/" + str(self.project.id)
+                                 + "/" + constants.VNFS + "/", headers={'Content-Type': 'application/json'},
+                                 data=updateArg)
+        result = json.loads(response.data.decode())
+        self.assertTrue(result['descriptor']['name'] == updateDict['name'])
+        self.assertTrue(result['descriptor']['version'] == updateDict['version'])
+        self.assertTrue(result['descriptor']['vendor'] == updateDict['vendor'])
+
+    def test_delete_function(self):
+        # put vnf in table
+        dict = {"vendor": "de.upb.cs.cn.pgsandman",
+                "name": "vnf_2",
+                "version": "0.0.1"}
+        postArg = json.dumps(dict)
+        response = self.app.post("/" + constants.WORKSPACES + "/" + str(self.workspace.id)
+                                 + "/" + constants.PROJECTS + "/" + str(self.project.id)
+                                 + "/" + constants.VNFS + "/", headers={'Content-Type': 'application/json'},
+                                 data=postArg)
+
+        retVal = json.loads(response.data.decode())
+
+        response = self.app.delete("/" + constants.WORKSPACES + "/" + str(self.workspace.id)
+                                   + "/" + constants.PROJECTS + "/" + str(self.project.id)
+                                   + "/" + constants.VNFS + "/" + str(retVal['id']),
+                                   headers={'Content-Type': 'application/json'})
+        self.assertEqual(response.status_code, 200)
