@@ -20,7 +20,7 @@ logger = logging.getLogger("son-editor.projectsapi")
 
 @projects_api.route('/', methods=['GET'])
 def get_projects(wsID):
-    projects = {"projects":projectsimpl.get_projects(session['userData'], wsID)}
+    projects = {projectsimpl.get_projects(session['userData'], wsID)}
     return prepareResponse(projects)
 
 
