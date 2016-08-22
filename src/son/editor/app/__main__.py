@@ -4,11 +4,11 @@ Created on 18.07.2016
 @author: Jonas
 '''
 import json
+import logging
 import urllib
 from os import path
 from sys import platform
 
-import logging
 import requests
 from flask import Flask, redirect, session
 from flask.globals import request
@@ -93,9 +93,10 @@ def login():
     session['session_code'] = request.args.get('code');
     if request_access_token() and load_user_data():
         logger.info("User " + session['userData']['login'] + " logged in")
-        # return redirect(url_for(session["requested_endpoint"]))
-        origin = origin_from_referrer(request.referrer)
-        return redirect(origin + CONFIG['frontend-redirect'])
+        if request.referrer is not None or 'github' in request.referrer:
+            origin = origin_from_referrer(request.referrer)
+            return redirect(origin + CONFIG['frontend-redirect'])
+        return redirect(CONFIG['frontend-home'] + CONFIG['frontend-redirect'])
 
 
 def origin_from_referrer(referrer):
