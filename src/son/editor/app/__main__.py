@@ -13,6 +13,8 @@ import requests
 from flask import Flask, redirect, session
 from flask.globals import request
 
+from son.editor.app.exceptions import NameConflict, NotFound
+
 from son.editor.app.constants import WORKSPACES, CATALOGUES, PLATFORMS, PROJECTS
 from son.editor.app.database import db_session, init_db
 from son.editor.app.util import CONFIG, prepareResponse
@@ -24,6 +26,7 @@ from son.editor.vnfs.functionsapi import vnfs_api
 from son.editor.workspaces.workspacesapi import workspaces_api
 
 app = Flask(__name__)
+logger = logging.getLogger("son-editor.__main__")
 
 WORKSPACE_PATH = '/' + WORKSPACES + '/<wsID>/'
 
@@ -40,9 +43,36 @@ app.register_blueprint(services_api, url_prefix=WORKSPACE_PATH + CATALOGUES)
 app.register_blueprint(vnfs_api, url_prefix=WORKSPACE_PATH + CATALOGUES)
 # load secret key from config
 app.secret_key = CONFIG['session']['secretKey']
+
+
 # Set initial testing flag to false
 
 # print(app.url_map)
+
+
+
+@app.errorhandler(KeyError)
+def handle_key_error(err):
+    logger.exception(err.args[0])
+    return prepareResponse("Key '{}' is required in request data!".format(err.args[0])), 400
+
+
+@app.errorhandler(NotFound)
+def handle_not_found(err):
+    logger.warn(err.msg)
+    return prepareResponse(err.msg), 404
+
+
+@app.errorhandler(NameConflict)
+def handle_name_conflict(err):
+    logger.warn(err.msg)
+    return prepareResponse(err.msg), 409
+
+
+@app.errorhandler(Exception)
+def handle_general_exception(err):
+    logger.exception(err.args[0])
+    return prepareResponse(str(err.args)), 500
 
 
 @app.teardown_appcontext
@@ -126,6 +156,11 @@ def load_user_data():
     logger.info("userdata: %s" % userData)
     return True
 
+@app.route("/log")
+def show_log():
+    with open("editor-backend.log") as logfile:
+        return logfile.read().replace("\n", "<br/>")
+
 
 # Main entry point
 def main(args=None):
@@ -146,9 +181,6 @@ def main(args=None):
         app.run('0.0.0.0')
 
 
-logger = None
-
-
 def setup_logging():
     # set up logging to file - see previous section for more details
     logging.basicConfig(level=logging.DEBUG,
@@ -165,8 +197,6 @@ def setup_logging():
     console.setFormatter(formatter)
     # add the handler to the root logger
     logging.getLogger('').addHandler(console)
-    global logger
-    logger = logging.getLogger("son-editor.__main__")
 
 
 if __name__ == "__main__":
