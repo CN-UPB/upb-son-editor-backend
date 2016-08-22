@@ -93,10 +93,10 @@ def login():
     session['session_code'] = request.args.get('code');
     if request_access_token() and load_user_data():
         logger.info("User " + session['userData']['login'] + " logged in")
-        if request.referrer is not None or 'github' in request.referrer:
+        if request.referrer is not None and 'github' not in request.referrer:
             origin = origin_from_referrer(request.referrer)
             return redirect(origin + CONFIG['frontend-redirect'])
-        return redirect(CONFIG['frontend-home'] + CONFIG['frontend-redirect'])
+        return redirect(CONFIG['frontend-host'] + CONFIG['frontend-redirect'])
 
 
 def origin_from_referrer(referrer):
