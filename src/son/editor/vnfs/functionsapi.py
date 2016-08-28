@@ -23,37 +23,24 @@ def get_vnfs(wsID, parentID):
 
 @vnfs_api.route('/<parentID>/functions/', methods=['POST'])
 def create_vnf(wsID, parentID):
-    try:
-        if get_parent(request) is Category.project:
-            vnf_data = getJSON(request)
-            vnf_data = functionsimpl.create_function(session['userData'], wsID, parentID, vnf_data)
-            return prepareResponse(vnf_data), 201
-        # TODO implement for catalog and platform
-        return prepareResponse("not implemented yet")
-    except NameConflict as err:
-        return prepareResponse(err.msg), 409
-    except NotFound as err:
-        return prepareResponse(err.msg), 404
+    if get_parent(request) is Category.project:
+        vnf_data = getJSON(request)
+        vnf_data = functionsimpl.create_function(session['userData'], wsID, parentID, vnf_data)
+        return prepareResponse(vnf_data), 201
+    # TODO implement for catalog and platform
+    return prepareResponse("not implemented yet")
 
 
 @vnfs_api.route('/<parentID>/functions/<vnf_id>', methods=['PUT'])
 def update_vnf(wsID, parentID, vnf_id):
-    try:
-        if get_parent(request) is Category.project:
-            vnf_data = getJSON(request)
-            vnf_data = functionsimpl.update_function(session['userData'], wsID, parentID, vnf_id, vnf_data)
-            return prepareResponse(vnf_data)
-        return prepareResponse("update vnf in project with id " + parentID)
-    except NameConflict as err:
-        return prepareResponse(err.msg), 409
-    except NotFound as err:
-        return prepareResponse(err.msg), 404
+    if get_parent(request) is Category.project:
+        vnf_data = getJSON(request)
+        vnf_data = functionsimpl.update_function(session['userData'], wsID, parentID, vnf_id, vnf_data)
+        return prepareResponse(vnf_data)
+    return prepareResponse("update vnf in project with id " + parentID)
 
 
 @vnfs_api.route('/<parentID>/functions/<vnfID>', methods=['DELETE'])
 def delete_vnf(wsID, parentID, vnfID):
-    try:
-        deleted = functionsimpl.delete_function(session['userData'], wsID, parentID, vnfID)
-        return prepareResponse(deleted)
-    except NotFound as err:
-        return prepareResponse(err.msg), 404
+    deleted = functionsimpl.delete_function(session['userData'], wsID, parentID, vnfID)
+    return prepareResponse(deleted)
