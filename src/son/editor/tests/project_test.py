@@ -1,20 +1,18 @@
-from son.editor.app import __main__
-
-import unittest
 import json
+import unittest
 
-from son.editor.app.database import db_session
 from son.editor.app.constants import WORKSPACES, PROJECTS
-
-from son.editor.models.project import Project
+from son.editor.app.database import db_session
 from son.editor.models.user import User
 from son.editor.models.workspace import Workspace
+from son.editor.tests.context import initContext
 
 
 class ProjectTest(unittest.TestCase):
     def setUp(self):
-        __main__.app.config['TESTING'] = True
-        self.app = __main__.app.test_client()
+        # Initializes test context
+        self.app = initContext()
+
 
         # Add some session stuff ( need for finding the user's workspace )
         with self.app as c:

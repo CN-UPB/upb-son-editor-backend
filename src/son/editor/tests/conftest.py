@@ -1,5 +1,5 @@
-import tempfile
 import logging
+import tempfile
 
 from son.editor.app.util import CONFIG
 

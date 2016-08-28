@@ -1,14 +1,16 @@
 import unittest
 
-from son.editor.models.workspace import Workspace
 from son.editor.models.project import Project
 from son.editor.models.service import Service
-from son.editor.models.function import Function
 from son.editor.models.user import User
+from son.editor.models.workspace import Workspace
+from son.editor.tests.context import initContext
 
 
 class ModelsRelationshipTest(unittest.TestCase):
     def setUp(self):
+        # Initializes test context
+        self.app = initContext()
         self.project = Project(name="Project A")
         self.workspace = Workspace(name="Workspace A")
         self.service = Service(name="Service A")
