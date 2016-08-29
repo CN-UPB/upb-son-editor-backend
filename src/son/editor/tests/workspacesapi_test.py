@@ -4,25 +4,20 @@ Created on 26.07.2016
 @author: Jonas
 '''
 import json
-import os
-import tempfile
 import unittest
-import flask
 
-from son.editor.app import __main__
 from son.editor.app.constants import WORKSPACES
+from son.editor.app.database import db_session
+from son.editor.models.project import Project
 from son.editor.models.user import User
 from son.editor.models.workspace import Workspace
-from son.editor.models.project import Project
-from son.editor.app.database import db_session
-from son.editor.app.util import getJSON
+from son.editor.util.context import init_test_context
 
 
 class WorkspacesTest(unittest.TestCase):
-
     def setUp(self):
-        __main__.app.config['TESTING'] = True
-        self.app = __main__.app.test_client()
+        # Initializes test context
+        self.app = init_test_context()
 
         # Add some dummy objects
         self.project = Project(name="Project A")

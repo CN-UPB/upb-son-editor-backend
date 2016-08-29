@@ -2,6 +2,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
 from son.editor.app.util import CONFIG
+from sqlalchemy import MetaData
+import contextlib
 
 # DB URI
 DATABASE_SQLITE_URI = "sqlite:///%s" % CONFIG['database']['location']
@@ -25,3 +27,14 @@ def init_db():
     import son.editor.models.service
     import son.editor.models.function
     Base.metadata.create_all(bind=engine)
+
+
+# Resets the database
+def reset_db():
+    meta = MetaData()
+
+    with contextlib.closing(engine.connect()) as con:
+        trans = con.begin()
+        for table in reversed(meta.sorted_tables):
+            con.execute(table.delete())
+        trans.commit()

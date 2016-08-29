@@ -1,22 +1,19 @@
-import unittest
 import json
-
-from son.editor.models.workspace import Workspace
-from son.editor.models.project import Project
-from son.editor.models.user import User
-from son.editor.models.service import Service
-
-from son.editor.app.database import db_session
-
-from son.editor.app import __main__
+import unittest
 
 from son.editor.app import constants
+from son.editor.app.database import db_session
+from son.editor.models.project import Project
+from son.editor.models.service import Service
+from son.editor.models.user import User
+from son.editor.models.workspace import Workspace
+from son.editor.util.context import init_test_context
 
 
 class FunctionTest(unittest.TestCase):
     def setUp(self):
-        __main__.app.config['TESTING'] = True
-        self.app = __main__.app.test_client()
+        # Initializes test context
+        self.app = init_test_context()
 
         # Add some dummy objects
         self.project = Project(name="Project A")
