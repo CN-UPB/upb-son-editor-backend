@@ -21,6 +21,8 @@ def get_services(wsID, parentID):
 def create_service(wsID, parentID):
     session = db_session()
     serviceData = getJSON(request)
+    project = session.query(Project).filter_by(id=parentID).first()
+
     # Retrieve post parameters
     servicename = shlex.quote(serviceData["name"])
     vendorname = shlex.quote(serviceData["vendor"])
@@ -28,9 +30,10 @@ def create_service(wsID, parentID):
 
     # Create db object
     service = Service(name=servicename, vendor=vendorname, version=version)
-    session.add(service)
-    session.commit()
 
+    session.add(service)
+    project.services.append(service)
+    session.commit()
     return service.as_dict()
 
 
