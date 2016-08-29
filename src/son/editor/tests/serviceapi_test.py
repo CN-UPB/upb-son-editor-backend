@@ -7,13 +7,13 @@ from son.editor.models.project import Project
 from son.editor.models.service import Service
 from son.editor.models.user import User
 from son.editor.models.workspace import Workspace
-from son.editor.tests.context import initContext
+from son.editor.util.context import init_test_context
 
 
 class ServiceAPITest(unittest.TestCase):
     def setUp(self):
         # Initializes test context
-        self.app = initContext()
+        self.app = init_test_context()
 
         # Add some dummy objects
         self.project = Project(name="Project A")
