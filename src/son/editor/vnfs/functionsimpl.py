@@ -28,6 +28,19 @@ def get_functions(user_data, ws_id, project_id):
     return list(map(lambda x: x.as_dict(), functions))
 
 
+def get_specific_function(user_data, ws_id, project_id, vnf_id):
+    ws_id = shlex.quote(ws_id)
+    project_id = shlex.quote(project_id)
+    user = get_user(user_data)
+    session = db_session()
+    function = session.query(Function).join(Project).join(Workspace). \
+        filter(Workspace.owner == user). \
+        filter(Workspace.id == ws_id). \
+        filter(Function.project_id == project_id). \
+        filter(Function.id == vnf_id).first()
+    return function.as_dict()
+
+
 def create_function(user_data, ws_id, project_id, function_data):
     ws_id = shlex.quote(ws_id)
     project_id = shlex.quote(project_id)
