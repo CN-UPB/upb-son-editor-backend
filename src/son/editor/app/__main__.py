@@ -86,17 +86,21 @@ def checkLoggedIn():
     if request.method == 'OPTIONS':
         return prepareResponse()
     elif CONFIG['testing']:
+        # Check if the user is allowed access the requested workspace resource (even for tests)
         if not check_access(request):
             return 404
         return
+    # Check if the user is not logged in
     elif 'access_token' not in session and request.endpoint not in ['login', 'static', 'shutdown']:
         args = {"scope": "user:email",
                 "client_id": CONFIG['authentication']['ClientID']}
         session["requested_endpoint"] = request.endpoint
         return prepareResponse(
             {'authorizationUrl': 'https://github.com/login/oauth/authorize/?' + urllib.parse.urlencode(args)}), 401
+    # Check if the user is allowed access the requested workspace resource
     elif not check_access(request):
         return 404
+
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
@@ -159,6 +163,7 @@ def load_user_data():
     session['userData'] = userData
     logger.info("userdata: %s" % userData)
     return True
+
 
 @app.route("/log")
 def show_log():
