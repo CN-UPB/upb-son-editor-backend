@@ -37,5 +37,5 @@ def update_service(wsID, parentID, serviceID):
 
 @services_api.route('/<parentID>/services/<serviceID>', methods=['DELETE'])
 def delete_service(wsID, parentID, serviceID):
-    service = servicesimpl.delete_service(serviceID)
+    service = servicesimpl.delete_service(parentID, serviceID)
     return prepareResponse(service), 200

@@ -42,14 +42,22 @@ class ServiceAPITest(unittest.TestCase):
         session.commit()
 
     def test_create_service(self):
+        wsid = self.workspace.id
+        pid = self.project.id
+
         postArg = json.dumps({"vendor": "de.upb.cs.cn.pgsandman",
                               "name": "Service Name",
                               "version": "0.0.1"})
-        response = self.app.post("/" + constants.WORKSPACES + "/" + str(self.workspace.id)
-                                 + "/" + constants.PROJECTS + "/" + str(self.project.id)
+        response = self.app.post("/" + constants.WORKSPACES + "/" + str(wsid)
+                                 + "/" + constants.PROJECTS + "/" + str(pid)
                                  + "/" + constants.SERVICES + "/", headers={'Content-Type': 'application/json'},
                                  data=postArg)
         self.assertTrue(response.status_code == 201)
+
+        response = self.app.get("/" + constants.WORKSPACES + "/" + str(wsid)
+                                + "/" + constants.PROJECTS + "/" + str(pid)
+                                + "/" + constants.SERVICES + "/", headers={'Content-Type': 'application/json'})
+        self.assertTrue(response.status_code == 200)
 
     def test_get_services(self):
         response = self.app.get("/" + constants.WORKSPACES + "/" + str(self.workspace.id)
