@@ -34,6 +34,7 @@ class FunctionTest(unittest.TestCase):
         session.commit()
         self.wsid = self.workspace.id
         self.pjid = self.project.id
+        self.svid = self.service.id
 
         # Add some session stuff ( need for finding the user's workspace )
         with self.app as c:
@@ -64,6 +65,29 @@ class FunctionTest(unittest.TestCase):
         self.assertTrue(function['descriptor']['version'] == dict['version'])
         self.assertTrue(function['descriptor']['vendor'] == dict['vendor'])
         session.close()
+
+    def test_get_specific_function(self):
+        session = db_session()
+        dict = {"vendor": "de.upb.cs.cn.pgsandman",
+                "name": "vnf_3",
+                "version": "0.0.1"}
+        post_arg = json.dumps(dict)
+        response = self.app.post("/" + constants.WORKSPACES + "/" + str(self.wsid)
+                                 + "/" + constants.PROJECTS + "/" + str(self.pjid)
+                                 + "/" + constants.VNFS + "/", headers={'Content-Type': 'application/json'},
+                                 data=post_arg)
+        function1 = json.loads(response.data.decode())
+        svcid = function1['id']
+        self.assertTrue(response.status_code == 201)
+
+        # retrieve it in table
+        response = self.app.get("/" + constants.WORKSPACES + "/" + str(self.wsid)
+                                + "/" + constants.PROJECTS + "/" + str(self.pjid)
+                                + "/" + constants.VNFS + "/" + str(svcid))
+        function = json.loads(response.data.decode())
+        self.assertTrue(function['descriptor']['name'] == dict['name'])
+        self.assertTrue(function['descriptor']['version'] == dict['version'])
+        self.assertTrue(function['descriptor']['vendor'] == dict['vendor'])
 
     def test_get_function(self):
         # put vnf in table

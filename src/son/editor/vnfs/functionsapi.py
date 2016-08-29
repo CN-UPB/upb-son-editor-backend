@@ -21,6 +21,13 @@ def get_vnfs(wsID, parentID):
     return prepareResponse("not yet implemented")
 
 
+@vnfs_api.route('/<parentID>/functions/<vnfID>', methods=['GET'])
+def get_specific_vnf(wsID, parentID, vnfID):
+    if get_parent(request) is Category.project:
+        functions = functionsimpl.get_specific_function(session["userData"], wsID, parentID, vnfID)
+        return prepareResponse(functions)
+    return prepareResponse("not yet implemented")
+
 @vnfs_api.route('/<parentID>/functions/', methods=['POST'])
 def create_vnf(wsID, parentID):
     if get_parent(request) is Category.project:
