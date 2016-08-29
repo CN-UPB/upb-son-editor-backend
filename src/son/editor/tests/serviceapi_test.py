@@ -42,10 +42,8 @@ class ServiceAPITest(unittest.TestCase):
         session.commit()
 
     def test_create_service(self):
-        session = db_session()
         wsid = self.workspace.id
         pid = self.project.id
-        session.commit()
 
         postArg = json.dumps({"vendor": "de.upb.cs.cn.pgsandman",
                               "name": "Service Name",
