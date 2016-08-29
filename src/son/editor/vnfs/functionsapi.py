@@ -28,6 +28,7 @@ def get_specific_vnf(wsID, parentID, vnfID):
         return prepareResponse(functions)
     return prepareResponse("not yet implemented")
 
+
 @vnfs_api.route('/<parentID>/functions/', methods=['POST'])
 def create_vnf(wsID, parentID):
     if get_parent(request) is Category.project:

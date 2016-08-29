@@ -14,6 +14,7 @@ from flask import Flask, redirect, session
 from flask.globals import request
 
 from son.editor.app.exceptions import NameConflict, NotFound
+from son.editor.app.securityservice import check_access
 
 from son.editor.app.constants import WORKSPACES, CATALOGUES, PLATFORMS, PROJECTS
 from son.editor.app.database import db_session, init_db
@@ -85,6 +86,8 @@ def checkLoggedIn():
     if request.method == 'OPTIONS':
         return prepareResponse()
     elif CONFIG['testing']:
+        if not check_access(request):
+            return 404
         return
     elif 'access_token' not in session and request.endpoint not in ['login', 'static', 'shutdown']:
         args = {"scope": "user:email",
@@ -92,7 +95,8 @@ def checkLoggedIn():
         session["requested_endpoint"] = request.endpoint
         return prepareResponse(
             {'authorizationUrl': 'https://github.com/login/oauth/authorize/?' + urllib.parse.urlencode(args)}), 401
-
+    elif not check_access(request):
+        return 404
 
 @app.route('/', methods=['GET', 'POST'])
 def home():

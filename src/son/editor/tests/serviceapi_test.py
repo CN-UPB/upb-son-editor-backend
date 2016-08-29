@@ -22,7 +22,7 @@ class ServiceAPITest(unittest.TestCase):
         self.service = Service(name="Service a", vendor="de.upb", version="1.0")
 
         # Add some relationships
-        self.workspace.owner = self.user;
+        self.workspace.owner = self.user
         self.project.workspace = self.workspace
         self.service.project = self.project
 
@@ -32,6 +32,13 @@ class ServiceAPITest(unittest.TestCase):
         session.add(self.workspace)
         session.add(self.user)
         session.commit()
+        self.wsid = self.workspace.id
+        self.pid = self.project.id
+        self.sid = self.service.id
+
+        with self.app as c:
+            with c.session_transaction() as session:
+                session['userData'] = {'login': 'username'}
 
     def tearDown(self):
         session = db_session()
@@ -42,20 +49,21 @@ class ServiceAPITest(unittest.TestCase):
         session.commit()
 
     def test_create_service(self):
-        wsid = self.workspace.id
-        pid = self.project.id
+        session = db_session()
+
+        session.commit()
 
         postArg = json.dumps({"vendor": "de.upb.cs.cn.pgsandman",
                               "name": "Service Name",
                               "version": "0.0.1"})
-        response = self.app.post("/" + constants.WORKSPACES + "/" + str(wsid)
-                                 + "/" + constants.PROJECTS + "/" + str(pid)
+        response = self.app.post("/" + constants.WORKSPACES + "/" + str(self.wsid)
+                                 + "/" + constants.PROJECTS + "/" + str(self.pid)
                                  + "/" + constants.SERVICES + "/", headers={'Content-Type': 'application/json'},
                                  data=postArg)
         self.assertTrue(response.status_code == 201)
 
-        response = self.app.get("/" + constants.WORKSPACES + "/" + str(wsid)
-                                + "/" + constants.PROJECTS + "/" + str(pid)
+        response = self.app.get("/" + constants.WORKSPACES + "/" + str(self.wsid)
+                                + "/" + constants.PROJECTS + "/" + str(self.pid)
                                 + "/" + constants.SERVICES + "/", headers={'Content-Type': 'application/json'})
         self.assertTrue(response.status_code == 200)
 
@@ -84,9 +92,9 @@ class ServiceAPITest(unittest.TestCase):
 
     def test_delete_exists_service(self):
         # delete existing
-        response = self.app.delete("/" + constants.WORKSPACES + "/" + str(self.workspace.id)
-                                   + "/" + constants.PROJECTS + "/" + str(self.project.id)
-                                   + "/" + constants.SERVICES + "/" + str(self.service.id),
+        response = self.app.delete("/" + constants.WORKSPACES + "/" + str(self.wsid)
+                                   + "/" + constants.PROJECTS + "/" + str(self.pid)
+                                   + "/" + constants.SERVICES + "/" + str(self.sid),
                                    headers={'Content-Type': 'application/json'})
         self.assertEqual(response.status_code, 200)
 
