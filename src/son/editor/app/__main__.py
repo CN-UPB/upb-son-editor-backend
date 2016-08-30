@@ -12,67 +12,63 @@ from sys import platform
 import requests
 from flask import Flask, redirect, session
 from flask.globals import request
+from flask_restplus import Api
 
-from son.editor.app.exceptions import NameConflict, NotFound
-
-from son.editor.app.constants import WORKSPACES, CATALOGUES, PLATFORMS, PROJECTS
+from son.editor.app.constants import WORKSPACES
 from son.editor.app.database import db_session, init_db
-from son.editor.app.util import CONFIG, prepareResponse
-from son.editor.catalogues.cataloguesapi import catalogues_api
-from son.editor.platforms.platformsapi import platforms_api
-from son.editor.projects.projectsapi import projects_api
-from son.editor.services.servicesapi import services_api
-from son.editor.vnfs.functionsapi import vnfs_api
-from son.editor.workspaces.workspacesapi import workspaces_api
+from son.editor.app.exceptions import NameConflict, NotFound
+from son.editor.app.util import CONFIG, prepareResponse, prepareError
+from son.editor import services
+from son.editor import platforms
+from son.editor import projects
+from son.editor import workspaces
+from son.editor import vnfs
+from son.editor import misc
+from son.editor import catalogues
 
 app = Flask(__name__)
-logger = logging.getLogger("son-editor.__main__")
-
-WORKSPACE_PATH = '/' + WORKSPACES + '/<wsID>/'
-
-# registering all the to class modules here
-app.register_blueprint(workspaces_api)
-app.register_blueprint(projects_api)
-app.register_blueprint(services_api, url_prefix=WORKSPACE_PATH + PROJECTS)
-app.register_blueprint(vnfs_api, url_prefix=WORKSPACE_PATH + PROJECTS)
-app.register_blueprint(platforms_api)
-app.register_blueprint(services_api, url_prefix=WORKSPACE_PATH + PLATFORMS)
-app.register_blueprint(vnfs_api, url_prefix=WORKSPACE_PATH + PLATFORMS)
-app.register_blueprint(catalogues_api)
-app.register_blueprint(services_api, url_prefix=WORKSPACE_PATH + CATALOGUES)
-app.register_blueprint(vnfs_api, url_prefix=WORKSPACE_PATH + CATALOGUES)
+# turn off help message for 404 errors, just return error handlers message
+app.config["ERROR_404_HELP"] = False
+app.config["RESTPLUS_MASK_SWAGGER"] = False
 # load secret key from config
 app.secret_key = CONFIG['session']['secretKey']
+api = Api(app, description="Son Editor Backend API")
+logger = logging.getLogger("son-editor.__main__")
 
 
-# Set initial testing flag to false
-
-# print(app.url_map)
-
-
-
-@app.errorhandler(KeyError)
+@api.errorhandler(KeyError)
 def handle_key_error(err):
     logger.exception(err.args[0])
-    return prepareResponse("Key '{}' is required in request data!".format(err.args[0])), 400
+    return prepareError({"message": "Key '{}' is required in request data!".format(err.args[0])}, 400)
 
 
-@app.errorhandler(NotFound)
+@api.errorhandler(NotFound)
 def handle_not_found(err):
     logger.warn(err.msg)
-    return prepareResponse(err.msg), 404
+    return prepareError({"message": err.msg}, 404)
 
 
-@app.errorhandler(NameConflict)
+@api.errorhandler(NameConflict)
 def handle_name_conflict(err):
     logger.warn(err.msg)
-    return prepareResponse(err.msg), 409
+    return prepareError({"message": err.msg}, 409)
 
 
-@app.errorhandler(Exception)
+@api.errorhandler
 def handle_general_exception(err):
-    logger.exception(err.args[0])
-    return prepareResponse(str(err.args)), 500
+    logger.exception(str(err))
+    return prepareError({"message": str(err)}, getattr(err, 'code', 500))
+
+
+# registering all the api resources here
+workspaces.init(api)
+projects.init(api)
+services.init(api)
+vnfs.init(api)
+platforms.init(api)
+catalogues.init(api)
+misc.init(api)
+# print(app.url_map)
 
 
 @app.teardown_appcontext
@@ -90,76 +86,8 @@ def checkLoggedIn():
         args = {"scope": "user:email",
                 "client_id": CONFIG['authentication']['ClientID']}
         session["requested_endpoint"] = request.endpoint
-        return prepareResponse(
-            {'authorizationUrl': 'https://github.com/login/oauth/authorize/?' + urllib.parse.urlencode(args)}), 401
+        return prepareResponse({'authorizationUrl': 'https://github.com/login/oauth/authorize/?{}'.format(urllib.parse.urlencode(args))}, 401)
 
-
-@app.route('/', methods=['GET', 'POST'])
-def home():
-    # this is only code to test the github login process!
-    if 'userData' in session:
-        return "<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js'></script> Welcome " + \
-               session['userData']['login'] + "! you are logged in!<br/>" + '<img src="' + session['userData'][
-                   'avatar_url'] + '">'
-    else:
-        return redirect(
-            'https://github.com/login/oauth/authorize?scope=user:email&client_id=' + CONFIG['authentication'][
-                'ClientID'])
-
-
-@app.route('/shutdown', methods=['GET'])
-def shutdown():
-    if request.remote_addr in ['127.0.0.1', 'localhost']:
-        func = request.environ.get('werkzeug.server.shutdown')
-        if func is None:
-            raise RuntimeError('Not running with the Werkzeug Server')
-        logger.info("Shutting down!")
-        func()
-        return "Shutting down..."
-
-
-@app.route('/login', methods=['GET'])
-def login():
-    session['session_code'] = request.args.get('code');
-    if request_access_token() and load_user_data():
-        logger.info("User " + session['userData']['login'] + " logged in")
-        if request.referrer is not None and 'github' not in request.referrer:
-            origin = origin_from_referrer(request.referrer)
-            return redirect(origin + CONFIG['frontend-redirect'])
-        return redirect(CONFIG['frontend-host'] + CONFIG['frontend-redirect'])
-
-
-def origin_from_referrer(referrer):
-    doubleSlashIndex = referrer.find("//")
-    return referrer[0:referrer.find("/", doubleSlashIndex + 2)]
-
-
-def request_access_token():
-    # TODO add error handling
-    data = {'client_id': CONFIG['authentication']['ClientID'],
-            'client_secret': CONFIG['authentication']['ClientSecret'],
-            'code': session['session_code']}
-    headers = {"Accept": "application/json"}
-    accessResult = requests.post('https://github.com/login/oauth/access_token',
-                                 json=data, headers=headers)
-    session['access_token'] = json.loads(accessResult.text)['access_token']
-    return True
-
-
-def load_user_data():
-    # TODO add error handling
-    headers = {"Accept": "application/json",
-               "Authorization": "token " + session['access_token']}
-    userDataResult = requests.get('https://api.github.com/user', headers=headers)
-    userData = json.loads(userDataResult.text)
-    session['userData'] = userData
-    logger.info("userdata: %s" % userData)
-    return True
-
-@app.route("/log")
-def show_log():
-    with open("editor-backend.log") as logfile:
-        return logfile.read().replace("\n", "<br/>")
 
 
 # Main entry point
@@ -179,7 +107,6 @@ def main(args=None):
         app.run('0.0.0.0', debug=True)
     else:
         app.run('0.0.0.0')
-
 
 def setup_logging():
     # set up logging to file - see previous section for more details

@@ -14,7 +14,7 @@ configFileName = resource_filename(Requirement.parse("sonata_editor"), "config.y
 CONFIG = yaml.safe_load(open(str(configFileName)))
 
 
-def prepareResponse(data=None):
+def prepareResponse(data=None, code=200):
     response = Response()
     headers = response.headers
     if allowed_origin():
@@ -30,8 +30,20 @@ def prepareResponse(data=None):
         else:
             response.set_data(data)
             headers['Content-Type'] = 'text/plain; charset=utf-8'
-    response.headers = headers
+    response.status_code = code
     return response
+
+
+def prepareError(data=None, code=500):
+    response = Response()
+    headers = response.headers
+    if allowed_origin():
+        headers['Access-Control-Allow-Origin'] = request.headers['Origin']
+    headers['Access-Control-Allow-Methods'] = "GET,POST,PUT,DELETE,OPTIONS"
+    headers['Access-Control-Allow-Headers'] = "Content-Type, Authorization, X-Requested-With"
+    headers['Access-Control-Allow-Credentials'] = "true"
+    headers['Access-Control-Max-Age'] = 1000
+    return data, code, headers
 
 
 def allowed_origin():

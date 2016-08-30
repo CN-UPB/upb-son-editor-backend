@@ -51,7 +51,7 @@ setup(
     namespace_packages=['son', ],
 	data_files=[('', ['src/config.yaml'])],
     include_package_data=True,
-    install_requires=['flask', 'sqlalchemy', 'requests', 'pyaml'],
+    install_requires=['flask-restplus', 'flask', 'sqlalchemy', 'requests', 'pyaml'],
     zip_safe=False,
     entry_points={
         'console_scripts': [
