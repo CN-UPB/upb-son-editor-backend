@@ -1,29 +1,39 @@
-'''
+"""
 Created on 18.07.2016
 
 @author: Jonas
-'''
-from flask import Blueprint
+"""
+from flask_restplus import Resource, Namespace
+
+from son.editor.app.util import prepareResponse
 from son.editor.app.constants import WORKSPACES, PLATFORMS
 
-platforms_api = Blueprint("platforms_api", __name__, url_prefix='/' + WORKSPACES + '/<wsID>/' + PLATFORMS)
+namespace = Namespace(WORKSPACES + '/<int:wsID>/' + PLATFORMS, description="Platform Resources")
 
 
-@platforms_api.route('/', methods=['GET'])
-def get_platforms(wsID):
-    return "list of service platforms"
+@namespace.route("")
+@namespace.response(200, "OK")
+class Platforms(Resource):
+    "Platforms"
+
+    #@platforms_api.doc("list platforms")
+    def get(self, wsID):
+        return prepareResponse([{"id": 1, "name": "platform1"}])
+
+    #@platforms_api.doc("create new service platform")
+    def post(self, wsID, platformID):
+        return "create new service platform and return id"
 
 
-@platforms_api.route('/', methods=['POST'])
-def create_platform(wsID):
-    return "create new service platform and return id"
+@namespace.route("/<int:platformID>")
+@namespace.param('platformID', 'The Platform identifier')
+@namespace.response(200, "OK")
+class Platform(Resource):
+    def get(self, wsID, platformID):
+        return "info for platform with id {}".format(platformID)
 
+    def put(self, wsID, platformID):
+        return "update platform with id {}".format(platformID)
 
-@platforms_api.route('/<platformID>', methods=['PUT'])
-def update_platform(wsID, platformID):
-    return "update platform with id " + platformID
-
-
-@platforms_api.route('/<platformID>', methods=['DELETE'])
-def delete_platform(wsID, platformID):
-    return "deleted platform with id " + platformID
+    def delete(self, wsID, platformID):
+        return "deleted platform with id {}".format(platformID)

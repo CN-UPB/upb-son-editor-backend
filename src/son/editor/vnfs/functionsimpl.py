@@ -17,8 +17,6 @@ from son.editor.users.usermanagement import get_user
 
 
 def get_functions(user_data, ws_id, project_id):
-    ws_id = shlex.quote(ws_id)
-    project_id = shlex.quote(project_id)
     user = get_user(user_data)
     session = db_session()
     functions = session.query(Function).join(Project).join(Workspace). \
@@ -29,8 +27,6 @@ def get_functions(user_data, ws_id, project_id):
 
 
 def get_specific_function(user_data, ws_id, project_id, vnf_id):
-    ws_id = shlex.quote(ws_id)
-    project_id = shlex.quote(project_id)
     user = get_user(user_data)
     session = db_session()
     function = session.query(Function).join(Project).join(Workspace). \
@@ -42,8 +38,6 @@ def get_specific_function(user_data, ws_id, project_id, vnf_id):
 
 
 def create_function(user_data, ws_id, project_id, function_data):
-    ws_id = shlex.quote(ws_id)
-    project_id = shlex.quote(project_id)
     function_name = shlex.quote(function_data["name"])
     vendor_name = shlex.quote(function_data["vendor"])
     version = shlex.quote(function_data["version"])

@@ -5,45 +5,70 @@ Created on 18.07.2016
 '''
 import logging
 
-from flask import Blueprint, session
+from flask import session
 from flask.globals import request
+from flask_restplus import Resource, Namespace
+from flask_restplus import fields
 
 from son.editor.app.constants import WORKSPACES
-from son.editor.app.exceptions import NameConflict, NotFound
 from son.editor.app.util import prepareResponse, getJSON
 from . import workspaceimpl
 
-workspaces_api = Blueprint("workspaces_api", __name__, url_prefix='/' + WORKSPACES)
+namespace = Namespace(WORKSPACES, description="Workspace Resources")
 logger = logging.getLogger("son-editor.workspacesapi")
 
+ws = namespace.model("Workspace", {
+    'name': fields.String(required=True, description='The Workspace Name')
+})
 
-@workspaces_api.route('/', methods=['GET'])
-def get_workspaces():
-    workspaces = workspaceimpl.get_workspaces(session['userData'])
-    return prepareResponse(workspaces)
-
-
-@workspaces_api.route('/', methods=['POST'])
-def create_workspace():
-    workspaceData = getJSON(request)
-    ws = workspaceimpl.create_workspace(session['userData'], workspaceData)
-    return prepareResponse(ws), 201
+ws_response = namespace.inherit("WorkspaceResponse", ws, {
+    "path": fields.String(description='The Physical Workspace location'),
+    "id": fields.Integer(description='The Workspace ID'),
+    "owner_id": fields.Integer(description='The Workspaces Owner ID')
+})
 
 
-@workspaces_api.route('/<wsID>', methods=['GET'])
-def get_workspace(wsID):
-    workspace = workspaceimpl.get_workspace(session['userData'], wsID)
-    return prepareResponse(workspace)
+@namespace.route('/')
+class Workspaces(Resource):
+    @namespace.doc("list_workspaces")
+    @namespace.response(200, "OK", [ws_response])
+    def get(self):
+        workspaces = workspaceimpl.get_workspaces(session['userData'])
+        return prepareResponse(workspaces)
+
+    @namespace.doc("create_workspace")
+    @namespace.expect(ws)
+    @namespace.response(201, "Created", ws_response)
+    @namespace.response(409, "Workspace exists")
+    def post(self):
+        workspaceData = getJSON(request)
+        workspace = workspaceimpl.create_workspace(session['userData'], workspaceData)
+        return prepareResponse(workspace, 201)
 
 
-@workspaces_api.route('/<wsID>', methods=['PUT'])
-def update_workspace(wsID):
-    workspaceData = getJSON(request)
-    workspace = workspaceimpl.update_workspace(workspaceData, wsID)
-    return prepareResponse(workspace)
+@namespace.route('/<int:wsID>')
+@namespace.param("wsID", "The workpace ID")
+class Workspace(Resource):
+    @namespace.doc("get_workspace")
+    @namespace.response(200, "Ok", ws_response)
+    @namespace.response(404, "Workspace not found")
+    def get(self, wsID):
+        workspace = workspaceimpl.get_workspace(session['userData'], wsID)
+        return prepareResponse(workspace)
 
+    @namespace.doc("update_namespace")
+    @namespace.expect(ws)
+    @namespace.response(200, "Updated", ws_response)
+    @namespace.response(404, "Workspace not found")
+    @namespace.response(409, "Workspace exists")
+    def put(self, wsID):
+        workspaceData = getJSON(request)
+        workspace = workspaceimpl.update_workspace(workspaceData, wsID)
+        return prepareResponse(workspace)
 
-@workspaces_api.route('/<wsID>', methods=['DELETE'])
-def delete_workspace(wsID):
-    workspace = workspaceimpl.delete_workspace(wsID)
-    return prepareResponse(workspace)
+    @namespace.doc("delete_namespace")
+    @namespace.response(200, "Deleted", ws_response)
+    @namespace.response(404, "Workspace not found")
+    def delete(self, wsID):
+        workspace = workspaceimpl.delete_workspace(wsID)
+        return prepareResponse(workspace)

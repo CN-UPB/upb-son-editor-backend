@@ -52,12 +52,12 @@ class ServiceAPITest(unittest.TestCase):
                                  + "/" + constants.PROJECTS + "/" + str(pid)
                                  + "/" + constants.SERVICES + "/", headers={'Content-Type': 'application/json'},
                                  data=postArg)
-        self.assertTrue(response.status_code == 201)
+        self.assertEqual(response.status_code, 201)
 
         response = self.app.get("/" + constants.WORKSPACES + "/" + str(wsid)
                                 + "/" + constants.PROJECTS + "/" + str(pid)
                                 + "/" + constants.SERVICES + "/", headers={'Content-Type': 'application/json'})
-        self.assertTrue(response.status_code == 200)
+        self.assertEqual(response.status_code, 200)
 
     def test_get_services(self):
         response = self.app.get("/" + constants.WORKSPACES + "/" + str(self.workspace.id)
@@ -67,7 +67,7 @@ class ServiceAPITest(unittest.TestCase):
         service = json.loads(response.data.decode())
         self.assertEqual(service[0]['vendor'], "de.upb")
 
-        self.assertTrue(response.status_code == 200)
+        self.assertEqual(response.status_code, 200)
 
     def test_update_service(self):
         postArg = json.dumps({"vendor": "de.upb.cs",
