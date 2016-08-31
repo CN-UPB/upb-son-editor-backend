@@ -1,4 +1,3 @@
-from json import JSONEncoder
 from sqlalchemy import Column, Integer, String, ForeignKey, Text
 from sqlalchemy.orm import relationship
 

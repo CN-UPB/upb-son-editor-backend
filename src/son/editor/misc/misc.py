@@ -31,7 +31,7 @@ class Shutdown(Resource):
 @namespace.response(200, "OK")
 class Login(Resource):
     def get(self):
-        session['session_code'] = request.args.get('code');
+        session['session_code'] = request.args.get('code')
         if self.request_access_token() and self.load_user_data():
             logger.info("User " + session['userData']['login'] + " logged in")
             if request.referrer is not None and 'github' not in request.referrer:

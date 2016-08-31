@@ -41,34 +41,31 @@ class WorkspacesTest(unittest.TestCase):
         db_session.commit()
 
     def testCreateWorkSpace(self):
-        # when making post requests the '/' at the end seems important, else it defaults to GET oO
         request_dict = {"name": "workspaceName"}
-        rv = self.app.post('/' + WORKSPACES + '/', data=json.dumps(request_dict), content_type='application/json',
-                           follow_redirects=True)
+        rv = self.app.post('/' + WORKSPACES + '/', data=json.dumps(request_dict), content_type='application/json')
         # Expect workspace gets created
         self.assertEqual(request_dict['name'], json.loads(rv.data.decode())['name'])
         self.assertEqual(201, rv.status_code)
 
     def getWSID(self):
-        rv = self.app.get('/' + WORKSPACES + '/', follow_redirects=True)
+        rv = self.app.get('/' + WORKSPACES + '/')
 
         # Only one workspace was created beforehand
         return int(json.loads(rv.data.decode())[0]['id'])
 
     def testGetWorkSpaces(self):
-        rv = self.app.get('/' + WORKSPACES + '/', follow_redirects=True)
+        rv = self.app.get('/' + WORKSPACES + '/')
         self.assertEqual(json.loads(rv.data.decode())[0]['name'], "Workspace A")
 
     def testGetWorkSpace(self):
-        rv = self.app.get('/' + WORKSPACES + '/%i' % self.getWSID(), follow_redirects=True)
+        rv = self.app.get('/' + WORKSPACES + '/%i' % self.getWSID())
         self.assertEqual(json.loads(rv.data.decode())['name'], "Workspace A")
 
     def testUpdateWorkSpace(self):
         request_dict = {"name": "workspaceToMove"}
         rv = self.app.post('/' + WORKSPACES + '/',
                            data=json.dumps(request_dict),
-                           content_type='application/json',
-                           follow_redirects=True)
+                           content_type='application/json')
         id = json.loads(rv.data.decode())['id']
 
         rv = self.app.put('/' + WORKSPACES + '/{}'.format(id), data={"name": "workspaceToMove2"},
@@ -81,7 +78,7 @@ class WorkspacesTest(unittest.TestCase):
         rv = self.app.post('/' + WORKSPACES + '/', data=json.dumps(request_dict), content_type='application/json',
                            follow_redirects=True)
         id = json.loads(rv.data.decode())['id']
-        rv = self.app.delete('/' + WORKSPACES + '/%i' % id, follow_redirects=True)
+        rv = self.app.delete('/' + WORKSPACES + '/%i' % id)
         self.assertEqual(200, rv.status_code)
 
 
