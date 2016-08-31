@@ -5,22 +5,28 @@ Created on 05.08.2016
 '''
 import os
 import shlex
+import shutil
+import tempfile
 from subprocess import Popen, PIPE
 
 from son.editor.app.database import db_session
 from son.editor.app.exceptions import NotFound, NameConflict
-from son.editor.app.util import CONFIG
-from son.editor.models.user import User
-from son.editor.models.workspace import Workspace
+from son.editor.app.util import CONFIG, rreplace
 from son.editor.models.project import Project
+from son.editor.models.workspace import Workspace
 from son.editor.users.usermanagement import get_user
+
+if CONFIG['testing']:
+    WORKSPACES_DIR = tempfile.mkdtemp()
+else:
+    WORKSPACES_DIR = os.path.expanduser(CONFIG["workspaces-location"])
 
 
 def get_projects(user_data, ws_id):
     user = get_user(user_data)
 
     session = db_session()
-    projects = session.query(Project).\
+    projects = session.query(Project). \
         join(Workspace). \
         filter(Workspace.id == ws_id). \
         filter(Workspace.owner == user).all()
@@ -62,19 +68,19 @@ def create_project(user_data, ws_id, project_data):
                              .filter(Project.workspace == workspace)
                              .filter(Project.name == project_name))
     if len(existing_projects) > 0:
-        raise Exception("Project with name {} already exists in this workspace".format(project_name))
+        raise NameConflict("Project with name {} already exists in this workspace".format(project_name))
 
     # prepare db insert
     try:
         project = Project(name=project_name, rel_path=project_name, workspace=workspace)
         session.add(project)
     except:
-        session.rollback
+        session.rollback()
         raise
     # create workspace on disk
     proc = Popen(['son-workspace',
                   '--workspace', workspace.path,
-                  '--project', '{}/projects/{}'.format(workspace.path, project_name)],
+                  '--project', get_project_path(workspace.path, project_name)],
                  stdout=PIPE, stderr=PIPE)
     out, err = proc.communicate()
     exitcode = proc.returncode
@@ -92,3 +98,50 @@ def create_project(user_data, ws_id, project_data):
         if project_exists:
             raise NameConflict(out.decode())
         raise Exception(err, out)
+
+
+def update_project(project_data, project_id):
+    session = db_session()
+    project = session.query(Project).filter(Project.id == project_id).first()
+    if project is None:
+        raise NotFound("Project with id {} could not be found".format(project_id))
+
+    # Update name
+    if 'name' in project_data:
+        if os.path.exists(project.path):
+            new_name = shlex.quote(project_data['name'])
+            old_path = get_project_path(project.workspace.path, project.rel_path)
+            new_path = rreplace(old_path, project.name, new_name, 1)
+
+            if os.path.exists(new_path):
+                raise NameConflict("Invalid name parameter, workspace '{}' already exists".format(new_name))
+
+            # Do not allow move directories outside of the workspaces_dir
+            if not new_path.startswith(WORKSPACES_DIR):
+                raise Exception("Invalid path parameter, you are not allowed to break out of {}".format(WORKSPACES_DIR))
+            else:
+                # Move the directory
+                shutil.move(old_path, new_path)
+                project.name = new_name
+                project.rel_path = new_name
+
+    db_session.commit()
+    return project.as_dict()
+
+
+def delete_project(project_id):
+    session = db_session()
+    project = session.query(Project).filter(Project.id == int(project_id)).first()
+    if project:
+        path = get_project_path(project.workspace.path, project.rel_path)
+        shutil.rmtree(path)
+        session.delete(project)
+    db_session.commit()
+    if project:
+        return project.as_dict()
+    else:
+        raise NotFound("Project with id {} was not found".format(project_id))
+
+
+def get_project_path(workspace_path, rel_path):
+    return '{}/projects/{}'.format(workspace_path, rel_path)

@@ -22,7 +22,7 @@ class FunctionTest(unittest.TestCase):
         self.service = Service(name="Service a", vendor="de.upb", version="1.0")
 
         # Add some relationships
-        self.workspace.owner = self.user;
+        self.workspace.owner = self.user
         self.project.workspace = self.workspace
         self.service.project = self.project
 
@@ -121,7 +121,7 @@ class FunctionTest(unittest.TestCase):
                                  + "/" + constants.VNFS + "/", headers={'Content-Type': 'application/json'},
                                  data=postArg)
         js = json.loads(response.data.decode())
-        js['descriptor']
+        self.assertEqual(js['descriptor'], dict)
         updateDict = {"vendor": "de.upb.cs.cn.pgsandman1",
                       "name": "vnf_3",
                       "version": "0.0.2"}

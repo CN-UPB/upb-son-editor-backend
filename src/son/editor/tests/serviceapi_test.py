@@ -22,7 +22,7 @@ class ServiceAPITest(unittest.TestCase):
         self.service = Service(name="Service a", vendor="de.upb", version="1.0")
 
         # Add some relationships
-        self.workspace.owner = self.user;
+        self.workspace.owner = self.user
         self.project.workspace = self.workspace
         self.service.project = self.project
 

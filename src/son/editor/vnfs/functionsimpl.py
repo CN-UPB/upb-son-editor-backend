@@ -1,16 +1,9 @@
 import json
-import logging
-import os
 import shlex
-import platform
-
-from subprocess import Popen, PIPE
-from sys import platform
 
 from son.editor.app.database import db_session
 from son.editor.app.exceptions import NameConflict, NotFound
-from son.editor.app.util import CONFIG
-from son.editor.models.function import Function, FunctionEncoder
+from son.editor.models.function import Function
 from son.editor.models.project import Project
 from son.editor.models.workspace import Workspace
 from son.editor.users.usermanagement import get_user

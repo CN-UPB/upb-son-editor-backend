@@ -62,3 +62,7 @@ def getJSON(request):
     if jsonData is None:
         jsonData = json.loads(request.get_data().decode("utf8"))
     return jsonData
+
+def rreplace(s, old, new, occurrence):
+    li = s.rsplit(old, occurrence)
+    return new.join(li)

@@ -39,7 +39,7 @@ class Workspaces(Resource):
     @namespace.doc("create_workspace")
     @namespace.expect(ws)
     @namespace.response(201, "Created", ws_response)
-    @namespace.response(409, "Workspace exists")
+    @namespace.response(409, "Workspace already exists")
     def post(self):
         workspaceData = getJSON(request)
         workspace = workspaceimpl.create_workspace(session['userData'], workspaceData)
@@ -60,7 +60,7 @@ class Workspace(Resource):
     @namespace.expect(ws)
     @namespace.response(200, "Updated", ws_response)
     @namespace.response(404, "Workspace not found")
-    @namespace.response(409, "Workspace exists")
+    @namespace.response(409, "Workspace already exists")
     def put(self, wsID):
         workspaceData = getJSON(request)
         workspace = workspaceimpl.update_workspace(workspaceData, wsID)

@@ -3,28 +3,25 @@ Created on 18.07.2016
 
 @author: Jonas
 '''
-import json
 import logging
 import urllib
 from os import path
 from sys import platform
 
-import requests
-from flask import Flask, redirect, session
+from flask import Flask, session
 from flask.globals import request
 from flask_restplus import Api
 
-from son.editor.app.constants import WORKSPACES
+from son.editor import catalogues
+from son.editor import misc
+from son.editor import platforms
+from son.editor import projects
+from son.editor import services
+from son.editor import vnfs
+from son.editor import workspaces
 from son.editor.app.database import db_session, init_db
 from son.editor.app.exceptions import NameConflict, NotFound
 from son.editor.app.util import CONFIG, prepareResponse, prepareError
-from son.editor import services
-from son.editor import platforms
-from son.editor import projects
-from son.editor import workspaces
-from son.editor import vnfs
-from son.editor import misc
-from son.editor import catalogues
 
 app = Flask(__name__)
 # turn off help message for 404 errors, just return error handlers message

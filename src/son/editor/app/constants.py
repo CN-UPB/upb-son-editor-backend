@@ -5,8 +5,6 @@ Created on 22.07.2016
 '''
 from enum import Enum
 
-from sys import platform
-
 # URL REST constants
 WORKSPACES = "workspaces"
 PROJECTS = "projects"
@@ -14,7 +12,6 @@ PLATFORMS = "platforms"
 CATALOGUES = "catalogues"
 SERVICES = "services"
 VNFS = "functions"
-
 
 
 class Category(Enum):

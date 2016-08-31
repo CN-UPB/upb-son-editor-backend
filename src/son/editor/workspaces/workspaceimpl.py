@@ -6,15 +6,13 @@ Created on 25.07.2016
 import logging
 import os
 import shlex
-import tempfile
 import shutil
-import re
-
+import tempfile
 from subprocess import Popen, PIPE
 
 from son.editor.app.database import db_session
 from son.editor.app.exceptions import NameConflict, NotFound
-from son.editor.app.util import CONFIG
+from son.editor.app.util import CONFIG, rreplace
 from son.editor.models.workspace import Workspace
 from son.editor.users.usermanagement import get_user
 
@@ -69,7 +67,7 @@ def create_workspace(user_data, workspaceData):
         session.add(ws)
     except:
         logger.exception()
-        session.rollback
+        session.rollback()
         raise
     # create workspace on disk
     proc = Popen(['son-workspace', '--init', '--workspace', wsPath], stdout=PIPE, stderr=PIPE)
@@ -92,9 +90,7 @@ def create_workspace(user_data, workspaceData):
         raise Exception(err, out)
 
 
-def rreplace(s, old, new, occurrence):
-    li = s.rsplit(old, occurrence)
-    return new.join(li)
+
 
 
 def update_workspace(workspaceData, wsid):
