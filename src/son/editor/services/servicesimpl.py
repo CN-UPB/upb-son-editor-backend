@@ -78,7 +78,7 @@ def delete_service(parentID, serviceID):
         raise NotFound("Delete service did not work, project with id {} not found".format(serviceID))
 
 
-def get_services(wsid, parentID, serviceID):
+def get_service(wsid, parentID, serviceID):
     session = db_session()
     service = session.query(Service).filter_by(id=serviceID).first()
     session.commit()

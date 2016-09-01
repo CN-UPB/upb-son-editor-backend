@@ -71,5 +71,5 @@ class Service(Resource):
         return prepareResponse(service)
 
     def get(self, wsID, parentID, serviceID):
-        service = servicesimpl.get(wsID, parentID, serviceID)
+        service = servicesimpl.get_service(wsID, parentID, serviceID)
         return prepareResponse(service)
