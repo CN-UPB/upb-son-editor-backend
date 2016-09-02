@@ -22,6 +22,7 @@ RUN git config user.name "Dummy User"
 
 # copy config with secrets into docker image
 ADD src/config.yaml src/config.yaml
+ADD deployment.yaml deployment.yaml
 
 #install the son-editor requirements
 RUN pip install -e .
