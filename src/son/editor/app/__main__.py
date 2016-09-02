@@ -65,6 +65,8 @@ vnfs.init(api)
 platforms.init(api)
 catalogues.init(api)
 misc.init(api)
+
+
 # print(app.url_map)
 
 
@@ -83,12 +85,12 @@ def checkLoggedIn():
         args = {"scope": "user:email",
                 "client_id": CONFIG['authentication']['ClientID']}
         session["requested_endpoint"] = request.endpoint
-        return prepareResponse({'authorizationUrl': 'https://github.com/login/oauth/authorize/?{}'.format(urllib.parse.urlencode(args))}, 401)
+        return prepareResponse(
+            {'authorizationUrl': 'https://github.com/login/oauth/authorize/?{}'.format(urllib.parse.urlencode(args))},
+            401)
 
 
-
-# Main entry point
-def main(args=None):
+def setup():
     setup_logging()
     # Check check if database exists, otherwise create sqlite file
     dbFile = CONFIG['database']['location']
@@ -100,10 +102,15 @@ def main(args=None):
 
     # Start the flask server
     logger.info("Launch flask server")
+
+
+# Main entry point
+def main(args=None):
     if platform == "darwin":
         app.run('0.0.0.0', debug=True)
     else:
         app.run('0.0.0.0')
+
 
 def setup_logging():
     # set up logging to file - see previous section for more details
@@ -122,6 +129,8 @@ def setup_logging():
     # add the handler to the root logger
     logging.getLogger('').addHandler(console)
 
+
+setup()
 
 if __name__ == "__main__":
     main()
