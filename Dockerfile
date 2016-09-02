@@ -7,21 +7,24 @@ RUN python3 setup.py build
 RUN python3 setup.py install
 WORKDIR ..
 
-#install son-editor-backend
-RUN git clone https://github.com/CN-UPB/upb-son-editor-backend#
+#install uwsgi server
+RUN pip install uwsgi
 
-#set git a dummy user to be enable stashing the config file
-RUN git config user.email dummy@user.com
-RUN git config user.name "Dummy User"
+#install son-editor-backend
+RUN git clone https://github.com/CN-UPB/upb-son-editor-backend
 
 # Set the default directory where CMD will execute
 WORKDIR /upb-son-editor-backend
 
+#set git a dummy user to be enable stashing the config file
+RUN git config user.email "dummy@user.com"
+RUN git config user.name "Dummy User"
+
 # copy config with secrets into docker image
 ADD src/config.yaml src/config.yaml
-#install the son-editor
-RUN python3 setup.py build
-RUN python3 setup.py install
+
+#install the son-editor requirements
+RUN pip install -e .
 
 # expose ports
 #son-editor-backend
