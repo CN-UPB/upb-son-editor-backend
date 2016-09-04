@@ -9,7 +9,7 @@ class Project(Base):
     __tablename__ = 'project'
     id = Column(Integer, primary_key=True)
     name = Column(String(50))
-    rel_path = Column(String(255), unique=True)
+    rel_path = Column(String(255))
     workspace_id = Column(Integer, ForeignKey('workspace.id'))
     workspace = relationship("Workspace", back_populates="projects")
 

@@ -19,7 +19,7 @@ def get_functions(user_data, ws_id, project_id):
     return list(map(lambda x: x.as_dict(), functions))
 
 
-def get_specific_function(user_data, ws_id, project_id, vnf_id):
+def get_function(user_data, ws_id, project_id, vnf_id):
     user = get_user(user_data)
     session = db_session()
     function = session.query(Function).join(Project).join(Workspace). \
@@ -82,6 +82,7 @@ def update_function(user_data, ws_id, project_id, function_id, function_data):
         function.vendor = shlex.quote(function_data['vendor'])
     if 'version' in function_data:
         function.version = shlex.quote(function_data['version'])
+
 
     session.commit()
     return function.as_dict()

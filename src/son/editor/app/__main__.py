@@ -21,7 +21,8 @@ from son.editor import vnfs
 from son.editor import workspaces
 from son.editor.app.database import db_session, init_db
 from son.editor.app.exceptions import NameConflict, NotFound
-from son.editor.app.util import CONFIG, prepareResponse, prepareError
+from son.editor.app.util import CONFIG, prepare_response, prepare_error
+from son.editor.app.securityservice import check_access
 
 app = Flask(__name__)
 # turn off help message for 404 errors, just return error handlers message
@@ -36,25 +37,25 @@ logger = logging.getLogger("son-editor.__main__")
 @api.errorhandler(KeyError)
 def handle_key_error(err):
     logger.exception(err.args[0])
-    return prepareError({"message": "Key '{}' is required in request data!".format(err.args[0])}, 400)
+    return prepare_error({"message": "Key '{}' is required in request data!".format(err.args[0])}, 400)
 
 
 @api.errorhandler(NotFound)
 def handle_not_found(err):
     logger.warn(err.msg)
-    return prepareError({"message": err.msg}, 404)
+    return prepare_error({"message": err.msg}, 404)
 
 
 @api.errorhandler(NameConflict)
 def handle_name_conflict(err):
     logger.warn(err.msg)
-    return prepareError({"message": err.msg}, 409)
+    return prepare_error({"message": err.msg}, 409)
 
 
 @api.errorhandler
 def handle_general_exception(err):
     logger.exception(str(err))
-    return prepareError({"message": str(err)}, getattr(err, 'code', 500))
+    return prepare_error({"message": str(err)}, getattr(err, 'code', 500))
 
 
 # registering all the api resources here
@@ -78,16 +79,21 @@ def shutdown_session(exception=None):
 @app.before_request
 def checkLoggedIn():
     if request.method == 'OPTIONS':
-        return prepareResponse()
+        return prepare_response()
     elif CONFIG['testing']:
+        # Check if the user is allowed access the requested workspace resource (even for tests)
+        check_access(request)
         return
+    # Check if the user is not logged in
     elif 'access_token' not in session and request.endpoint not in ['login', 'static', 'shutdown']:
         args = {"scope": "user:email",
                 "client_id": CONFIG['authentication']['ClientID']}
         session["requested_endpoint"] = request.endpoint
-        return prepareResponse(
+        return prepare_response(
             {'authorizationUrl': 'https://github.com/login/oauth/authorize/?{}'.format(urllib.parse.urlencode(args))},
             401)
+    # Check if the user is allowed access the requested workspace resource
+    check_access(request)
 
 
 def setup():

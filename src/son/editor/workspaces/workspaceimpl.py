@@ -80,7 +80,7 @@ def create_workspace(user_data, workspaceData):
     else:
         workspace_exists = False
 
-    if exitcode == 0 or workspace_exists:
+    if exitcode == 0 and not workspace_exists:
         session.commit()
         return ws.as_dict()
     else:
