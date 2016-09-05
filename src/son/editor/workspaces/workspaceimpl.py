@@ -66,10 +66,10 @@ def create_workspace(user_data, workspace_data):
     try:
         ws = Workspace(name=wsName, path=wsPath, owner=user)
         if 'platforms' in workspace_data:
-            platforms = list(map(lambda x: Platform((x.name, ws, x.url)), workspace_data['platforms']))
+            platforms = list(map(lambda x: Platform((x['name'], ws, x['url'])), workspace_data['platforms']))
             ws.platforms = platforms
         if 'catalogues' in workspace_data:
-            catalogues = list(map(lambda x: Catalogue((x.name, ws, x.url)), workspace_data['catalogues']))
+            catalogues = list(map(lambda x: Catalogue((x['name'], ws, x['url'])), workspace_data['catalogues']))
             ws.platforms = catalogues
         session.add(ws)
     except:
@@ -86,8 +86,6 @@ def create_workspace(user_data, workspace_data):
         workspace_exists = True
     else:
         workspace_exists = False
-
-
 
     if exitcode == 0 and not workspace_exists:
         session.commit()
@@ -124,11 +122,11 @@ def update_workspace(workspace_Data, wsid):
                 workspace.name = new_name
                 workspace.path = new_path
     if 'platforms' in workspace_Data:
-        platforms = list(map(lambda x: Platform((x.name, workspace, x.url)), workspace_Data['platforms']))
-        workspace.platforms = platforms
+        for platform in workspace_Data['platforms']:
+            session.add(Platform(platform['name'], platform['url'], workspace))
     if 'catalogues' in workspace_Data:
-        catalogues = list(map(lambda x: Catalogue((x.name, workspace, x.url)), workspace_Data['catalogues']))
-        workspace.platforms = catalogues
+        for catalogue in workspace_Data['catalogues']:
+            session.add(Catalogue(catalogue['name'], catalogue['url'], workspace))
 
     db_session.commit()
     return workspace.as_dict()

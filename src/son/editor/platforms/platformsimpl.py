@@ -41,7 +41,7 @@ def create_platform(workspace_id):
 
     if len(existing_platforms) > 0:
         raise NameConflict("Platform with name {} already exists".format(platform_data['name']))
-    platform = Platform(platform_name, workspace, platform_url)
+    platform = Platform(platform_name, platform_url, workspace)
     session.add(platform)
     session.commit()
     return platform.as_dict()
