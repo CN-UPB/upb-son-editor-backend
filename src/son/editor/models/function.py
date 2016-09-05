@@ -1,6 +1,7 @@
 import json
 from json import JSONEncoder
 from sqlalchemy import Column, Integer, String, ForeignKey, Text
+from sqlalchemy import UniqueConstraint
 from sqlalchemy.orm import relationship
 
 from son.editor.app.database import Base
@@ -15,6 +16,8 @@ class Function(Base):
     project_id = Column(Integer, ForeignKey('project.id'))
     project = relationship("Project", back_populates="functions")
     descriptor = Column(Text())
+
+    UniqueConstraint('project_id', 'name', 'vendor', 'version', name='uix_1')
 
     def __init__(self, name=None, project=None, version=None, vendor=None, descriptor=None):
         self.name = name

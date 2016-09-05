@@ -7,33 +7,34 @@ from flask_restplus import Resource, Namespace
 
 from son.editor.app.util import prepare_response
 from son.editor.app.constants import WORKSPACES, PLATFORMS
+from son.editor.platforms import platformsimpl
 
 namespace = Namespace(WORKSPACES + '/<int:ws_id>/' + PLATFORMS, description="Platform Resources")
 
 
-@namespace.route("")
+@namespace.route("/")
 @namespace.response(200, "OK")
 class Platforms(Resource):
     "Platforms"
 
-    #@platforms_api.doc("list platforms")
+    @namespace.doc("list platforms")
     def get(self, ws_id):
-        return prepare_response([{"id": 1, "name": "platform1"}])
+        return prepare_response(platformsimpl.get_platforms(ws_id))
 
-    #@platforms_api.doc("create new service platform")
-    def post(self, ws_id, platformID):
-        return "create new service platform and return id"
+    @namespace.doc("create new service platform")
+    def post(self, ws_id):
+        return prepare_response(platformsimpl.create_platform(ws_id), 201)
 
 
-@namespace.route("/<int:platformID>")
-@namespace.param('platformID', 'The Platform identifier')
+@namespace.route("/<int:platform_id>")
+@namespace.param('platform_id', 'The Platform identifier')
 @namespace.response(200, "OK")
 class Platform(Resource):
-    def get(self, ws_id, platformID):
-        return "info for platform with id {}".format(platformID)
+    def get(self, ws_id, platform_id):
+        return prepare_response(platformsimpl.get_platform(platform_id))
 
-    def put(self, ws_id, platformID):
-        return "update platform with id {}".format(platformID)
+    def put(self, ws_id, platform_id):
+        return prepare_response(platformsimpl.update_platform(ws_id, platform_id))
 
-    def delete(self, ws_id, platformID):
-        return "deleted platform with id {}".format(platformID)
+    def delete(self, ws_id, platform_id):
+        return prepare_response(platformsimpl.delete(ws_id, platform_id))
