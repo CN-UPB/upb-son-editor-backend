@@ -13,6 +13,7 @@ from subprocess import Popen, PIPE
 from son.editor.app.database import db_session
 from son.editor.app.exceptions import NameConflict, NotFound
 from son.editor.app.util import CONFIG, rreplace
+from son.editor.models.repository import Platform, Catalogue
 from son.editor.models.workspace import Workspace
 from son.editor.users.usermanagement import get_user
 
@@ -47,8 +48,8 @@ def get_workspace(user_data, ws_id):
         raise NotFound("No workspace with id " + ws_id + " exists")
 
 
-def create_workspace(user_data, workspaceData):
-    wsName = shlex.quote(workspaceData["name"])
+def create_workspace(user_data, workspace_data):
+    wsName = shlex.quote(workspace_data["name"])
     session = db_session()
 
     # test if ws Name exists in database
@@ -64,6 +65,12 @@ def create_workspace(user_data, workspaceData):
     # prepare db insert
     try:
         ws = Workspace(name=wsName, path=wsPath, owner=user)
+        if 'platforms' in workspace_data:
+            platforms = list(map(lambda x: Platform((x.name, ws, x.url)), workspace_data['platforms']))
+            ws.platforms = platforms
+        if 'catalogues' in workspace_data:
+            catalogues = list(map(lambda x: Catalogue((x.name, ws, x.url)), workspace_data['catalogues']))
+            ws.platforms = catalogues
         session.add(ws)
     except:
         logger.exception()
@@ -80,6 +87,8 @@ def create_workspace(user_data, workspaceData):
     else:
         workspace_exists = False
 
+
+
     if exitcode == 0 and not workspace_exists:
         session.commit()
         return ws.as_dict()
@@ -90,19 +99,16 @@ def create_workspace(user_data, workspaceData):
         raise Exception(err, out)
 
 
-
-
-
-def update_workspace(workspaceData, wsid):
+def update_workspace(workspace_Data, wsid):
     session = db_session()
     workspace = session.query(Workspace).filter(Workspace.id == int(wsid)).first()
     if workspace is None:
         raise NotFound("Workspace with id {} could not be found".format(wsid))
 
     # Update name
-    if 'name' in workspaceData:
+    if 'name' in workspace_Data:
         if os.path.exists(workspace.path):
-            new_name = workspaceData['name']
+            new_name = workspace_Data['name']
             old_path = workspace.path
             new_path = rreplace(workspace.path, workspace.name, new_name, 1)
 
@@ -117,6 +123,12 @@ def update_workspace(workspaceData, wsid):
                 shutil.move(old_path, new_path)
                 workspace.name = new_name
                 workspace.path = new_path
+    if 'platforms' in workspace_Data:
+        platforms = list(map(lambda x: Platform((x.name, workspace, x.url)), workspace_Data['platforms']))
+        workspace.platforms = platforms
+    if 'catalogues' in workspace_Data:
+        catalogues = list(map(lambda x: Catalogue((x.name, workspace, x.url)), workspace_Data['catalogues']))
+        workspace.platforms = catalogues
 
     db_session.commit()
     return workspace.as_dict()
