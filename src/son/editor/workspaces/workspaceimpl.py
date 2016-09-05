@@ -65,13 +65,15 @@ def create_workspace(user_data, workspace_data):
     # prepare db insert
     try:
         ws = Workspace(name=wsName, path=wsPath, owner=user)
-        if 'platforms' in workspace_data:
-            platforms = list(map(lambda x: Platform((x['name'], ws, x['url'])), workspace_data['platforms']))
-            ws.platforms = platforms
-        if 'catalogues' in workspace_data:
-            catalogues = list(map(lambda x: Catalogue((x['name'], ws, x['url'])), workspace_data['catalogues']))
-            ws.platforms = catalogues
         session.add(ws)
+        session.commit()
+        if 'platforms' in workspace_data:
+            for platform in workspace_data['platforms']:
+                session.add(Platform(platform['name'], platform['url'], ws))
+        if 'catalogues' in workspace_data:
+            for catalogue in workspace_data['catalogues']:
+                session.add(Catalogue(catalogue['name'], catalogue['url'], ws))
+        session.commit()
     except:
         logger.exception()
         session.rollback()
@@ -97,35 +99,38 @@ def create_workspace(user_data, workspace_data):
         raise Exception(err, out)
 
 
-def update_workspace(workspace_Data, wsid):
+def update_workspace(workspace_data, wsid):
     session = db_session()
     workspace = session.query(Workspace).filter(Workspace.id == int(wsid)).first()
     if workspace is None:
         raise NotFound("Workspace with id {} could not be found".format(wsid))
 
     # Update name
-    if 'name' in workspace_Data:
+    if 'name' in workspace_data:
         if os.path.exists(workspace.path):
-            new_name = workspace_Data['name']
+            new_name = workspace_data['name']
             old_path = workspace.path
-            new_path = rreplace(workspace.path, workspace.name, new_name, 1)
+            # only update if name has changed
+            if new_name != workspace.name:
+                new_path = rreplace(workspace.path, workspace.name, new_name, 1)
 
-            if os.path.exists(new_path):
-                raise NameConflict("Invalid name parameter, workspace '{}' already exists".format(new_name))
+                if os.path.exists(new_path):
+                    raise NameConflict("Invalid name parameter, workspace '{}' already exists".format(new_name))
 
-            # Do not allow move directories outside of the workspaces_dir
-            if not new_path.startswith(WORKSPACES_DIR):
-                raise Exception("Invalid path parameter, you are not allowed to break out of {}".format(WORKSPACES_DIR))
-            else:
-                # Move the directory
-                shutil.move(old_path, new_path)
-                workspace.name = new_name
-                workspace.path = new_path
-    if 'platforms' in workspace_Data:
-        for platform in workspace_Data['platforms']:
+                # Do not allow move directories outside of the workspaces_dir
+                if not new_path.startswith(WORKSPACES_DIR):
+                    raise Exception(
+                        "Invalid path parameter, you are not allowed to break out of {}".format(WORKSPACES_DIR))
+                else:
+                    # Move the directory
+                    shutil.move(old_path, new_path)
+                    workspace.name = new_name
+                    workspace.path = new_path
+    if 'platforms' in workspace_data:
+        for platform in workspace_data['platforms']:
             session.add(Platform(platform['name'], platform['url'], workspace))
-    if 'catalogues' in workspace_Data:
-        for catalogue in workspace_Data['catalogues']:
+    if 'catalogues' in workspace_data:
+        for catalogue in workspace_data['catalogues']:
             session.add(Catalogue(catalogue['name'], catalogue['url'], workspace))
 
     db_session.commit()
