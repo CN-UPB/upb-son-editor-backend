@@ -8,17 +8,17 @@ import logging
 from flask_restplus import Model, Resource, Namespace, fields
 
 from son.editor.app.constants import WORKSPACES, PROJECTS, CATALOGUES, PLATFORMS, SERVICES
-from son.editor.app.util import prepareResponse
+from son.editor.app.util import prepare_response
 from . import servicesimpl
 
 logger = logging.getLogger(__name__)
 
-proj_namespace = Namespace(WORKSPACES + '/<int:wsID>/' + PROJECTS + "/<int:parentID>/" + SERVICES,
+proj_namespace = Namespace(WORKSPACES + '/<int:ws_id>/' + PROJECTS + "/<int:parent_id>/" + SERVICES,
                            description="Project Service Resources")
 
-cata_namespace = Namespace(WORKSPACES + '/<int:wsID>/' + CATALOGUES + "/<int:parentID>/" + SERVICES,
+cata_namespace = Namespace(WORKSPACES + '/<int:ws_id>/' + CATALOGUES + "/<int:parent_id>/" + SERVICES,
                            description="Catalogue Service Resources")
-plat_namespace = Namespace(WORKSPACES + '/<int:wsID>/' + PLATFORMS + "/<int:parentID>/" + SERVICES,
+plat_namespace = Namespace(WORKSPACES + '/<int:ws_id>/' + PLATFORMS + "/<int:parent_id>/" + SERVICES,
                            description="Platform Service Resources")
 
 serv = Model("Service", {
@@ -40,36 +40,52 @@ proj_namespace.add_model(serv_response.name, serv_response)
 @proj_namespace.route('/')
 @cata_namespace.route('/')
 @plat_namespace.route('/')
+@proj_namespace.param('ws_id', 'The Workspace identifier')
+@cata_namespace.param('ws_id', 'The Workspace identifier')
+@plat_namespace.param('ws_id', 'The Workspace identifier')
+@proj_namespace.param('parent_id', 'The Project identifier')
+@cata_namespace.param('parent_id', 'The Catalogue identifier')
+@plat_namespace.param('parent_id', 'The Platform identifier')
 @proj_namespace.response(200, "OK")
 class Services(Resource):
     @proj_namespace.response(200, "OK", [serv_response])
-    def get(self, wsID, parentID):
-        service = servicesimpl.get_services(wsID, parentID)
-        return prepareResponse(service)
+    def get(self, ws_id, parent_id):
+        service = servicesimpl.get_services(ws_id, parent_id)
+        return prepare_response(service)
 
     @proj_namespace.expect(serv)
     @proj_namespace.response(201, "Created", serv_response)
-    def post(self, wsID, parentID):
-        service = servicesimpl.create_service(wsID, parentID)
-        return prepareResponse(service, 201)
+    def post(self, ws_id, parent_id):
+        service = servicesimpl.create_service(ws_id, parent_id)
+        return prepare_response(service, 201)
 
 
-@proj_namespace.route('/<int:serviceID>')
-@cata_namespace.route('/<int:serviceID>')
-@plat_namespace.route('/<int:serviceID>')
-@proj_namespace.param('serviceID', 'The Service identifier')
-@cata_namespace.param('serviceID', 'The Service identifier')
-@plat_namespace.param('serviceID', 'The Service identifier')
+@proj_namespace.route('/<int:service_id>')
+@cata_namespace.route('/<int:service_id>')
+@plat_namespace.route('/<int:service_id>')
+@proj_namespace.param('ws_id', 'The Workspace identifier')
+@cata_namespace.param('ws_id', 'The Workspace identifier')
+@plat_namespace.param('ws_id', 'The Workspace identifier')
+@proj_namespace.param('service_id', 'The Service identifier')
+@cata_namespace.param('service_id', 'The Service identifier')
+@plat_namespace.param('service_id', 'The Service identifier')
+@proj_namespace.param('parent_id', 'The Project identifier')
+@cata_namespace.param('parent_id', 'The Catalogue identifier')
+@plat_namespace.param('parent_id', 'The Platform identifier')
 @proj_namespace.response(200, "OK")
 class Service(Resource):
-    def put(self, wsID, parentID, serviceID):
-        service = servicesimpl.update_service(wsID, parentID, serviceID)
-        return prepareResponse(service)
+    @proj_namespace.expect(serv)
+    @proj_namespace.response(200, "Updated", serv_response)
+    def put(self, ws_id, parent_id, service_id):
+        service = servicesimpl.update_service(ws_id, parent_id, service_id)
+        return prepare_response(service)
 
-    def delete(self, wsID, parentID, serviceID):
-        service = servicesimpl.delete_service(parentID, serviceID)
-        return prepareResponse(service)
+    @proj_namespace.response(200, "Deleted", serv_response)
+    def delete(self, ws_id, parent_id, service_id):
+        service = servicesimpl.delete_service(parent_id, service_id)
+        return prepare_response(service)
 
-    def get(self, wsID, parentID, serviceID):
-        service = servicesimpl.get_service(wsID, parentID, serviceID)
-        return prepareResponse(service)
+    @proj_namespace.response(200, "OK", serv_response)
+    def get(self, ws_id, parent_id, service_id):
+        service = servicesimpl.get_service(ws_id, parent_id, service_id)
+        return prepare_response(service)

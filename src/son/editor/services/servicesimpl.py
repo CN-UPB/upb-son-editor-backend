@@ -5,23 +5,23 @@ from son.editor.app.exceptions import NotFound
 from son.editor.models.project import Project
 from son.editor.models.service import Service
 from son.editor.app.database import db_session
-from son.editor.app.util import getJSON
+from son.editor.app.util import get_json
 
 
-def get_services(wsID, parentID):
+def get_services(ws_id, parent_id):
     session = db_session()
-    project = session.query(Project).filter_by(id=parentID).first()
+    project = session.query(Project).filter_by(id=parent_id).first()
     session.commit()
     if project:
         return list(map(lambda x: x.as_dict(), project.services))
     else:
-        raise NotFound("No project matching id {}".format(parentID))
+        raise NotFound("No project matching id {}".format(parent_id))
 
 
-def create_service(wsID, parentID):
+def create_service(ws_id, parent_id):
     session = db_session()
-    service_data = getJSON(request)
-    project = session.query(Project).filter_by(id=parentID).first()
+    service_data = get_json(request)
+    project = session.query(Project).filter_by(id=parent_id).first()
 
     if project:
         # Retrieve post parameters
@@ -37,13 +37,13 @@ def create_service(wsID, parentID):
         session.commit()
         return service.as_dict()
     else:
-        raise NotFound("Project with id '{}‘ not found".format(parentID))
+        raise NotFound("Project with id '{}‘ not found".format(parent_id))
 
 
-def update_service(wsID, parentID, serviceID):
+def update_service(ws_id, parent_id, service_id):
     session = db_session()
-    service_data = getJSON(request)
-    service = session.query(Service).filter_by(id=serviceID).first()
+    service_data = get_json(request)
+    service = session.query(Service).filter_by(id=service_id).first()
     if service:
         # Parse parameters and update record
         service_name = shlex.quote(service_data["name"])
@@ -58,13 +58,13 @@ def update_service(wsID, parentID, serviceID):
         session.commit()
         return service.as_dict()
     else:
-        raise NotFound("Could not update service '{}', because no record was found".format(serviceID))
+        raise NotFound("Could not update service '{}', because no record was found".format(service_id))
 
 
-def delete_service(parentID, serviceID):
+def delete_service(parent_id, service_id):
     session = db_session()
-    project = session.query(Project).filter(Project.id == parentID).first()
-    service = session.query(Service).filter(Service.id == serviceID).first()
+    project = session.query(Project).filter(Project.id == parent_id).first()
+    service = session.query(Service).filter(Service.id == service_id).first()
 
     if project:
         if service in project.services:
@@ -72,17 +72,18 @@ def delete_service(parentID, serviceID):
         if service:
             session.delete(service)
             session.commit()
+            return service.as_dict();
         else:
-            raise NotFound("Delete service did not work, service with id {} not found".format(serviceID))
+            raise NotFound("Delete service did not work, service with id {} not found".format(service_id))
     else:
-        raise NotFound("Delete service did not work, project with id {} not found".format(serviceID))
+        raise NotFound("Delete service did not work, project with id {} not found".format(service_id))
 
 
-def get_service(wsid, parentID, serviceID):
+def get_service(ws_id, parent_id, service_id):
     session = db_session()
-    service = session.query(Service).filter_by(id=serviceID).first()
+    service = session.query(Service).filter_by(id=service_id).first()
     session.commit()
     if service:
-        return service
+        return service.as_dict()
     else:
-        raise NotFound("No Service matching id {}".format(parentID))
+        raise NotFound("No Service matching id {}".format(parent_id))

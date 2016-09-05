@@ -11,7 +11,7 @@ from flask_restplus import Resource
 from flask_restplus import fields
 
 from son.editor.app.constants import WORKSPACES, PROJECTS
-from son.editor.app.util import prepareResponse, getJSON
+from son.editor.app.util import prepare_response, get_json
 from . import projectsimpl
 
 namespace = Namespace(WORKSPACES + '/<int:ws_id>/' + PROJECTS, description="Project Resources")
@@ -34,16 +34,16 @@ class Projects(Resource):
     @namespace.response(200, "OK", [pj_response])
     def get(self, ws_id):
         projects = projectsimpl.get_projects(session['userData'], ws_id)
-        return prepareResponse(projects)
+        return prepare_response(projects)
 
     @namespace.doc("create_project")
     @namespace.expect(pj)
     @namespace.response(201, "Created", pj_response)
     @namespace.response(409, "Project already exists")
     def post(self, ws_id):
-        projectData = getJSON(request)
+        projectData = get_json(request)
         pj = projectsimpl.create_project(session['userData'], ws_id, projectData)
-        return prepareResponse(pj, 201)
+        return prepare_response(pj, 201)
 
 
 @namespace.route('/<int:project_id>')
@@ -56,14 +56,14 @@ class Project(Resource):
     @namespace.response(404, "Project not found")
     @namespace.response(409, "Project already exists")
     def put(self, ws_id, project_id):
-        project_data = getJSON(request)
-        return prepareResponse(projectsimpl.update_project(project_data, project_id))
+        project_data = get_json(request)
+        return prepare_response(projectsimpl.update_project(project_data, project_id))
 
     def delete(self, ws_id, project_id):
-        return prepareResponse(projectsimpl.delete_project(project_id))
+        return prepare_response(projectsimpl.delete_project(project_id))
 
     @namespace.doc("get_project")
     @namespace.response(200, "Ok", pj_response)
     @namespace.response(404, "Workspace not found")
     def get(self, ws_id, project_id):
-        return prepareResponse(projectsimpl.get_project(session['userData'], ws_id, project_id))
+        return prepare_response(projectsimpl.get_project(session['userData'], ws_id, project_id))

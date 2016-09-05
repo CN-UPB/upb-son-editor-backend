@@ -68,7 +68,7 @@ def create_project(user_data, ws_id, project_data):
                              .filter(Project.workspace == workspace)
                              .filter(Project.name == project_name))
     if len(existing_projects) > 0:
-        raise NameConflict("Project with name {} already exists in this workspace".format(project_name))
+        raise NameConflict("Project with name '{}' already exists in this workspace".format(project_name))
 
     # prepare db insert
     try:
@@ -85,19 +85,19 @@ def create_project(user_data, ws_id, project_data):
     out, err = proc.communicate()
     exitcode = proc.returncode
 
-    if out.decode().find('existing') >= 0:
+    if err.decode().find('exists') >= 0:
         project_exists = True
     else:
         project_exists = False
 
-    if exitcode == 0 or project_exists:
+    if exitcode == 0 and not project_exists:
         session.commit()
         return project.as_dict()
     else:
         session.rollback()
         if project_exists:
-            raise NameConflict(out.decode())
-        raise Exception(err, out)
+            raise NameConflict("Project with name '{}' already exists in this workspace".format(project_name))
+        raise Exception(err.decode(), out.decode())
 
 
 def update_project(project_data, project_id):

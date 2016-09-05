@@ -14,7 +14,7 @@ configFileName = resource_filename(Requirement.parse("sonata_editor"), "config.y
 CONFIG = yaml.safe_load(open(str(configFileName)))
 
 
-def prepareResponse(data=None, code=200):
+def prepare_response(data=None, code=200):
     response = Response()
     headers = response.headers
     if allowed_origin():
@@ -24,7 +24,7 @@ def prepareResponse(data=None, code=200):
     headers['Access-Control-Allow-Credentials'] = "true"
     headers['Access-Control-Max-Age'] = 1000
     if data is not None:
-        if type(data) is dict or type(data) is list:
+        if isinstance(data, dict) or isinstance(data, list):
             response.set_data(json.dumps(data))
             headers['Content-Type'] = 'application/json'
         else:
@@ -34,7 +34,7 @@ def prepareResponse(data=None, code=200):
     return response
 
 
-def prepareError(data=None, code=500):
+def prepare_error(data=None, code=500):
     response = Response()
     headers = response.headers
     if allowed_origin():
@@ -55,13 +55,14 @@ def allowed_origin():
         return origin in CONFIG['allowed-hosts']
 
 
-def getJSON(request):
-    jsonData = request.get_json()
-    if jsonData is None:
-        jsonData = request.form
-    if jsonData is None:
-        jsonData = json.loads(request.get_data().decode("utf8"))
-    return jsonData
+def get_json(request):
+    json_data = request.get_json()
+    if json_data is None:
+        json_data = request.form
+    if json_data is None:
+        json_data = json.loads(request.get_data().decode("utf8"))
+    return json_data
+
 
 def rreplace(s, old, new, occurrence):
     li = s.rsplit(old, occurrence)

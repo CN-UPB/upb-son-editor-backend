@@ -1,13 +1,15 @@
+import contextlib
+
+from sqlalchemy import MetaData
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
+
 from son.editor.app.util import CONFIG
-from sqlalchemy import MetaData
-import contextlib
 
 # DB URI
 DATABASE_SQLITE_URI = "sqlite:///%s" % CONFIG['database']['location']
-print("DBSQLITE_URI: "+DATABASE_SQLITE_URI)
+print("DBSQLITE_URI: " + DATABASE_SQLITE_URI)
 
 engine = create_engine(DATABASE_SQLITE_URI, convert_unicode=True)
 db_session = scoped_session(sessionmaker(autocommit=False,
