@@ -12,16 +12,17 @@ from son.editor.models.repository import Catalogue
 def get_catalogue(catalogue_id):
     session = db_session()
     catalogue = session.query(Catalogue).filter(Catalogue.id == catalogue_id).first()
-    if catalogue:
-        return catalogue.as_dict()
-    raise NotFound("catalogue with id {} could not be found".format(catalogue_id))
+    session.commit()
+    if catalogue is None:
+        raise NotFound("catalogue with id {} could not be found".format(catalogue_id))
+    return catalogue.as_dict()
 
 
 def get_catalogues(workspace_id):
     session = db_session()
     catalogues = session.query(Catalogue).filter(Catalogue.workspace_id == workspace_id).all()
-    if catalogues:
-        return list(map(lambda x: x.as_dict(), catalogues))
+    session.commit()
+    return list(map(lambda x: x.as_dict(), catalogues))
 
 
 def create_catalogue(workspace_id):
