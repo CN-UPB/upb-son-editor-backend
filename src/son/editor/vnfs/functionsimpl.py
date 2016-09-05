@@ -36,7 +36,7 @@ def create_function(user_data, ws_id, project_id, function_data):
     version = shlex.quote(function_data["version"])
     session = db_session()
 
-    # test if ws Name exists in database
+    # test if function Name exists in database
     user = get_user(user_data)
     existing_functions = list(session.query(Function)
                               .join(Project)

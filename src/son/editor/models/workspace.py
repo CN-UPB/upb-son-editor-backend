@@ -11,11 +11,11 @@ class Workspace(Base):
     name = Column(String(50))
     path = Column(String(255), unique=True)
     projects = relationship("Project", back_populates="workspace")
+    repositories = relationship("Repository", back_populates="workspace")
     owner_id = Column(Integer, ForeignKey('user.id'))
     owner = relationship("User", back_populates="workspaces")
 
     UniqueConstraint('owner_id', 'name', name='uix_1')
-
 
     def __init__(self, name=None, path=None, owner=None):
         self.name = name
