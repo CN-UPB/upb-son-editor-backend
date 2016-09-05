@@ -11,7 +11,8 @@ class Workspace(Base):
     name = Column(String(50))
     path = Column(String(255), unique=True)
     projects = relationship("Project", back_populates="workspace")
-    repositories = relationship("Repository", back_populates="workspace")
+    catalogues = relationship("Catalogue", back_populates="workspace")
+    platforms = relationship("Platform", back_populates="workspace")
     owner_id = Column(Integer, ForeignKey('user.id'))
     owner = relationship("User", back_populates="workspaces")
 
@@ -26,4 +27,6 @@ class Workspace(Base):
         return '<Workspace %r:%r>' % (self.name, self.path)
 
     def as_dict(self):
-        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+        return {"id": self.id, "name": self.name, "path": self.path,
+                "catalogues": list(map(lambda x: x.as_dict(), self.catalogues)),
+                "platforms": list(map(lambda x: x.as_dict(), self.platforms))}

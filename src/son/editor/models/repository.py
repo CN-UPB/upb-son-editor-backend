@@ -10,7 +10,6 @@ class Repository(Base):
     name = Column(String(50))
     url = Column(String(50))
     workspace_id = Column(Integer, ForeignKey('workspace.id'))
-    workspace = relationship("Workspace", back_populates="repositories")
 
     def __init__(self, name=None, workspace=None, url=None):
         self.name = name
@@ -27,6 +26,7 @@ class Repository(Base):
 class Catalogue(Repository):
     __tablename__ = 'catalogue'
     id = Column(Integer, ForeignKey('repository.id'), primary_key=True)
+    workspace = relationship("Workspace", back_populates="catalogues")
 
     __mapper_args__ = {
         'polymorphic_identity': 'catalogue',
@@ -39,6 +39,7 @@ class Catalogue(Repository):
 class Platform(Repository):
     __tablename__ = 'platform'
     id = Column(Integer, ForeignKey('repository.id'), primary_key=True)
+    workspace = relationship("Workspace", back_populates="platforms")
 
     __mapper_args__ = {
         'polymorphic_identity': 'platform',

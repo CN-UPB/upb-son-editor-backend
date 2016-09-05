@@ -1,8 +1,8 @@
-'''
+""""
 Created on 18.07.2016
 
 @author: Jonas
-'''
+"""
 import logging
 
 from flask import session
@@ -17,19 +17,27 @@ from . import workspaceimpl
 namespace = Namespace(WORKSPACES, description="Workspace Resources")
 logger = logging.getLogger("son-editor.workspacesapi")
 
+rep = namespace.model("Repository", {
+    'name': fields.String(required=True, description='The Repository Name'),
+    'url': fields.Url(required=True, description='The Repository URL')
+})
+
 ws = namespace.model("Workspace", {
-    'name': fields.String(required=True, description='The Workspace Name')
+    'name': fields.String(required=True, description='The Workspace Name'),
+    "catalogues": fields.List(fields.Nested(rep)),
+    "platforms": fields.List(fields.Nested(rep))
 })
 
 ws_response = namespace.inherit("WorkspaceResponse", ws, {
     "path": fields.String(description='The Physical Workspace location'),
-    "id": fields.Integer(description='The Workspace ID'),
-    "owner_id": fields.Integer(description='The Workspaces Owner ID')
+    "id": fields.Integer(description='The Workspace ID')
 })
 
 
 @namespace.route('/')
 class Workspaces(Resource):
+    """Methods for the workspace resource directory"""
+
     @namespace.doc("list_workspaces")
     @namespace.response(200, "OK", [ws_response])
     def get(self):
@@ -41,14 +49,16 @@ class Workspaces(Resource):
     @namespace.response(201, "Created", ws_response)
     @namespace.response(409, "Workspace already exists")
     def post(self):
-        workspaceData = get_json(request)
-        workspace = workspaceimpl.create_workspace(session['userData'], workspaceData)
+        workspace_data = get_json(request)
+        workspace = workspaceimpl.create_workspace(session['userData'], workspace_data)
         return prepare_response(workspace, 201)
 
 
 @namespace.route('/<int:ws_id>')
 @namespace.param("ws_id", "The workpace ID")
 class Workspace(Resource):
+    """Methods for a single workspace resource"""
+
     @namespace.doc("get_workspace")
     @namespace.response(200, "Ok", ws_response)
     @namespace.response(404, "Workspace not found")
@@ -62,8 +72,8 @@ class Workspace(Resource):
     @namespace.response(404, "Workspace not found")
     @namespace.response(409, "Workspace already exists")
     def put(self, ws_id):
-        workspaceData = get_json(request)
-        workspace = workspaceimpl.update_workspace(workspaceData, ws_id)
+        workspace_data = get_json(request)
+        workspace = workspaceimpl.update_workspace(workspace_data, ws_id)
         return prepare_response(workspace)
 
     @namespace.doc("delete_namespace")
