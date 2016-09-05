@@ -41,7 +41,7 @@ def create_catalogue(workspace_id):
 
     if len(existing_catalogues) > 0:
         raise NameConflict("catalogue with name {} already exists".format(catalogue_data['name']))
-    catalogue = Catalogue(catalogue_name, workspace, catalogue_url)
+    catalogue = Catalogue(catalogue_name, catalogue_url, workspace)
     session.add(catalogue)
     session.commit()
     return catalogue.as_dict()
