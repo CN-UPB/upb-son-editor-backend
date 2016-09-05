@@ -12,16 +12,17 @@ from son.editor.models.repository import Platform
 def get_platform(platform_id):
     session = db_session()
     platform = session.query(Platform).filter(Platform.id == platform_id).first()
-    if platform:
-        return platform.as_dict()
-    raise NotFound("Platform with id {} could not be found".format(platform_id))
+    session.commit()
+    if platform is None:
+        raise NotFound("Platform with id {} could not be found".format(platform_id))
+    return platform.as_dict()
 
 
 def get_platforms(workspace_id):
     session = db_session()
     platforms = session.query(Platform).filter(Platform.workspace_id == workspace_id).all()
-    if platforms:
-        return list(map(lambda x: x.as_dict(), platforms))
+    session.commit()
+    return list(map(lambda x: x.as_dict(), platforms))
 
 
 def create_platform(workspace_id):
