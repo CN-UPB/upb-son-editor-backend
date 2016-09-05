@@ -12,6 +12,8 @@ from son.editor.users.usermanagement import get_user
 def check_access(request):
     # Access parsed values of the url
     # Check if wsID was in the url
+    if request.view_args is None:
+        return
     if 'ws_id' in request.view_args:
         ws_id = request.view_args['ws_id']
         data_session = db_session()

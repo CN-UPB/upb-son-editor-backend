@@ -15,6 +15,6 @@ deployment-script:
   - run:
     sync: 'git stash pop'
   - run: "installing changed requirements"
-    sync: 'python pip install -e'
+    sync: 'pip install -e .'
   - run: "reloading son editor"
     sync: 'uwsgi --reload /tmp/project-master.pid'
