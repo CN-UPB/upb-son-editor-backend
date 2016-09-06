@@ -72,7 +72,7 @@ def delete_service(parent_id, service_id):
         if service:
             session.delete(service)
             session.commit()
-            return service.as_dict();
+            return service.as_dict()
         else:
             raise NotFound("Delete service did not work, service with id {} not found".format(service_id))
     else:
