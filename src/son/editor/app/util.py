@@ -10,7 +10,7 @@ from flask.wrappers import Response
 from pkg_resources import Requirement, resource_filename
 import yaml
 
-configFileName = resource_filename(Requirement.parse("sonata_editor"), "config.yaml")
+configFileName = resource_filename(Requirement.parse("upb-son-editor-backend"), "config.yaml")
 CONFIG = yaml.safe_load(open(str(configFileName)))
 
 

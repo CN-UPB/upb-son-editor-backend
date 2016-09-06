@@ -38,7 +38,7 @@ import os.path as path
 cwd = path.dirname(__file__)
 longdesc = codecs.open(path.join(cwd, 'README.md'), 'r', 'utf-8').read()
 
-name = 'sonata-editor'
+name = 'upb-son-editor-backend'
 setup(
     name=name,
     license='Apache License, Version 2.0',
