@@ -19,7 +19,7 @@ from son.editor import projects
 from son.editor import services
 from son.editor import vnfs
 from son.editor import workspaces
-from son.editor.app.database import db_session, init_db
+from son.editor.app.database import db_session, init_db, scan_workspaces_dir
 from son.editor.app.exceptions import NameConflict, NotFound
 from son.editor.app.util import CONFIG, prepare_response, prepare_error
 from son.editor.app.securityservice import check_access
@@ -105,7 +105,8 @@ def setup():
     else:
         logger.info('Init database on "%s"' % dbFile)
         init_db()
-
+    # parse all workspaces already on the hard drive
+    scan_workspaces_dir()
     # Start the flask server
     logger.info("Launch flask server")
 

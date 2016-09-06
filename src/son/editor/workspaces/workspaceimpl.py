@@ -17,11 +17,7 @@ from son.editor.models.repository import Platform, Catalogue
 from son.editor.models.workspace import Workspace
 from son.editor.users.usermanagement import get_user
 
-# If its testing, don't mess up workspace location
-if CONFIG['testing']:
-    WORKSPACES_DIR = tempfile.mkdtemp()
-else:
-    WORKSPACES_DIR = os.path.expanduser(CONFIG["workspaces-location"])
+WORKSPACES_DIR = os.path.expanduser(CONFIG["workspaces-location"])
 
 logger = logging.getLogger("son-editor.workspaceimpl")
 
@@ -127,11 +123,53 @@ def update_workspace(workspace_data, wsid):
                     workspace.name = new_name
                     workspace.path = new_path
     if 'platforms' in workspace_data:
-        for platform in workspace_data['platforms']:
-            session.add(Platform(platform['name'], platform['url'], workspace))
+        for updated_platform in workspace_data['platforms']:
+            platform = None
+            if 'id' in updated_platform:
+                platform = session.query(Platform). \
+                    filter(Platform.id == updated_platform['id']). \
+                    filter(Platform.workspace == workspace). \
+                    first()
+            if platform:
+                # update existing
+                platform.name = updated_platform['name']
+                platform.url = updated_platform['url']
+            else:
+                # create new
+                new_platform = Platform(updated_platform['name'], updated_platform['url'], workspace)
+                session.add(new_platform)
+        for platform in workspace.platforms:
+            deleted = True
+            for updated_platform in workspace_data['platforms']:
+                if 'id' in updated_platform and platform.id == updated_platform['id']:
+                    deleted = False
+                    break
+            if deleted:
+                session.delete(platform)
     if 'catalogues' in workspace_data:
-        for catalogue in workspace_data['catalogues']:
-            session.add(Catalogue(catalogue['name'], catalogue['url'], workspace))
+        for updated_catalogue in workspace_data['catalogues']:
+            catalogue = None
+            if 'id' in updated_catalogue:
+                catalogue = session.query(Platform). \
+                    filter(Platform.id == updated_catalogue['id']). \
+                    filter(Platform.workspace == workspace). \
+                    first()
+            if catalogue:
+                # update existing
+                catalogue.name = updated_catalogue['name']
+                catalogue.url = updated_catalogue['url']
+            else:
+                # create new
+                new_catalogue = Platform(updated_catalogue['name'], updated_catalogue['url'], workspace)
+                session.add(new_catalogue)
+        for catalogue in workspace.catalogues:
+            deleted = True
+            for updated_catalogue in workspace_data['catalogues']:
+                if 'id' in updated_catalogue and catalogue.id == updated_catalogue['id']:
+                    deleted = False
+                    break
+            if deleted:
+                session.delete(catalogue)
 
     db_session.commit()
     return workspace.as_dict()
