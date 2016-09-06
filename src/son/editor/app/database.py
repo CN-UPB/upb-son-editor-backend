@@ -49,15 +49,16 @@ def reset_db():
 def scan_workspaces_dir():
     from son.editor.models.user import User
     wss_dir = os.path.expanduser(CONFIG["workspaces-location"])
-    session = db_session()
-    for user_name in os.listdir(wss_dir):
-        user = session.query(User).filter(User.name == user_name).first()
-        if user is None:
-            logger.info("Found user: {}!".format(user_name))
-            user = User(user_name)
-            session.add(user)
-            session.commit()
-        _scan_user_dir(wss_dir, user)
+    if os.path.exists(wss_dir):
+        session = db_session()
+        for user_name in os.listdir(wss_dir):
+            user = session.query(User).filter(User.name == user_name).first()
+            if user is None:
+                logger.info("Found user: {}!".format(user_name))
+                user = User(user_name)
+                session.add(user)
+                session.commit()
+            _scan_user_dir(wss_dir, user)
 
 
 def _scan_user_dir(ws_dir, user):
