@@ -10,7 +10,7 @@ from flask.wrappers import Response
 from pkg_resources import Requirement, resource_filename
 import yaml
 
-configFileName = resource_filename(Requirement.parse("upb-son-editor-backend"), "config.yaml")
+configFileName = resource_filename(Requirement.parse("upb_son_editor_backend"), "config.yaml")
 CONFIG = yaml.safe_load(open(str(configFileName)))
 
 
