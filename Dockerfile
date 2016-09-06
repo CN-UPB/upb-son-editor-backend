@@ -11,7 +11,7 @@ WORKDIR ..
 RUN pip install uwsgi
 
 #install son-editor-backend
-RUN git clone https://github.com/CN-UPB/upb-son-editor-backend
+COPY . /upb-son-editor-backend
 
 # Set the default directory where CMD will execute
 WORKDIR /upb-son-editor-backend
