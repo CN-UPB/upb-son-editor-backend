@@ -7,11 +7,9 @@ import json
 
 from flask import request
 from flask.wrappers import Response
-from pkg_resources import Requirement, resource_filename
+from pkg_resources import Requirement, resource_string
 import yaml
-
-configFileName = resource_filename(Requirement.parse("upb-son-editor-backend"), "config.yaml")
-CONFIG = yaml.safe_load(open(str(configFileName)))
+CONFIG = yaml.safe_load(resource_string(Requirement.parse("upb-son-editor-backend"), "config.yaml"))
 
 
 def prepare_response(data=None, code=200):
