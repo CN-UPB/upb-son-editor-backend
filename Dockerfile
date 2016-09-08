@@ -1,17 +1,13 @@
 FROM python:3
 
 #install son-cli tools
-RUN git clone https://github.com/CN-UPB/son-cli
-WORKDIR /son-cli
-RUN python3 setup.py build
-RUN python3 setup.py install
-WORKDIR ..
+RUN pip install git+https://github.com/CN-UPB/son-cli.git
 
 #install uwsgi server
 RUN pip install uwsgi
 
 #install son-editor-backend
-COPY . /upb-son-editor-backend
+RUN git clone https://github.com/CN-UPB/upb-son-editor-backend.git
 
 # Set the default directory where CMD will execute
 WORKDIR /upb-son-editor-backend
