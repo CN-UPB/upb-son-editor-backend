@@ -9,7 +9,7 @@ from flask import request
 from flask.wrappers import Response
 from pkg_resources import Requirement, resource_string
 import yaml
-CONFIG = yaml.safe_load(resource_string(Requirement.parse("upb-son-editor-backend"), "config.yaml"))
+CONFIG = yaml.safe_load(resource_string(Requirement.parse("upb-son-editor-backend"), "son/config.yaml"))
 
 
 def prepare_response(data=None, code=200):

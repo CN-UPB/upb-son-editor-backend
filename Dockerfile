@@ -20,10 +20,6 @@ WORKDIR /upb-son-editor-backend
 RUN git config user.email "dummy@user.com"
 RUN git config user.name "Dummy User"
 
-# copy config with secrets into docker image
-ADD src/config.yaml src/config.yaml
-ADD deployment.yml deployment.yml
-
 #install the son-editor requirements
 RUN pip install -e .
 
