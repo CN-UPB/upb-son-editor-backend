@@ -1,0 +1,10 @@
+version: '2'
+services:
+    son-editor-instance:
+        build: .
+        ports:
+            - "5000:5000"
+        volumes:
+            - ./src/son_editor/config.yaml:/upb-son-editor-backend/src/son_editor/config.yaml
+            - ./deployment.yml:/upb-son-editor-backend/deployment.yml
+            - ./son-editor/workspaces:/root/son-editor/workspaces
