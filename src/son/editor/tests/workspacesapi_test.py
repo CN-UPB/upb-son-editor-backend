@@ -23,7 +23,6 @@ class WorkspacesTest(unittest.TestCase):
         self.project = Project(name="Project A")
         self.user = User(name="user", email="foo@bar.com")
         self.workspace = Workspace(name="Workspace A", owner=self.user)
-
         # Add some relationships
 
         db_session.add(self.user)
@@ -80,8 +79,8 @@ class WorkspacesTest(unittest.TestCase):
         request_dict = {"name": "workspaceToDelete"}
         rv = self.app.post('/' + WORKSPACES + '/', data=json.dumps(request_dict), content_type='application/json',
                            follow_redirects=True)
-        id = json.loads(rv.data.decode())['id']
-        rv = self.app.delete('/' + WORKSPACES + '/%i' % id, follow_redirects=True)
+        created_ws = json.loads(rv.data.decode())['id']
+        rv = self.app.delete('/' + WORKSPACES + '/{}'.format(created_ws), follow_redirects=True)
         self.assertEqual(200, rv.status_code)
 
 
