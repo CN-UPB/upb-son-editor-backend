@@ -7,12 +7,6 @@ deployment-script:
   #sends a deployment pending status to github
   - update-status: "starting deployment"
   #make an http request
-  - request: "shutting down son-editor"
-    method : GET
-    url: 'http://localhost:5000/shutdown'
-    #do not abort build on error
-    required: false
-    #run an arbitrary shell command
   - run: "updating code from repository"
     #sync: wait for termination
     sync: 'git stash'
@@ -20,10 +14,7 @@ deployment-script:
     sync: 'git pull'
   - run:
     sync: 'git stash pop'
-  - run: "building son-editor"
-    sync: 'python setup.py build'
-  - run: "installing son-editor"
-    sync: 'python setup.py install'
-  - run: "starting son editor"
-    #async: do not wait for termination (gives no feedback(no exitcode))
-    async: 'son-editor'
+  - run: "installing changed requirements"
+    sync: 'pip install -e .'
+  - run: "reloading son editor"
+    sync: 'uwsgi --reload /tmp/project-master.pid'

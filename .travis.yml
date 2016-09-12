@@ -1,15 +1,8 @@
-sudo: required
-dist: trusty
 language: python
 python:
   - "3.5"
 before_install:
-  - cd ..
-  - git clone https://github.com/sonata-nfv/son-cli
-  - cd son-cli
-  - python setup.py build
-  - python setup.py install
-  - cd ../upb-son-editor-backend
+  - pip install git+https://github.com/sonata-nfv/son-cli
 install:
   - "python setup.py install"
 script:
