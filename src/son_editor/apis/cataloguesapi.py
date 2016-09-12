@@ -5,9 +5,9 @@ Created on 18.07.2016
 """
 from flask_restplus import Resource, Namespace
 
-from son_editor.app.util import prepare_response
 from son_editor.app.constants import WORKSPACES, CATALOGUES
-from son_editor.catalogues import cataloguesimpl
+from son_editor.app.util import prepare_response
+from son_editor.impl import cataloguesimpl
 
 namespace = Namespace(WORKSPACES + '/<int:ws_id>/' + CATALOGUES, description="Catalogue Resources")
 

@@ -70,7 +70,8 @@ def github_payload():
             else:
                 return jsonify({'msg': 'hmmm somthing is wrong'}), 500
         else:
-            return jsonify({'msg': 'invalid hash'})
+            logger.error("Invalid signature, aborting")
+            return jsonify({'msg': 'invalid hash'}), 401
     except Exception as err:
         traceback.print_exc()
 

@@ -3,10 +3,10 @@ import shlex
 
 from son_editor.app.database import db_session
 from son_editor.app.exceptions import NameConflict, NotFound
+from son_editor.impl.usermanagement import get_user
 from son_editor.models.function import Function
 from son_editor.models.project import Project
 from son_editor.models.workspace import Workspace
-from son_editor.users.usermanagement import get_user
 
 
 def get_functions(user_data, ws_id, project_id):

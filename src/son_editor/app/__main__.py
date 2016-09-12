@@ -12,13 +12,7 @@ from flask import Flask, session
 from flask.globals import request
 from flask_restplus import Api
 
-from son_editor import catalogues
-from son_editor import misc
-from son_editor import platforms
-from son_editor import projects
-from son_editor import services
-from son_editor import vnfs
-from son_editor import workspaces
+from son_editor import apis
 from son_editor.app.database import db_session, init_db, scan_workspaces_dir
 from son_editor.app.exceptions import NameConflict, NotFound
 from son_editor.app.util import CONFIG, prepare_response, prepare_error
@@ -59,13 +53,7 @@ def handle_general_exception(err):
 
 
 # registering all the api resources here
-workspaces.init(api)
-projects.init(api)
-services.init(api)
-vnfs.init(api)
-platforms.init(api)
-catalogues.init(api)
-misc.init(api)
+apis.init(api)
 
 
 # print(app.url_map)
