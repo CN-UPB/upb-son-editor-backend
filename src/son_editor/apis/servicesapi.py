@@ -6,10 +6,10 @@ Created on 22.07.2016
 import logging
 
 from flask_restplus import Model, Resource, Namespace, fields
+
 from son_editor.app.constants import WORKSPACES, PROJECTS, CATALOGUES, PLATFORMS, SERVICES
 from son_editor.app.util import prepare_response
-
-from . import servicesimpl
+from son_editor.impl import servicesimpl
 
 logger = logging.getLogger(__name__)
 

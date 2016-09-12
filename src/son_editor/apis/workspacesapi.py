@@ -9,10 +9,10 @@ from flask import session
 from flask.globals import request
 from flask_restplus import Resource, Namespace
 from flask_restplus import fields
+
 from son_editor.app.constants import WORKSPACES
 from son_editor.app.util import prepare_response, get_json
-
-from . import workspaceimpl
+from son_editor.impl import workspaceimpl
 
 namespace = Namespace(WORKSPACES, description="Workspace Resources")
 logger = logging.getLogger("son-editor.workspacesapi")

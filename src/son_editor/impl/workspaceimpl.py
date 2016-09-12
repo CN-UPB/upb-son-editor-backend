@@ -7,15 +7,14 @@ import logging
 import os
 import shlex
 import shutil
-import tempfile
 from subprocess import Popen, PIPE
 
 from son_editor.app.database import db_session
 from son_editor.app.exceptions import NameConflict, NotFound
 from son_editor.app.util import CONFIG, rreplace
+from son_editor.impl.usermanagement import get_user
 from son_editor.models.repository import Platform, Catalogue
 from son_editor.models.workspace import Workspace
-from son_editor.users.usermanagement import get_user
 
 WORKSPACES_DIR = os.path.expanduser(CONFIG["workspaces-location"])
 
