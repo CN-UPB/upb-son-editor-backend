@@ -11,7 +11,7 @@ class Repository(Base):
     url = Column(String(50))
     workspace_id = Column(Integer, ForeignKey('workspace.id'))
 
-    def __init__(self, name,  url, workspace=None):
+    def __init__(self, name, url, workspace=None):
         self.name = name
         self.url = url
         if workspace:

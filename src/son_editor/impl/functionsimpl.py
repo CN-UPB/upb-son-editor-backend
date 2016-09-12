@@ -83,7 +83,6 @@ def update_function(user_data, ws_id, project_id, function_id, function_data):
     if 'version' in function_data:
         function.version = shlex.quote(function_data['version'])
 
-
     session.commit()
     return function.as_dict()
 
