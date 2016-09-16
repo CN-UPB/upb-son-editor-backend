@@ -36,8 +36,8 @@ class WorkspacesTest(unittest.TestCase):
                 session['userData'] = {'login': 'user'}
 
     def tearDown(self):
+        # deletes all workspaces and other data belonging to this user
         db_session.delete(self.user)
-        db_session.delete(self.workspace)
         db_session.commit()
 
     def testCreateWorkSpace(self):
