@@ -9,7 +9,7 @@ from flask.globals import request
 from son_editor.app.database import db_session
 from son_editor.app.exceptions import NotFound, NameConflict
 from son_editor.models.project import Project
-from son_editor.models.service import Service
+from son_editor.models.descriptor import Service
 from son_editor.models.workspace import Workspace
 from son_editor.util.descriptorutil import write_to_disk, get_file_name
 from son_editor.util.requestutil import get_json
@@ -49,8 +49,11 @@ def create_service(ws_id, project_id):
         if len(existing_services) > 0:
             raise NameConflict("A service with this name already exists")
         # Create db object
-        service = Service(name=service_name, vendor=vendor_name, version=version, project=project)
-        service.descriptor = json.dumps(service_data)
+        service = Service(name=service_name,
+                          vendor=vendor_name,
+                          version=version,
+                          project=project,
+                          descriptor=json.dumps(service_data))
         session.add(service)
         try:
             write_to_disk("nsd", service)
