@@ -35,11 +35,6 @@ class ServiceAPITest(unittest.TestCase):
                                  data=json.dumps({'name': 'ProjectA'}))
         self.pid = str(json.loads(response.data.decode())["id"])
 
-        response = self.app.get("/" + constants.WORKSPACES + "/" + str(self.wsid)
-                                + "/" + constants.PROJECTS + "/" + str(self.pid)
-                                + "/" + constants.SERVICES + "/", headers=headers)
-        print(response.data.decode())
-
         postArg = json.dumps({"vendor": "de.upb.cs.cn.pgsandman",
                               "name": "ServiceA",
                               "version": "0.0.1"})
