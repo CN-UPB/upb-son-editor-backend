@@ -52,6 +52,7 @@ def allowed_origin():
         if len(origin_parts) > 1:
             origin = origin_parts[0]
         return origin in CONFIG['allowed-hosts']
+    return False
 
 
 def get_json(request):
