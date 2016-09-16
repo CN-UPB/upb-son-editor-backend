@@ -63,34 +63,34 @@ class WorkspacesTest(unittest.TestCase):
         self.assertEqual(json.loads(response.data.decode())[0]['name'], "Workspace A")
 
     def testGetWorkSpace(self):
-        response = self.app.get('/' + WORKSPACES + '/{}' .format( self.get_wsid()))
+        response = self.app.get('/' + WORKSPACES + '/{}'.format(self.get_wsid()))
         self.assertEqual(json.loads(response.data.decode())['name'], "Workspace A")
 
-        #test non existing id
+        # test non existing id
         response = self.app.get('/' + WORKSPACES + '/1337')
         self.assertEqual(404, response.status_code)
 
     def testUpdateWorkSpace(self):
         request_dict = {"name": "workspaceToMove"}
         response = self.app.post('/' + WORKSPACES + '/',
-                           data=json.dumps(request_dict),
-                           content_type='application/json')
+                                 data=json.dumps(request_dict),
+                                 content_type='application/json')
         id = json.loads(response.data.decode())['id']
 
         response = self.app.put('/' + WORKSPACES + '/{}'.format(id), data={"name": "workspaceToMove2"})
         self.assertEqual(json.loads(response.data.decode())['name'], "workspaceToMove2")
 
-        #creating it again with the old name should work
+        # creating it again with the old name should work
         response = self.app.post('/' + WORKSPACES + '/',
                                  data=json.dumps(request_dict),
                                  content_type='application/json')
         id = json.loads(response.data.decode())['id']
 
-        #renaming again to other name should create a conflict
+        # renaming again to other name should create a conflict
         response = self.app.put('/' + WORKSPACES + '/{}'.format(id), data={"name": "workspaceToMove2"})
         self.assertEqual(409, response.status_code)
 
-        #try to update non existing
+        # try to update non existing
         response = self.app.put('/' + WORKSPACES + '/1337', data={"name": "workspaceToMove2"})
         self.assertEqual(404, response.status_code)
 
@@ -98,17 +98,16 @@ class WorkspacesTest(unittest.TestCase):
         # Create at first a workspace
         request_dict = {"name": "workspaceToDelete"}
         response = self.app.post('/' + WORKSPACES + '/', data=json.dumps(request_dict), content_type='application/json',
-                           follow_redirects=True)
+                                 follow_redirects=True)
         id = json.loads(response.data.decode())['id']
-        response = self.app.delete('/' + WORKSPACES + '/{}' .format( id))
+        response = self.app.delete('/' + WORKSPACES + '/{}'.format(id))
         self.assertEqual(200, response.status_code)
 
-        #test workspace no longer exists
+        # test workspace no longer exists
         response = self.app.get('/' + WORKSPACES + '/')
-        workspaces =json.loads(response.data.decode())
+        workspaces = json.loads(response.data.decode())
         for workspace in workspaces:
             self.assertNotEqual(request_dict['name'], workspace['name'])
-
 
 
 if __name__ == '__main__':

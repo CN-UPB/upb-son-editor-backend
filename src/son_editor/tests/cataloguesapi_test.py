@@ -42,24 +42,24 @@ class CatalogueTest(unittest.TestCase):
     # Create catalogue
     def test_create_catalogue(self):
         # Setup request dict
-        request_dict = {"name": "catalogueName", "url":"http://example.com/some/path/"}
+        request_dict = {"name": "catalogueName", "url": "http://example.com/some/path/"}
 
         # Post request on catalogues
         response = self.app.post('/' + WORKSPACES + '/' + str(self.wsid) + '/' + CATALOGUES + '/',
-                           data=json.dumps(request_dict), content_type='application/json')
+                                 data=json.dumps(request_dict), content_type='application/json')
         # Expect workspace gets created
         self.assertEqual(request_dict['name'], json.loads(response.data.decode())['name'])
         self.assertEqual(201, response.status_code)
 
         # Post same request on catalogues again, should fail
         response = self.app.post('/' + WORKSPACES + '/' + str(self.wsid) + '/' + CATALOGUES + '/',
-                           data=json.dumps(request_dict), content_type='application/json')
+                                 data=json.dumps(request_dict), content_type='application/json')
         # Expect workspace creation fails
         self.assertEqual(409, response.status_code)
 
     def test_get_catalogues(self):
-        request_dict1 = {"name": "cataloguesGet1", "url":"http://example.com/some/path/"}
-        request_dict2 = {"name": "cataloguesGet2", "url":"http://example.com/some/path/"}
+        request_dict1 = {"name": "cataloguesGet1", "url": "http://example.com/some/path/"}
+        request_dict2 = {"name": "cataloguesGet2", "url": "http://example.com/some/path/"}
 
         # Post request on catalogues
         self.app.post('/' + WORKSPACES + '/' + str(self.wsid) + '/' + CATALOGUES + '/',
@@ -76,11 +76,11 @@ class CatalogueTest(unittest.TestCase):
         self.assertEqual(result[1]['name'], request_dict2['name'])
 
     def test_get_catalogue(self):
-        request_dict = {"name": "catalogueGet", "url":"http://example.com/some/path/"}
+        request_dict = {"name": "catalogueGet", "url": "http://example.com/some/path/"}
 
         # Post request on catalogues
         response = self.app.post('/' + WORKSPACES + '/' + str(self.wsid) + '/' + CATALOGUES + '/',
-                           data=json.dumps(request_dict), content_type='application/json')
+                                 data=json.dumps(request_dict), content_type='application/json')
         catalogue_id = json.loads(response.data.decode())['id']
 
         # Post request on catalogues
@@ -91,11 +91,11 @@ class CatalogueTest(unittest.TestCase):
         self.assertEqual(result['name'], request_dict['name'])
 
     def test_delete_catalogue(self):
-        request_dict = {"name": "catalogueDelete", "url":"http://example.com/some/path/"}
+        request_dict = {"name": "catalogueDelete", "url": "http://example.com/some/path/"}
 
         # Post request on catalogues
         response = self.app.post('/' + WORKSPACES + '/' + str(self.wsid) + '/' + CATALOGUES + '/',
-                           data=json.dumps(request_dict), content_type='application/json')
+                                 data=json.dumps(request_dict), content_type='application/json')
         catalogue_id = json.loads(response.data.decode())['id']
 
         # Post request on catalogues

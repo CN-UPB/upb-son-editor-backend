@@ -37,6 +37,7 @@ serv_response = serv.inherit("ServiceResponse", serv, {
 proj_namespace.add_model(serv.name, serv)
 proj_namespace.add_model(serv_response.name, serv_response)
 
+
 @proj_namespace.route('/')
 @cata_namespace.route('/')
 @plat_namespace.route('/')

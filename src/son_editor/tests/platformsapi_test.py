@@ -42,24 +42,24 @@ class PlatformTest(unittest.TestCase):
     # Create platform
     def test_create_platform(self):
         # Setup request dict
-        request_dict = {"name": "platformName", "url":"http://example.com/some/path/"}
+        request_dict = {"name": "platformName", "url": "http://example.com/some/path/"}
 
         # Post request on platforms
         response = self.app.post('/' + WORKSPACES + '/' + str(self.wsid) + '/' + PLATFORMS + '/',
-                           data=json.dumps(request_dict), content_type='application/json')
+                                 data=json.dumps(request_dict), content_type='application/json')
         # Expect workspace gets created
         self.assertEqual(request_dict['name'], json.loads(response.data.decode())['name'])
         self.assertEqual(201, response.status_code)
 
         # Post same request on platforms again, should fail
         response = self.app.post('/' + WORKSPACES + '/' + str(self.wsid) + '/' + PLATFORMS + '/',
-                           data=json.dumps(request_dict), content_type='application/json')
+                                 data=json.dumps(request_dict), content_type='application/json')
         # Expect workspace creation fails
         self.assertEqual(409, response.status_code)
 
     def test_get_platforms(self):
-        request_dict1 = {"name": "platformsGet1", "url":"http://example.com/some/path/"}
-        request_dict2 = {"name": "platformsGet2", "url":"http://example.com/some/path/"}
+        request_dict1 = {"name": "platformsGet1", "url": "http://example.com/some/path/"}
+        request_dict2 = {"name": "platformsGet2", "url": "http://example.com/some/path/"}
 
         # Post request on platforms
         self.app.post('/' + WORKSPACES + '/' + str(self.wsid) + '/' + PLATFORMS + '/',
@@ -76,11 +76,11 @@ class PlatformTest(unittest.TestCase):
         self.assertEqual(result[1]['name'], request_dict2['name'])
 
     def test_get_platform(self):
-        request_dict = {"name": "platformGet", "url":"http://example.com/some/path/"}
+        request_dict = {"name": "platformGet", "url": "http://example.com/some/path/"}
 
         # Post request on platforms
         response = self.app.post('/' + WORKSPACES + '/' + str(self.wsid) + '/' + PLATFORMS + '/',
-                           data=json.dumps(request_dict), content_type='application/json')
+                                 data=json.dumps(request_dict), content_type='application/json')
         platform_id = json.loads(response.data.decode())['id']
 
         # Post request on platforms
@@ -91,11 +91,11 @@ class PlatformTest(unittest.TestCase):
         self.assertEqual(result['name'], request_dict['name'])
 
     def test_delete_platform(self):
-        request_dict = {"name": "platformDelete", "url":"http://example.com/some/path/"}
+        request_dict = {"name": "platformDelete", "url": "http://example.com/some/path/"}
 
         # Post request on platforms
         response = self.app.post('/' + WORKSPACES + '/' + str(self.wsid) + '/' + PLATFORMS + '/',
-                           data=json.dumps(request_dict), content_type='application/json')
+                                 data=json.dumps(request_dict), content_type='application/json')
         platform_id = json.loads(response.data.decode())['id']
 
         # Post request on platforms
