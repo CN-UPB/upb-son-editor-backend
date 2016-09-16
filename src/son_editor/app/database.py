@@ -7,7 +7,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
 
-from son_editor.app.util import CONFIG
+from son_editor.util.requestutil import CONFIG
 
 # DB URI
 logger = logging.getLogger("son-editor.database")

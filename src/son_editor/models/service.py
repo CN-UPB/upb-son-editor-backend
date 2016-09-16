@@ -22,7 +22,7 @@ class Service(Base):
         self.uid = "{}:{}:{}".format(vendor, name, version)
         self.descriptor = descriptor
         if project:
-            self.project_id = project.id
+            self.project = project
 
     def __repr__(self):
         return '<Service {}>'.format(self.name)
