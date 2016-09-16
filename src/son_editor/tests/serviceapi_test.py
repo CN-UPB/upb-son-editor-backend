@@ -2,10 +2,7 @@ import json
 import unittest
 
 from son_editor.app.database import db_session
-from son_editor.models.project import Project
-from son_editor.models.service import Service
 from son_editor.models.user import User
-from son_editor.models.workspace import Workspace
 from son_editor.util import constants
 from son_editor.util.context import init_test_context
 
