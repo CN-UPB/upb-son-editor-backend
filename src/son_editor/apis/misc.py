@@ -7,7 +7,7 @@ from flask import request, redirect
 from flask import session
 from flask_restplus import Resource, Namespace
 
-from son_editor.app.util import CONFIG
+from son_editor.util.requestutil import CONFIG
 
 namespace = Namespace("", description="Misc API")
 logger = logging.getLogger("son-editor.misc")

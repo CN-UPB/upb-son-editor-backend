@@ -1,12 +1,12 @@
 import json
 import unittest
 
-from son_editor.app import constants
 from son_editor.app.database import db_session
 from son_editor.models.project import Project
 from son_editor.models.service import Service
 from son_editor.models.user import User
 from son_editor.models.workspace import Workspace
+from son_editor.util import constants
 from son_editor.util.context import init_test_context
 
 
@@ -14,39 +14,41 @@ class FunctionTest(unittest.TestCase):
     def setUp(self):
         # Initializes test context
         self.app = init_test_context()
-
-        # Add some dummy objects
-        self.project = Project(name="Project A")
-        self.workspace = Workspace(name="Workspace A")
-        self.user = User(name="username", email="foo@bar.com")
-        self.service = Service(name="Service a", vendor="de.upb", version="1.0")
-
-        # Add some relationships
-        self.workspace.owner = self.user
-        self.project.workspace = self.workspace
-        self.service.project = self.project
-
-        session = db_session()
-        session.add(self.project)
-        session.add(self.service)
-        session.add(self.workspace)
-        session.add(self.user)
-        session.commit()
-        self.wsid = self.workspace.id
-        self.pjid = self.project.id
-        self.svid = self.service.id
-
         # Add some session stuff ( need for finding the user's workspace )
         with self.app as c:
             with c.session_transaction() as session:
                 session['userData'] = {'login': 'username'}
 
+        self.user = User(name="username", email="foo@bar.com")
+        session = db_session()
+        session.add(self.user)
+        session.commit()
+
+        # Create a workspace and project
+        headers = {'Content-Type': 'application/json'}
+        response = self.app.post("/" + constants.WORKSPACES + "/",
+                                 headers=headers,
+                                 data=json.dumps({'name': 'WorkspaceA'}))
+        self.wsid = str(json.loads(response.data.decode())["id"])
+        response = self.app.post("/" + constants.WORKSPACES + "/" + self.wsid + "/" + constants.PROJECTS + "/",
+                                 headers=headers,
+                                 data=json.dumps({'name': 'ProjectA'}))
+        self.pjid = str(json.loads(response.data.decode())["id"])
+
+        postArg = json.dumps({"vendor": "de.upb.cs.cn.pgsandman",
+                              "name": "FunctionA",
+                              "version": "0.0.1"})
+        response = self.app.post("/" + constants.WORKSPACES + "/" + str(self.wsid)
+                                 + "/" + constants.PROJECTS + "/" + str(self.pjid)
+                                 + "/" + constants.VNFS + "/", headers=headers,
+                                 data=postArg)
+        self.fid = str(json.loads(response.data.decode())['id'])
+
     def tearDown(self):
         session = db_session()
-        session.delete(self.project)
-        session.delete(self.workspace)
+        self.app.delete("/" + constants.WORKSPACES + "/" + self.wsid + "/" + constants.PROJECTS + "/" + self.pjid)
+        self.app.delete("/" + constants.WORKSPACES + "/" + self.wsid)
         session.delete(self.user)
-        session.delete(self.service)
         session.commit()
 
     def test_create_function(self):
@@ -95,18 +97,18 @@ class FunctionTest(unittest.TestCase):
                 "name": "vnf_2",
                 "version": "0.0.1"}
         postArg = json.dumps(dict)
-        response = self.app.post("/" + constants.WORKSPACES + "/" + str(self.workspace.id)
-                                 + "/" + constants.PROJECTS + "/" + str(self.project.id)
+        response = self.app.post("/" + constants.WORKSPACES + "/" + str(self.wsid)
+                                 + "/" + constants.PROJECTS + "/" + str(self.pjid)
                                  + "/" + constants.VNFS + "/", headers={'Content-Type': 'application/json'},
                                  data=postArg)
 
         # retrieve it in table
-        response = self.app.get("/" + constants.WORKSPACES + "/" + str(self.workspace.id)
-                                + "/" + constants.PROJECTS + "/" + str(self.project.id)
+        response = self.app.get("/" + constants.WORKSPACES + "/" + str(self.wsid)
+                                + "/" + constants.PROJECTS + "/" + str(self.pjid)
                                 + "/" + constants.VNFS + "/")
         functions = json.loads(response.data.decode())
-        result = functions[0]
-        self.assertTrue(result['descriptor']['name'] == dict['name'])
+        result = functions[1]
+        self.assertEqual(result['descriptor']['name'],dict['name'])
         self.assertTrue(result['descriptor']['version'] == dict['version'])
         self.assertTrue(result['descriptor']['vendor'] == dict['vendor'])
 
@@ -116,8 +118,8 @@ class FunctionTest(unittest.TestCase):
                 "name": "vnf_2",
                 "version": "0.0.1"}
         postArg = json.dumps(dict)
-        response = self.app.post("/" + constants.WORKSPACES + "/" + str(self.workspace.id)
-                                 + "/" + constants.PROJECTS + "/" + str(self.project.id)
+        response = self.app.post("/" + constants.WORKSPACES + "/" + str(self.wsid)
+                                 + "/" + constants.PROJECTS + "/" + str(self.pjid)
                                  + "/" + constants.VNFS + "/", headers={'Content-Type': 'application/json'},
                                  data=postArg)
         js = json.loads(response.data.decode())
@@ -126,8 +128,8 @@ class FunctionTest(unittest.TestCase):
                       "name": "vnf_3",
                       "version": "0.0.2"}
         updateArg = json.dumps(updateDict)
-        response = self.app.post("/" + constants.WORKSPACES + "/" + str(self.workspace.id)
-                                 + "/" + constants.PROJECTS + "/" + str(self.project.id)
+        response = self.app.post("/" + constants.WORKSPACES + "/" + str(self.wsid)
+                                 + "/" + constants.PROJECTS + "/" + str(self.pjid)
                                  + "/" + constants.VNFS + "/", headers={'Content-Type': 'application/json'},
                                  data=updateArg)
         result = json.loads(response.data.decode())
@@ -141,15 +143,15 @@ class FunctionTest(unittest.TestCase):
                 "name": "vnf_2",
                 "version": "0.0.1"}
         postArg = json.dumps(dict)
-        response = self.app.post("/" + constants.WORKSPACES + "/" + str(self.workspace.id)
-                                 + "/" + constants.PROJECTS + "/" + str(self.project.id)
+        response = self.app.post("/" + constants.WORKSPACES + "/" + str(self.wsid)
+                                 + "/" + constants.PROJECTS + "/" + str(self.pjid)
                                  + "/" + constants.VNFS + "/", headers={'Content-Type': 'application/json'},
                                  data=postArg)
 
         retVal = json.loads(response.data.decode())
 
-        response = self.app.delete("/" + constants.WORKSPACES + "/" + str(self.workspace.id)
-                                   + "/" + constants.PROJECTS + "/" + str(self.project.id)
+        response = self.app.delete("/" + constants.WORKSPACES + "/" + str(self.wsid)
+                                   + "/" + constants.PROJECTS + "/" + str(self.pjid)
                                    + "/" + constants.VNFS + "/" + str(retVal['id']),
                                    headers={'Content-Type': 'application/json'})
         self.assertEqual(response.status_code, 200)

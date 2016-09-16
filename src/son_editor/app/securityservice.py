@@ -1,11 +1,11 @@
 from flask import session
 
-from son_editor.app.constants import PROJECTS
 from son_editor.app.database import db_session
 from son_editor.app.exceptions import NotFound
 from son_editor.impl.usermanagement import get_user
 from son_editor.models.project import Project
 from son_editor.models.workspace import Workspace
+from son_editor.util.constants import PROJECTS
 
 
 # This method checks if the current user is allowed to access a given workspace

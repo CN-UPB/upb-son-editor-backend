@@ -7,9 +7,9 @@ from flask.globals import request, session
 from flask_restplus import Namespace, Model, fields
 from flask_restplus import Resource
 
-from son_editor.app.constants import get_parent, Category, WORKSPACES, PROJECTS, CATALOGUES, PLATFORMS, VNFS
-from son_editor.app.util import prepare_response, get_json
 from son_editor.impl import functionsimpl
+from son_editor.util.constants import get_parent, Category, WORKSPACES, PROJECTS, CATALOGUES, PLATFORMS, VNFS
+from son_editor.util.requestutil import prepare_response, get_json
 
 proj_namespace = Namespace(WORKSPACES + '/<int:ws_id>/' + PROJECTS + "/<int:parent_id>/" + VNFS,
                            description="Project VNF Resources")
