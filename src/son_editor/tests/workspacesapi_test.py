@@ -6,11 +6,11 @@ Created on 26.07.2016
 import json
 import unittest
 
-from son_editor.app.constants import WORKSPACES
 from son_editor.app.database import db_session
 from son_editor.models.project import Project
 from son_editor.models.user import User
 from son_editor.models.workspace import Workspace
+from son_editor.util.constants import WORKSPACES
 from son_editor.util.context import init_test_context
 
 

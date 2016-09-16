@@ -5,7 +5,7 @@ from son_editor.app.exceptions import NotFound
 from son_editor.models.project import Project
 from son_editor.models.service import Service
 from son_editor.app.database import db_session
-from son_editor.app.util import get_json
+from son_editor.util.requestutil import get_json
 
 
 def get_services(ws_id, parent_id):
