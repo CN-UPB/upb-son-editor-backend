@@ -10,9 +10,9 @@ from flask_restplus import Namespace
 from flask_restplus import Resource
 from flask_restplus import fields
 
-from son_editor.app.constants import WORKSPACES, PROJECTS
-from son_editor.app.util import prepare_response, get_json
 from son_editor.impl import projectsimpl
+from son_editor.util.constants import WORKSPACES, PROJECTS
+from son_editor.util.requestutil import prepare_response, get_json
 
 namespace = Namespace(WORKSPACES + '/<int:ws_id>/' + PROJECTS, description="Project Resources")
 logger = logging.getLogger("son-editor.projectsapi")

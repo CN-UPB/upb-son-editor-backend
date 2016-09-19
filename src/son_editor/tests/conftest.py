@@ -1,7 +1,7 @@
 import logging
 import tempfile
 
-from son_editor.app.util import CONFIG
+from son_editor.util.requestutil import CONFIG
 
 logging.info("Setting up config for temporary db")
 

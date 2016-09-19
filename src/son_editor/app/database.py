@@ -7,7 +7,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
 
-from son_editor.app.util import CONFIG
+from son_editor.util.descriptorutil import load_from_disk
+from son_editor.util.requestutil import CONFIG
 
 # DB URI
 logger = logging.getLogger("son-editor.database")
@@ -29,8 +30,7 @@ def init_db():
     import son_editor.models.project
     import son_editor.models.user
     import son_editor.models.workspace
-    import son_editor.models.service
-    import son_editor.models.function
+    import son_editor.models.descriptor
     import son_editor.models.repository
     Base.metadata.create_all(bind=engine)
 
@@ -85,9 +85,70 @@ def _scan_workspace_dir(ws_path, ws):
             filter(Project.name == project_name). \
             filter(Project.workspace == ws).first()
         if pj is None:
-            logger.info("Project found in Workspace {}: {}".format(ws_path, project_name))
+            logger.info("Found project in Workspace {}: {}".format(ws_path, project_name))
             pj = Project(project_name, project_name, ws)
             session.add(pj)
             session.commit()
+        _scan_project_dir(os.path.join(ws_path, "projects", project_name), pj)
 
-            # TODO retrieve platforms and catalogues from workspace descriptor
+        # TODO retrieve platforms and catalogues from workspace descriptor
+
+
+def _scan_project_dir(project_path, pj):
+    _scan_for_services(os.path.join(project_path, "sources", "nsd"), pj)
+    _scan_for_functions(os.path.join(project_path, "sources", "vnf"), pj)
+
+
+def _scan_for_services(services_dir, pj):
+    from son_editor.models.descriptor import Service
+    session = db_session()
+    try:
+        for service_file in os.listdir(services_dir):
+            if service_file.endswith(".yml"):
+                service = Service()
+                load_from_disk(os.path.join(services_dir, service_file), service)
+                db_service = session.query(Service). \
+                    filter(Service.project == pj). \
+                    filter(Service.name == service.name). \
+                    filter(Service.vendor == service.vendor). \
+                    filter(Service.version == service.version). \
+                    first()
+                if not db_service:
+                    logger.info("Found service in project {}: {}".format(pj.name, service.uid))
+                    service.project = pj
+                    session.add(service)
+                    session.commit()
+                else:
+                    session.rollback()
+            elif os.path.isdir(os.path.join(services_dir, service_file)):
+                _scan_for_services(os.path.join(services_dir, service_file), pj)
+    except:
+        session.rollback()
+
+
+def _scan_for_functions(function_dir, pj):
+    session = db_session()
+    from son_editor.models.descriptor import Function
+    try:
+        for function_file in os.listdir(function_dir):
+            if function_file.endswith(".yml"):
+                function = Function()
+                load_from_disk(os.path.join(function_dir, function_file), function)
+                db_service = session.query(Function). \
+                    filter(Function.project == pj). \
+                    filter(Function.name == function.name). \
+                    filter(Function.vendor == function.vendor). \
+                    filter(Function.version == function.version). \
+                    first()
+                if not db_service:
+                    logger.info("Found function in project {}: {}".format(pj.name, function.uid))
+                    function.project = pj
+                    session.add(function)
+                    session.commit()
+                else:
+                    session.rollback()
+            elif os.path.isdir(os.path.join(function_dir, function_file)):
+                _scan_for_functions(os.path.join(function_dir, function_file), pj)
+    except:
+        logger.exception("Could not load function descriptor:")
+        session.rollback()

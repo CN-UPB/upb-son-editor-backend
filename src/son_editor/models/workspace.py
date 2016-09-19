@@ -10,9 +10,9 @@ class Workspace(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(50))
     path = Column(String(255), unique=True)
-    projects = relationship("Project", back_populates="workspace")
-    catalogues = relationship("Catalogue", back_populates="workspace")
-    platforms = relationship("Platform", back_populates="workspace")
+    projects = relationship("Project", back_populates="workspace", cascade="all, delete-orphan")
+    catalogues = relationship("Catalogue", back_populates="workspace", cascade="all, delete-orphan")
+    platforms = relationship("Platform", back_populates="workspace", cascade="all, delete-orphan")
     owner_id = Column(Integer, ForeignKey('user.id'))
     owner = relationship("User", back_populates="workspaces")
 

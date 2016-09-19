@@ -4,6 +4,7 @@ services:
         build: .
         ports:
             - "5000:5000"
+            - "5050:5050"
         volumes:
             - ./src/son_editor/config.yaml:/upb-son-editor-backend/src/son_editor/config.yaml
             - ./deployment.yml:/upb-son-editor-backend/deployment.yml

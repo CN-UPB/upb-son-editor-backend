@@ -1,6 +1,6 @@
 from son_editor.app import __main__
 from son_editor.app.database import reset_db
-from son_editor.app.util import CONFIG
+from son_editor.util.requestutil import CONFIG
 
 
 # Initializes a test-case context

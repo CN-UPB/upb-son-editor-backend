@@ -15,8 +15,9 @@ from flask_restplus import Api
 from son_editor import apis
 from son_editor.app.database import db_session, init_db, scan_workspaces_dir
 from son_editor.app.exceptions import NameConflict, NotFound, ExtNotReachable
-from son_editor.app.util import CONFIG, prepare_response, prepare_error
+from son_editor.util.requestutil import CONFIG, prepare_response, prepare_error
 from son_editor.app.securityservice import check_access
+from son_editor.util.requestutil import CONFIG, prepare_response, prepare_error
 
 app = Flask(__name__)
 # turn off help message for 404 errors, just return error handlers message

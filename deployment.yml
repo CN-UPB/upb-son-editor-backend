@@ -7,13 +7,13 @@ deployment-script:
   #sends a deployment pending status to github
   - update-status: "starting deployment"
   #make an http request
+#  - run:
+#    #sync: wait for termination
+#    sync: 'git stash'
   - run: "updating code from repository"
-    #sync: wait for termination
-    sync: 'git stash'
-  - run:
     sync: 'git pull'
-  - run:
-    sync: 'git stash pop'
+#  - run:
+#    sync: 'git stash pop'
   - run: "installing changed requirements"
     sync: 'pip install -e .'
   - run: "reloading son editor"

@@ -4,9 +4,9 @@ from flask import request
 
 from son_editor.app.database import db_session
 from son_editor.app.exceptions import NotFound, NameConflict
-from son_editor.app.util import get_json
-from son_editor.models.workspace import Workspace
 from son_editor.models.repository import Catalogue
+from son_editor.models.workspace import Workspace
+from son_editor.util.requestutil import get_json
 
 
 def get_catalogue(catalogue_id):

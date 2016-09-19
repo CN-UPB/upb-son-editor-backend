@@ -7,9 +7,9 @@ import logging
 
 from flask_restplus import Model, Resource, Namespace, fields
 
-from son_editor.app.constants import WORKSPACES, PROJECTS, CATALOGUES, PLATFORMS, SERVICES
-from son_editor.app.util import prepare_response
 from son_editor.impl import servicesimpl
+from son_editor.util.constants import WORKSPACES, PROJECTS, CATALOGUES, PLATFORMS, SERVICES
+from son_editor.util.requestutil import prepare_response
 
 logger = logging.getLogger(__name__)
 

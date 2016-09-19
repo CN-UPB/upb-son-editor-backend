@@ -1,11 +1,20 @@
+import json
+import os
 import shlex
+import logging
+
+import shutil
 from flask.globals import request
 
-from son_editor.app.exceptions import NotFound
-from son_editor.models.project import Project
-from son_editor.models.service import Service
 from son_editor.app.database import db_session
-from son_editor.app.util import get_json
+from son_editor.app.exceptions import NotFound, NameConflict
+from son_editor.models.project import Project
+from son_editor.models.descriptor import Service
+from son_editor.models.workspace import Workspace
+from son_editor.util.descriptorutil import write_to_disk, get_file_name
+from son_editor.util.requestutil import get_json
+
+logger = logging.getLogger("son-editor.servicesimpl")
 
 
 def get_services(ws_id, parent_id):
@@ -18,10 +27,10 @@ def get_services(ws_id, parent_id):
         raise NotFound("No project matching id {}".format(parent_id))
 
 
-def create_service(ws_id, parent_id):
+def create_service(ws_id, project_id):
     session = db_session()
     service_data = get_json(request)
-    project = session.query(Project).filter_by(id=parent_id).first()
+    project = session.query(Project).filter_by(id=project_id).first()
 
     if project:
         # Retrieve post parameters
@@ -29,32 +38,64 @@ def create_service(ws_id, parent_id):
         vendor_name = shlex.quote(service_data["vendor"])
         version = shlex.quote(service_data["version"])
 
+        existing_services = list(session.query(Service)
+                                 .join(Project)
+                                 .join(Workspace)
+                                 .filter(Workspace.id == ws_id)
+                                 .filter(Service.project == project)
+                                 .filter(Service.name == service_name)
+                                 .filter(Service.vendor == vendor_name)
+                                 .filter(Service.version == version))
+        if len(existing_services) > 0:
+            raise NameConflict("A service with this name already exists")
         # Create db object
-        service = Service(name=service_name, vendor=vendor_name, version=version)
-
+        service = Service(name=service_name,
+                          vendor=vendor_name,
+                          version=version,
+                          project=project,
+                          descriptor=json.dumps(service_data))
         session.add(service)
-        project.services.append(service)
+        try:
+            write_to_disk("nsd", service)
+        except:
+            logger.exception("Could not create service:")
+            session.rollback()
+            raise
         session.commit()
         return service.as_dict()
     else:
-        raise NotFound("Project with id '{}‘ not found".format(parent_id))
+        session.rollback()
+        raise NotFound("Project with id '{}‘ not found".format(project_id))
 
 
-def update_service(ws_id, parent_id, service_id):
-    session = db_session()
+def update_service(ws_id, project_id, service_id):
     service_data = get_json(request)
-    service = session.query(Service).filter_by(id=service_id).first()
+
+    session = db_session()
+    service = session.query(Service). \
+        join(Project). \
+        join(Workspace). \
+        filter(Workspace.id == ws_id). \
+        filter(Project.id == project_id). \
+        filter(Service.id == service_id).first()
     if service:
+        old_file_name = get_file_name("nsd", service)
         # Parse parameters and update record
-        service_name = shlex.quote(service_data["name"])
-        vendor_name = shlex.quote(service_data["vendor"])
-        version = shlex.quote(service_data["version"])
-        if service_name:
-            service.name = service_name
-        if vendor_name:
-            service.vendor = vendor_name
-        if version:
-            service.version = version
+        service.descriptor = json.dumps(service_data)
+        if 'name' in service_data:
+            service.name = shlex.quote(service_data["name"])
+        if 'vendor' in service_data:
+            service.vendor = shlex.quote(service_data["vendor"])
+        if 'version' in service_data:
+            service.version = shlex.quote(service_data["version"])
+        new_file_name = get_file_name("nsd", service)
+        try:
+            if not old_file_name == new_file_name:
+                shutil.move(old_file_name, new_file_name)
+            write_to_disk("nsd", service)
+        except:
+            logger.exception("Could not update descriptor file:")
+            raise
         session.commit()
         return service.as_dict()
     else:
@@ -64,19 +105,26 @@ def update_service(ws_id, parent_id, service_id):
 def delete_service(parent_id, service_id):
     session = db_session()
     project = session.query(Project).filter(Project.id == parent_id).first()
-    service = session.query(Service).filter(Service.id == service_id).first()
 
-    if project:
-        if service in project.services:
-            project.services.remove(service)
-        if service:
-            session.delete(service)
-            session.commit()
-            return service.as_dict()
-        else:
-            raise NotFound("Delete service did not work, service with id {} not found".format(service_id))
-    else:
-        raise NotFound("Delete service did not work, project with id {} not found".format(service_id))
+    if project is None:
+        raise NotFound("Could not delete service: project with id {} not found".format(service_id))
+
+    service = session.query(Service). \
+        filter(Service.id == service_id). \
+        filter(Service.project == project). \
+        first()
+    if service is None:
+        raise NotFound("Could not delete service: service with id {} not found".format(service_id))
+
+    session.delete(service)
+    try:
+        os.remove(get_file_name("nsd", service))
+    except:
+        session.rollback()
+        logger.exception("Could not delete service:")
+        raise
+    session.commit()
+    return service.as_dict()
 
 
 def get_service(ws_id, parent_id, service_id):
