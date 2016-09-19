@@ -9,11 +9,14 @@ import shlex
 import shutil
 from subprocess import Popen, PIPE
 
+import yaml
+
 from son_editor.app.database import db_session
 from son_editor.app.exceptions import NameConflict, NotFound
 from son_editor.impl.usermanagement import get_user
 from son_editor.models.repository import Platform, Catalogue
 from son_editor.models.workspace import Workspace
+from son_editor.util.descriptorutil import synchronize_workspace_descriptor, update_workspace_descriptor
 from son_editor.util.requestutil import CONFIG, rreplace
 
 WORKSPACES_DIR = os.path.expanduser(CONFIG["workspaces-location"])
@@ -61,14 +64,12 @@ def create_workspace(user_data, workspace_data):
     try:
         ws = Workspace(name=wsName, path=wsPath, owner=user)
         session.add(ws)
-        session.commit()
         if 'platforms' in workspace_data:
             for platform in workspace_data['platforms']:
                 session.add(Platform(platform['name'], platform['url'], ws))
         if 'catalogues' in workspace_data:
             for catalogue in workspace_data['catalogues']:
                 session.add(Catalogue(catalogue['name'], catalogue['url'], ws))
-        session.commit()
     except:
         logger.exception()
         session.rollback()
@@ -85,6 +86,7 @@ def create_workspace(user_data, workspace_data):
         workspace_exists = False
 
     if exitcode == 0 and not workspace_exists:
+        synchronize_workspace_descriptor(ws, session)
         session.commit()
         return ws.as_dict()
     else:
@@ -169,7 +171,7 @@ def update_workspace(workspace_data, wsid):
                     break
             if deleted:
                 session.delete(catalogue)
-
+    update_workspace_descriptor(workspace)
     db_session.commit()
     return workspace.as_dict()
 

@@ -7,7 +7,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
 
-from son_editor.util.descriptorutil import load_from_disk
+from son_editor.util.descriptorutil import load_from_disk, load_workspace_descriptor
 from son_editor.util.requestutil import CONFIG
 
 # DB URI
@@ -72,6 +72,7 @@ def _scan_user_dir(ws_dir, user):
         if ws is None:
             logger.info("Found workspace at {}!".format(ws_path))
             ws = Workspace(ws_name, ws_path, user)
+            load_workspace_descriptor(ws)
             session.add(ws)
             session.commit()
         _scan_workspace_dir(ws_path, ws)
