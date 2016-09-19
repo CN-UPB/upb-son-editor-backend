@@ -55,9 +55,12 @@ class Functions(Resource):
     @proj_namespace.expect(funct)
     @proj_namespace.response(201, "Created", funct_response)
     def post(self, ws_id, parent_id):
+        vnf_data = get_json(request)
         if get_parent(request) is Category.project:
-            vnf_data = get_json(request)
             vnf_data = functionsimpl.create_function(session['userData'], ws_id, parent_id, vnf_data)
+            return prepare_response(vnf_data, 201)
+        if get_parent(request) is Category.catalogue:
+            vnf_data = functionsimpl.create_function_catalogue(session['userData'], ws_id, parent_id, vnf_data)
             return prepare_response(vnf_data, 201)
         # TODO implement for catalog and platform
         return prepare_response("not implemented yet")
@@ -83,7 +86,6 @@ class Function(Resource):
             vnf_data = get_json(request)
             vnf_data = functionsimpl.update_function(session['userData'], ws_id, parent_id, vnf_id, vnf_data)
             return prepare_response(vnf_data)
-        # TODO implement for catalog and platform
         return prepare_response("update vnf in project with id " + parent_id)
 
     @proj_namespace.response(200, "Deleted", funct_response)
@@ -97,7 +99,12 @@ class Function(Resource):
     @proj_namespace.response(200, "OK", funct_response)
     def get(self, ws_id, parent_id, vnf_id):
         if get_parent(request) is Category.project:
-            functions = functionsimpl.get_function(session["userData"], ws_id, parent_id, vnf_id)
+            functions = functionsimpl.get_function_project(session["userData"], ws_id, parent_id, vnf_id)
             return prepare_response(functions)
+            # TODO implement for catalog and platform
+        if get_parent(request) is Category.catalogue:
+            functions = functionsimpl.get_function_catalogue(session["userData"], ws_id, parent_id, vnf_id)
+            return prepare_response(functions)
+
         # TODO implement for catalog and platform
         return prepare_response("not yet implemented")

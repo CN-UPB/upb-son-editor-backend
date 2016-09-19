@@ -17,3 +17,11 @@ class NotFound(Exception):
 
     def __str__(self):
         return self.msg
+
+
+class ExtNotReachable(Exception):
+    def __init__(self, msg):
+        self.msg = msg
+
+    def __str__(self):
+        return self.msg

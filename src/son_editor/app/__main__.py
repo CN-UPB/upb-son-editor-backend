@@ -14,7 +14,7 @@ from flask_restplus import Api
 
 from son_editor import apis
 from son_editor.app.database import db_session, init_db, scan_workspaces_dir
-from son_editor.app.exceptions import NameConflict, NotFound
+from son_editor.app.exceptions import NameConflict, NotFound, ExtNotReachable
 from son_editor.app.util import CONFIG, prepare_response, prepare_error
 from son_editor.app.securityservice import check_access
 
@@ -35,6 +35,12 @@ def handle_key_error(err):
 
 
 @api.errorhandler(NotFound)
+def handle_not_found(err):
+    logger.warn(err.msg)
+    return prepare_error({"message": err.msg}, 404)
+
+
+@api.errorhandler(ExtNotReachable)
 def handle_not_found(err):
     logger.warn(err.msg)
     return prepare_error({"message": err.msg}, 404)
