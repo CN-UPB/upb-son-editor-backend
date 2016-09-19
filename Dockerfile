@@ -1,7 +1,7 @@
 FROM python:3
 
 #install son-cli tools
-RUN pip install git+https://github.com/CN-UPB/son-cli.git
+RUN pip install git+https://github.com/sonata-nfv/son-cli
 
 #install uwsgi server
 RUN pip install uwsgi
