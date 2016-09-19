@@ -105,7 +105,7 @@ class FunctionTest(unittest.TestCase):
                                 + "/" + constants.VNFS + "/")
         functions = json.loads(response.data.decode())
         result = functions[1]
-        self.assertEqual(result['descriptor']['name'],dict['name'])
+        self.assertEqual(result['descriptor']['name'], dict['name'])
         self.assertTrue(result['descriptor']['version'] == dict['version'])
         self.assertTrue(result['descriptor']['vendor'] == dict['vendor'])
 

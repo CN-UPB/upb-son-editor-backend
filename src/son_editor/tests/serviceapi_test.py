@@ -79,7 +79,7 @@ class ServiceAPITest(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_update_service(self):
-        #test partial update
+        # test partial update
         postArg = json.dumps({"name": "New Service Name"})
         response = self.app.put("/" + constants.WORKSPACES + "/" + str(self.wsid)
                                 + "/" + constants.PROJECTS + "/" + str(self.pid)
@@ -89,7 +89,7 @@ class ServiceAPITest(unittest.TestCase):
         service = json.loads(response.data.decode())
         self.assertEqual(service['name'], "'New Service Name'")
 
-        #test complete update
+        # test complete update
         postArg = json.dumps({"vendor": "de.upb.cs",
                               "name": "Service Name",
                               "version": "1.0"})
