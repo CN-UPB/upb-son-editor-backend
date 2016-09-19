@@ -18,7 +18,6 @@ from son_editor.models.repository import Catalogue
 logger = logging.getLogger("son-editor.functionsimpl")
 
 
-
 def get_functions(user_data, ws_id, project_id):
     user = get_user(user_data)
     session = db_session()
@@ -79,6 +78,8 @@ def create_function(user_data, ws_id, project_id, function_data):
 def update_function(user_data, ws_id, project_id, function_id, function_data):
     session = db_session()
 
+    # test if ws Name exists in database
+    user = get_user(user_data)
     function = session.query(Function). \
         join(Project). \
         join(Workspace). \
@@ -101,7 +102,7 @@ def update_function(user_data, ws_id, project_id, function_id, function_data):
         new_file_name = get_file_name("vnf", function)
         if not new_file_name == old_file_name:
             shutil.move(old_file_name, new_file_name)
-        write_to_disk("vnf",function)
+        write_to_disk("vnf", function)
     except:
         session.rollback()
         logger.exception("Could not update descriptor file:")
@@ -157,26 +158,34 @@ def get_functions_catalogue(user_data, ws_id, catalogue_id):
     return json.dumps(response.content)
 
 
+def get_function_catalogue(user_id, ws_id, function_uid):
+    return None
+
+
+def update_function_catalogue(user_data, ws_id, catalogue_id, function_data):
+    return None
+
+
 # Creates a function on the catalogue
-def create_function_catalogue(user_data, ws_id, catalogue_id, function_data):
-    function_name = shlex.quote(function_data["name"])
-    vendor_name = shlex.quote(function_data["vendor"])
-    version = shlex.quote(function_data["version"])
+def create_function_catalogue(user_data, ws_id, catalogue_id, function_id):
     session = db_session()
 
+    function = session.query(Function).filter(Function.id == function_id)
     catalogue = session.query(Catalogue).filter(Catalogue.id == catalogue_id).first()
 
+    if not function:
+        raise NotFound("Function with id {} does not exist".format(function_id))
     # Check if the given catalogue exists
     if not catalogue:
         raise NotFound("Catalogue with id {} does not exist".format(catalogue_id))
 
-    # Test if function Name exists in database
-    getRequest = get_functions_catalogue(user_data, ws_id, catalogue_id)
-    for element in getRequest:
-        if element and "name" in element and "vendor" in element and "version" in element:
-            if element['name'] == function_name and element['vendor'] == vendor_name and element['version'] == version:
-                raise NameConflict("Function already exists in catalogue {}".format(catalogue_id))
+    # Test if function Name exists in catalogue
+    function_data = get_function_catalogue(user_data, ws_id, function)
+
+    # Function exists on remote, update
+    response = requests.post(catalogue.url + CATALOGUE_LISTCREATE_SUFFIX, json=json.dumps(function))
+
 
     # Create network service
-    response = requests.post(catalogue.url + CATALOGUE_LISTCREATE_SUFFIX, json=json.dumps(function_data))
+
     return response.data

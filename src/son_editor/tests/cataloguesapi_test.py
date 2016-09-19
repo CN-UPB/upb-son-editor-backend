@@ -1,7 +1,7 @@
 import json
 import unittest
 
-from son_editor.app.constants import WORKSPACES, CATALOGUES, VNFS
+from son_editor.util.constants import WORKSPACES, CATALOGUES, VNFS
 from son_editor.app.database import db_session
 from son_editor.models.user import User
 from son_editor.models.workspace import Workspace
@@ -111,38 +111,38 @@ class CatalogueTest(unittest.TestCase):
 
     # Complex integration tests
 
-    def test_catalogue_integration(self):
-        concrete_test_url = "http://fg-cn-sandman1.cs.upb.de:4011/"
-
-        # Setup request dict
-        request_dict = {"name": "sandman1", "url": concrete_test_url}
-
-        # Post request on catalogues
-        response = self.app.post('/' + WORKSPACES + '/' + str(self.wsid) + '/' + CATALOGUES + '/',
-                                 data=json.dumps(request_dict), content_type='application/json')
-        # Expect catalogue gets created
-        self.assertEqual(request_dict['name'], json.loads(response.data.decode())['name'])
-        self.assertEqual(201, response.status_code)
-
-        # Save created catalogue id
-        catalogue_id = int(json.loads(response.data.decode())['id'])
-
-        # create ns in catalogue
-        dict = {"vendor": "de.upb.cs.cn.pgsandman",
-                "name": "vnf_2",
-                "version": "0.0.1"}
-        postArg = json.dumps(dict)
-        response = self.app.post("/" + WORKSPACES + "/" + str(self.wsid)
-                                 + "/" + CATALOGUES + "/" + str(catalogue_id)
-                                 + "/" + VNFS + "/", headers={'Content-Type': 'application/json'},
-                                 data=postArg)
-
-        # retrieve it in table
-        response = self.app.get("/" + WORKSPACES + "/" + str(self.wsid)
-                                + "/" + CATALOGUES + "/" + str(catalogue_id)
-                                + "/" + VNFS + "/")
-        functions = json.loads(response.data.decode())
-        result = functions[0]
-        self.assertTrue(result['descriptor']['name'] == dict['name'])
-        self.assertTrue(result['descriptor']['version'] == dict['version'])
-        self.assertTrue(result['descriptor']['vendor'] == dict['vendor'])
+        # def test_catalogue_integration(self):
+        #     concrete_test_url = "http://fg-cn-sandman1.cs.upb.de:4011/"
+        #
+        #     # Setup request dict
+        #     request_dict = {"name": "sandman1", "url": concrete_test_url}
+        #
+        #     # Post request on catalogues
+        #     response = self.app.post('/' + WORKSPACES + '/' + str(self.wsid) + '/' + CATALOGUES + '/',
+        #                              data=json.dumps(request_dict), content_type='application/json')
+        #     # Expect catalogue gets created
+        #     self.assertEqual(request_dict['name'], json.loads(response.data.decode())['name'])
+        #     self.assertEqual(201, response.status_code)
+        #
+        #     # Save created catalogue id
+        #     catalogue_id = int(json.loads(response.data.decode())['id'])
+        #
+        #     # create ns in catalogue
+        #     dict = {"vendor": "de.upb.cs.cn.pgsandman",
+        #             "name": "vnf_2",
+        #             "version": "0.0.1"}
+        #     postArg = json.dumps(dict)
+        #     response = self.app.post("/" + WORKSPACES + "/" + str(self.wsid)
+        #                              + "/" + CATALOGUES + "/" + str(catalogue_id)
+        #                              + "/" + VNFS + "/", headers={'Content-Type': 'application/json'},
+        #                              data=postArg)
+        #
+        #     # retrieve it in table
+        #     response = self.app.get("/" + WORKSPACES + "/" + str(self.wsid)
+        #                             + "/" + CATALOGUES + "/" + str(catalogue_id)
+        #                             + "/" + VNFS + "/")
+        #     functions = json.loads(response.data.decode())
+        #     result = functions[0]
+        #     self.assertTrue(result['descriptor']['name'] == dict['name'])
+        #     self.assertTrue(result['descriptor']['version'] == dict['version'])
+        #     self.assertTrue(result['descriptor']['vendor'] == dict['vendor'])
