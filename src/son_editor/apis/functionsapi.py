@@ -76,7 +76,7 @@ class Functions(Resource):
             return prepare_response(vnf_data, 201)
         if get_parent(request) is Category.catalogue:
             vnf_data = get_json(request)
-            vnf_data = catalogue_servicesimpl.create_in_catalogue(session['userData'], ws_id, parent_id, vnf_data['id'],
+            vnf_data = catalogue_servicesimpl.create_in_catalogue(session['userData'], parent_id, vnf_data['id'],
                                                                   True)
             return prepare_response(vnf_data, 201)
         # TODO implement for catalog and platform
@@ -130,8 +130,7 @@ class Function(Resource):
             return prepare_response(functions)
             # TODO implement for catalog and platform
         if get_parent(request) is Category.catalogue:
-            functions = catalogue_servicesimpl.get_in_catalogue(session["userData"], ws_id, parent_id, vnf_id, True)
+            functions = catalogue_servicesimpl.get_in_catalogue(ws_id, parent_id, vnf_id, True)
             return prepare_response(functions)
-
         # TODO implement for catalog and platform
         return prepare_response("not yet implemented")
