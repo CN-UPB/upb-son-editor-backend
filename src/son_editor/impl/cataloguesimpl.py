@@ -6,6 +6,7 @@ from son_editor.app.database import db_session
 from son_editor.app.exceptions import NotFound, NameConflict
 from son_editor.models.repository import Catalogue
 from son_editor.models.workspace import Workspace
+from son_editor.util.descriptorutil import update_workspace_descriptor
 from son_editor.util.requestutil import get_json
 
 
@@ -41,9 +42,10 @@ def create_catalogue(workspace_id):
 
     if len(existing_catalogues) > 0:
         raise NameConflict("catalogue with name {} already exists".format(catalogue_data['name']))
-    catalogue = Catalogue(catalogue_name, catalogue_url, workspace)
+    catalogue = Catalogue(name=catalogue_name, url=catalogue_url, workspace=workspace)
     session.add(catalogue)
     session.commit()
+    update_workspace_descriptor(catalogue.workspace)
     return catalogue.as_dict()
 
 
@@ -74,6 +76,7 @@ def update_catalogue(workspace_id, catalogue_id):
     catalogue.name = catalogue_name
     catalogue.url = catalogue_url
     session.commit()
+    update_workspace_descriptor(catalogue.workspace)
     return catalogue.as_dict()
 
 
@@ -92,4 +95,5 @@ def delete(workspace_id, catalogue_id):
 
     session.delete(catalogue)
     session.commit()
+    update_workspace_descriptor(catalogue.workspace)
     return catalogue.as_dict()
