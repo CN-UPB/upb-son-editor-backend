@@ -5,10 +5,11 @@ Created on 22.07.2016
 '''
 import logging
 
+from flask import request, session
 from flask_restplus import Model, Resource, Namespace, fields
 
-from son_editor.impl import servicesimpl
-from son_editor.util.constants import WORKSPACES, PROJECTS, CATALOGUES, PLATFORMS, SERVICES
+from son_editor.impl import servicesimpl, catalogue_servicesimpl
+from son_editor.util.constants import get_parent, Category, WORKSPACES, PROJECTS, CATALOGUES, PLATFORMS, SERVICES
 from son_editor.util.requestutil import prepare_response
 
 logger = logging.getLogger(__name__)
@@ -51,14 +52,24 @@ proj_namespace.add_model(serv_response.name, serv_response)
 class Services(Resource):
     @proj_namespace.response(200, "OK", [serv_response])
     def get(self, ws_id, parent_id):
-        service = servicesimpl.get_services(ws_id, parent_id)
-        return prepare_response(service)
+        if get_parent(request) is Category.project:
+            service = servicesimpl.get_services(ws_id, parent_id)
+            return prepare_response(service)
+        if get_parent(request) is Category.catalogue:
+            service = catalogue_servicesimpl.get_all_in_catalogue(session['userData'], ws_id, parent_id)
+            return prepare_response(service)
+        return prepare_response("not yet implemented")
 
     @proj_namespace.expect(serv)
     @proj_namespace.response(201, "Created", serv_response)
     def post(self, ws_id, parent_id):
-        service = servicesimpl.create_service(ws_id, parent_id)
-        return prepare_response(service, 201)
+        if get_parent(request) is Category.project:
+            service = servicesimpl.create_service(ws_id, parent_id)
+            return prepare_response(service, 201)
+        if get_parent(request) is Category.catalogue:
+            service = catalogue_servicesimpl.create_in_catalogue()
+            return prepare_response(service)
+        return prepare_response("not yet implemented")
 
 
 @proj_namespace.route('/<int:service_id>')
@@ -78,15 +89,21 @@ class Service(Resource):
     @proj_namespace.expect(serv)
     @proj_namespace.response(200, "Updated", serv_response)
     def put(self, ws_id, parent_id, service_id):
-        service = servicesimpl.update_service(ws_id, parent_id, service_id)
-        return prepare_response(service)
+        if get_parent(request) is Category.project:
+            service = servicesimpl.update_service(ws_id, parent_id, service_id)
+            return prepare_response(service)
+        return prepare_response("not yet implemented")
 
     @proj_namespace.response(200, "Deleted", serv_response)
     def delete(self, ws_id, parent_id, service_id):
-        service = servicesimpl.delete_service(parent_id, service_id)
-        return prepare_response(service)
+        if get_parent(request) is Category.project:
+            service = servicesimpl.delete_service(parent_id, service_id)
+            return prepare_response(service)
+        return prepare_response("not yet implemented")
 
     @proj_namespace.response(200, "OK", serv_response)
     def get(self, ws_id, parent_id, service_id):
-        service = servicesimpl.get_service(ws_id, parent_id, service_id)
-        return prepare_response(service)
+        if get_parent(request) is Category.project:
+            service = servicesimpl.get_service(ws_id, parent_id, service_id)
+            return prepare_response(service)
+        return prepare_response("not yet implemented")
