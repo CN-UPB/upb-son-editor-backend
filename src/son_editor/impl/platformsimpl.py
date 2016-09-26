@@ -6,6 +6,7 @@ from son_editor.app.database import db_session
 from son_editor.app.exceptions import NotFound, NameConflict
 from son_editor.models.repository import Platform
 from son_editor.models.workspace import Workspace
+from son_editor.util.descriptorutil import update_workspace_descriptor
 from son_editor.util.requestutil import get_json
 
 
@@ -41,8 +42,9 @@ def create_platform(workspace_id):
 
     if len(existing_platforms) > 0:
         raise NameConflict("Platform with name {} already exists".format(platform_data['name']))
-    platform = Platform(platform_name, platform_url, workspace)
+    platform = Platform(name=platform_name, url=platform_url, workspace=workspace)
     session.add(platform)
+    update_workspace_descriptor(platform.workspace)
     session.commit()
     return platform.as_dict()
 
@@ -73,6 +75,7 @@ def update_platform(workspace_id, platform_id):
 
     platform.name = platform_name
     platform.url = platform_url
+    update_workspace_descriptor(platform.workspace)
     session.commit()
     return platform.as_dict()
 
@@ -91,5 +94,6 @@ def delete(workspace_id, platform_id):
         raise NotFound("Platform with id {} could not be found".format(platform_id))
 
     session.delete(platform)
+    update_workspace_descriptor(platform.workspace)
     session.commit()
     return platform.as_dict()

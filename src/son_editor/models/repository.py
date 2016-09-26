@@ -1,4 +1,6 @@
+from sqlalchemy import Boolean
 from sqlalchemy import Column, Integer, String, ForeignKey, Text
+from sqlalchemy import UniqueConstraint
 from sqlalchemy.orm import relationship
 
 from son_editor.app.database import Base
@@ -9,13 +11,15 @@ class Repository(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(50))
     url = Column(String(50))
+    publish = Column(Boolean())
     workspace_id = Column(Integer, ForeignKey('workspace.id'))
 
-    def __init__(self, name=None, url=None, workspace=None):
+    UniqueConstraint('workspace_id', 'name')
+
+    def __init__(self, name=None, url=None, publish=False):
         self.name = name
         self.url = url
-        if workspace:
-            self.workspace_id = workspace.id
+        self.publish = publish
 
     def __repr__(self):
         return '<Repository {}>'.format(self.name)
@@ -29,6 +33,10 @@ class Catalogue(Repository):
     id = Column(Integer, ForeignKey('repository.id'), primary_key=True)
     workspace = relationship("Workspace", back_populates="catalogues")
 
+    def __init__(self, name=None, url=None, publish=None, workspace=None, ):
+        super().__init__(name=name, url=url, publish=publish)
+        self.workspace = workspace
+
     __mapper_args__ = {
         'polymorphic_identity': 'catalogue',
     }
@@ -41,6 +49,10 @@ class Platform(Repository):
     __tablename__ = 'platform'
     id = Column(Integer, ForeignKey('repository.id'), primary_key=True)
     workspace = relationship("Workspace", back_populates="platforms")
+
+    def __init__(self, name=None, url=None, publish=None, workspace=None):
+        super().__init__(name=name, url=url, publish=publish)
+        self.workspace = workspace
 
     __mapper_args__ = {
         'polymorphic_identity': 'platform',

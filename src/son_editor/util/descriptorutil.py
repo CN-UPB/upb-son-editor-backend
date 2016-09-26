@@ -1,4 +1,5 @@
 import json
+import os
 
 import yaml
 
@@ -27,3 +28,59 @@ def get_file_name(folder, model):
            + model.vendor + "-" \
            + model.name + "-" \
            + model.version + ".yml"
+
+
+def synchronize_workspace_descriptor(workspace, session):
+    from son_editor.models.repository import Catalogue
+    with open(os.path.join(workspace.path, "workspace.yml"), "r+") as stream:
+        ws_descriptor = yaml.safe_load(stream)
+        if "catalogue_servers" not in ws_descriptor:
+            ws_descriptor["catalogue_servers"] = []
+        for catalogue_server in ws_descriptor["catalogue_servers"]:
+            if len([x for x in workspace.catalogues if x.name == catalogue_server['id']]) == 0:
+                session.add(Catalogue(name=catalogue_server['id'],
+                                      url=catalogue_server['url'],
+                                      publish=catalogue_server['publish'] == 'yes',
+                                      workspace=workspace)
+                            )
+        for cat in workspace.catalogues:
+            if len([x for x in ws_descriptor["catalogue_servers"] if x['id'] == cat.name]) == 0:
+                catalogue_server = {'id': cat.name, 'url': cat.url, 'publish': cat.publish}
+                ws_descriptor['catalogue_servers'].append(catalogue_server)
+        ws_descriptor['name'] = workspace.name
+        yaml.safe_dump(ws_descriptor, stream)
+
+
+def update_workspace_descriptor(workspace):
+    with open(os.path.join(workspace.path, "workspace.yml"), "r+") as stream:
+        ws_descriptor = yaml.safe_load(stream)
+        ws_descriptor['catalogue_servers'] = []
+        for cat in workspace.catalogues:
+            catalogue_server = {'id': cat.name, 'url': cat.url, 'publish': cat.publish}
+            ws_descriptor['catalogue_servers'].append(catalogue_server)
+        ws_descriptor['platform_servers'] = []
+        for plat in workspace.platforms:
+            platform_server = {'id': plat.name, 'url': plat.url, 'publish': plat.publish}
+            ws_descriptor['platform_servers'].append(platform_server)
+        ws_descriptor['name'] = workspace.name
+        yaml.safe_dump(ws_descriptor, stream)
+
+
+def load_workspace_descriptor(workspace):
+    from son_editor.models.repository import Catalogue
+    from son_editor.models.repository import Platform
+
+    with open(os.path.join(workspace.path, "workspace.yml"), "r") as stream:
+        ws_descriptor = yaml.safe_load(stream)
+        if 'catalogue_servers' in ws_descriptor:
+            catalogues = ws_descriptor['catalogue_servers']
+            for catalogue_server in catalogues:
+                workspace.catalogues.append(Catalogue(name=catalogue_server['id'],
+                                                      url=catalogue_server['url'],
+                                                      publish=catalogue_server['publish'] == 'yes'))
+        if 'platform_servers' in ws_descriptor:
+            platforms = ws_descriptor['platform_servers']
+            for platform_server in platforms:
+                workspace.platforms.append(Platform(name=platform_server['id'],
+                                                    url=platform_server['url'],
+                                                    publish=platform_server['publish'] == 'yes'))
