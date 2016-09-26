@@ -4,7 +4,7 @@ import requests
 
 from son_editor.app.database import db_session
 from son_editor.app.exceptions import NotFound
-from son_editor.models.descriptor import Function
+from son_editor.models.descriptor import Function, Service
 from son_editor.models.repository import Catalogue
 
 # Catalogue methods
@@ -39,6 +39,15 @@ def get_catalogue(catalogue_id):
     return catalogue
 
 
+# Returns a service with the given service id
+def get_service(service_id):
+    session = db_session()
+    service = session.query(Service).filter(Service.id == service_id).first()
+    # Check if the function could be retrieved
+    if not service:
+        raise NotFound("Service with id '{}' does not exist".format(service_id))
+    return service
+
 # Returns a function with the given function id
 def get_function(function_id):
     session = db_session()
@@ -71,10 +80,12 @@ def build_URL(is_vnf, name, vendor, version):
 ## Actual catalogue HTTP actions
 
 # Creates a function on the catalogue
-def create_in_catalogue(user_data, ws_id, catalogue_id, function_id, is_vnf):
+def create_in_catalogue(user_data, catalogue_id, function_id, is_vnf):
     url_suffix = CATALOGUE_LIST_CREATE_SUFFIX.replace("{type}", getType(is_vnf))
-
-    function = get_function(function_id)
+    if (is_vnf):
+        function = get_function(function_id)
+    else:
+        function = get_service(function_id)
     catalogue = get_catalogue(catalogue_id)
 
     # Create network service on the catalogue
@@ -106,7 +117,7 @@ def get_all_in_catalogue(user_data, ws_id, catalogue_id, is_vnf):
 
 
 # Gets a specific function
-def get_in_catalogue(user_id, ws_id, catalogue_id, function_id, is_vnf):
+def get_in_catalogue(ws_id, catalogue_id, function_id, is_vnf):
     name, vendor, version = decodeID(function_id)
     catalogue = get_catalogue(catalogue_id)
 

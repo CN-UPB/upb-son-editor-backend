@@ -1,7 +1,7 @@
 import json
 import unittest
 
-from son_editor.util.constants import WORKSPACES, CATALOGUES, VNFS, PROJECTS
+from son_editor.util.constants import WORKSPACES, CATALOGUES, SERVICES, PROJECTS
 from son_editor.app.database import db_session
 from son_editor.models.user import User
 from son_editor.models.workspace import Workspace
@@ -47,19 +47,19 @@ class CatalogueServiceTest(unittest.TestCase):
         # Create a sample function
         session = db_session()
         ns_dict = {"vendor": "de.upb.cs.cn.pgsandman",
-                   "name": "vnf_1",
+                   "name": "service_1",
                    "version": "0.0.1"}
         post_arg = json.dumps(ns_dict)
         response = self.app.post("/" + WORKSPACES + "/" + str(self.wsid)
                                  + "/" + PROJECTS + "/" + str(self.pjid)
-                                 + "/" + VNFS + "/", headers={'Content-Type': 'application/json'},
+                                 + "/" + SERVICES + "/", headers={'Content-Type': 'application/json'},
                                  data=post_arg)
         function = json.loads(response.data.decode())
         self.assertTrue(response.status_code == 201)
         self.assertTrue(function['descriptor']['name'] == ns_dict['name'])
         self.assertTrue(function['descriptor']['version'] == ns_dict['version'])
         self.assertTrue(function['descriptor']['vendor'] == ns_dict['vendor'])
-        vnf_id = function['id']
+        service_id = function['id']
 
         concrete_test_url = "http://fg-cn-sandman1.cs.upb.de:4011"
 
@@ -77,35 +77,35 @@ class CatalogueServiceTest(unittest.TestCase):
 
         response = self.app.get("/" + WORKSPACES + "/" + str(self.wsid)
                                 + "/" + CATALOGUES + "/" + str(catalogue_id)
-                                + "/" + VNFS + "/")
+                                + "/" + SERVICES + "/")
         functions = json.loads(response.data.decode())
         exists = False
-        vnf_uid = None
+        service_uid = None
         for function in functions:
             if function['vendor'] == ns_dict['vendor'] and function['name'] == ns_dict['name'] and function[
                 'version'] == ns_dict['version']:
-                vnf_uid = function['id']
+                service_uid = function['id']
                 exists = True
 
         # Delete existing
-        if exists and vnf_uid is not None:
+        if exists and service_uid is not None:
             self.app.delete("/" + WORKSPACES + "/" + str(self.wsid)
                             + "/" + CATALOGUES + "/" + str(catalogue_id)
-                            + "/" + VNFS + "/" + str(vnf_uid))
+                            + "/" + SERVICES + "/" + str(service_uid))
 
         # create ns in remote catalogue
-        id_dict = {"id": vnf_id}
+        id_dict = {"id": service_id}
 
         post_arg = json.dumps(id_dict)
         response = self.app.post("/" + WORKSPACES + "/" + str(self.wsid)
                                  + "/" + CATALOGUES + "/" + str(catalogue_id)
-                                 + "/" + VNFS + "/", headers={'Content-Type': 'application/json'},
+                                 + "/" + SERVICES + "/", headers={'Content-Type': 'application/json'},
                                  data=post_arg)
 
         # retrieve it again
         response = self.app.get("/" + WORKSPACES + "/" + str(self.wsid)
                                 + "/" + CATALOGUES + "/" + str(catalogue_id)
-                                + "/" + VNFS + "/")
+                                + "/" + SERVICES + "/")
         functions = json.loads(response.data.decode())
         for function in functions:
             if function['vendor'] == ns_dict['vendor'] and function['name'] == ns_dict['name'] and function[
@@ -116,35 +116,44 @@ class CatalogueServiceTest(unittest.TestCase):
 
         # Check if ns already in remote catalogue
         ns_dict = {"vendor": "de.upb.cs.cn.pgsandman",
-                   "name": "vnf_2",
+                   "name": "service_2",
                    "version": "0.0.2"}
 
         response = self.app.get("/" + WORKSPACES + "/" + str(self.wsid)
                                 + "/" + CATALOGUES + "/" + str(catalogue_id)
-                                + "/" + VNFS + "/")
+                                + "/" + SERVICES + "/")
         functions = json.loads(response.data.decode())
         exists = False
-        vnf_uid_2 = None
+        service_uid_2 = None
         for function in functions:
             if function['vendor'] == ns_dict['vendor'] and function['name'] == ns_dict['name'] and function[
                 'version'] == ns_dict['version']:
-                vnf_uid_2 = function['id']
+                service_uid_2 = function['id']
                 exists = True
 
         # Delete existing
-        if exists and vnf_uid_2 is not None:
+        if exists and service_uid_2 is not None:
             self.app.delete("/" + WORKSPACES + "/" + str(self.wsid)
                             + "/" + CATALOGUES + "/" + str(catalogue_id)
-                            + "/" + VNFS + "/" + str(vnf_uid_2))
+                            + "/" + SERVICES + "/" + str(service_uid_2))
 
         # Update it
         response = self.app.put("/" + WORKSPACES + "/" + str(self.wsid)
                                 + "/" + CATALOGUES + "/" + str(catalogue_id)
-                                + "/" + VNFS + "/" + str(vnf_uid), data=ns_dict)
+                                + "/" + SERVICES + "/" + str(service_uid), data=ns_dict)
         for function in functions:
             if function['vendor'] == ns_dict['vendor'] and function['name'] == ns_dict['name'] and function[
                 'version'] == ns_dict['version']:
                 exists = True
         self.assertTrue(exists)
+
+        # Retrieve specific
+        response = self.app.get("/" + WORKSPACES + "/" + str(self.wsid)
+                                + "/" + CATALOGUES + "/" + str(catalogue_id)
+                                + "/" + SERVICES + "/" + str(service_uid_2))
+        function = json.loads(response.data.decode())
+        self.assertTrue(function['name'] == ns_dict['name'])
+        self.assertTrue(function['version'] == ns_dict['version'])
+        self.assertTrue(function['vendor'] == ns_dict['vendor'])
 
         session.close()
