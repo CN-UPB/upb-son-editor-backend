@@ -6,7 +6,7 @@ Created on 28.07.2016
 import json
 
 from flask import request
-from flask.wrappers import Response
+from flask.wrappers import Response, Request
 from pkg_resources import Requirement, resource_string
 import yaml
 
@@ -55,7 +55,7 @@ def allowed_origin():
     return False
 
 
-def get_json(request):
+def get_json(request: Request) -> dict:
     json_data = request.get_json()
     if json_data is None:
         json_data = request.form
