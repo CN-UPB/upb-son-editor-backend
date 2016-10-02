@@ -5,10 +5,13 @@ Created on 22.07.2016
 '''
 import logging
 
+from flask import request
 from flask_restplus import Model, Resource, Namespace, fields
 
+from son_editor.impl import platform_connector
 from son_editor.impl import servicesimpl
-from son_editor.util.constants import WORKSPACES, PROJECTS, CATALOGUES, PLATFORMS, SERVICES
+from son_editor.util import publishutil
+from son_editor.util.constants import WORKSPACES, PROJECTS, CATALOGUES, PLATFORMS, SERVICES, get_parent, Category
 from son_editor.util.requestutil import prepare_response
 
 logger = logging.getLogger(__name__)
@@ -57,8 +60,13 @@ class Services(Resource):
     @proj_namespace.expect(serv)
     @proj_namespace.response(201, "Created", serv_response)
     def post(self, ws_id, parent_id):
-        service = servicesimpl.create_service(ws_id, parent_id)
-        return prepare_response(service, 201)
+        parent = get_parent(request)
+        if parent == Category.project:
+            service = servicesimpl.create_service(ws_id, parent_id)
+            return prepare_response(service, 201)
+        elif parent == Category.platform:
+            result = platform_connector.create_service_on_platform(ws_id, parent_id)
+            return prepare_response(result, 201)
 
 
 @proj_namespace.route('/<int:service_id>')
