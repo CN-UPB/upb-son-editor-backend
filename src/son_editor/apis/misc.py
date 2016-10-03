@@ -10,7 +10,7 @@ from flask_restplus import Resource, Namespace
 from son_editor.util.requestutil import CONFIG
 
 namespace = Namespace("", description="Misc API")
-logger = logging.getLogger("son-editor.misc")
+logger = logging.getLogger(__name__)
 
 
 @namespace.route("/shutdown", endpoint="shutdown")

@@ -11,7 +11,7 @@ from son_editor.models.workspace import Workspace
 from son_editor.util.publishutil import pack_project, push_to_platform
 from son_editor.util.requestutil import get_json
 
-logger = logging.getLogger("son-editor.platform_connector")
+logger = logging.getLogger(__name__)
 
 
 def create_service_on_platform(ws_id, platform_id):

@@ -15,7 +15,7 @@ from son_editor.util.constants import WORKSPACES
 from son_editor.util.requestutil import prepare_response, get_json
 
 namespace = Namespace(WORKSPACES, description="Workspace Resources")
-logger = logging.getLogger("son-editor.workspacesapi")
+logger = logging.getLogger(__name__)
 
 rep = namespace.model("Repository", {
     'name': fields.String(required=True, description='The Repository Name'),

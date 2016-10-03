@@ -2,16 +2,17 @@ import contextlib
 import logging
 import os
 
+import shutil
 from sqlalchemy import MetaData
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
 
-from son_editor.util.descriptorutil import load_from_disk, load_workspace_descriptor
+from son_editor.util.descriptorutil import load_from_disk, load_workspace_descriptor, get_file_path, get_file_name
 from son_editor.util.requestutil import CONFIG
 
 # DB URI
-logger = logging.getLogger("son-editor.database")
+logger = logging.getLogger(__name__)
 DATABASE_SQLITE_URI = "sqlite:///%s" % CONFIG['database']['location']
 logger.info("DBSQLITE_URI: " + DATABASE_SQLITE_URI)
 
@@ -92,8 +93,6 @@ def _scan_workspace_dir(ws_path, ws):
             session.commit()
         _scan_project_dir(os.path.join(ws_path, "projects", project_name), pj)
 
-        # TODO retrieve platforms and catalogues from workspace descriptor
-
 
 def _scan_project_dir(project_path, pj):
     _scan_for_services(os.path.join(project_path, "sources", "nsd"), pj)
@@ -107,7 +106,8 @@ def _scan_for_services(services_dir, pj):
         for service_file in os.listdir(services_dir):
             if service_file.endswith(".yml"):
                 service = Service()
-                load_from_disk(os.path.join(services_dir, service_file), service)
+                file_path = os.path.join(services_dir, service_file)
+                load_from_disk(file_path, service)
                 db_service = session.query(Service). \
                     filter(Service.project == pj). \
                     filter(Service.name == service.name). \
@@ -121,6 +121,8 @@ def _scan_for_services(services_dir, pj):
                     session.commit()
                 else:
                     session.rollback()
+                if get_file_path("nsd", service) != file_path:
+                    shutil.move(file_path, get_file_path("nsd", service))  # rename to expected name format
             elif os.path.isdir(os.path.join(services_dir, service_file)):
                 _scan_for_services(os.path.join(services_dir, service_file), pj)
     except:
@@ -131,25 +133,32 @@ def _scan_for_functions(function_dir, pj):
     session = db_session()
     from son_editor.models.descriptor import Function
     try:
-        for function_file in os.listdir(function_dir):
-            if function_file.endswith(".yml"):
-                function = Function()
-                load_from_disk(os.path.join(function_dir, function_file), function)
-                db_service = session.query(Function). \
-                    filter(Function.project == pj). \
-                    filter(Function.name == function.name). \
-                    filter(Function.vendor == function.vendor). \
-                    filter(Function.version == function.version). \
-                    first()
-                if not db_service:
-                    logger.info("Found function in project {}: {}".format(pj.name, function.uid))
-                    function.project = pj
-                    session.add(function)
-                    session.commit()
+        for function_folder in os.listdir(function_dir):
+            folder_path = os.path.join(function_dir, function_folder)
+            if os.path.isdir(folder_path):
+                yaml_files = [file for file in os.listdir(folder_path) if file.endswith(".yml")]
+                if len(yaml_files) == 1:
+                    function = Function()
+                    file_path = os.path.join(folder_path, yaml_files[0])
+                    load_from_disk(file_path, function)
+                    db_service = session.query(Function). \
+                        filter(Function.project == pj). \
+                        filter(Function.name == function.name). \
+                        filter(Function.vendor == function.vendor). \
+                        filter(Function.version == function.version). \
+                        first()
+                    if not db_service:
+                        logger.info("Found function in project {}: {}".format(pj.name, function.uid))
+                        function.project = pj
+                        session.add(function)
+                        session.commit()
+                    else:
+                        session.rollback()
+                if file_path != get_file_path("vnf", function):
+                    shutil.move(file_path, get_file_path("vnf", function))
                 else:
-                    session.rollback()
-            elif os.path.isdir(os.path.join(function_dir, function_file)):
-                _scan_for_functions(os.path.join(function_dir, function_file), pj)
+                    logger.info("Multiple or no yaml files in folder {}. Ignoring".format(folder_path))
+
     except:
         logger.exception("Could not load function descriptor:")
         session.rollback()
