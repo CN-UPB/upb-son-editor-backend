@@ -55,9 +55,14 @@ proj_namespace.add_model(serv_response.name, serv_response)
 @plat_namespace.param('parent_id', 'The Platform identifier')
 @proj_namespace.response(200, "OK")
 class Services(Resource):
+    """
+    Api Methods for all services in this resource
+    """
+
     @proj_namespace.response(200, "OK", [serv_response])
-    @plat_namespace.hide()
     def get(self, ws_id, parent_id):
+        """Get a list of all Services
+        Returns a list of all services available in this resource"""
         if get_parent(request) is Category.project:
             service = servicesimpl.get_services(ws_id, parent_id)
             return prepare_response(service)
@@ -71,6 +76,10 @@ class Services(Resource):
     @proj_namespace.response(201, "Created", serv_response)
     @plat_namespace.response(201, "Created")
     def post(self, ws_id, parent_id):
+        """Create a new Service
+
+        Creates a new Service in this project or
+        publishes it in the catalogue or platform"""
         if get_parent(request) is Category.project:
             service = servicesimpl.create_service(ws_id, parent_id)
             return prepare_response(service, 201)
@@ -102,6 +111,9 @@ class Service(Resource):
     @plat_namespace.expect(serv_id)
     @proj_namespace.response(200, "Updated", serv_response)
     def put(self, ws_id, parent_id, service_id):
+        """Update the service
+
+        Updates the referenced service in the project or in the catalogue or platform"""
         if get_parent(request) is Category.project:
             service = servicesimpl.update_service(ws_id, parent_id, service_id)
             return prepare_response(service)
@@ -117,8 +129,10 @@ class Service(Resource):
         return prepare_response("not yet implemented")
 
     @proj_namespace.response(200, "Deleted", serv_response)
-    @plat_namespace.hide()
     def delete(self, ws_id, parent_id, service_id):
+        """Delete the Service
+
+        Deletes the service from the Project or Catalogue"""
         if get_parent(request) is Category.project:
             service = servicesimpl.delete_service(parent_id, service_id)
             return prepare_response(service)
@@ -128,8 +142,11 @@ class Service(Resource):
         return prepare_response("not yet implemented")
 
     @proj_namespace.response(200, "OK", serv_response)
-    @plat_namespace.hide()
+    @plat_namespace.doc(get=False)
     def get(self, ws_id, parent_id, service_id):
+        """Return a specific Service
+
+        Returns the referenced service from the Project or catalogue"""
         if get_parent(request) is Category.project:
             service = servicesimpl.get_service(ws_id, parent_id, service_id)
             return prepare_response(service)
