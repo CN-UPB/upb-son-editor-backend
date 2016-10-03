@@ -7,7 +7,7 @@ from flask.globals import request, session
 from flask_restplus import Namespace, Model, fields
 from flask_restplus import Resource
 
-from son_editor.impl import functionsimpl
+from son_editor.impl import functionsimpl, catalogue_servicesimpl
 from son_editor.util.constants import get_parent, Category, WORKSPACES, PROJECTS, CATALOGUES, PLATFORMS, VNFS
 from son_editor.util.requestutil import prepare_response, get_json
 
@@ -23,6 +23,18 @@ funct = Model("VNF", {
     'vendor': fields.String(required=True, description='The VNF Vendor'),
     'version': fields.String(required=True, description='The VNF Version')
 
+})
+
+funct_uid = Model("VNF", {
+    'id': fields.String(required=True, description='The VNF UID'),
+    'name': fields.String(required=True, description='The VNF Name'),
+    'vendor': fields.String(required=True, description='The VNF Vendor'),
+    'version': fields.String(required=True, description='The VNF Version')
+
+})
+
+uid = Model("VNF_UID", {
+    'id': fields.String(required=True, description='The VNF UID'),
 })
 
 funct_response = funct.inherit("FunctionResponse", funct, {
@@ -50,24 +62,29 @@ class Functions(Resource):
         if get_parent(request) is Category.project:
             functions = functionsimpl.get_functions(session["userData"], ws_id, parent_id)
             return prepare_response(functions)
+        if get_parent(request) is Category.catalogue:
+            functions = catalogue_servicesimpl.get_all_in_catalogue(session["userData"], ws_id, parent_id, True)
+            return prepare_response(functions)
         return prepare_response("not yet implemented")
 
     @proj_namespace.expect(funct)
     @proj_namespace.response(201, "Created", funct_response)
     def post(self, ws_id, parent_id):
-        vnf_data = get_json(request)
         if get_parent(request) is Category.project:
+            vnf_data = get_json(request)
             vnf_data = functionsimpl.create_function(session['userData'], ws_id, parent_id, vnf_data)
             return prepare_response(vnf_data, 201)
         if get_parent(request) is Category.catalogue:
-            vnf_data = functionsimpl.create_function_catalogue(session['userData'], ws_id, parent_id, vnf_data)
+            vnf_data = get_json(request)
+            vnf_data = catalogue_servicesimpl.create_in_catalogue(session['userData'], parent_id, vnf_data['id'],
+                                                                  True)
             return prepare_response(vnf_data, 201)
         # TODO implement for catalog and platform
         return prepare_response("not implemented yet")
 
 
 @proj_namespace.route('/<int:vnf_id>')
-@cata_namespace.route('/<int:vnf_id>')
+@cata_namespace.route('/<string:vnf_id>')
 @plat_namespace.route('/<int:vnf_id>')
 @proj_namespace.param('ws_id', 'The Workspace identifier')
 @cata_namespace.param('ws_id', 'The Workspace identifier')
@@ -80,31 +97,40 @@ class Functions(Resource):
 @plat_namespace.param('vnf_id', 'The VNF identifier')
 class Function(Resource):
     @proj_namespace.expect(funct)
+    @cata_namespace.expect(funct_uid)
     @proj_namespace.response(200, "Updated", funct_response)
     def put(self, ws_id, parent_id, vnf_id):
         if get_parent(request) is Category.project:
             vnf_data = get_json(request)
             vnf_data = functionsimpl.update_function(session['userData'], ws_id, parent_id, vnf_id, vnf_data)
             return prepare_response(vnf_data)
+        if get_parent(request) is Category.catalogue:
+            vnf_data = get_json(request)
+            vnf_data = catalogue_servicesimpl.update_service_catalogue(ws_id, parent_id, vnf_id, vnf_data, True)
+            return prepare_response(vnf_data)
         return prepare_response("update vnf in project with id " + parent_id)
 
     @proj_namespace.response(200, "Deleted", funct_response)
+    @cata_namespace.expect(uid)
     def delete(self, ws_id, parent_id, vnf_id):
         if get_parent(request) is Category.project:
             deleted = functionsimpl.delete_function(session['userData'], ws_id, parent_id, vnf_id)
+            return prepare_response(deleted)
+        if get_parent(request) is Category.catalogue:
+            deleted = catalogue_servicesimpl.delete_service_catalogue(ws_id, parent_id, vnf_id, True)
             return prepare_response(deleted)
         # TODO implement for catalog and platform
         return prepare_response("not yet implemented")
 
     @proj_namespace.response(200, "OK", funct_response)
+    @cata_namespace.expect(uid)
     def get(self, ws_id, parent_id, vnf_id):
         if get_parent(request) is Category.project:
             functions = functionsimpl.get_function_project(session["userData"], ws_id, parent_id, vnf_id)
             return prepare_response(functions)
             # TODO implement for catalog and platform
         if get_parent(request) is Category.catalogue:
-            functions = functionsimpl.get_function_catalogue(session["userData"], ws_id, parent_id, vnf_id)
+            functions = catalogue_servicesimpl.get_in_catalogue(ws_id, parent_id, vnf_id, True)
             return prepare_response(functions)
-
         # TODO implement for catalog and platform
         return prepare_response("not yet implemented")

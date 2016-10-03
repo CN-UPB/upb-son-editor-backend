@@ -5,14 +5,14 @@ Created on 22.07.2016
 '''
 import logging
 
-from flask import request
+from flask import request, session
 from flask_restplus import Model, Resource, Namespace, fields
 
 from son_editor.impl import platform_connector
-from son_editor.impl import servicesimpl
 from son_editor.util import publishutil
-from son_editor.util.constants import WORKSPACES, PROJECTS, CATALOGUES, PLATFORMS, SERVICES, get_parent, Category
-from son_editor.util.requestutil import prepare_response
+from son_editor.impl import servicesimpl, catalogue_servicesimpl
+from son_editor.util.constants import get_parent, Category, WORKSPACES, PROJECTS, CATALOGUES, PLATFORMS, SERVICES
+from son_editor.util.requestutil import prepare_response, get_json
 
 logger = logging.getLogger(__name__)
 
@@ -54,23 +54,32 @@ proj_namespace.add_model(serv_response.name, serv_response)
 class Services(Resource):
     @proj_namespace.response(200, "OK", [serv_response])
     def get(self, ws_id, parent_id):
-        service = servicesimpl.get_services(ws_id, parent_id)
-        return prepare_response(service)
+        if get_parent(request) is Category.project:
+            service = servicesimpl.get_services(ws_id, parent_id)
+            return prepare_response(service)
+        if get_parent(request) is Category.catalogue:
+            service = catalogue_servicesimpl.get_all_in_catalogue(session['userData'], ws_id, parent_id, False)
+            return prepare_response(service)
+        return prepare_response("not yet implemented")
 
     @proj_namespace.expect(serv)
     @proj_namespace.response(201, "Created", serv_response)
     def post(self, ws_id, parent_id):
-        parent = get_parent(request)
-        if parent == Category.project:
+        if get_parent(request) is Category.project:
             service = servicesimpl.create_service(ws_id, parent_id)
             return prepare_response(service, 201)
-        elif parent == Category.platform:
+        elif get_parent(request) is Category.platform:
             result = platform_connector.create_service_on_platform(ws_id, parent_id)
             return prepare_response(result, 201)
+        if get_parent(request) is Category.catalogue:
+            vnf_data = get_json(request)
+            service = catalogue_servicesimpl.create_in_catalogue(session['userData'], parent_id, vnf_data['id'], False)
+            return prepare_response(service)
+        return prepare_response("not yet implemented")
 
 
 @proj_namespace.route('/<int:service_id>')
-@cata_namespace.route('/<int:service_id>')
+@cata_namespace.route('/<string:service_id>')
 @plat_namespace.route('/<int:service_id>')
 @proj_namespace.param('ws_id', 'The Workspace identifier')
 @cata_namespace.param('ws_id', 'The Workspace identifier')
@@ -86,15 +95,32 @@ class Service(Resource):
     @proj_namespace.expect(serv)
     @proj_namespace.response(200, "Updated", serv_response)
     def put(self, ws_id, parent_id, service_id):
-        service = servicesimpl.update_service(ws_id, parent_id, service_id)
-        return prepare_response(service)
+        if get_parent(request) is Category.project:
+            service = servicesimpl.update_service(ws_id, parent_id, service_id)
+            return prepare_response(service)
+        if get_parent(request) is Category.catalogue:
+            function_data = get_json(request)
+            service = catalogue_servicesimpl.update_service_catalogue(ws_id, parent_id, service_id, function_data,
+                                                                      False)
+            return prepare_response(service)
+        return prepare_response("not yet implemented")
 
     @proj_namespace.response(200, "Deleted", serv_response)
     def delete(self, ws_id, parent_id, service_id):
-        service = servicesimpl.delete_service(parent_id, service_id)
-        return prepare_response(service)
+        if get_parent(request) is Category.project:
+            service = servicesimpl.delete_service(parent_id, service_id)
+            return prepare_response(service)
+        if get_parent(request) is Category.catalogue:
+            service = catalogue_servicesimpl.delete_service_catalogue(ws_id, parent_id, service_id, False)
+            return prepare_response(service)
+        return prepare_response("not yet implemented")
 
     @proj_namespace.response(200, "OK", serv_response)
     def get(self, ws_id, parent_id, service_id):
-        service = servicesimpl.get_service(ws_id, parent_id, service_id)
-        return prepare_response(service)
+        if get_parent(request) is Category.project:
+            service = servicesimpl.get_service(ws_id, parent_id, service_id)
+            return prepare_response(service)
+        if get_parent(request) is Category.catalogue:
+            service = catalogue_servicesimpl.get_in_catalogue(ws_id, parent_id, service_id, False)
+            return prepare_response(service)
+        return prepare_response("not yet implemented")

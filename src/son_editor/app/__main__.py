@@ -48,7 +48,7 @@ def handle_invalid_argument(err):
 
 
 @api.errorhandler(ExtNotReachable)
-def handle_not_found(err):
+def handle_not_reachable(err):
     logger.warn(err.msg)
     return prepare_error({"message": err.msg}, 404)
 
