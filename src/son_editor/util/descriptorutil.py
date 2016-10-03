@@ -3,29 +3,37 @@ import os
 
 import yaml
 
-
-def load_from_disk(file, descriptor_model):
+def load_from_disk(file, model):
     with open(file, 'r') as stream:
         descriptor = yaml.safe_load(stream)
-        descriptor_model.__init__(descriptor=json.dumps(descriptor),
-                                  name=descriptor['name'],
-                                  vendor=descriptor['vendor'],
-                                  version=descriptor['version'])
+        model.__init__(descriptor=json.dumps(descriptor),
+                       name=descriptor['name'],
+                       vendor=descriptor['vendor'],
+                       version=descriptor['version'])
+        return model
 
 
-def write_to_disk(folder, descriptor_model):
-    with open(get_file_name(folder, descriptor_model), 'w') as stream:
-        data = json.loads(descriptor_model.descriptor)
+def write_to_disk(folder: str, model):
+    target_dir = os.path.dirname(get_file_path(folder, model))
+    if not os.path.exists(target_dir):
+        os.mkdir(target_dir)
+    with open(get_file_path(folder, model), 'w') as stream:
+        data = json.loads(model.descriptor)
         yaml.safe_dump(data, stream, default_flow_style=False)
 
 
-def get_file_name(folder, model):
+def get_file_path(folder: str, model) -> str:
     project = model.project
     workspace = project.workspace
     return workspace.path + "/projects/" \
            + project.rel_path + "/sources/" \
            + folder + "/" \
-           + model.vendor + "-" \
+           + (model.name + "/" if folder == "vnf" else "") \
+           + get_file_name(model)
+
+
+def get_file_name(model) -> str:
+    return model.vendor + "-" \
            + model.name + "-" \
            + model.version + ".yml"
 

@@ -10,7 +10,7 @@ from son_editor.impl.usermanagement import get_user
 from son_editor.models.descriptor import Function
 from son_editor.models.project import Project
 from son_editor.models.workspace import Workspace
-from son_editor.util.descriptorutil import write_to_disk, get_file_name
+from son_editor.util.descriptorutil import write_to_disk, get_file_path
 
 logger = logging.getLogger(__name__)
 
@@ -88,7 +88,7 @@ def update_function(user_data, ws_id, project_id, function_id, function_data):
         session.rollback()
         raise NotFound("Function with id " + function_id + " does not exist")
     function.descriptor = json.dumps(function_data)
-    old_file_name = get_file_name("vnf", function)
+    old_file_name = get_file_path("vnf", function)
     if 'name' in function_data:
         function.name = shlex.quote(function_data["name"])
     if 'vendor' in function_data:
@@ -96,7 +96,7 @@ def update_function(user_data, ws_id, project_id, function_id, function_data):
     if 'version' in function_data:
         function.version = shlex.quote(function_data["version"])
     try:
-        new_file_name = get_file_name("vnf", function)
+        new_file_name = get_file_path("vnf", function)
         if not new_file_name == old_file_name:
             shutil.move(old_file_name, new_file_name)
         write_to_disk("vnf", function)
@@ -124,7 +124,7 @@ def delete_function(user_data, ws_id, project_id, function_id):
         session.rollback()
         raise NotFound("Function with id " + function_id + " does not exist")
     try:
-        os.remove(get_file_name("vnf", function))
+        os.remove(get_file_path("vnf", function))
     except:
         session.rollback()
         logger.exception("Could not delete function:")
