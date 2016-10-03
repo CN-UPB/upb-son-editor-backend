@@ -15,7 +15,7 @@ from son_editor.util.constants import WORKSPACES, PROJECTS
 from son_editor.util.requestutil import prepare_response, get_json
 
 namespace = Namespace(WORKSPACES + '/<int:ws_id>/' + PROJECTS, description="Project Resources")
-logger = logging.getLogger("son-editor.projectsapi")
+logger = logging.getLogger(__name__)
 
 pj = namespace.model("Project", {
     'name': fields.String(required=True, description='The Project Name')

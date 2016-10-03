@@ -12,7 +12,7 @@ from son_editor.models.project import Project
 from son_editor.models.workspace import Workspace
 from son_editor.util.descriptorutil import write_to_disk, get_file_name
 
-logger = logging.getLogger("son-editor.functionsimpl")
+logger = logging.getLogger(__name__)
 
 
 def get_functions(user_data, ws_id, project_id):

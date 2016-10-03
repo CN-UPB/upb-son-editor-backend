@@ -11,7 +11,7 @@ from son_editor.util.descriptorutil import load_from_disk, load_workspace_descri
 from son_editor.util.requestutil import CONFIG
 
 # DB URI
-logger = logging.getLogger("son-editor.database")
+logger = logging.getLogger(__name__)
 DATABASE_SQLITE_URI = "sqlite:///%s" % CONFIG['database']['location']
 logger.info("DBSQLITE_URI: " + DATABASE_SQLITE_URI)
 

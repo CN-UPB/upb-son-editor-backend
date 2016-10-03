@@ -26,7 +26,7 @@ app.config["RESTPLUS_MASK_SWAGGER"] = False
 # load secret key from config
 app.secret_key = CONFIG['session']['secretKey']
 api = Api(app, description="Son Editor Backend API")
-logger = logging.getLogger("son-editor.__main__")
+logger = logging.getLogger(__name__)
 
 
 @api.errorhandler(KeyError)

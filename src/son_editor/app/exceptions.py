@@ -1,6 +1,6 @@
 import logging
 
-logger = logging.getLogger("son-editor.exceptions")
+logger = logging.getLogger(__name__)
 
 
 class NameConflict(Exception):

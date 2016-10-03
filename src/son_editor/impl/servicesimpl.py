@@ -14,7 +14,7 @@ from son_editor.models.workspace import Workspace
 from son_editor.util.descriptorutil import write_to_disk, get_file_name
 from son_editor.util.requestutil import get_json
 
-logger = logging.getLogger("son-editor.servicesimpl")
+logger = logging.getLogger(__name__)
 
 
 def get_services(ws_id, parent_id):
