@@ -1,9 +1,12 @@
+import logging
 import os
 from subprocess import Popen, PIPE
 
 from son_editor.app.exceptions import PackException, ExtNotReachable, NameConflict
 from son_editor.models.project import Project
 from son_editor.models.repository import Platform
+
+logger = logging.getLogger(__name__)
 
 
 def pack_project(project: Project) -> str:
@@ -36,14 +39,14 @@ def push_to_platform(package_path: str, platform: Platform) -> str:
     out = out.decode()
     err = err.decode()
 
-    print(out)
-    print(err)
+    logger.info("Out:" + out)
+    logger.info("Error:" + err)
 
     exitcode = proc.returncode  # as of now exitcode is 0 even if there is an error
-    if "ConnectionError" in out:
+    if "ConnectionError" in out or err:
         raise ExtNotReachable("Could not connect to platform.")
-    elif "error" in out.lower():
-        raise NameConflict(out)
+    elif "error" in out.lower() or err.lower():
+        raise NameConflict("Out: " + out + "Error: " + err)
     elif "201" or "200" in out:
         message = out.split(":", 1)[1]
         return message
