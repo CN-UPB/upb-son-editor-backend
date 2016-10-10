@@ -38,7 +38,7 @@ def init_db():
 
 # Resets the database
 def reset_db():
-    meta = MetaData()
+    meta = Base.metadata
 
     with contextlib.closing(engine.connect()) as con:
         trans = con.begin()

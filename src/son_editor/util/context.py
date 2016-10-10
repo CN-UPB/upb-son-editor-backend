@@ -9,5 +9,5 @@ CATALOGUE_INSTANCE_URL = "http://fg-cn-sandman2.cs.upb.de:4012"
 # Initializes a test-case context
 def init_test_context():
     CONFIG['testing'] = True
-    return __main__.app.test_client()
     reset_db()
+    return __main__.app.test_client()

@@ -18,7 +18,6 @@ class ProjectTest(unittest.TestCase):
             with c.session_transaction() as session:
                 session['userData'] = {'login': 'user'}
 
-
         # Add user
         self.user = User(name="user", email="foo@bar.com")
         db_session.add(self.user)
@@ -29,7 +28,7 @@ class ProjectTest(unittest.TestCase):
         request_dict = {"name": "test_pj"}
         rv = self.app.post('/' + WORKSPACES + '/', data=json.dumps(request_dict), content_type='application/json')
 
-    def test_db_init(self):
+    @staticmethod
+    def test_scan_workspace():
         reset_db()
-        init_db()
         scan_workspaces_dir()
