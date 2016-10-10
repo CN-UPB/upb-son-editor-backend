@@ -14,6 +14,7 @@ from son_editor.app.exceptions import NotFound, NameConflict
 from son_editor.impl.usermanagement import get_user
 from son_editor.models.project import Project
 from son_editor.models.workspace import Workspace
+from son_editor.util.descriptorutil import load_project_descriptor, write_project_descriptor
 from son_editor.util.requestutil import CONFIG, rreplace
 
 if CONFIG['testing']:
@@ -73,6 +74,19 @@ def create_project(user_data, ws_id, project_data):
     # prepare db insert
     try:
         project = Project(name=project_name, rel_path=project_name, workspace=workspace)
+        if "description" in project_data:
+            project.description = project_data['description']
+        if "maintainer" in project_data:
+            project.maintainer = project_data['maintainer']
+        if "publish_to" in project_data:
+            project.publish_to = ','.join(project_data['publish_to'])
+        if "vendor" in project_data:
+            project.vendor = project_data['vendor']
+        if "version" in project_data:
+            project.version = project_data['version']
+        else:
+            project.version = "0.1"
+
         session.add(project)
     except:
         session.rollback()
@@ -91,6 +105,7 @@ def create_project(user_data, ws_id, project_data):
         project_exists = False
 
     if exitcode == 0 and not project_exists:
+        sync_project_descriptor(project)
         session.commit()
         return project.as_dict()
     else:
@@ -98,6 +113,37 @@ def create_project(user_data, ws_id, project_data):
         if project_exists:
             raise NameConflict("Project with name '{}' already exists in this workspace".format(project_name))
         raise Exception(err.decode(), out.decode())
+
+
+def sync_project_descriptor(project):
+    project_descriptor = load_project_descriptor(project)
+    project_descriptor['name'] = project.name
+    if project.description is not None:
+        project_descriptor['description'] = project.description
+    elif 'description' in project_descriptor:
+        project.description = project_descriptor['description']
+
+    if project.maintainer is not None:
+        project_descriptor['maintainer'] = project.maintainer
+    elif 'maintainer' in project_descriptor:
+        project.maintainer = project_descriptor['maintainer']
+
+    if project.vendor is not None:
+        project_descriptor['vendor'] = project.vendor
+    elif 'vendor' in project_descriptor:
+        project.vendor = project_descriptor['vendor']
+
+    if project.version is not None:
+        project_descriptor['version'] = project.version
+    elif 'version' in project_descriptor:
+        project.version = project_descriptor['version']
+
+    if project.publish_to is not None:
+        project_descriptor['publish_to'] = project.publish_to.split(',')
+    elif 'publish_to' in project_descriptor:
+        project.publish_to = ','.join(project_descriptor['publish_to'])
+
+    write_project_descriptor(project, project_descriptor)
 
 
 def update_project(project_data, project_id):
@@ -124,7 +170,17 @@ def update_project(project_data, project_id):
                 shutil.move(old_path, new_path)
                 project.name = new_name
                 project.rel_path = new_name
-
+    if "description" in project_data:
+        project.description = project_data['description']
+    if "maintainer" in project_data:
+        project.maintainer = project_data['maintainer']
+    if "publish_to" in project_data:
+        project.publish_to = str(project_data['publish_to'])
+    if "vendor" in project_data:
+        project.vendor = project_data['vendor']
+    if "version" in project_data:
+        project.version = project_data['version']
+    sync_project_descriptor(project)
     db_session.commit()
     return project.as_dict()
 
@@ -144,4 +200,4 @@ def delete_project(project_id):
 
 
 def get_project_path(workspace_path, rel_path):
-    return '{}/projects/{}'.format(workspace_path, rel_path)
+    return os.path.join(workspace_path, "projects", rel_path)

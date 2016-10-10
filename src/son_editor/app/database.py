@@ -49,7 +49,7 @@ def reset_db():
 
 def scan_workspaces_dir():
     from son_editor.models.user import User
-    wss_dir = os.path.expanduser(CONFIG["workspaces-location"])
+    wss_dir = os.path.normpath(os.path.expanduser(CONFIG["workspaces-location"]))
     if os.path.exists(wss_dir):
         session = db_session()
         for user_name in os.listdir(wss_dir):
@@ -141,24 +141,32 @@ def _scan_for_functions(function_dir, pj):
                     function = Function()
                     file_path = os.path.join(folder_path, yaml_files[0])
                     load_from_disk(file_path, function)
-                    db_service = session.query(Function). \
+                    db_function = session.query(Function). \
                         filter(Function.project == pj). \
                         filter(Function.name == function.name). \
                         filter(Function.vendor == function.vendor). \
                         filter(Function.version == function.version). \
                         first()
-                    if not db_service:
+                    if not db_function:
                         logger.info("Found function in project {}: {}".format(pj.name, function.uid))
                         function.project = pj
                         session.add(function)
                         session.commit()
                     else:
-                        session.rollback()
-                if file_path != get_file_path("vnf", function):
-                    shutil.move(file_path, get_file_path("vnf", function))
+                        function = db_function
+                    # rename folder if necessary
+                    target_folder = os.path.normpath(
+                        get_file_path("vnf", function).replace(get_file_name(function), ''))
+                    if os.path.normpath(folder_path) != target_folder:
+                        shutil.move(folder_path, target_folder)
+                        file_path = file_path.replace(folder_path, target_folder)
+                    # rename file if necessary
+                    if not os.path.exists(get_file_path("vnf", function)):
+                        shutil.move(file_path, get_file_path("vnf", function))
                 else:
                     logger.info("Multiple or no yaml files in folder {}. Ignoring".format(folder_path))
 
     except:
         logger.exception("Could not load function descriptor:")
+    finally:
         session.rollback()

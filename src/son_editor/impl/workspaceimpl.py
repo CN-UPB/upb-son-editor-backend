@@ -4,7 +4,7 @@ Created on 25.07.2016
 @author: Jonas
 '''
 import logging
-import os
+from os import path
 import shlex
 import shutil
 from subprocess import Popen, PIPE
@@ -19,7 +19,9 @@ from son_editor.models.workspace import Workspace
 from son_editor.util.descriptorutil import synchronize_workspace_descriptor, update_workspace_descriptor
 from son_editor.util.requestutil import CONFIG, rreplace
 
-WORKSPACES_DIR = os.path.expanduser(CONFIG["workspaces-location"])
+WORKSPACES_DIR = path.expanduser(CONFIG["workspaces-location"])
+# make ws paths prettier
+WORKSPACES_DIR = path.normpath(WORKSPACES_DIR)
 
 logger = logging.getLogger(__name__)
 
@@ -59,7 +61,7 @@ def create_workspace(user_data, workspace_data):
     if len(existingWorkspaces) > 0:
         raise NameConflict("Workspace with name " + wsName + " already exists")
 
-    wsPath = WORKSPACES_DIR + user.name + "/" + wsName
+    wsPath = path.join(WORKSPACES_DIR , user.name , wsName)
     # prepare db insert
     try:
         ws = Workspace(name=wsName, path=wsPath, owner=user)
@@ -104,14 +106,14 @@ def update_workspace(workspace_data, wsid):
 
     # Update name
     if 'name' in workspace_data:
-        if os.path.exists(workspace.path):
+        if path.exists(workspace.path):
             new_name = workspace_data['name']
             old_path = workspace.path
             # only update if name has changed
             if new_name != workspace.name:
                 new_path = rreplace(workspace.path, workspace.name, new_name, 1)
 
-                if os.path.exists(new_path):
+                if path.exists(new_path):
                     raise NameConflict("Invalid name parameter, workspace '{}' already exists".format(new_name))
 
                 # Do not allow move directories outside of the workspaces_dir
