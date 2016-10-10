@@ -21,7 +21,7 @@ from son_editor.util.requestutil import CONFIG, rreplace
 
 WORKSPACES_DIR = os.path.expanduser(CONFIG["workspaces-location"])
 
-logger = logging.getLogger("son-editor.workspaceimpl")
+logger = logging.getLogger(__name__)
 
 
 def get_workspaces(user_data):

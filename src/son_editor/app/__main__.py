@@ -14,7 +14,7 @@ from flask_restplus import Api
 
 from son_editor import apis
 from son_editor.app.database import db_session, init_db, scan_workspaces_dir
-from son_editor.app.exceptions import NameConflict, NotFound, ExtNotReachable
+from son_editor.app.exceptions import NameConflict, NotFound, ExtNotReachable, PackException, InvalidArgument
 from son_editor.util.requestutil import CONFIG, prepare_response, prepare_error
 from son_editor.app.securityservice import check_access
 from son_editor.util.requestutil import CONFIG, prepare_response, prepare_error
@@ -26,7 +26,7 @@ app.config["RESTPLUS_MASK_SWAGGER"] = False
 # load secret key from config
 app.secret_key = CONFIG['session']['secretKey']
 api = Api(app, description="Son Editor Backend API")
-logger = logging.getLogger("son-editor.__main__")
+logger = logging.getLogger(__name__)
 
 
 @api.errorhandler(KeyError)
@@ -41,6 +41,12 @@ def handle_not_found(err):
     return prepare_error({"message": err.msg}, 404)
 
 
+@api.errorhandler(InvalidArgument)
+def handle_invalid_argument(err):
+    logger.warn(err.msg)
+    return prepare_error({"message": err.msg}, 400)
+
+
 @api.errorhandler(ExtNotReachable)
 def handle_not_reachable(err):
     logger.warn(err.msg)
@@ -49,6 +55,12 @@ def handle_not_reachable(err):
 
 @api.errorhandler(NameConflict)
 def handle_name_conflict(err):
+    logger.warn(err.msg)
+    return prepare_error({"message": err.msg}, 409)
+
+
+@api.errorhandler(PackException)
+def handle_pack_exception(err):
     logger.warn(err.msg)
     return prepare_error({"message": err.msg}, 409)
 

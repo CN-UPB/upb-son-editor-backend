@@ -34,7 +34,7 @@ funct_uid = Model("VNF", {
 })
 
 uid = Model("VNF_UID", {
-    'id': fields.String(required=True, description='The VNF UID'),
+    'id': fields.String(required=True, description='The VNF UID')
 })
 
 funct_response = funct.inherit("FunctionResponse", funct, {
@@ -111,7 +111,6 @@ class Function(Resource):
         return prepare_response("update vnf in project with id " + parent_id)
 
     @proj_namespace.response(200, "Deleted", funct_response)
-    @cata_namespace.expect(uid)
     def delete(self, ws_id, parent_id, vnf_id):
         if get_parent(request) is Category.project:
             deleted = functionsimpl.delete_function(session['userData'], ws_id, parent_id, vnf_id)
@@ -123,7 +122,7 @@ class Function(Resource):
         return prepare_response("not yet implemented")
 
     @proj_namespace.response(200, "OK", funct_response)
-    @cata_namespace.expect(uid)
+    #@cata_namespace.expect(uid)
     def get(self, ws_id, parent_id, vnf_id):
         if get_parent(request) is Category.project:
             functions = functionsimpl.get_function_project(session["userData"], ws_id, parent_id, vnf_id)

@@ -11,10 +11,10 @@ from son_editor.app.exceptions import NotFound, NameConflict
 from son_editor.models.project import Project
 from son_editor.models.descriptor import Service
 from son_editor.models.workspace import Workspace
-from son_editor.util.descriptorutil import write_to_disk, get_file_name
+from son_editor.util.descriptorutil import write_to_disk, get_file_path
 from son_editor.util.requestutil import get_json
 
-logger = logging.getLogger("son-editor.servicesimpl")
+logger = logging.getLogger(__name__)
 
 
 def get_services(ws_id, parent_id):
@@ -79,7 +79,7 @@ def update_service(ws_id, project_id, service_id):
         filter(Project.id == project_id). \
         filter(Service.id == service_id).first()
     if service:
-        old_file_name = get_file_name("nsd", service)
+        old_file_name = get_file_path("nsd", service)
         # Parse parameters and update record
         service.descriptor = json.dumps(service_data)
         if 'name' in service_data:
@@ -88,7 +88,7 @@ def update_service(ws_id, project_id, service_id):
             service.vendor = shlex.quote(service_data["vendor"])
         if 'version' in service_data:
             service.version = shlex.quote(service_data["version"])
-        new_file_name = get_file_name("nsd", service)
+        new_file_name = get_file_path("nsd", service)
         try:
             if not old_file_name == new_file_name:
                 shutil.move(old_file_name, new_file_name)
@@ -118,7 +118,7 @@ def delete_service(parent_id, service_id):
 
     session.delete(service)
     try:
-        os.remove(get_file_name("nsd", service))
+        os.remove(get_file_path("nsd", service))
     except:
         session.rollback()
         logger.exception("Could not delete service:")
