@@ -48,8 +48,10 @@ class ProjectTest(unittest.TestCase):
         rv = self.app.post('/' + WORKSPACES + '/' + str(self.wsid) + '/' + PROJECTS + '/',
                            data=json.dumps(request_dict), content_type='application/json')
         # Expect workspace gets created
-        self.assertEqual(request_dict['name'], json.loads(rv.data.decode())['name'])
         self.assertEqual(201, rv.status_code)
+        result_dict = json.loads(rv.data.decode())
+        self.assertEqual(request_dict['name'], result_dict['name'])
+        self.assertEqual(["personal"], result_dict['publish_to'])
 
         # Post same request on projects again, should fail
         rv = self.app.post('/' + WORKSPACES + '/' + str(self.wsid) + '/' + PROJECTS + '/',
