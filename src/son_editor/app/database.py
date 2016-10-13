@@ -8,7 +8,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
 
-from son_editor.util.descriptorutil import load_from_disk, load_workspace_descriptor, get_file_path, get_file_name
+from son_editor.util.descriptorutil import load_from_disk, load_workspace_descriptor, get_file_path, get_file_name, \
+    sync_project_descriptor
 from son_editor.util.requestutil import CONFIG
 
 # DB URI
@@ -89,6 +90,7 @@ def _scan_workspace_dir(ws_path, ws):
         if pj is None:
             logger.info("Found project in Workspace {}: {}".format(ws_path, project_name))
             pj = Project(project_name, project_name, ws)
+            sync_project_descriptor(pj)
             session.add(pj)
             session.commit()
         _scan_project_dir(os.path.join(ws_path, "projects", project_name), pj)
