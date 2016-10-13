@@ -14,7 +14,7 @@ from son_editor.app.exceptions import NotFound, NameConflict
 from son_editor.impl.usermanagement import get_user
 from son_editor.models.project import Project
 from son_editor.models.workspace import Workspace
-from son_editor.util.descriptorutil import load_project_descriptor, write_project_descriptor
+from son_editor.util.descriptorutil import sync_project_descriptor
 from son_editor.util.requestutil import CONFIG, rreplace
 
 if CONFIG['testing']:
@@ -113,37 +113,6 @@ def create_project(user_data, ws_id, project_data):
         if project_exists:
             raise NameConflict("Project with name '{}' already exists in this workspace".format(project_name))
         raise Exception(err.decode(), out.decode())
-
-
-def sync_project_descriptor(project):
-    project_descriptor = load_project_descriptor(project)
-    project_descriptor['name'] = project.name
-    if project.description is not None:
-        project_descriptor['description'] = project.description
-    elif 'description' in project_descriptor:
-        project.description = project_descriptor['description']
-
-    if project.maintainer is not None:
-        project_descriptor['maintainer'] = project.maintainer
-    elif 'maintainer' in project_descriptor:
-        project.maintainer = project_descriptor['maintainer']
-
-    if project.vendor is not None:
-        project_descriptor['vendor'] = project.vendor
-    elif 'vendor' in project_descriptor:
-        project.vendor = project_descriptor['vendor']
-
-    if project.version is not None:
-        project_descriptor['version'] = project.version
-    elif 'version' in project_descriptor:
-        project.version = project_descriptor['version']
-
-    if project.publish_to is not None:
-        project_descriptor['publish_to'] = project.publish_to.split(',')
-    elif 'publish_to' in project_descriptor:
-        project.publish_to = ','.join(project_descriptor['publish_to'])
-
-    write_project_descriptor(project, project_descriptor)
 
 
 def update_project(project_data, project_id):

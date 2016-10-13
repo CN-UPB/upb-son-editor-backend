@@ -4,7 +4,7 @@ import unittest
 from son.workspace.workspace import Workspace
 from son_editor.app.database import db_session, reset_db, init_db, scan_workspaces_dir
 from son_editor.models.user import User
-from son_editor.util.constants import WORKSPACES
+from son_editor.util.constants import WORKSPACES, PROJECTS
 from son_editor.util.context import init_test_context
 
 
@@ -26,7 +26,8 @@ class ProjectTest(unittest.TestCase):
         request_dict = {"name": "test_ws"}
         rv = self.app.post('/' + WORKSPACES + '/', data=json.dumps(request_dict), content_type='application/json')
         request_dict = {"name": "test_pj"}
-        rv = self.app.post('/' + WORKSPACES + '/', data=json.dumps(request_dict), content_type='application/json')
+        rv = self.app.post('/' + WORKSPACES + '/' + PROJECTS + '/', data=json.dumps(request_dict),
+                           content_type='application/json')
 
     @staticmethod
     def test_scan_workspace():

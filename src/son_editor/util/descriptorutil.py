@@ -105,3 +105,34 @@ def load_project_descriptor(project):
 def write_project_descriptor(project, project_descriptor):
     with open(os.path.join(project.workspace.path, "projects", project.rel_path, "project.yml"), "w") as stream:
         return yaml.safe_dump(project_descriptor, stream)
+
+
+def sync_project_descriptor(project):
+    project_descriptor = load_project_descriptor(project)
+    project_descriptor['name'] = project.name
+    if project.description is not None:
+        project_descriptor['description'] = project.description
+    elif 'description' in project_descriptor:
+        project.description = project_descriptor['description']
+
+    if project.maintainer is not None:
+        project_descriptor['maintainer'] = project.maintainer
+    elif 'maintainer' in project_descriptor:
+        project.maintainer = project_descriptor['maintainer']
+
+    if project.vendor is not None:
+        project_descriptor['vendor'] = project.vendor
+    elif 'vendor' in project_descriptor:
+        project.vendor = project_descriptor['vendor']
+
+    if project.version is not None:
+        project_descriptor['version'] = project.version
+    elif 'version' in project_descriptor:
+        project.version = project_descriptor['version']
+
+    if project.publish_to is not None:
+        project_descriptor['publish_to'] = project.publish_to.split(',')
+    elif 'publish_to' in project_descriptor:
+        project.publish_to = ','.join(project_descriptor['publish_to'])
+
+    write_project_descriptor(project, project_descriptor)
