@@ -59,6 +59,7 @@ class Services(Resource):
     Api Methods for all services in this resource
     """
 
+    @proj_namespace.doc("Gets a list of services")
     @proj_namespace.response(200, "OK", [serv_response])
     def get(self, ws_id, parent_id):
         """Get a list of all Services
@@ -71,6 +72,7 @@ class Services(Resource):
             return prepare_response(service)
         return prepare_response("not yet implemented")
 
+    @proj_namespace.doc("Creates a new service in the project/platform or catalogue")
     @proj_namespace.expect(serv)
     @plat_namespace.expect(serv_id)
     @proj_namespace.response(201, "Created", serv_response)
@@ -110,6 +112,7 @@ class Service(Resource):
     @proj_namespace.expect(serv)
     @plat_namespace.expect(serv_id)
     @proj_namespace.response(200, "Updated", serv_response)
+    @proj_namespace.doc("Updates  the given service in the project/catalogue or platform")
     def put(self, ws_id, parent_id, service_id):
         """Update the service
 
@@ -128,6 +131,7 @@ class Service(Resource):
             return prepare_response(result, 201)
         return prepare_response("not yet implemented")
 
+    @proj_namespace.doc("Deletes a specific service by its id")
     @proj_namespace.response(200, "Deleted", serv_response)
     def delete(self, ws_id, parent_id, service_id):
         """Delete the Service
@@ -142,7 +146,7 @@ class Service(Resource):
         return prepare_response("not yet implemented")
 
     @proj_namespace.response(200, "OK", serv_response)
-    @plat_namespace.doc(get=False)
+    @plat_namespace.doc("Returns a specific service by its id")
     def get(self, ws_id, parent_id, service_id):
         """Return a specific Service
 
