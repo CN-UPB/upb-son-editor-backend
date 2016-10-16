@@ -9,7 +9,7 @@ import shutil
 import tempfile
 from subprocess import Popen, PIPE
 
-from son_editor.app.database import db_session
+from son_editor.app.database import db_session, scan_project_dir
 from son_editor.app.exceptions import NotFound, NameConflict
 from son_editor.impl.usermanagement import get_user
 from son_editor.models.project import Project
@@ -107,6 +107,7 @@ def create_project(user_data, ws_id, project_data):
     if exitcode == 0 and not project_exists:
         sync_project_descriptor(project)
         session.commit()
+        scan_project_dir(get_project_path(workspace.path, project_name), project)
         return project.as_dict()
     else:
         session.rollback()

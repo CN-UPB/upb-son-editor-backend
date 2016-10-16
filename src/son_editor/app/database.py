@@ -93,10 +93,10 @@ def _scan_workspace_dir(ws_path, ws):
             sync_project_descriptor(pj)
             session.add(pj)
             session.commit()
-        _scan_project_dir(os.path.join(ws_path, "projects", project_name), pj)
+        scan_project_dir(os.path.join(ws_path, "projects", project_name), pj)
 
 
-def _scan_project_dir(project_path, pj):
+def scan_project_dir(project_path, pj):
     _scan_for_services(os.path.join(project_path, "sources", "nsd"), pj)
     _scan_for_functions(os.path.join(project_path, "sources", "vnf"), pj)
 
