@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey, Text
 from sqlalchemy import UniqueConstraint
 from sqlalchemy.orm import relationship
 
@@ -9,6 +9,11 @@ class Project(Base):
     __tablename__ = 'project'
     id = Column(Integer, primary_key=True)
     name = Column(String(50))
+    description = Column(Text())
+    maintainer = Column(String(50))
+    publish_to = Column(Text)
+    vendor = Column(String(50))
+    version = Column(String(50))
     rel_path = Column(String(255))
     workspace_id = Column(Integer, ForeignKey('workspace.id'))
     workspace = relationship("Workspace", back_populates="projects")
@@ -26,4 +31,6 @@ class Project(Base):
         return '<Project %r:%r>' % (self.name, self.rel_path)
 
     def as_dict(self):
-        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+        dict = {c.name: getattr(self, c.name) for c in self.__table__.columns}
+        dict['publish_to'] = self.publish_to.split(',')
+        return dict

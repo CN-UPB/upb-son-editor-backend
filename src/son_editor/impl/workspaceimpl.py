@@ -4,7 +4,7 @@ Created on 25.07.2016
 @author: Jonas
 '''
 import logging
-import os
+from os import path
 import shlex
 import shutil
 from subprocess import Popen, PIPE
@@ -19,7 +19,9 @@ from son_editor.models.workspace import Workspace
 from son_editor.util.descriptorutil import synchronize_workspace_descriptor, update_workspace_descriptor
 from son_editor.util.requestutil import CONFIG, rreplace
 
-WORKSPACES_DIR = os.path.expanduser(CONFIG["workspaces-location"])
+WORKSPACES_DIR = path.expanduser(CONFIG["workspaces-location"])
+# make ws paths prettier
+WORKSPACES_DIR = path.normpath(WORKSPACES_DIR)
 
 logger = logging.getLogger(__name__)
 
@@ -59,7 +61,7 @@ def create_workspace(user_data, workspace_data):
     if len(existingWorkspaces) > 0:
         raise NameConflict("Workspace with name " + wsName + " already exists")
 
-    wsPath = WORKSPACES_DIR + user.name + "/" + wsName
+    wsPath = path.join(WORKSPACES_DIR , user.name , wsName)
     # prepare db insert
     try:
         ws = Workspace(name=wsName, path=wsPath, owner=user)
@@ -104,14 +106,14 @@ def update_workspace(workspace_data, wsid):
 
     # Update name
     if 'name' in workspace_data:
-        if os.path.exists(workspace.path):
+        if path.exists(workspace.path):
             new_name = workspace_data['name']
             old_path = workspace.path
             # only update if name has changed
             if new_name != workspace.name:
                 new_path = rreplace(workspace.path, workspace.name, new_name, 1)
 
-                if os.path.exists(new_path):
+                if path.exists(new_path):
                     raise NameConflict("Invalid name parameter, workspace '{}' already exists".format(new_name))
 
                 # Do not allow move directories outside of the workspaces_dir
@@ -123,6 +125,15 @@ def update_workspace(workspace_data, wsid):
                     shutil.move(old_path, new_path)
                     workspace.name = new_name
                     workspace.path = new_path
+    for platform in workspace.platforms:
+        deleted = True
+        if 'platforms' in workspace_data:
+            for updated_platform in workspace_data['platforms']:
+                if 'id' in updated_platform and platform.id == updated_platform['id']:
+                    deleted = False
+                    break
+        if deleted:
+            session.delete(platform)
     if 'platforms' in workspace_data:
         for updated_platform in workspace_data['platforms']:
             platform = None
@@ -137,23 +148,24 @@ def update_workspace(workspace_data, wsid):
                 platform.url = updated_platform['url']
             else:
                 # create new
-                new_platform = Platform(updated_platform['name'], updated_platform['url'], workspace)
+                new_platform = Platform(updated_platform['name'], updated_platform['url'],True, workspace)
                 session.add(new_platform)
-        for platform in workspace.platforms:
-            deleted = True
-            for updated_platform in workspace_data['platforms']:
-                if 'id' in updated_platform and platform.id == updated_platform['id']:
+    for catalogue in workspace.catalogues:
+        deleted = True
+        if 'catalogues' in workspace_data:
+            for updated_catalogue in workspace_data['catalogues']:
+                if 'id' in updated_catalogue and catalogue.id == updated_catalogue['id']:
                     deleted = False
                     break
-            if deleted:
-                session.delete(platform)
+        if deleted:
+            session.delete(catalogue)
     if 'catalogues' in workspace_data:
         for updated_catalogue in workspace_data['catalogues']:
             catalogue = None
             if 'id' in updated_catalogue:
-                catalogue = session.query(Platform). \
-                    filter(Platform.id == updated_catalogue['id']). \
-                    filter(Platform.workspace == workspace). \
+                catalogue = session.query(Catalogue). \
+                    filter(Catalogue.id == updated_catalogue['id']). \
+                    filter(Catalogue.workspace == workspace). \
                     first()
             if catalogue:
                 # update existing
@@ -161,16 +173,8 @@ def update_workspace(workspace_data, wsid):
                 catalogue.url = updated_catalogue['url']
             else:
                 # create new
-                new_catalogue = Platform(updated_catalogue['name'], updated_catalogue['url'], workspace)
+                new_catalogue = Catalogue(updated_catalogue['name'], updated_catalogue['url'], True, workspace)
                 session.add(new_catalogue)
-        for catalogue in workspace.catalogues:
-            deleted = True
-            for updated_catalogue in workspace_data['catalogues']:
-                if 'id' in updated_catalogue and catalogue.id == updated_catalogue['id']:
-                    deleted = False
-                    break
-            if deleted:
-                session.delete(catalogue)
     update_workspace_descriptor(workspace)
     db_session.commit()
     return workspace.as_dict()

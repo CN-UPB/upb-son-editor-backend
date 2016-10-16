@@ -31,12 +31,19 @@ class TestPublishutil(TestCase):
             content_type='application/json')
         self.wsid = str(json.loads(response.data.decode())['id'])
 
-        request_dict = {"name": "projectName"}
+        request_dict = {"name": "project_name"}
         response = self.app.post(
             '/' + WORKSPACES + '/' + self.wsid + '/' + PROJECTS + '/',
             data=json.dumps(request_dict),
             content_type='application/json')
         self.pjid = json.loads(response.data.decode())['id']
+
+        request_dict = {"name": "InvalidProjectName"}
+        response = self.app.post(
+            '/' + WORKSPACES + '/' + self.wsid + '/' + PROJECTS + '/',
+            data=json.dumps(request_dict),
+            content_type='application/json')
+        self.pjid2 = json.loads(response.data.decode())['id']
 
     def tearDown(self):
         self.app.delete('/' + WORKSPACES + '/' + self.wsid)
@@ -59,12 +66,20 @@ class TestPublishutil(TestCase):
             data=json.dumps(request_dict),
             content_type='application/json')
 
-        # should fail as only one service can be packaged
+        # should fail because the project name is invalid
         project = session.query(Project).filter(Project.id == self.pjid).first()
         try:
             publishutil.pack_project(project)
         except Exception as err:
             self.assertTrue(isinstance(err, PackException))
+
+            # should fail as only one service can be packaged
+            project = session.query(Project).filter(Project.id == self.pjid2).first()
+            try:
+                publishutil.pack_project(project)
+            except Exception as err:
+                self.assertTrue(isinstance(err, PackException))
+
         session.commit()
 
     def test_push_project(self):
