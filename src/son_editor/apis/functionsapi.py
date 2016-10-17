@@ -58,7 +58,9 @@ proj_namespace.add_model(funct_response.name, funct_response)
 @plat_namespace.param('parent_id', 'The Platform identifier')
 class Functions(Resource):
     @proj_namespace.response(200, "OK", [funct_response])
+    @proj_namespace.doc("Lists all functions in the given project or catalogue")
     def get(self, ws_id, parent_id):
+        """Lists all available functions in the given project or catalogue."""
         if get_parent(request) is Category.project:
             functions = functionsimpl.get_functions(session["userData"], ws_id, parent_id)
             return prepare_response(functions)
@@ -69,7 +71,9 @@ class Functions(Resource):
 
     @proj_namespace.expect(funct)
     @proj_namespace.response(201, "Created", funct_response)
+    @proj_namespace.doc("Creates a new function in the project or catalogue")
     def post(self, ws_id, parent_id):
+        """Creates a new function in the project or catalogue"""
         if get_parent(request) is Category.project:
             vnf_data = get_json(request)
             vnf_data = functionsimpl.create_function(session['userData'], ws_id, parent_id, vnf_data)
@@ -99,7 +103,9 @@ class Function(Resource):
     @proj_namespace.expect(funct)
     @cata_namespace.expect(funct_uid)
     @proj_namespace.response(200, "Updated", funct_response)
+    @proj_namespace.doc("Updates a project or catalogue function")
     def put(self, ws_id, parent_id, vnf_id):
+        """Updates a function in the project or catalogue by its id"""
         if get_parent(request) is Category.project:
             vnf_data = get_json(request)
             vnf_data = functionsimpl.update_function(session['userData'], ws_id, parent_id, vnf_id, vnf_data)
@@ -110,8 +116,10 @@ class Function(Resource):
             return prepare_response(vnf_data)
         return prepare_response("update vnf in project with id " + parent_id)
 
+    @proj_namespace.doc("Deletes a given function in the project or catalogue")
     @proj_namespace.response(200, "Deleted", funct_response)
     def delete(self, ws_id, parent_id, vnf_id):
+        """Deletes a function in the project or catalogue by its id"""
         if get_parent(request) is Category.project:
             deleted = functionsimpl.delete_function(session['userData'], ws_id, parent_id, vnf_id)
             return prepare_response(deleted)
@@ -122,8 +130,10 @@ class Function(Resource):
         return prepare_response("not yet implemented")
 
     @proj_namespace.response(200, "OK", funct_response)
+    @proj_namespace.doc("Gets a specific function by its id")
     #@cata_namespace.expect(uid)
     def get(self, ws_id, parent_id, vnf_id):
+        """Gets a specific function information by its id"""
         if get_parent(request) is Category.project:
             functions = functionsimpl.get_function_project(session["userData"], ws_id, parent_id, vnf_id)
             return prepare_response(functions)
