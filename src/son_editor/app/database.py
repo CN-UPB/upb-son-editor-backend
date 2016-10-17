@@ -123,8 +123,8 @@ def _scan_for_services(services_dir, pj):
                     session.commit()
                 else:
                     session.rollback()
-                # if get_file_path("nsd", service) != file_path:
-                #     shutil.move(file_path, get_file_path("nsd", service))  # rename to expected name format
+                if get_file_path("nsd", service) != file_path:
+                    shutil.move(file_path, get_file_path("nsd", service))  # rename to expected name format
             elif os.path.isdir(os.path.join(services_dir, service_file)):
                 _scan_for_services(os.path.join(services_dir, service_file), pj)
     except:
@@ -159,12 +159,12 @@ def _scan_for_functions(function_dir, pj):
                     # rename folder if necessary
                     target_folder = os.path.normpath(
                         get_file_path("vnf", function).replace(get_file_name(function), ''))
-                    # if os.path.normpath(folder_path) != target_folder:
-                    #     shutil.move(folder_path, target_folder)
-                    #     file_path = file_path.replace(folder_path, target_folder)
-                    # # rename file if necessary
-                    # if not os.path.exists(get_file_path("vnf", function)):
-                    #     shutil.move(file_path, get_file_path("vnf", function))
+                    if os.path.normpath(folder_path) != target_folder:
+                        shutil.move(folder_path, target_folder)
+                        file_path = file_path.replace(folder_path, target_folder)
+                    # rename file if necessary
+                    if not os.path.exists(get_file_path("vnf", function)):
+                        shutil.move(file_path, get_file_path("vnf", function))
                 else:
                     logger.info("Multiple or no yaml files in folder {}. Ignoring".format(folder_path))
 
