@@ -38,17 +38,19 @@ ws_response = namespace.inherit("WorkspaceResponse", ws, {
 class Workspaces(Resource):
     """Methods for the workspace resource directory"""
 
-    @namespace.doc("list_workspaces")
+    @namespace.doc("Lists all workspaces")
     @namespace.response(200, "OK", [ws_response])
     def get(self):
+        """Gets all available workspaces"""
         workspaces = workspaceimpl.get_workspaces(session['userData'])
         return prepare_response(workspaces)
 
-    @namespace.doc("create_workspace")
+    @namespace.doc("Creates a workspace")
     @namespace.expect(ws)
     @namespace.response(201, "Created", ws_response)
     @namespace.response(409, "Workspace already exists")
     def post(self):
+        """Creates a new workspace"""
         workspace_data = get_json(request)
         workspace = workspaceimpl.create_workspace(session['userData'], workspace_data)
         return prepare_response(workspace, 201)
@@ -59,26 +61,29 @@ class Workspaces(Resource):
 class Workspace(Resource):
     """Methods for a single workspace resource"""
 
-    @namespace.doc("get_workspace")
+    @namespace.doc("Gets information of a workspace")
     @namespace.response(200, "Ok", ws_response)
     @namespace.response(404, "Workspace not found")
     def get(self, ws_id):
+        """Gets information about a specific workspace"""
         workspace = workspaceimpl.get_workspace(session['userData'], ws_id)
         return prepare_response(workspace)
 
-    @namespace.doc("update_namespace")
+    @namespace.doc("Updates a specific workspace")
     @namespace.expect(ws)
     @namespace.response(200, "Updated", ws_response)
     @namespace.response(404, "Workspace not found")
     @namespace.response(409, "Workspace already exists")
     def put(self, ws_id):
+        """Updates a specific workspace by its id"""
         workspace_data = get_json(request)
         workspace = workspaceimpl.update_workspace(workspace_data, ws_id)
         return prepare_response(workspace)
 
-    @namespace.doc("delete_namespace")
+    @namespace.doc("Deletes a specific workspace")
     @namespace.response(200, "Deleted", ws_response)
     @namespace.response(404, "Workspace not found")
     def delete(self, ws_id):
+        """Deletes a specific workspace by its id"""
         workspace = workspaceimpl.delete_workspace(ws_id)
         return prepare_response(workspace)

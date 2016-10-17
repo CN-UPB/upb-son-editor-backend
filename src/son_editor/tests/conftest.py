@@ -14,7 +14,7 @@ from son_editor.app.database import init_db
 # Testing flag to circumvent login
 CONFIG['testing'] = True
 # set workspacelocation to tempfile to avoid spamming the workspace dir
-CONFIG["workspaces-location"] = tempfile.mkdtemp()
+CONFIG["workspaces-location"] = tempfile.mkdtemp() + '/'
 
 # Initialize db with the temp location
 init_db()
