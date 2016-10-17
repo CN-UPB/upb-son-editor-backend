@@ -82,10 +82,6 @@ def create_project(user_data, ws_id, project_data):
             project.publish_to = ','.join(project_data['publish_to'])
         if "vendor" in project_data:
             project.vendor = project_data['vendor']
-        if "version" in project_data:
-            project.version = project_data['version']
-        else:
-            project.version = "0.1"
 
         session.add(project)
     except:
