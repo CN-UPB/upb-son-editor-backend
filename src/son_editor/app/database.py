@@ -93,10 +93,10 @@ def _scan_workspace_dir(ws_path, ws):
             sync_project_descriptor(pj)
             session.add(pj)
             session.commit()
-        _scan_project_dir(os.path.join(ws_path, "projects", project_name), pj)
+        scan_project_dir(os.path.join(ws_path, "projects", project_name), pj)
 
 
-def _scan_project_dir(project_path, pj):
+def scan_project_dir(project_path, pj):
     _scan_for_services(os.path.join(project_path, "sources", "nsd"), pj)
     _scan_for_functions(os.path.join(project_path, "sources", "vnf"), pj)
 
@@ -117,14 +117,14 @@ def _scan_for_services(services_dir, pj):
                     filter(Service.version == service.version). \
                     first()
                 if not db_service:
-                    logger.info("Found service in project {}: {}".format(pj.name, service.uid))
+                    logger.warn("Found service in project {}: {}".format(pj.name, service.uid))
                     service.project = pj
                     session.add(service)
                     session.commit()
                 else:
                     session.rollback()
-                if get_file_path("nsd", service) != file_path:
-                    shutil.move(file_path, get_file_path("nsd", service))  # rename to expected name format
+                # if get_file_path("nsd", service) != file_path:
+                #     shutil.move(file_path, get_file_path("nsd", service))  # rename to expected name format
             elif os.path.isdir(os.path.join(services_dir, service_file)):
                 _scan_for_services(os.path.join(services_dir, service_file), pj)
     except:
@@ -159,12 +159,12 @@ def _scan_for_functions(function_dir, pj):
                     # rename folder if necessary
                     target_folder = os.path.normpath(
                         get_file_path("vnf", function).replace(get_file_name(function), ''))
-                    if os.path.normpath(folder_path) != target_folder:
-                        shutil.move(folder_path, target_folder)
-                        file_path = file_path.replace(folder_path, target_folder)
-                    # rename file if necessary
-                    if not os.path.exists(get_file_path("vnf", function)):
-                        shutil.move(file_path, get_file_path("vnf", function))
+                    # if os.path.normpath(folder_path) != target_folder:
+                    #     shutil.move(folder_path, target_folder)
+                    #     file_path = file_path.replace(folder_path, target_folder)
+                    # # rename file if necessary
+                    # if not os.path.exists(get_file_path("vnf", function)):
+                    #     shutil.move(file_path, get_file_path("vnf", function))
                 else:
                     logger.info("Multiple or no yaml files in folder {}. Ignoring".format(folder_path))
 

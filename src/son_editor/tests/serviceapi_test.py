@@ -73,8 +73,8 @@ class ServiceAPITest(unittest.TestCase):
                                 + "/" + constants.SERVICES + "/")
 
         services = json.loads(response.data.decode())
-        self.assertEqual(len(services), 1)
-        self.assertEqual(services[0]['vendor'], "de.upb.cs.cn.pgsandman")
+        self.assertEqual(len(services), 2)
+        self.assertEqual(services[1]['vendor'], "de.upb.cs.cn.pgsandman")
 
         self.assertEqual(response.status_code, 200)
 
