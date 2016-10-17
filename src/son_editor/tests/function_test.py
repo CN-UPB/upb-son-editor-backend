@@ -98,13 +98,13 @@ class FunctionTest(unittest.TestCase):
                                  + "/" + constants.PROJECTS + "/" + str(self.pjid)
                                  + "/" + constants.VNFS + "/", headers={'Content-Type': 'application/json'},
                                  data=postArg)
-
         # retrieve it in table
         response = self.app.get("/" + constants.WORKSPACES + "/" + str(self.wsid)
                                 + "/" + constants.PROJECTS + "/" + str(self.pjid)
                                 + "/" + constants.VNFS + "/")
         functions = json.loads(response.data.decode())
-        result = functions[1]
+        self.assertEqual(len(functions), 3)
+        result = functions[2]
         self.assertEqual(result['descriptor']['name'], dict['name'])
         self.assertTrue(result['descriptor']['version'] == dict['version'])
         self.assertTrue(result['descriptor']['vendor'] == dict['vendor'])
