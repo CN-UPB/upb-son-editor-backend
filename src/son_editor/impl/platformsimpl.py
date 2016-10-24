@@ -1,13 +1,10 @@
 import shlex
 
-from flask import request
-
 from son_editor.app.database import db_session
 from son_editor.app.exceptions import NotFound, NameConflict
 from son_editor.models.repository import Platform
 from son_editor.models.workspace import Workspace
 from son_editor.util.descriptorutil import update_workspace_descriptor
-from son_editor.util.requestutil import get_json
 
 
 def get_platform(platform_id: int) -> dict:
@@ -36,13 +33,13 @@ def get_platforms(workspace_id: int) -> list:
     return list(map(lambda x: x.as_dict(), platforms))
 
 
-def create_platform(workspace_id: int) -> dict:
+def create_platform(workspace_id: int, platform_data) -> dict:
     """
     Create a new platform entry
     :param workspace_id:
+    :param platform_data:
     :return:
     """
-    platform_data = get_json(request)
     platform_name = shlex.quote(platform_data['name'])
     platform_url = shlex.quote(platform_data['url'])
     session = db_session()
@@ -64,14 +61,13 @@ def create_platform(workspace_id: int) -> dict:
     return platform.as_dict()
 
 
-def update_platform(workspace_id: int, platform_id: int) -> dict:
+def update_platform(workspace_id: int, platform_id: int, platform_data) -> dict:
     """
     Update the platform entry
     :param workspace_id:
     :param platform_id:
     :return: The updated platform definition
     """
-    platform_data = get_json(request)
     platform_name = shlex.quote(platform_data['name'])
     platform_url = shlex.quote(platform_data['url'])
     session = db_session()
@@ -101,7 +97,7 @@ def update_platform(workspace_id: int, platform_id: int) -> dict:
     return platform.as_dict()
 
 
-def delete(workspace_id: int, platform_id:int)->dict:
+def delete(workspace_id: int, platform_id: int) -> dict:
     """
     Deletes the platform from the workspace
     :param workspace_id:

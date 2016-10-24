@@ -118,7 +118,7 @@ class Service(Resource):
 
         Updates the referenced service in the project or in the catalogue or platform"""
         if get_parent(request) is Category.project:
-            service = servicesimpl.update_service(ws_id, parent_id, service_id)
+            service = servicesimpl.update_service(ws_id, parent_id, service_id, get_json(request))
             return prepare_response(service)
         elif get_parent(request) is Category.catalogue:
             function_data = get_json(request)
@@ -127,7 +127,7 @@ class Service(Resource):
             return prepare_response(service)
         elif get_parent(request) is Category.platform:
             # platform only has one upload method
-            result = platform_connector.create_service_on_platform(ws_id, parent_id)
+            result = platform_connector.create_service_on_platform(ws_id, parent_id, get_json(request))
             return prepare_response(result, 201)
         return prepare_response("not yet implemented")
 

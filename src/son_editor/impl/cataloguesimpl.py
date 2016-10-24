@@ -1,13 +1,10 @@
 import shlex
 
-from flask import request
-
 from son_editor.app.database import db_session
 from son_editor.app.exceptions import NotFound, NameConflict
 from son_editor.models.repository import Catalogue
 from son_editor.models.workspace import Workspace
 from son_editor.util.descriptorutil import update_workspace_descriptor
-from son_editor.util.requestutil import get_json
 
 
 def get_catalogue(catalogue_id):
@@ -36,10 +33,13 @@ def get_catalogues(workspace_id):
     return list(map(lambda x: x.as_dict(), catalogues))
 
 
-def create_catalogue(workspace_id):
-    """Creates a catalgoue in the given workspace. A catalogue is defined by its name and url. These are given as
-    json data"""
-    catalogue_data = get_json(request)
+def create_catalogue(workspace_id: int, catalogue_data):
+    """
+    Creates a catalgoue in the given workspace. A catalogue is defined by its name and url. These are given as
+    json data
+    :param workspace_id: Workspace ID of the target workspace, where the catalogue should get created.
+    :return: Catalogue descriptor
+    """
     catalogue_name = shlex.quote(catalogue_data['name'])
     catalogue_url = shlex.quote(catalogue_data['url'])
     session = db_session()
@@ -61,7 +61,7 @@ def create_catalogue(workspace_id):
     return catalogue.as_dict()
 
 
-def update_catalogue(workspace_id, catalogue_id):
+def update_catalogue(workspace_id, catalogue_id, catalogue_data):
     """
     Updates a specific catalogue by its id. The catalogue
     applies the given name and url, that are in the json parameter.
@@ -69,7 +69,6 @@ def update_catalogue(workspace_id, catalogue_id):
     :param catalogue_id:
     :return:
     """
-    catalogue_data = get_json(request)
     catalogue_name = shlex.quote(catalogue_data['name'])
     catalogue_url = shlex.quote(catalogue_data['url'])
     session = db_session()

@@ -61,8 +61,8 @@ def create_workspace(user, ws_name: str) -> int:
     return workspace_data['id']
 
 
-def create_catalogue():
-    son_editor.impl.cataloguesimpl.create_catalogue()
+def create_catalogue(wsid: int, name: str, url: str):
+    return son_editor.impl.cataloguesimpl.create_catalogue(wsid, {'name': name, 'url': url})['id']
 
 
 def create_logged_in_user(app, user_name) -> User:

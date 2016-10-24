@@ -10,40 +10,16 @@ from son_editor.models.user import User
 from son_editor.util import publishutil
 from son_editor.util.constants import WORKSPACES, PROJECTS, SERVICES
 from son_editor.util.context import init_test_context
+from son_editor.tests.utils import *
 
 
 class TestPublishutil(TestCase):
     def setUp(self):
         self.app = init_test_context()
-        self.user = User(name="username", email="foo@bar.com")
-
-        with self.app as c:
-            with c.session_transaction() as session:
-                session['userData'] = {'login': 'username'}
-        session = db_session()
-        session.add(self.user)
-        session.commit()
-
-        request_dict = {"name": "workspaceName"}
-        response = self.app.post(
-            '/' + WORKSPACES + '/',
-            data=json.dumps(request_dict),
-            content_type='application/json')
-        self.wsid = str(json.loads(response.data.decode())['id'])
-
-        request_dict = {"name": "project_name"}
-        response = self.app.post(
-            '/' + WORKSPACES + '/' + self.wsid + '/' + PROJECTS + '/',
-            data=json.dumps(request_dict),
-            content_type='application/json')
-        self.pjid = json.loads(response.data.decode())['id']
-
-        request_dict = {"name": "InvalidProjectName"}
-        response = self.app.post(
-            '/' + WORKSPACES + '/' + self.wsid + '/' + PROJECTS + '/',
-            data=json.dumps(request_dict),
-            content_type='application/json')
-        self.pjid2 = json.loads(response.data.decode())['id']
+        self.user = create_logged_in_user(self.app, 'username')
+        self.wsid = str(create_workspace(self.user, 'workspaceName'))
+        self.pjid = create_project(self.wsid, 'project_name')
+        self.pjid2 = create_project(self.wsid, 'InvalidProjectName')
 
     def tearDown(self):
         self.app.delete('/' + WORKSPACES + '/' + self.wsid)
