@@ -16,6 +16,8 @@ class WorkspacesTest(unittest.TestCase):
         # Initializes test context
         self.app = init_test_context()
         self.user = create_logged_in_user(self.app, 'user')
+        self.workspace = create_workspace(self.user, 'Workspace A')
+        self.project = create_project(self.workspace, 'Project A')
 
     def tearDown(self):
         # deletes all workspaces and other data belonging to this user
@@ -42,11 +44,11 @@ class WorkspacesTest(unittest.TestCase):
 
     def testGetWorkSpaces(self):
         response = self.app.get('/' + WORKSPACES + '/')
-        self.assertEqual(json.loads(response.data.decode())[0]['name'], "Workspace A")
+        self.assertEqual(json.loads(response.data.decode())[0]['name'], "'Workspace A'")
 
     def testGetWorkSpace(self):
         response = self.app.get('/' + WORKSPACES + '/{}'.format(self.get_wsid()))
-        self.assertEqual(json.loads(response.data.decode())['name'], "Workspace A")
+        self.assertEqual(json.loads(response.data.decode())['name'], "'Workspace A'")
 
         # test non existing id
         response = self.app.get('/' + WORKSPACES + '/1337')
