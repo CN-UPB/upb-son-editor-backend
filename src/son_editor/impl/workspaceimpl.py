@@ -40,17 +40,14 @@ def get_workspaces(user_data: dict) -> list:
     return list(map(lambda x: x.as_dict(), workspaces))
 
 
-def get_workspace(user_data: dict, ws_id: int) -> dict:
+def get_workspace(ws_id: int) -> dict:
     """
     Get a workspace by ID
-    :param user_data: The data identifying the user
     :param ws_id:
     :return: A dictionary wich contains the Workspace configuration
     """
     session = db_session()
-    user = get_user(user_data)
     workspace = session.query(Workspace). \
-        filter(Workspace.owner == user). \
         filter(Workspace.id == ws_id).first()
     session.commit()
     if workspace is not None:

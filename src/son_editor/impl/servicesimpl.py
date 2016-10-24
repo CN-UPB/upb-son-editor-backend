@@ -33,15 +33,15 @@ def get_services(ws_id: int, project_id: int) -> list:
         raise NotFound("No project matching id {}".format(project_id))
 
 
-def create_service(ws_id: int, project_id: int) -> dict:
+def create_service(ws_id: int, project_id: int, service_data: dict) -> dict:
     """
     Creates a service in the given project
     :param ws_id: The Workspace of the project
     :param project_id: The Project of the Service
+    :param service_data: the service descriptor
     :return: The created service descriptor
     """
     session = db_session()
-    service_data = get_json(request)
     project = session.query(Project).filter_by(id=project_id).first()
 
     if project:

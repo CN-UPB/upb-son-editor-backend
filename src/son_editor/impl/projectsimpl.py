@@ -20,32 +20,25 @@ from son_editor.util.requestutil import CONFIG, rreplace
 WORKSPACES_DIR = os.path.expanduser(CONFIG["workspaces-location"])
 
 
-def get_projects(user_data: dict, ws_id: int) -> list:
+def get_projects(ws_id: int) -> list:
     """
     Get a list of projects in this workspace
-    :param user_data:
     :param ws_id:
     :return:
     """
-    user = get_user(user_data)
-
     session = db_session()
     projects = session.query(Project). \
         join(Workspace). \
-        filter(Workspace.id == ws_id). \
-        filter(Workspace.owner == user).all()
+        filter(Workspace.id == ws_id).all()
     session.commit()
     return list(map(lambda x: x.as_dict(), projects))
 
 
-def get_project(user_data, ws_id, pj_id):
-    user = get_user(user_data)
-
+def get_project(ws_id, pj_id):
     session = db_session()
     project = session.query(Project). \
         join(Workspace). \
         filter(Workspace.id == ws_id). \
-        filter(Workspace.owner == user). \
         filter(Project.id == pj_id). \
         first()
     session.commit()
@@ -55,10 +48,9 @@ def get_project(user_data, ws_id, pj_id):
         raise NotFound("No project with id {} could be found".format(pj_id))
 
 
-def create_project(user_data: dict, ws_id: int, project_data: dict) -> dict:
+def create_project(ws_id: int, project_data: dict) -> dict:
     """
     Create a new Project in this workspace
-    :param user_data:
     :param ws_id:
     :param project_data:
     :return: The new project descriptor as a dict
@@ -67,10 +59,8 @@ def create_project(user_data: dict, ws_id: int, project_data: dict) -> dict:
     session = db_session()
 
     # test if ws Name exists in database
-    user = get_user(user_data)
 
     workspace = session.query(Workspace). \
-        filter(Workspace.owner == user). \
         filter(Workspace.id == ws_id).first()
     if workspace is None:
         raise NotFound("No workspace with id {} was found".format(ws_id))

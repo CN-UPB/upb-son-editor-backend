@@ -35,7 +35,7 @@ class Projects(Resource):
         """Lists projects
 
         Lists projects in the given workspace"""
-        projects = projectsimpl.get_projects(session['userData'], ws_id)
+        projects = projectsimpl.get_projects(ws_id)
         return prepare_response(projects)
 
     @namespace.expect(pj)
@@ -46,7 +46,7 @@ class Projects(Resource):
 
         Creates a new project in the given workspace"""
         projectData = get_json(request)
-        pj = projectsimpl.create_project(session['userData'], ws_id, projectData)
+        pj = projectsimpl.create_project(ws_id, projectData)
         return prepare_response(pj, 201)
 
 
@@ -77,4 +77,4 @@ class Project(Resource):
         """Retrieves project
 
         Gets information of a given project"""
-        return prepare_response(projectsimpl.get_project(session['userData'], ws_id, project_id))
+        return prepare_response(projectsimpl.get_project(ws_id, project_id))

@@ -69,7 +69,7 @@ class Workspace(Resource):
         """Get workspace
 
         Gets information about a specific workspace"""
-        workspace = workspaceimpl.get_workspace(session['userData'], ws_id)
+        workspace = workspaceimpl.get_workspace(ws_id)
         return prepare_response(workspace)
 
     @namespace.expect(ws)

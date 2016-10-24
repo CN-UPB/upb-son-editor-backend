@@ -5,48 +5,18 @@ from son_editor.app.database import db_session
 from son_editor.models.user import User
 from son_editor.util import constants
 from son_editor.util.context import init_test_context
+from son_editor.tests.utils import *
 
 
 class ServiceAPITest(unittest.TestCase):
     def setUp(self):
         # Initializes test context
         self.app = init_test_context()
-        # Add some session stuff ( need for finding the user's workspace )
-        with self.app as c:
-            with c.session_transaction() as session:
-                session['userData'] = {'login': 'username'}
-
-        self.user = User(name="username", email="foo@bar.com")
-        session = db_session()
-        session.add(self.user)
-        session.commit()
-
+        self.user = create_logged_in_user(self.app, 'user_b')
         # Create a workspace and project
-        headers = {'Content-Type': 'application/json'}
-        response = self.app.post("/" + constants.WORKSPACES + "/",
-                                 headers=headers,
-                                 data=json.dumps({'name': 'WorkspaceA'}))
-        self.wsid = str(json.loads(response.data.decode())["id"])
-        response = self.app.post("/" + constants.WORKSPACES + "/" + self.wsid + "/" + constants.PROJECTS + "/",
-                                 headers=headers,
-                                 data=json.dumps({'name': 'ProjectA'}))
-        self.pid = str(json.loads(response.data.decode())["id"])
-
-        postArg = json.dumps({"vendor": "de.upb.cs.cn.pgsandman",
-                              "name": "ServiceA",
-                              "version": "0.0.1"})
-        response = self.app.post("/" + constants.WORKSPACES + "/" + str(self.wsid)
-                                 + "/" + constants.PROJECTS + "/" + str(self.pid)
-                                 + "/" + constants.SERVICES + "/", headers=headers,
-                                 data=postArg)
-        self.sid = str(json.loads(response.data.decode())['id'])
-
-    def tearDown(self):
-        session = db_session()
-        self.app.delete("/" + constants.WORKSPACES + "/" + self.wsid + "/" + constants.PROJECTS + "/" + self.pid)
-        self.app.delete("/" + constants.WORKSPACES + "/" + self.wsid)
-        session.delete(self.user)
-        session.commit()
+        self.wsid = create_workspace(self.user, 'WorkspaceA')
+        self.pid = create_project(self.wsid, 'ProjectA')
+        self.sid = create_ns(self.wsid, self.pid, "ServiceA", "de.upb.cs.cn.pgsandman", "0.0.1")
 
     def test_create_service(self):
         session = db_session()
