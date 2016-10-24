@@ -17,6 +17,9 @@ logger = logging.getLogger(__name__)
 @namespace.response(200, "OK")
 class Shutdown(Resource):
     def get(self):
+        """ Shutdown the server
+
+        Only works if issued from localhost"""
         if request.remote_addr in ['127.0.0.1', 'localhost']:
             func = request.environ.get('werkzeug.server.shutdown')
             if func is None:
@@ -31,6 +34,7 @@ class Shutdown(Resource):
 @namespace.response(200, "OK")
 class Login(Resource):
     def get(self):
+        """ Login the User with a referral code from the github oauth process"""
         session['session_code'] = request.args.get('code')
         if self.request_access_token() and self.load_user_data():
             logger.info("User " + session['userData']['login'] + " logged in")
@@ -41,6 +45,7 @@ class Login(Resource):
 
     @staticmethod
     def request_access_token():
+        """ Request an access token from Github using the referral code"""
         # TODO add error handling
         data = {'client_id': CONFIG['authentication']['ClientID'],
                 'client_secret': CONFIG['authentication']['ClientSecret'],
@@ -53,6 +58,7 @@ class Login(Resource):
 
     @staticmethod
     def load_user_data():
+        """Load user data using the access token"""
         # TODO add error handling
         headers = {"Accept": "application/json",
                    "Authorization": "token " + session['access_token']}
@@ -72,5 +78,6 @@ class Login(Resource):
 @namespace.response(200, "OK")
 class Log(Resource):
     def get(self):
+        """Return the logfile as string"""
         with open("editor-backend.log") as logfile:
             return Response(logfile.read().replace("\n", "<br/>"))

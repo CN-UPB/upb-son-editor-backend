@@ -10,7 +10,12 @@ from son_editor.util.descriptorutil import update_workspace_descriptor
 from son_editor.util.requestutil import get_json
 
 
-def get_platform(platform_id):
+def get_platform(platform_id: int) -> dict:
+    """
+    Get the platform definition
+    :param platform_id:
+    :return: The platform information
+    """
     session = db_session()
     platform = session.query(Platform).filter(Platform.id == platform_id).first()
     session.commit()
@@ -19,14 +24,24 @@ def get_platform(platform_id):
     return platform.as_dict()
 
 
-def get_platforms(workspace_id):
+def get_platforms(workspace_id: int) -> list:
+    """
+    Get a list of platforms for this workspace
+    :param workspace_id:
+    :return:
+    """
     session = db_session()
     platforms = session.query(Platform).filter(Platform.workspace_id == workspace_id).all()
     session.commit()
     return list(map(lambda x: x.as_dict(), platforms))
 
 
-def create_platform(workspace_id):
+def create_platform(workspace_id: int) -> dict:
+    """
+    Create a new platform entry
+    :param workspace_id:
+    :return:
+    """
     platform_data = get_json(request)
     platform_name = shlex.quote(platform_data['name'])
     platform_url = shlex.quote(platform_data['url'])
@@ -49,7 +64,13 @@ def create_platform(workspace_id):
     return platform.as_dict()
 
 
-def update_platform(workspace_id, platform_id):
+def update_platform(workspace_id: int, platform_id: int) -> dict:
+    """
+    Update the platform entry
+    :param workspace_id:
+    :param platform_id:
+    :return: The updated platform definition
+    """
     platform_data = get_json(request)
     platform_name = shlex.quote(platform_data['name'])
     platform_url = shlex.quote(platform_data['url'])
@@ -80,7 +101,13 @@ def update_platform(workspace_id, platform_id):
     return platform.as_dict()
 
 
-def delete(workspace_id, platform_id):
+def delete(workspace_id: int, platform_id:int)->dict:
+    """
+    Deletes the platform from the workspace
+    :param workspace_id:
+    :param platform_id:
+    :return: the deleted platform description
+    """
     session = db_session()
     workspace = session.query(Workspace).filter(Workspace.id == workspace_id).first()
     if workspace is None:

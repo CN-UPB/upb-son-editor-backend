@@ -15,6 +15,12 @@ logger = logging.getLogger(__name__)
 
 
 def create_service_on_platform(ws_id, platform_id):
+    """
+    Deploys the service on the referenced Platform
+    :param ws_id:
+    :param platform_id:
+    :return: A  message if the function was deployed successfully
+    """
     service_data = get_json(request)
     service_id = int(service_data['id'])
     session = db_session()

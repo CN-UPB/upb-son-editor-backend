@@ -31,6 +31,6 @@ class Project(Base):
         return '<Project %r:%r>' % (self.name, self.rel_path)
 
     def as_dict(self):
-        dict = {c.name: getattr(self, c.name) for c in self.__table__.columns}
-        dict['publish_to'] = self.publish_to.split(',')
-        return dict
+        result_dict = {c.name: getattr(self, c.name) for c in self.__table__.columns}
+        result_dict['publish_to'] = self.publish_to.split(',')
+        return result_dict
