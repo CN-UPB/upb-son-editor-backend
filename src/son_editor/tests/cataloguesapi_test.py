@@ -1,4 +1,5 @@
 import unittest
+import json
 
 from son_editor.tests.utils import *
 from son_editor.util.constants import WORKSPACES, CATALOGUES
