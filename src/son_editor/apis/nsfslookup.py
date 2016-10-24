@@ -11,8 +11,8 @@ from son_editor.impl import nsfslookupimpl
 from son_editor.util.constants import WORKSPACES, PROJECTS, NSFS, SERVICES, VNFS
 from son_editor.util.requestutil import prepare_response
 
-nsfs_namespace = Namespace(WORKSPACES + '/<int:ws_id>/' + PROJECTS + '/<int:project_id>/' + NSFS + '/',
-                           description="Project VNF Resources")
+namespace = Namespace(WORKSPACES + '/<int:ws_id>/' + PROJECTS + '/<int:project_id>/' + NSFS + '/',
+                      description="Project VNF Resources")
 vendor_name_version_path = "/vendor/<string:vendor>/name/<string:name>/version/<string:version>"
 
 funct = Model("VNF", {
@@ -29,14 +29,14 @@ funct_response = funct.inherit("Response", funct, {
 })
 
 
-@nsfs_namespace.route('/' + SERVICES + vendor_name_version_path)
-@nsfs_namespace.param('ws_id', 'The Workspace identifier')
-@nsfs_namespace.param('project_id', 'The Project identifier')
-@nsfs_namespace.param('vendor', 'The Network Service vendor')
-@nsfs_namespace.param('name', 'The Network Service name')
-@nsfs_namespace.param('version', 'The Network Service version')
+@namespace.route('/' + SERVICES + vendor_name_version_path)
+@namespace.param('ws_id', 'The Workspace identifier')
+@namespace.param('project_id', 'The Project identifier')
+@namespace.param('vendor', 'The Network Service vendor')
+@namespace.param('name', 'The Network Service name')
+@namespace.param('version', 'The Network Service version')
 class Lookup(Resource):
-    @nsfs_namespace.response(200, "OK", [funct_response])
+    @namespace.response(200, "OK", [funct_response])
     def get(self, ws_id, project_id, vendor, name, version):
         """Retrieves a network service by vendor name version
 
@@ -45,14 +45,14 @@ class Lookup(Resource):
         return prepare_response(service)
 
 
-@nsfs_namespace.route('/' + VNFS + vendor_name_version_path)
-@nsfs_namespace.param('ws_id', 'The Workspace identifier')
-@nsfs_namespace.param('project_id', 'The Project identifier')
-@nsfs_namespace.param('vendor', 'The Virtual Nework Function vendor')
-@nsfs_namespace.param('name', 'The Virtual Nework Function name')
-@nsfs_namespace.param('version', 'The Virtual Nework Function version')
+@namespace.route('/' + VNFS + vendor_name_version_path)
+@namespace.param('ws_id', 'The Workspace identifier')
+@namespace.param('project_id', 'The Project identifier')
+@namespace.param('vendor', 'The Virtual Nework Function vendor')
+@namespace.param('name', 'The Virtual Nework Function name')
+@namespace.param('version', 'The Virtual Nework Function version')
 class Lookup(Resource):
-    @nsfs_namespace.response(200, "OK", [funct_response])
+    @namespace.response(200, "OK", [funct_response])
     def get(self, ws_id, project_id, vendor, name, version):
         """Retrieves a virtual network function by vendor name version
 
