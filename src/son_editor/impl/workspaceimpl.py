@@ -35,11 +35,9 @@ def get_workspaces(user_data):
     return list(map(lambda x: x.as_dict(), workspaces))
 
 
-def get_workspace(user_data, ws_id):
+def get_workspace(ws_id):
     session = db_session()
-    user = get_user(user_data)
     workspace = session.query(Workspace). \
-        filter(Workspace.owner == user). \
         filter(Workspace.id == ws_id).first()
     session.commit()
     if workspace is not None:

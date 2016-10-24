@@ -23,26 +23,20 @@ else:
     WORKSPACES_DIR = os.path.expanduser(CONFIG["workspaces-location"])
 
 
-def get_projects(user_data, ws_id):
-    user = get_user(user_data)
-
+def get_projects(ws_id):
     session = db_session()
     projects = session.query(Project). \
         join(Workspace). \
-        filter(Workspace.id == ws_id). \
-        filter(Workspace.owner == user).all()
+        filter(Workspace.id == ws_id).all()
     session.commit()
     return list(map(lambda x: x.as_dict(), projects))
 
 
-def get_project(user_data, ws_id, pj_id):
-    user = get_user(user_data)
-
+def get_project(ws_id, pj_id):
     session = db_session()
     project = session.query(Project). \
         join(Workspace). \
         filter(Workspace.id == ws_id). \
-        filter(Workspace.owner == user). \
         filter(Project.id == pj_id). \
         first()
     session.commit()
@@ -52,15 +46,13 @@ def get_project(user_data, ws_id, pj_id):
         raise NotFound("No project with id {} could be found".format(pj_id))
 
 
-def create_project(user_data, ws_id, project_data):
+def create_project(ws_id, project_data):
     project_name = shlex.quote(project_data["name"])
     session = db_session()
 
     # test if ws Name exists in database
-    user = get_user(user_data)
 
     workspace = session.query(Workspace). \
-        filter(Workspace.owner == user). \
         filter(Workspace.id == ws_id).first()
     if workspace is None:
         raise NotFound("No workspace with id {} was found".format(ws_id))

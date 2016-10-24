@@ -34,7 +34,7 @@ class Projects(Resource):
     @namespace.response(200, "OK", [pj_response])
     def get(self, ws_id):
         """Lists projects in the given workspace"""
-        projects = projectsimpl.get_projects(session['userData'], ws_id)
+        projects = projectsimpl.get_projects(ws_id)
         return prepare_response(projects)
 
     @namespace.doc("Creates a new project")
@@ -44,7 +44,7 @@ class Projects(Resource):
     def post(self, ws_id):
         """Creates a new project in the given workspace"""
         projectData = get_json(request)
-        pj = projectsimpl.create_project(session['userData'], ws_id, projectData)
+        pj = projectsimpl.create_project(ws_id, projectData)
         return prepare_response(pj, 201)
 
 
@@ -72,4 +72,4 @@ class Project(Resource):
     @namespace.response(404, "Workspace not found")
     def get(self, ws_id, project_id):
         """Gets information of a given project"""
-        return prepare_response(projectsimpl.get_project(session['userData'], ws_id, project_id))
+        return prepare_response(projectsimpl.get_project(ws_id, project_id))

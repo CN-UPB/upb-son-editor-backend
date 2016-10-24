@@ -66,7 +66,7 @@ class Workspace(Resource):
     @namespace.response(404, "Workspace not found")
     def get(self, ws_id):
         """Gets information about a specific workspace"""
-        workspace = workspaceimpl.get_workspace(session['userData'], ws_id)
+        workspace = workspaceimpl.get_workspace(ws_id)
         return prepare_response(workspace)
 
     @namespace.doc("Updates a specific workspace")

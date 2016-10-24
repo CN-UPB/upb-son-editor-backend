@@ -12,15 +12,9 @@ class NsfslookupTest(unittest.TestCase):
     def setUp(self):
         # Initializes test context
         self.app = init_test_context()
-        # Add some session stuff ( need for finding the user's workspace )
-        with self.app as c:
-            with c.session_transaction() as session:
-                session['userData'] = {'login': 'username'}
+        # Create login
+        self.user = create_logged_in_user(self.app, "user_a")
 
-        self.user = User(name="username", email="foo@bar.com")
-        session = db_session()
-        session.add(self.user)
-        session.commit()
         self.wsid = create_workspace(self, "workspace_a")
         self.pjid = create_project(self, self.wsid, "project_a")
         self.vnfid = create_vnf(self, self.wsid, self.pjid, "virtual_function_a", "de.upb.cs.cn.pgsandman", "0.0.1")

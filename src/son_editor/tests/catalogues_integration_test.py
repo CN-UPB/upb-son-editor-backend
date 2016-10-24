@@ -8,6 +8,7 @@ from son_editor.models.repository import Repository
 from son_editor.models.project import Project
 from son_editor.models.workspace import Workspace
 from son_editor.util.context import init_test_context, CATALOGUE_INSTANCE_URL
+from son_editor.tests.utils import *
 
 
 class CatalogueServiceTest(unittest.TestCase):
@@ -16,29 +17,10 @@ class CatalogueServiceTest(unittest.TestCase):
         self.app = init_test_context()
 
         # Add some session stuff ( need for finding the user's workspace )
-        with self.app as c:
-            with c.session_transaction() as session:
-                session['userData'] = {'login': 'user'}
 
-        # Add some dummy objects
-        self.user = User(name="user", email="foo@bar.com")
-
-        # Add some relationships
-        db_session.add(self.user)
-
-        db_session.commit()
-
-        # Create workspace by request
-        request_dict = {"name": "workspaceName"}
-        response = self.app.post('/' + WORKSPACES + '/', data=json.dumps(request_dict), content_type='application/json')
-        self.assertEqual(response.status_code, 201)
-        self.wsid = json.loads(response.data.decode())['id']
-
-        # Create project by request
-        response = self.app.post('/' + WORKSPACES + '/' + str(self.wsid) + '/' + PROJECTS + '/',
-                                 data=json.dumps(request_dict), content_type='application/json')
-        self.assertEqual(response.status_code, 201)
-        self.pjid = json.loads(response.data.decode())['id']
+        self.user = create_logged_in_user(self.app, 'user')
+        self.wsid = create_workspace(self.user, 'workspaceName')
+        self.pjid = create_project(self.wsid, 'ProjectA')
 
         # Create catalogue by request
         request_dict = {"name": "Catalogue_Integration_Test", "url": CATALOGUE_INSTANCE_URL}
