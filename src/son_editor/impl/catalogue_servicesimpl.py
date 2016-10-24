@@ -21,16 +21,24 @@ TIMEOUT = 5
 
 ## Some helper functions
 
-# Returns the vnf / ns prefix
-def getType(is_vnf):
+def getType(is_vnf:bool)->str:
+    """
+    Returns the vnf / ns prefix
+    :param is_vnf:
+    :return: the prefix for the type
+    """
     if is_vnf:
         return VNF_PREFIX
     else:
         return NS_PREFIX
 
 
-# Retrieves a catalogue by given id
 def get_catalogue(catalogue_id):
+    """
+    Retrieves a catalogue by given id
+    :param catalogue_id: int
+    :return:
+    """
     session = db_session()
     catalogue = session.query(Catalogue).filter(Catalogue.id == catalogue_id).first()
     # Check if catalogue exists
@@ -39,8 +47,8 @@ def get_catalogue(catalogue_id):
     return catalogue
 
 
-# Returns a service with the given service id
 def get_service(service_id):
+    """Returns a service with the given service id"""
     session = db_session()
     service = session.query(Service).filter(Service.id == service_id).first()
     # Check if the function could be retrieved
@@ -48,8 +56,9 @@ def get_service(service_id):
         raise NotFound("Service with id '{}' does not exist".format(service_id))
     return service
 
-# Returns a function with the given function id
+
 def get_function(function_id):
+    """ Returns a function with the given function id"""
     session = db_session()
     function = session.query(Function).filter(Function.id == function_id).first()
     # Check if the function could be retrieved
@@ -58,18 +67,34 @@ def get_function(function_id):
     return function
 
 
-# Expects a dict type with name, vendor, version
-def createID(e):
+def createID(e: dict):
+    """
+    Expects a dict type with name, vendor, version
+    :param e: dict with name, vendor, version
+    :return: the id of the descriptor
+    """
     return e['name'] + ":" + e['vendor'] + ":" + e['version']
 
 
-# Returns the  of a given id
-def decodeID(id):
+def decodeID(id)->tuple:
+    """
+    Returns the parts of a given id
+    :param id:
+    :return: tuple of name, vendor , version
+    """
     list = str.split(id, ":")
     return list[0], list[1], list[2]
 
 
 def build_URL(is_vnf, name, vendor, version):
+    """
+    builds the url from the given name vendor and version
+    :param is_vnf:
+    :param name:
+    :param vendor:
+    :param version:
+    :return:
+    """
     service_url = CATALOGUE_SPECIFIC_URL.replace("{type}", getType(is_vnf))
     service_url = service_url.replace('{vendor}', vendor)
     service_url = service_url.replace('{name}', name)
@@ -79,10 +104,17 @@ def build_URL(is_vnf, name, vendor, version):
 
 ## Actual catalogue HTTP actions
 
-# Creates a function on the catalogue
 def create_in_catalogue(user_data, catalogue_id, function_id, is_vnf):
+    """
+    Creates a function on the catalogue
+    :param user_data:
+    :param catalogue_id:
+    :param function_id:
+    :param is_vnf:
+    :return:
+    """
     url_suffix = CATALOGUE_LIST_CREATE_SUFFIX.replace("{type}", getType(is_vnf))
-    if (is_vnf):
+    if is_vnf:
         function = get_function(function_id)
     else:
         function = get_service(function_id)
@@ -96,8 +128,15 @@ def create_in_catalogue(user_data, catalogue_id, function_id, is_vnf):
     return json.loads(response.text)
 
 
-# Retrieves a list of catalogue functions
 def get_all_in_catalogue(user_data, ws_id, catalogue_id, is_vnf):
+    """
+    Retrieves a list of catalogue functions
+    :param user_data:
+    :param ws_id:
+    :param catalogue_id:
+    :param is_vnf:
+    :return:
+    """
     url_suffix = CATALOGUE_LIST_CREATE_SUFFIX.replace("{type}", getType(is_vnf))
     catalogue = get_catalogue(catalogue_id)
 
@@ -116,8 +155,15 @@ def get_all_in_catalogue(user_data, ws_id, catalogue_id, is_vnf):
     return function_list
 
 
-# Gets a specific function
 def get_in_catalogue(ws_id, catalogue_id, function_id, is_vnf):
+    """
+    Gets a specific function
+    :param ws_id:
+    :param catalogue_id:
+    :param function_id:
+    :param is_vnf:
+    :return:
+    """
     name, vendor, version = decodeID(function_id)
     catalogue = get_catalogue(catalogue_id)
 
@@ -128,6 +174,14 @@ def get_in_catalogue(ws_id, catalogue_id, function_id, is_vnf):
 
 
 def update_service_catalogue(ws_id, catalogue_id, function_id, function_data, is_vnf):
+    """ Update the service in the catalogue
+    :param ws_id:
+    :param catalogue_id:
+    :param function_id:
+    :param function_data:
+    :param is_vnf:
+    :return:
+    """
     name, vendor, version = decodeID(function_id)
     catalogue = get_catalogue(catalogue_id)
 
@@ -141,6 +195,14 @@ def update_service_catalogue(ws_id, catalogue_id, function_id, function_data, is
 
 
 def delete_service_catalogue(ws_id, catalogue_id, function_id, is_vnf):
+    """
+    Delete the service in the catalogue
+    :param ws_id:
+    :param catalogue_id:
+    :param function_id:
+    :param is_vnf:
+    :return:
+    """
     name, vendor, version = decodeID(function_id)
     catalogue = get_catalogue(catalogue_id)
 

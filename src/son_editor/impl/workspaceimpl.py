@@ -26,7 +26,12 @@ WORKSPACES_DIR = path.normpath(WORKSPACES_DIR)
 logger = logging.getLogger(__name__)
 
 
-def get_workspaces(user_data):
+def get_workspaces(user_data: dict) -> list:
+    """
+    Get all workspaces for the current user
+    :param user_data: the data identifying the user
+    :return: A list wof workspace dictionaries
+    """
     session = db_session()
     user = get_user(user_data)
     workspaces = session.query(Workspace). \
@@ -35,7 +40,13 @@ def get_workspaces(user_data):
     return list(map(lambda x: x.as_dict(), workspaces))
 
 
-def get_workspace(user_data, ws_id):
+def get_workspace(user_data: dict, ws_id: int) -> dict:
+    """
+    Get a workspace by ID
+    :param user_data: The data identifying the user
+    :param ws_id:
+    :return: A dictionary wich contains the Workspace configuration
+    """
     session = db_session()
     user = get_user(user_data)
     workspace = session.query(Workspace). \
@@ -48,7 +59,13 @@ def get_workspace(user_data, ws_id):
         raise NotFound("No workspace with id " + ws_id + " exists")
 
 
-def create_workspace(user_data, workspace_data):
+def create_workspace(user_data: dict, workspace_data: dict) -> dict:
+    """
+    Creates a workspace (on disk and in the database) from the given workspace data
+    :param user_data: The data identifiying the User
+    :param workspace_data: The workspace configuration data
+    :return: The created workspace
+    """
     wsName = shlex.quote(workspace_data["name"])
     session = db_session()
 
@@ -61,7 +78,7 @@ def create_workspace(user_data, workspace_data):
     if len(existingWorkspaces) > 0:
         raise NameConflict("Workspace with name " + wsName + " already exists")
 
-    wsPath = path.join(WORKSPACES_DIR , user.name , wsName)
+    wsPath = path.join(WORKSPACES_DIR, user.name, wsName)
     # prepare db insert
     try:
         ws = Workspace(name=wsName, path=wsPath, owner=user)
@@ -99,6 +116,12 @@ def create_workspace(user_data, workspace_data):
 
 
 def update_workspace(workspace_data, wsid):
+    """
+    Updates the workspace with the given workspace data
+    :param workspace_data: The new workspace configuration
+    :param wsid: the workspace ID
+    :return: The updated workspace
+    """
     session = db_session()
     workspace = session.query(Workspace).filter(Workspace.id == int(wsid)).first()
     if workspace is None:
@@ -148,7 +171,7 @@ def update_workspace(workspace_data, wsid):
                 platform.url = updated_platform['url']
             else:
                 # create new
-                new_platform = Platform(updated_platform['name'], updated_platform['url'],True, workspace)
+                new_platform = Platform(updated_platform['name'], updated_platform['url'], True, workspace)
                 session.add(new_platform)
     for catalogue in workspace.catalogues:
         deleted = True
@@ -181,6 +204,11 @@ def update_workspace(workspace_data, wsid):
 
 
 def delete_workspace(wsid):
+    """
+    Deletes the workspace from the database and from disk
+    :param wsid: The workspace ID
+    :return: The deleted workspace
+    """
     session = db_session()
     workspace = session.query(Workspace).filter(Workspace.id == int(wsid)).first()
     if workspace:

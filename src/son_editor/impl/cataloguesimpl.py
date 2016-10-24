@@ -11,7 +11,11 @@ from son_editor.util.requestutil import get_json
 
 
 def get_catalogue(catalogue_id):
-    """Retrieves a catalogue by its id"""
+    """
+    Retrieves a catalogue by its id
+    :param catalogue_id:
+    :return:
+    """
     session = db_session()
     catalogue = session.query(Catalogue).filter(Catalogue.id == catalogue_id).first()
     session.commit()
@@ -21,7 +25,11 @@ def get_catalogue(catalogue_id):
 
 
 def get_catalogues(workspace_id):
-    """Retrieves all catalogues of a specific workspace"""
+    """
+    Retrieves all catalogues of a specific workspace
+    :param workspace_id:
+    :return:
+    """
     session = db_session()
     catalogues = session.query(Catalogue).filter(Catalogue.workspace_id == workspace_id).all()
     session.commit()
@@ -53,9 +61,14 @@ def create_catalogue(workspace_id):
     return catalogue.as_dict()
 
 
-
 def update_catalogue(workspace_id, catalogue_id):
-    """Updates a specific catalogue by its id. The catalogue applies the given name and url, that are in the json parameter. """
+    """
+    Updates a specific catalogue by its id. The catalogue
+    applies the given name and url, that are in the json parameter.
+    :param workspace_id:
+    :param catalogue_id:
+    :return:
+    """
     catalogue_data = get_json(request)
     catalogue_name = shlex.quote(catalogue_data['name'])
     catalogue_url = shlex.quote(catalogue_data['url'])
@@ -86,11 +99,13 @@ def update_catalogue(workspace_id, catalogue_id):
     return catalogue.as_dict()
 
 
-""""""
-
-
 def delete(workspace_id, catalogue_id):
-    """Deletes a catalogue by its id"""
+    """
+    Deletes a catalogue by its id
+    :param workspace_id:
+    :param catalogue_id:
+    :return:
+    """
     session = db_session()
     workspace = session.query(Workspace).filter(Workspace.id == workspace_id).first()
     if workspace is None:

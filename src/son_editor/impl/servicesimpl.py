@@ -17,17 +17,29 @@ from son_editor.util.requestutil import get_json
 logger = logging.getLogger(__name__)
 
 
-def get_services(ws_id, parent_id):
+def get_services(ws_id: int, project_id: int) -> list:
+    """
+    Get a list of all services in this Project
+    :param ws_id:
+    :param project_id: The project ID
+    :return: A list of service descriptors as dicts
+    """
     session = db_session()
-    project = session.query(Project).filter_by(id=parent_id).first()
+    project = session.query(Project).filter_by(id=project_id).first()
     session.commit()
     if project:
         return list(map(lambda x: x.as_dict(), project.services))
     else:
-        raise NotFound("No project matching id {}".format(parent_id))
+        raise NotFound("No project matching id {}".format(project_id))
 
 
-def create_service(ws_id, project_id):
+def create_service(ws_id: int, project_id: int) -> dict:
+    """
+    Creates a service in the given project
+    :param ws_id: The Workspace of the project
+    :param project_id: The Project of the Service
+    :return: The created service descriptor
+    """
     session = db_session()
     service_data = get_json(request)
     project = session.query(Project).filter_by(id=project_id).first()
@@ -69,6 +81,13 @@ def create_service(ws_id, project_id):
 
 
 def update_service(ws_id, project_id, service_id):
+    """
+    Update the service using the service data from the request
+    :param ws_id:
+    :param project_id:
+    :param service_id:
+    :return:
+    """
     service_data = get_json(request)
 
     session = db_session()
@@ -102,9 +121,15 @@ def update_service(ws_id, project_id, service_id):
         raise NotFound("Could not update service '{}', because no record was found".format(service_id))
 
 
-def delete_service(parent_id, service_id):
+def delete_service(project_id: int , service_id:int )-> dict:
+    """
+    Deletes the service from the Database and from the disk
+    :param project_id: The Projects ID
+    :param service_id: The Services ID
+    :return: The descriptor of the deleted service
+    """
     session = db_session()
-    project = session.query(Project).filter(Project.id == parent_id).first()
+    project = session.query(Project).filter(Project.id == project_id).first()
 
     if project is None:
         raise NotFound("Could not delete service: project with id {} not found".format(service_id))
@@ -128,6 +153,13 @@ def delete_service(parent_id, service_id):
 
 
 def get_service(ws_id, parent_id, service_id):
+    """
+    Get the service by ID
+    :param ws_id: The workspace ID of the Project
+    :param parent_id: The project ID
+    :param service_id: the Service ID
+    :return:
+    """
     session = db_session()
     service = session.query(Service).filter_by(id=service_id).first()
     session.commit()
