@@ -80,7 +80,7 @@ class Functions(Resource):
         Creates a new function in the project or catalogue"""
         if get_parent(request) is Category.project:
             vnf_data = get_json(request)
-            vnf_data = functionsimpl.create_function(session['userData'], ws_id, parent_id, vnf_data)
+            vnf_data = functionsimpl.create_function(ws_id, parent_id, vnf_data)
             return prepare_response(vnf_data, 201)
         if get_parent(request) is Category.catalogue:
             vnf_data = get_json(request)

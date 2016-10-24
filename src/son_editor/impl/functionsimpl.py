@@ -51,7 +51,7 @@ def get_function_project(user_data: dict, ws_id: int, project_id: int, vnf_id: i
     return function.as_dict()
 
 
-def create_function(user_data: dict, ws_id: int, project_id: int, function_data: dict) -> dict:
+def create_function(ws_id: int, project_id: int, function_data: dict) -> dict:
     """
     Creates a new vnf in the project
     :param user_data:
@@ -66,11 +66,9 @@ def create_function(user_data: dict, ws_id: int, project_id: int, function_data:
     session = db_session()
 
     # test if function Name exists in database
-    user = get_user(user_data)
     existing_functions = list(session.query(Function)
                               .join(Project)
                               .join(Workspace)
-                              .filter(Workspace.owner == user)
                               .filter(Workspace.id == ws_id)
                               .filter(Function.project_id == project_id)
                               .filter(Function.name == function_name))
