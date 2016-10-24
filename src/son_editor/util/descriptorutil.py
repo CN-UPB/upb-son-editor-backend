@@ -30,7 +30,7 @@ def get_file_path(folder: str, model) -> str:
                         project.rel_path,
                         "sources",
                         folder,
-                        (model.name + "\\" if folder == "vnf" else ""),
+                        (model.name + os.path.sep if folder == "vnf" else ""),
                         get_file_name(model))
 
 
