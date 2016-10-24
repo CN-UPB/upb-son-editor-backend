@@ -3,11 +3,12 @@ import unittest
 
 from son_editor.app.database import db_session
 from son_editor.models.user import User
-from son_editor.util import constants
+from son_editor.util.constants import *
 from son_editor.util.context import init_test_context
+from son_editor.tests.utils import *
 
 
-class NsfslookupTesto(unittest.TestCase):
+class NsfslookupTest(unittest.TestCase):
     def setUp(self):
         # Initializes test context
         self.app = init_test_context()
@@ -20,30 +21,14 @@ class NsfslookupTesto(unittest.TestCase):
         session = db_session()
         session.add(self.user)
         session.commit()
-
-        # Create a workspace and project
-        headers = {'Content-Type': 'application/json'}
-        response = self.app.post("/" + constants.WORKSPACES + "/",
-                                 headers=headers,
-                                 data=json.dumps({'name': 'WorkspaceA'}))
-        self.wsid = str(json.loads(response.data.decode())["id"])
-        response = self.app.post("/" + constants.WORKSPACES + "/" + self.wsid + "/" + constants.PROJECTS + "/",
-                                 headers=headers,
-                                 data=json.dumps({'name': 'ProjectA'}))
-        self.pjid = str(json.loads(response.data.decode())["id"])
-
-        postArg = json.dumps({"vendor": "de.upb.cs.cn.pgsandman",
-                              "name": "FunctionA",
-                              "version": "0.0.1"})
-        response = self.app.post("/" + constants.WORKSPACES + "/" + str(self.wsid)
-                                 + "/" + constants.PROJECTS + "/" + str(self.pjid)
-                                 + "/" + constants.VNFS + "/", headers=headers,
-                                 data=postArg)
-        self.fid = str(json.loads(response.data.decode())['id'])
+        self.wsid = create_workspace(self, "workspace_a")
+        self.pjid = create_project(self, self.wsid, "project_a")
+        self.vnfid = create_vnf(self, self.wsid, self.pjid, "virtual_function_a", "de.upb.cs.cn.pgsandman", "0.0.1")
+        self.nsid = create_ns(self, self.wsid, self.pjid, "network_service_a", "de.upb.cs.cn.pgsandman",
+                              "0.0.1")
 
     def tearDown(self):
         session = db_session()
-        self.app.delete("/" + constants.WORKSPACES + "/" + self.wsid + "/" + constants.PROJECTS + "/" + self.pjid)
-        self.app.delete("/" + constants.WORKSPACES + "/" + self.wsid)
+        delete_workspace(self, self.wsid)
         session.delete(self.user)
         session.commit()
