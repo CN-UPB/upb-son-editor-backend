@@ -1,0 +1,34 @@
+import json
+import unittest
+
+from son_editor.app.database import db_session
+from son_editor.models.user import User
+from son_editor.util.constants import *
+from son_editor.util.context import init_test_context
+from son_editor.tests.utils import *
+
+
+class NsfslookupTest(unittest.TestCase):
+    def setUp(self):
+        # Initializes test context
+        self.app = init_test_context()
+        # Add some session stuff ( need for finding the user's workspace )
+        with self.app as c:
+            with c.session_transaction() as session:
+                session['userData'] = {'login': 'username'}
+
+        self.user = User(name="username", email="foo@bar.com")
+        session = db_session()
+        session.add(self.user)
+        session.commit()
+        self.wsid = create_workspace(self, "workspace_a")
+        self.pjid = create_project(self, self.wsid, "project_a")
+        self.vnfid = create_vnf(self, self.wsid, self.pjid, "virtual_function_a", "de.upb.cs.cn.pgsandman", "0.0.1")
+        self.nsid = create_ns(self, self.wsid, self.pjid, "network_service_a", "de.upb.cs.cn.pgsandman",
+                              "0.0.1")
+
+    def tearDown(self):
+        session = db_session()
+        delete_workspace(self, self.wsid)
+        session.delete(self.user)
+        session.commit()

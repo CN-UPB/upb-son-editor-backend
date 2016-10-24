@@ -12,6 +12,7 @@ PLATFORMS = "platforms"
 CATALOGUES = "catalogues"
 SERVICES = "services"
 VNFS = "functions"
+NSFS = "nsfs"
 
 
 class Category(Enum):
