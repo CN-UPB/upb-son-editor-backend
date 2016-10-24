@@ -1,14 +1,8 @@
-import json
 import unittest
 
-from son_editor.util.constants import WORKSPACES, CATALOGUES, SERVICES, PROJECTS, VNFS
-from son_editor.app.database import db_session
-from son_editor.models.user import User
-from son_editor.models.repository import Repository
-from son_editor.models.project import Project
-from son_editor.models.workspace import Workspace
-from son_editor.util.context import init_test_context, CATALOGUE_INSTANCE_URL
 from son_editor.tests.utils import *
+from son_editor.util.constants import WORKSPACES, CATALOGUES, SERVICES, PROJECTS, VNFS
+from son_editor.util.context import init_test_context, CATALOGUE_INSTANCE_URL
 
 
 class CatalogueServiceTest(unittest.TestCase):
@@ -150,6 +144,5 @@ class CatalogueServiceTest(unittest.TestCase):
         self.assertTrue(function['name'] == ns_dict_2['name'])
         self.assertTrue(function['version'] == ns_dict_2['version'])
         self.assertTrue(function['vendor'] == ns_dict_2['vendor'])
-
 
         session.close()

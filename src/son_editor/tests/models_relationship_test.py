@@ -1,7 +1,7 @@
 import unittest
 
-from son_editor.models.project import Project
 from son_editor.models.descriptor import Service, Function
+from son_editor.models.project import Project
 from son_editor.models.repository import Catalogue
 from son_editor.models.user import User
 from son_editor.models.workspace import Workspace

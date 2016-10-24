@@ -1,7 +1,7 @@
 import json
 import unittest
 
-from son_editor.app.database import db_session, reset_db, init_db, scan_workspaces_dir
+from son_editor.app.database import db_session, reset_db, scan_workspaces_dir
 from son_editor.models.user import User
 from son_editor.util.constants import WORKSPACES, PROJECTS
 from son_editor.util.context import init_test_context

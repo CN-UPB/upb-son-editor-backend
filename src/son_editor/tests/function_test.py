@@ -1,7 +1,5 @@
-import json
 import unittest
 
-from son_editor.app.database import db_session
 from son_editor.tests.utils import *
 from son_editor.util import constants
 from son_editor.util.context import init_test_context
