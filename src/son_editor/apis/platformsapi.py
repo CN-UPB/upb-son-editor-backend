@@ -4,7 +4,8 @@ Created on 18.07.2016
 @author: Jonas
 """
 from flask_restplus import Resource, Namespace
-
+from flask.globals import request
+from son_editor.util.requestutil import get_json
 from son_editor.impl import platformsimpl
 from son_editor.util.constants import WORKSPACES, PLATFORMS
 from son_editor.util.requestutil import prepare_response
@@ -28,7 +29,7 @@ class Platforms(Resource):
         """Create a new service platform
 
         Creates a new service platform in the given workspace"""
-        return prepare_response(platformsimpl.create_platform(ws_id), 201)
+        return prepare_response(platformsimpl.create_platform(ws_id, get_json(request)), 201)
 
 
 @namespace.route("/<int:platform_id>")
@@ -43,7 +44,7 @@ class Platform(Resource):
     def put(self, ws_id, platform_id):
         """Update platform
         Updates a service platform by its id"""
-        return prepare_response(platformsimpl.update_platform(ws_id, platform_id))
+        return prepare_response(platformsimpl.update_platform(ws_id, platform_id, get_json(request)))
 
     def delete(self, ws_id, platform_id):
         """Delete Platform

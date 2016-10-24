@@ -6,10 +6,7 @@ Created on 26.07.2016
 import json
 import unittest
 
-from son_editor.app.database import db_session
-from son_editor.models.project import Project
-from son_editor.models.user import User
-from son_editor.models.workspace import Workspace
+from son_editor.tests.utils import *
 from son_editor.util.constants import WORKSPACES
 from son_editor.util.context import init_test_context
 
@@ -18,22 +15,9 @@ class WorkspacesTest(unittest.TestCase):
     def setUp(self):
         # Initializes test context
         self.app = init_test_context()
-
-        # Add some dummy objects
-        self.project = Project(name="Project A")
-        self.user = User(name="user", email="foo@bar.com")
-        self.workspace = Workspace(name="Workspace A", owner=self.user)
-
-        # Add some relationships
-
-        db_session.add(self.user)
-        db_session.add(self.workspace)
-        db_session.commit()
-
-        # Add some session stuff ( need for finding the user's workspace )
-        with self.app as c:
-            with c.session_transaction() as session:
-                session['userData'] = {'login': 'user'}
+        self.user = create_logged_in_user(self.app, 'user')
+        self.workspace = create_workspace(self.user, 'Workspace A')
+        self.project = create_project(self.workspace, 'Project A')
 
     def tearDown(self):
         # deletes all workspaces and other data belonging to this user
@@ -60,11 +44,11 @@ class WorkspacesTest(unittest.TestCase):
 
     def testGetWorkSpaces(self):
         response = self.app.get('/' + WORKSPACES + '/')
-        self.assertEqual(json.loads(response.data.decode())[0]['name'], "Workspace A")
+        self.assertEqual(json.loads(response.data.decode())[0]['name'], "'Workspace A'")
 
     def testGetWorkSpace(self):
         response = self.app.get('/' + WORKSPACES + '/{}'.format(self.get_wsid()))
-        self.assertEqual(json.loads(response.data.decode())['name'], "Workspace A")
+        self.assertEqual(json.loads(response.data.decode())['name'], "'Workspace A'")
 
         # test non existing id
         response = self.app.get('/' + WORKSPACES + '/1337')

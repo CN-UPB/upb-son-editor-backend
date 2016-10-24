@@ -1,18 +1,15 @@
 import json
+import logging
 import os
 import shlex
-import logging
-
 import shutil
-from flask.globals import request
 
 from son_editor.app.database import db_session
 from son_editor.app.exceptions import NotFound, NameConflict
-from son_editor.models.project import Project
 from son_editor.models.descriptor import Service
+from son_editor.models.project import Project
 from son_editor.models.workspace import Workspace
 from son_editor.util.descriptorutil import write_to_disk, get_file_path
-from son_editor.util.requestutil import get_json
 
 logger = logging.getLogger(__name__)
 
@@ -80,16 +77,15 @@ def create_service(ws_id: int, project_id: int, service_data: dict) -> dict:
         raise NotFound("Project with id '{}‘ not found".format(project_id))
 
 
-def update_service(ws_id, project_id, service_id):
+def update_service(ws_id, project_id, service_id, service_data):
     """
     Update the service using the service data from the request
     :param ws_id:
     :param project_id:
     :param service_id:
+    :param service_data:
     :return:
     """
-    service_data = get_json(request)
-
     session = db_session()
     service = session.query(Service). \
         join(Project). \
@@ -121,7 +117,7 @@ def update_service(ws_id, project_id, service_id):
         raise NotFound("Could not update service '{}', because no record was found".format(service_id))
 
 
-def delete_service(project_id: int , service_id:int )-> dict:
+def delete_service(project_id: int, service_id: int) -> dict:
     """
     Deletes the service from the Database and from the disk
     :param project_id: The Projects ID

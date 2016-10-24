@@ -105,6 +105,7 @@ class Functions(Resource):
 @plat_namespace.param('vnf_id', 'The VNF identifier')
 class Function(Resource):
     """Resource methods for specific function descriptors"""
+
     @proj_namespace.expect(funct)
     @cata_namespace.expect(funct_uid)
     @proj_namespace.response(200, "Updated", funct_response)
@@ -137,7 +138,7 @@ class Function(Resource):
         return prepare_response("not yet implemented")
 
     @proj_namespace.response(200, "OK", funct_response)
-    #@cata_namespace.expect(uid)
+    # @cata_namespace.expect(uid)
     def get(self, ws_id, parent_id, vnf_id):
         """Get a specific function
 
