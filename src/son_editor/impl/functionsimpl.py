@@ -15,7 +15,14 @@ from son_editor.util.descriptorutil import write_to_disk, get_file_path
 logger = logging.getLogger(__name__)
 
 
-def get_functions(user_data, ws_id, project_id):
+def get_functions(user_data, ws_id: int, project_id: int) -> list:
+    """
+    Get a list of all functions
+    :param user_data:
+    :param ws_id: The workspace ID
+    :param project_id: The project id
+    :return:
+    """
     user = get_user(user_data)
     session = db_session()
     functions = session.query(Function).join(Project).join(Workspace). \
@@ -25,7 +32,15 @@ def get_functions(user_data, ws_id, project_id):
     return list(map(lambda x: x.as_dict(), functions))
 
 
-def get_function_project(user_data, ws_id, project_id, vnf_id):
+def get_function_project(user_data: dict, ws_id: int, project_id: int, vnf_id: int) -> dict:
+    """
+    Get a single function from the specified project
+    :param user_data:
+    :param ws_id:
+    :param project_id:
+    :param vnf_id:
+    :return:
+    """
     user = get_user(user_data)
     session = db_session()
     function = session.query(Function).join(Project).join(Workspace). \
@@ -36,7 +51,15 @@ def get_function_project(user_data, ws_id, project_id, vnf_id):
     return function.as_dict()
 
 
-def create_function(user_data, ws_id, project_id, function_data):
+def create_function(user_data: dict, ws_id: int, project_id: int, function_data: dict) -> dict:
+    """
+    Creates a new vnf in the project
+    :param user_data:
+    :param ws_id:
+    :param project_id:
+    :param function_data:
+    :return: The created function as a dict
+    """
     function_name = shlex.quote(function_data["name"])
     vendor_name = shlex.quote(function_data["vendor"])
     version = shlex.quote(function_data["version"])
@@ -72,7 +95,16 @@ def create_function(user_data, ws_id, project_id, function_data):
     return function.as_dict()
 
 
-def update_function(user_data, ws_id, project_id, function_id, function_data):
+def update_function(user_data: dict, ws_id: int, prj_id: int, func_id: int, func_data: dict) -> dict:
+    """
+    Update the function descriptor
+    :param user_data:
+    :param ws_id:
+    :param prj_id:
+    :param func_id:
+    :param func_data:
+    :return: The updated function descriptor
+    """
     session = db_session()
 
     # test if ws Name exists in database
@@ -82,19 +114,19 @@ def update_function(user_data, ws_id, project_id, function_id, function_data):
         join(Workspace). \
         filter(Workspace.owner == user). \
         filter(Workspace.id == ws_id). \
-        filter(Project.id == project_id). \
-        filter(Function.id == function_id).first()
+        filter(Project.id == prj_id). \
+        filter(Function.id == func_id).first()
     if function is None:
         session.rollback()
-        raise NotFound("Function with id " + function_id + " does not exist")
-    function.descriptor = json.dumps(function_data)
+        raise NotFound("Function with id " + func_id + " does not exist")
+    function.descriptor = json.dumps(func_data)
     old_file_name = get_file_path("vnf", function)
-    if 'name' in function_data:
-        function.name = shlex.quote(function_data["name"])
-    if 'vendor' in function_data:
-        function.vendor = shlex.quote(function_data["vendor"])
-    if 'version' in function_data:
-        function.version = shlex.quote(function_data["version"])
+    if 'name' in func_data:
+        function.name = shlex.quote(func_data["name"])
+    if 'vendor' in func_data:
+        function.vendor = shlex.quote(func_data["vendor"])
+    if 'version' in func_data:
+        function.version = shlex.quote(func_data["version"])
     try:
         new_file_name = get_file_path("vnf", function)
         if not new_file_name == old_file_name:
@@ -108,7 +140,15 @@ def update_function(user_data, ws_id, project_id, function_id, function_data):
     return function.as_dict()
 
 
-def delete_function(user_data, ws_id, project_id, function_id):
+def delete_function(user_data: dict, ws_id: int, project_id: int, function_id: int) -> dict:
+    """
+    Deletes the function
+    :param user_data:
+    :param ws_id:
+    :param project_id:
+    :param function_id:
+    :return: the deleted function
+    """
     session = db_session()
     user = get_user(user_data)
     function = session.query(Function). \
@@ -131,6 +171,3 @@ def delete_function(user_data, ws_id, project_id, function_id):
         raise
     session.commit()
     return function.as_dict()
-
-
-
