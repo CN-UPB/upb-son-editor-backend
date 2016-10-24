@@ -27,9 +27,8 @@ def get_services(ws_id, parent_id):
         raise NotFound("No project matching id {}".format(parent_id))
 
 
-def create_service(ws_id, project_id):
+def create_service(ws_id, project_id, service_data):
     session = db_session()
-    service_data = get_json(request)
     project = session.query(Project).filter_by(id=project_id).first()
 
     if project:

@@ -83,7 +83,7 @@ class Services(Resource):
         Creates a new Service in this project or
         publishes it in the catalogue or platform"""
         if get_parent(request) is Category.project:
-            service = servicesimpl.create_service(ws_id, parent_id)
+            service = servicesimpl.create_service(ws_id, parent_id, get_json(request))
             return prepare_response(service, 201)
         elif get_parent(request) is Category.platform:
             result = platform_connector.create_service_on_platform(ws_id, parent_id)

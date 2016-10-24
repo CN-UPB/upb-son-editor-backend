@@ -6,6 +6,7 @@ from son_editor.app.database import db_session
 from son_editor.models.user import User
 from son_editor.models.workspace import Workspace
 from son_editor.util.context import init_test_context
+from son_editor.tests.utils import *
 
 
 class CatalogueTest(unittest.TestCase):
@@ -14,31 +15,10 @@ class CatalogueTest(unittest.TestCase):
         self.app = init_test_context()
 
         # Add some session stuff ( need for finding the user's workspace )
-        with self.app as c:
-            with c.session_transaction() as session:
-                session['userData'] = {'login': 'user'}
+        self.user = create_logged_in_user(self.app, 'user')
 
-        # Add some dummy objects
-        self.user = User(name="user", email="foo@bar.com")
-
-        # Add some relationships
-        db_session.add(self.user)
-        db_session.commit()
         # Create real workspace by request
-        request_dict = {"name": "CatalogueTest"}
-        response = self.app.post('/' + WORKSPACES + '/', data=json.dumps(request_dict), content_type='application/json')
-        self.wsid = json.loads(response.data.decode())['id']
-
-        self.workspace = db_session.query(Workspace).filter_by(id=self.wsid).first()
-        db_session.commit()
-        # Expect workspace gets created
-        self.assertEqual(request_dict['name'], json.loads(response.data.decode())['name'])
-
-    def tearDown(self):
-        response = self.app.delete('/' + WORKSPACES + '/' + str(self.wsid))
-        db_session.delete(self.user)
-        db_session.commit()
-
+        self.wsid = create_workspace(self.user, 'CatalogueTest')
     # Create catalogue
     def test_create_catalogue(self):
         # Setup request dict
