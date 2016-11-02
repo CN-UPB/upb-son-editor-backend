@@ -1,14 +1,9 @@
-import json
 import unittest
 
-from son_editor.util.constants import WORKSPACES, CATALOGUES, SERVICES, PROJECTS, VNFS
-from son_editor.app.database import db_session
-from son_editor.models.user import User
-from son_editor.models.repository import Repository
-from son_editor.models.project import Project
-from son_editor.models.workspace import Workspace
-from son_editor.util.context import init_test_context, CATALOGUE_INSTANCE_URL
+import json
 from son_editor.tests.utils import *
+from son_editor.util.constants import WORKSPACES, CATALOGUES, SERVICES, PROJECTS, VNFS
+from son_editor.util.context import init_test_context, CATALOGUE_INSTANCE_URL
 
 
 class CatalogueServiceTest(unittest.TestCase):
@@ -23,11 +18,8 @@ class CatalogueServiceTest(unittest.TestCase):
         self.pjid = create_project(self.wsid, 'ProjectA')
 
         # Create catalogue by request
-        request_dict = {"name": "Catalogue_Integration_Test", "url": CATALOGUE_INSTANCE_URL}
-        response = self.app.post('/' + WORKSPACES + '/' + str(self.wsid) + '/' + CATALOGUES + '/',
-                                 data=json.dumps(request_dict), content_type='application/json')
-        self.assertEqual(201, response.status_code)
-        self.catalogue_id = json.loads(response.data.decode())['id']
+
+        self.catalogue_id = create_catalogue(self.wsid, "Catalogue_Integration_Test", CATALOGUE_INSTANCE_URL)
 
         self.ns_dict = {"vendor": "de.upb.integration_test",
                         "name": "service_1",
@@ -150,6 +142,5 @@ class CatalogueServiceTest(unittest.TestCase):
         self.assertTrue(function['name'] == ns_dict_2['name'])
         self.assertTrue(function['version'] == ns_dict_2['version'])
         self.assertTrue(function['vendor'] == ns_dict_2['vendor'])
-
 
         session.close()

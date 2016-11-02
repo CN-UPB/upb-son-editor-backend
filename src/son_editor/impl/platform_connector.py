@@ -1,7 +1,5 @@
 import logging
 
-from flask import request
-
 from son_editor.app.database import db_session
 from son_editor.app.exceptions import InvalidArgument
 from son_editor.models.descriptor import Service
@@ -9,19 +7,18 @@ from son_editor.models.project import Project
 from son_editor.models.repository import Platform
 from son_editor.models.workspace import Workspace
 from son_editor.util.publishutil import pack_project, push_to_platform
-from son_editor.util.requestutil import get_json
 
 logger = logging.getLogger(__name__)
 
 
-def create_service_on_platform(ws_id, platform_id):
+def create_service_on_platform(ws_id, platform_id, service_data):
     """
     Deploys the service on the referenced Platform
     :param ws_id:
     :param platform_id:
+    :param service_data:
     :return: A  message if the function was deployed successfully
     """
-    service_data = get_json(request)
     service_id = int(service_data['id'])
     session = db_session()
     try:

@@ -1,12 +1,11 @@
-from son_editor.util import constants
-from son_editor.app.exceptions import NameConflict
-import son_editor.impl.workspaceimpl
+import son_editor.impl.functionsimpl
 import son_editor.impl.projectsimpl
 import son_editor.impl.servicesimpl
-import son_editor.impl.functionsimpl
+import son_editor.impl.workspaceimpl
+import son_editor.impl.cataloguesimpl
 from son_editor.app.database import db_session
 from son_editor.models.user import User
-import json
+from son_editor.util import constants
 
 
 def _get_header():
@@ -60,6 +59,10 @@ def create_workspace(user, ws_name: str) -> int:
     ws_data = {'name': ws_name}
     workspace_data = son_editor.impl.workspaceimpl.create_workspace(user_data, ws_data)
     return workspace_data['id']
+
+
+def create_catalogue(wsid: int, name: str, url: str):
+    return son_editor.impl.cataloguesimpl.create_catalogue(wsid, {'name': name, 'url': url})['id']
 
 
 def create_logged_in_user(app, user_name) -> User:
