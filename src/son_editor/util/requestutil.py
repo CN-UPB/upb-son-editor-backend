@@ -13,7 +13,13 @@ import yaml
 CONFIG = yaml.safe_load(resource_string(Requirement.parse("upb-son-editor-backend"), "son_editor/config.yaml"))
 
 
-def prepare_response(data=None, code=200):
+def prepare_response(data=None, code=200) -> Response:
+    """
+    Sets the necessary headers and status code on the response
+    :param data: The data to be returned to the client
+    :param code: the status code. 200 by default
+    :return: The Response object with the headers set according to the input data
+    """
     response = Response()
     headers = response.headers
     if allowed_origin():
@@ -33,7 +39,14 @@ def prepare_response(data=None, code=200):
     return response
 
 
-def prepare_error(data=None, code=500):
+def prepare_error(data=None, code=500) -> tuple:
+    """
+    Prepares the error response and returns it as a tuple
+    to accommodate for flask_restplus's way to deal with errors
+    :param data: The error message
+    :param code: the http error code, 500 by default
+    :return: A tuple of the data, the status code and the headers
+    """
     response = Response()
     headers = response.headers
     if allowed_origin():
@@ -46,7 +59,9 @@ def prepare_error(data=None, code=500):
 
 
 def allowed_origin():
+    """Checks if the request originates from a known origin"""
     if 'Origin' in request.headers:
+        #strip the http method because we are only interested in the host
         origin = request.headers['Origin'].replace("http://", "").replace("https://", "")
         origin_parts = origin.split(":")
         if len(origin_parts) > 1:

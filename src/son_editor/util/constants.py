@@ -6,12 +6,19 @@ Created on 22.07.2016
 from enum import Enum
 
 # URL REST constants
+"""The workspace url constant"""
 WORKSPACES = "workspaces"
+"""The project url constant"""
 PROJECTS = "projects"
+"""The platform url constant"""
 PLATFORMS = "platforms"
+"""the platform url constant"""
 CATALOGUES = "catalogues"
+"The network service url constant"
 SERVICES = "services"
+"""The virtual network function url constant"""
 VNFS = "functions"
+""" The network services and funtions url constant"""
 NSFS = "nsfs"
 
 
@@ -22,6 +29,8 @@ class Category(Enum):
 
 
 def get_parent(request):
+    """Helper method to extract the parent category
+    for the services and functions api calls"""
     parent = str(request.url_rule).split(sep="/")[3]
     return {
         PROJECTS: Category.project,
