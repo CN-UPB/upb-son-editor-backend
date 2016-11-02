@@ -15,14 +15,14 @@ namespace = Namespace(WORKSPACES + '/<int:ws_id>/' + PROJECTS + '/<int:project_i
                       description="Project VNF Resources")
 vendor_name_version_path = "/vendor/<string:vendor>/name/<string:name>/version/<string:version>"
 
-funct = Model("VNF", {
+funct = namespace.model("VNF", {
     'name': fields.String(required=True, description='The VNF Name'),
     'vendor': fields.String(required=True, description='The VNF Vendor'),
     'version': fields.String(required=True, description='The VNF Version')
 
 })
 
-funct_response = funct.inherit("Response", funct, {
+funct_response = namespace.inherit("Response", funct, {
     "descriptor": fields.Nested(model=funct, description="The Complete VNF Descriptor"),
     "id": fields.Integer(description='The Project ID'),
     "project_id": fields.Integer(description='The parent project id'),

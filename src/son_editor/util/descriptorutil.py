@@ -3,7 +3,14 @@ import os
 
 import yaml
 
-def load_from_disk(file, model):
+
+def load_ns_vnf_from_disk(file: str, model):
+    """
+    Loads a vnf or network service descriptor from disk and initializes the given model
+    :param file: the file path of the descriptor
+    :param model: The database  model of the descriptor
+    :return: the given updated model
+    """
     with open(file, 'r') as stream:
         descriptor = yaml.safe_load(stream)
         model.__init__(descriptor=json.dumps(descriptor),
@@ -13,7 +20,14 @@ def load_from_disk(file, model):
         return model
 
 
-def write_to_disk(folder: str, model):
+def write_ns_vnf_to_disk(folder: str, model) -> None:
+    """
+    Saves the given model to disk as a yml file
+    :param folder: the folder to write to, either "vnf" or "nsd"
+    to specify if a vnf or network service needs to be saved
+    :param model: The database  model of the descriptor
+    :return:
+    """
     target_dir = os.path.dirname(get_file_path(folder, model))
     if not os.path.exists(target_dir):
         os.mkdir(target_dir)
@@ -23,6 +37,14 @@ def write_to_disk(folder: str, model):
 
 
 def get_file_path(folder: str, model) -> str:
+    """
+    Returns the filepath to the descriptor computed
+    from the models vendor name and version
+    :param folder: the folder to write to, either "vnf" or "nsd"
+    to specify if a vnf or network service needs to be saved
+    :param model: The database  model of the descriptor
+    :return:
+    """
     project = model.project
     workspace = project.workspace
     return os.path.join(workspace.path,
@@ -35,12 +57,24 @@ def get_file_path(folder: str, model) -> str:
 
 
 def get_file_name(model) -> str:
+    """
+    Get the standard file name for a descriptor
+    :param model: The database  model of the descriptor
+    :return: The standard descriptor file name, computed from the models vendor name and version
+    """
     return "{}-{}-{}.yml".format(model.vendor,
                                  model.name,
                                  model.version)
 
 
-def synchronize_workspace_descriptor(workspace, session):
+def synchronize_workspace_descriptor(workspace, session) -> None:
+    """
+    Updates both the workspace descriptor on disk and in
+     the database to contain the same essential data
+    :param workspace: the database workspace model
+    :param session: the current database session
+    :return:
+    """
     from son_editor.models.repository import Catalogue
     with open(os.path.join(workspace.path, "workspace.yml"), "r+") as stream:
         ws_descriptor = yaml.safe_load(stream)
@@ -61,7 +95,12 @@ def synchronize_workspace_descriptor(workspace, session):
         yaml.safe_dump(ws_descriptor, stream)
 
 
-def update_workspace_descriptor(workspace):
+def update_workspace_descriptor(workspace) -> None:
+    """
+    Updates the workspace descriptor with data from the workspace model
+    :param workspace: The workspace model
+    :return:
+    """
     with open(os.path.join(workspace.path, "workspace.yml"), "r") as stream:
         ws_descriptor = yaml.safe_load(stream)
         ws_descriptor['catalogue_servers'] = []
@@ -77,7 +116,12 @@ def update_workspace_descriptor(workspace):
         yaml.safe_dump(ws_descriptor, stream)
 
 
-def load_workspace_descriptor(workspace):
+def load_workspace_descriptor(workspace) -> None:
+    """
+    Loads the workspace descriptor from disk and updates the database model
+    :param workspace: The workspace database model
+    :return:
+    """
     from son_editor.models.repository import Catalogue
     from son_editor.models.repository import Platform
 
@@ -97,17 +141,24 @@ def load_workspace_descriptor(workspace):
                                                     publish=platform_server['publish'] == 'yes'))
 
 
-def load_project_descriptor(project):
+def load_project_descriptor(project) -> dict:
+    """Loads the project descriptor from disk"""
     with open(os.path.join(project.workspace.path, "projects", project.rel_path, "project.yml"), "r") as stream:
         return yaml.safe_load(stream)
 
 
 def write_project_descriptor(project, project_descriptor):
+    """Writes the project database model to disk"""
     with open(os.path.join(project.workspace.path, "projects", project.rel_path, "project.yml"), "w") as stream:
         return yaml.safe_dump(project_descriptor, stream)
 
 
-def sync_project_descriptor(project):
+def sync_project_descriptor(project) -> None:
+    """
+    Updates the project model with data from the project descriptor and vice versa
+    :param project: The projects database model
+    :return:
+    """
     project_descriptor = load_project_descriptor(project)
     project_descriptor['name'] = project.name
     if project.description is not None:

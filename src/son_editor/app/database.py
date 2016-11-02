@@ -8,7 +8,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
 
-from son_editor.util.descriptorutil import load_from_disk, load_workspace_descriptor, get_file_path, get_file_name, \
+from son_editor.util.descriptorutil import load_ns_vnf_from_disk, load_workspace_descriptor, get_file_path, get_file_name, \
     sync_project_descriptor
 from son_editor.util.requestutil import CONFIG
 
@@ -109,7 +109,7 @@ def _scan_for_services(services_dir, pj):
             if service_file.endswith(".yml"):
                 service = Service()
                 file_path = os.path.join(services_dir, service_file)
-                load_from_disk(file_path, service)
+                load_ns_vnf_from_disk(file_path, service)
                 db_service = session.query(Service). \
                     filter(Service.project == pj). \
                     filter(Service.name == service.name). \
@@ -117,7 +117,7 @@ def _scan_for_services(services_dir, pj):
                     filter(Service.version == service.version). \
                     first()
                 if not db_service:
-                    logger.warn("Found service in project {}: {}".format(pj.name, service.uid))
+                    logger.info("Found service in project {}: {}".format(pj.name, service.uid))
                     service.project = pj
                     session.add(service)
                     session.commit()
@@ -142,7 +142,7 @@ def _scan_for_functions(function_dir, pj):
                 if len(yaml_files) == 1:
                     function = Function()
                     file_path = os.path.join(folder_path, yaml_files[0])
-                    load_from_disk(file_path, function)
+                    load_ns_vnf_from_disk(file_path, function)
                     db_function = session.query(Function). \
                         filter(Function.project == pj). \
                         filter(Function.name == function.name). \
