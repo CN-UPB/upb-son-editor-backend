@@ -14,7 +14,6 @@ class ProjectTest(unittest.TestCase):
         # Create real workspace by request
         self.wsid = create_workspace(self.user, 'ProjectTest')
 
-
     # Create project
     def test_create_project(self):
         # Setup request dict
@@ -86,3 +85,26 @@ class ProjectTest(unittest.TestCase):
         # check if its really been deleted
         rv = self.app.get('/' + WORKSPACES + '/' + str(self.wsid) + '/' + PROJECTS + '/' + str(project_id))
         self.assertEqual(404, rv.status_code)
+
+    def test_update_project(self):
+        # Setup request dict
+        pj_id = create_project(self.wsid, "update_project_name")
+        create_project(self.wsid, "another_project_name")
+
+        request_dict = {"name": "new_project_name", "publish_to": ["cat2"]}
+
+        # Post request on projects
+        rv = self.app.put('/' + WORKSPACES + '/' + str(self.wsid) + '/' + PROJECTS + '/' + str(pj_id),
+                          data=json.dumps(request_dict), content_type='application/json')
+        # Expect project gets updated
+        self.assertEqual(200, rv.status_code)
+        result_dict = json.loads(rv.data.decode())
+        self.assertEqual(request_dict['name'], result_dict['name'])
+        self.assertEqual(["cat2"], result_dict['publish_to'])
+
+        request_dict = {"name": "another_project_name", "publish_to": ["cat2"]}
+        # update to existing name, should fail
+        rv = self.app.put('/' + WORKSPACES + '/' + str(self.wsid) + '/' + PROJECTS + '/' + str(pj_id),
+                          data=json.dumps(request_dict), content_type='application/json')
+        # Expect project update fails
+        self.assertEqual(409, rv.status_code)
