@@ -43,7 +43,7 @@ class CatalogueServiceTest(unittest.TestCase):
 
     def makeTest(self, is_vnf):
 
-        if (is_vnf):
+        if is_vnf:
             url_function_name = VNFS
         else:
             url_function_name = SERVICES

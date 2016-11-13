@@ -16,6 +16,7 @@ class CatalogueTest(unittest.TestCase):
 
         # Create real workspace by request
         self.wsid = create_workspace(self.user, 'CatalogueTest')
+
     # Create catalogue
     def test_create_catalogue(self):
         # Setup request dict
@@ -39,9 +40,8 @@ class CatalogueTest(unittest.TestCase):
         response = self.app.get('/' + WORKSPACES + '/' + str(self.wsid) + '/' + CATALOGUES + '/')
 
         result = json.loads(response.data.decode())
-        self.assertEqual(len(result), 2)
-        self.assertEqual(result[0]['name'], "cat1")
-        self.assertEqual(result[1]['name'], "cat2")
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0]['name'], "son-catalogue")
 
     def test_get_catalogue(self):
         request_dict = {"name": "catalogueGet", "url": "http://example.com/some/path/"}
