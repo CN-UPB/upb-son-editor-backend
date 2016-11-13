@@ -7,7 +7,7 @@ import json
 import unittest
 
 from son_editor.tests.utils import *
-from son_editor.util.constants import WORKSPACES
+from son_editor.util.constants import WORKSPACES, PROJECTS
 from son_editor.util.context import init_test_context
 
 
@@ -77,6 +77,16 @@ class WorkspacesTest(unittest.TestCase):
         # try to update non existing
         response = self.app.put('/' + WORKSPACES + '/1337', data={"name": "workspaceToMove2"})
         self.assertEqual(404, response.status_code)
+
+        # try to delete referenced catalogue
+        response = json.loads(self.app.post('/' + WORKSPACES + '/', data={"name": "catalogue_ref"}).data.decode())
+        id = response["id"]
+        cat_id = response["catalogues"][0]['name']
+        response = self.app.post('/' + WORKSPACES + '/{}'.format(id) + "/" + PROJECTS + "/",
+                                 data=json.dumps({"name": "project", "publish_to": [cat_id]}),
+                                 content_type='application/json')
+        response = self.app.put('/' + WORKSPACES + '/{}'.format(id), data={"name": "catalogue_ref"})
+        self.assertEqual(400, response.status_code)
 
     def testDeleteWorkspace(self):
         # Create at first a workspace

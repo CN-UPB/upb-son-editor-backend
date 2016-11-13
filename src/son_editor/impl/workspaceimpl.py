@@ -12,7 +12,7 @@ from subprocess import Popen, PIPE
 import yaml
 
 from son_editor.app.database import db_session
-from son_editor.app.exceptions import NameConflict, NotFound
+from son_editor.app.exceptions import NameConflict, NotFound, InvalidArgument
 from son_editor.impl.usermanagement import get_user
 from son_editor.models.repository import Platform, Catalogue
 from son_editor.models.workspace import Workspace
@@ -120,7 +120,7 @@ def update_workspace(workspace_data, wsid):
     :return: The updated workspace
     """
     session = db_session()
-    workspace = session.query(Workspace).filter(Workspace.id == int(wsid)).first()
+    workspace = session.query(Workspace).filter(Workspace.id == int(wsid)).first()  # type: Workspace
     if workspace is None:
         raise NotFound("Workspace with id {} could not be found".format(wsid))
 
@@ -178,6 +178,12 @@ def update_workspace(workspace_data, wsid):
                     deleted = False
                     break
         if deleted:
+            # check if catalogue is still referenced
+            for project in workspace.projects:
+                if catalogue.name in project.publish_to:
+                    raise InvalidArgument(
+                        "Cannot delete catalogue '{}' because it is still used in project '{}'!".format(catalogue.name,
+                                                                                                       project.name))
             session.delete(catalogue)
     if 'catalogues' in workspace_data:
         for updated_catalogue in workspace_data['catalogues']:
