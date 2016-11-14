@@ -75,5 +75,5 @@ class Service(Descriptor):
 
     def as_dict(self):
         result = super().as_dict()
-        result["metadata"] = json.loads(self.descriptor)
+        result["meta"] = json.loads(self.descriptor)
         return result
