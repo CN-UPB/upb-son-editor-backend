@@ -12,7 +12,7 @@ def _get_header():
     return {'Content-Type': 'application/json'}
 
 
-def create_vnf(user, wsid: int, pjid: int, name: str, vendor: str, version: str) -> str:
+def create_vnf(wsid: int, pjid: int, name: str, vendor: str, version: str) -> str:
     """
     Creates a function with given name, vendor and version in the given project returns the id
     :param testcase: Testcase instance to call HTTP requests
@@ -23,7 +23,7 @@ def create_vnf(user, wsid: int, pjid: int, name: str, vendor: str, version: str)
     :param version: Version name for the function to create
     :returns: ID of the created function
     """
-    result = son_editor.impl.functionsimpl.create_function({'login': user.name}, wsid, pjid,
+    result = son_editor.impl.functionsimpl.create_function(wsid, pjid,
                                                            {"vendor": vendor,
                                                             "name": name,
                                                             "version": version})

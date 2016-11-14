@@ -15,7 +15,7 @@ class FunctionTest(unittest.TestCase):
         # Create a workspace and project
         self.wsid = str(create_workspace(self.user, 'WorkspaceA'))
         self.pjid = str(create_project(self.wsid, 'ProjectA'))
-        self.fid = create_vnf(self.user, self.wsid, self.pjid, "FunctionA", "de.upb.cs.cn.pgsandman", "0.0.1")
+        self.fid = create_vnf(self.wsid, self.pjid, "FunctionA", "de.upb.cs.cn.pgsandman", "0.0.1")
 
     def tearDown(self):
         session = db_session()

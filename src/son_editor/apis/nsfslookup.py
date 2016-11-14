@@ -13,7 +13,7 @@ from son_editor.util.requestutil import prepare_response
 
 namespace = Namespace(WORKSPACES + '/<int:ws_id>/' + PROJECTS + '/<int:project_id>/' + NSFS + '/',
                       description="Project VNF Resources")
-vendor_name_version_path = "/vendor/<string:vendor>/name/<string:name>/version/<string:version>"
+vendor_name_version_path = "/<string:vendor>/<string:name>/<string:version>"
 
 funct = namespace.model("VNF", {
     'name': fields.String(required=True, description='The VNF Name'),
