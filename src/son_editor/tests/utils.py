@@ -47,7 +47,7 @@ def create_ns(wsid: int, pjid: int, name: str, vendor: str, version: str) -> int
     return result['id']
 
 
-def create_workspace(user, ws_name: str) -> int:
+def create_workspace(user: User, ws_name: str) -> int:
     """
     Creates a workspace
     :param testcase: Testcase instance to call HTTP requests

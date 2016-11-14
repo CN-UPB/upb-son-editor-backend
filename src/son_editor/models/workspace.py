@@ -13,6 +13,8 @@ class Workspace(Base):
     projects = relationship("Project", back_populates="workspace", cascade="all, delete-orphan")
     catalogues = relationship("Catalogue", back_populates="workspace", cascade="all, delete-orphan")
     platforms = relationship("Platform", back_populates="workspace", cascade="all, delete-orphan")
+    priv_functions = relationship("PrivateFunction", back_populates="workspace", cascade="all, delete-orphan")
+    priv_services = relationship("PrivateService", back_populates="workspace", cascade="all, delete-orphan")
     owner_id = Column(Integer, ForeignKey('user.id'))
     owner = relationship("User", back_populates="workspaces")
 
