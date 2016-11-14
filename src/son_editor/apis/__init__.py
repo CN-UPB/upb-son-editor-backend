@@ -6,6 +6,7 @@ from son_editor.apis import servicesapi
 from son_editor.apis import functionsapi
 from son_editor.apis import workspacesapi
 from son_editor.apis import nsfslookup
+from son_editor.apis import userserviceapi
 
 
 def init(api):
@@ -21,3 +22,4 @@ def init(api):
     api.add_namespace(cataloguesapi.namespace)
     api.add_namespace(misc.namespace)
     api.add_namespace(nsfslookup.namespace)
+    api.add_namespace(userserviceapi.namespace)
