@@ -68,7 +68,7 @@ class Services(Resource):
             service = servicesimpl.get_services(ws_id, parent_id)
             return prepare_response(service)
         if get_parent(request) is Category.catalogue:
-            service = catalogue_servicesimpl.get_all_in_catalogue(session['userData'], ws_id, parent_id, False)
+            service = catalogue_servicesimpl.get_all_in_catalogue(session['user_data'], ws_id, parent_id, False)
             return prepare_response(service)
         return prepare_response("not yet implemented")
 
@@ -90,7 +90,7 @@ class Services(Resource):
             return prepare_response(result, 201)
         if get_parent(request) is Category.catalogue:
             vnf_data = get_json(request)
-            service = catalogue_servicesimpl.create_in_catalogue(session['userData'], parent_id, vnf_data['id'], False)
+            service = catalogue_servicesimpl.create_in_catalogue(session['user_data'], parent_id, vnf_data['id'], False)
             return prepare_response(service)
         return prepare_response("not yet implemented")
 
