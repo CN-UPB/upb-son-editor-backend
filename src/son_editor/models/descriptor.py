@@ -59,12 +59,12 @@ class Service(Descriptor):
     project = relationship("Project", back_populates="services")
     meta = Column(Text())
 
-    def __init__(self, name=None, version=None, vendor=None, descriptor=None, project=None, meta={}):
+    def __init__(self, name=None, version=None, vendor=None, descriptor=None, project=None, meta="{}"):
         super(Service, self).__init__(name, version, vendor, descriptor)
         if project:
             self.project = project
 
-        self.meta = json.dumps(meta)
+        self.meta = meta
 
     __mapper_args__ = {
         'polymorphic_identity': 'service',
@@ -75,5 +75,5 @@ class Service(Descriptor):
 
     def as_dict(self):
         result = super().as_dict()
-        result["meta"] = json.loads(self.descriptor)
+        result["meta"] = json.loads(self.meta)
         return result
