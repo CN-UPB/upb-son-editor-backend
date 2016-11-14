@@ -107,6 +107,7 @@ def update_service(ws_id, project_id, service_id, service_data):
                 service.version = shlex.quote(service_data["descriptor"]["version"])
         if 'meta' in service_data:
             service.meta = json.dumps(service_data["meta"])
+            logger.info(service.meta)
         new_file_name = get_file_path("nsd", service)
         try:
             if not old_file_name == new_file_name:
