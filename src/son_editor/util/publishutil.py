@@ -44,6 +44,7 @@ def push_to_platform(package_path: str, platform: Platform) -> str:
     :param platform: The platform to upload to
     :return:
     """
+    logger.warn(package_path)
     proc = Popen(['son-push', platform.url, '-U', package_path], stdout=PIPE, stderr=PIPE)
 
     out, err = proc.communicate()
@@ -59,6 +60,7 @@ def push_to_platform(package_path: str, platform: Platform) -> str:
     elif "error" in out.lower() or err.lower():
         raise NameConflict("Out: " + out + "Error: " + err)
     elif "201" or "200" in out:
+        logger.warn(out)
         message = out.split(":", 1)[1]
         return message
     else:
