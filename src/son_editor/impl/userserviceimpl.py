@@ -14,7 +14,7 @@ def get():
     """ Login the User with a referral code from the github oauth process"""
     session['session_code'] = request.args.get('code')
     if request_access_token() and load_user_data():
-        logger.info("User " + session['userData']['login'] + " logged in")
+        logger.info("User " + session['user_data']['login'] + " logged in")
         if request.referrer is not None and 'github' not in request.referrer:
             origin = origin_from_referrer(request.referrer)
             return redirect(origin + CONFIG['frontend-redirect'])
