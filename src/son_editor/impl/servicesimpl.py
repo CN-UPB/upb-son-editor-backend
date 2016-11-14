@@ -9,7 +9,7 @@ from son_editor.app.exceptions import NotFound, NameConflict
 from son_editor.models.descriptor import Service
 from son_editor.models.project import Project
 from son_editor.models.workspace import Workspace
-from son_editor.util.descriptorutil import write_to_disk, get_file_path
+from son_editor.util.descriptorutil import write_ns_vnf_to_disk, get_file_path
 
 logger = logging.getLogger(__name__)
 
@@ -65,7 +65,7 @@ def create_service(ws_id: int, project_id: int, service_data: dict) -> dict:
                           descriptor=json.dumps(service_data))
         session.add(service)
         try:
-            write_to_disk("nsd", service)
+            write_ns_vnf_to_disk("nsd", service)
         except:
             logger.exception("Could not create service:")
             session.rollback()
@@ -107,7 +107,7 @@ def update_service(ws_id, project_id, service_id, service_data):
         try:
             if not old_file_name == new_file_name:
                 shutil.move(old_file_name, new_file_name)
-            write_to_disk("nsd", service)
+            write_ns_vnf_to_disk("nsd", service)
         except:
             logger.exception("Could not update descriptor file:")
             raise

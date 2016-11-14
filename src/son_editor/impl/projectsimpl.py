@@ -16,7 +16,8 @@ from son_editor.util.descriptorutil import sync_project_descriptor
 from son_editor.util.requestutil import CONFIG, rreplace
 
 WORKSPACES_DIR = os.path.expanduser(CONFIG["workspaces-location"])
-
+# make ws paths prettier
+WORKSPACES_DIR = os.path.normpath(WORKSPACES_DIR)
 
 def get_projects(ws_id: int) -> list:
     """
@@ -116,8 +117,8 @@ def update_project(project_data, project_id):
         raise NotFound("Project with id {} could not be found".format(project_id))
 
     # Update name
-    if 'name' in project_data:
-        if os.path.exists(project.path):
+    if 'name' in project_data and project_data['name'] != project.name:
+        if os.path.exists(get_project_path(project.workspace.path, project.rel_path)):
             new_name = shlex.quote(project_data['name'])
             old_path = get_project_path(project.workspace.path, project.rel_path)
             new_path = rreplace(old_path, project.name, new_name, 1)

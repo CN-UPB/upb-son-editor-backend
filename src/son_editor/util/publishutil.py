@@ -10,6 +10,11 @@ logger = logging.getLogger(__name__)
 
 
 def pack_project(project: Project) -> str:
+    """
+    Calls the son-package cli tool to pack the project and prepare it for deployment
+    :param project: The project to pack
+    :return:
+    """
     ws_path = project.workspace.path
     pj_path = os.path.join(ws_path, 'projects', project.rel_path)
     proc = Popen(['son-package', '--workspace', ws_path, '--project', pj_path], stdout=PIPE, stderr=PIPE)
@@ -33,6 +38,12 @@ def pack_project(project: Project) -> str:
 
 
 def push_to_platform(package_path: str, platform: Platform) -> str:
+    """
+    Pushes the package located at the package_path to the specified Platform
+    :param package_path: the location of package to be pushed on disk
+    :param platform: The platform to upload to
+    :return:
+    """
     proc = Popen(['son-push', platform.url, '-U', package_path], stdout=PIPE, stderr=PIPE)
 
     out, err = proc.communicate()
