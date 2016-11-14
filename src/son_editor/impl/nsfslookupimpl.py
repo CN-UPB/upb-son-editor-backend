@@ -1,6 +1,9 @@
+from ensurepip import version
+
 from son_editor.app.database import db_session
 from son_editor.app.exceptions import NotFound
 from son_editor.models.project import Project
+from son_editor.models.private_descriptor import PrivateFunction, PrivateService
 from son_editor.impl.cataloguesimpl import get_catalogues
 from son_editor.impl.catalogue_servicesimpl import get_all_in_catalogue
 import logging
@@ -33,6 +36,26 @@ def get_function(functions, vendor, name, version):
     return None
 
 
+def query_private_nsfs(vendor, name, version, is_vnf):
+    """
+    Finds a function in the private catalogue
+    :param vendor:
+    :param name:
+    :param version:
+    :return:
+    """
+    session = db_session()
+    descriptor = None
+    if is_vnf:
+        descriptor = session.query(PrivateFunction).filter(PrivateFunction.name == name,
+                                                           PrivateFunction.vendor == vendor,
+                                                           PrivateFunction.version == version).first()
+    else:
+        descriptor = session.query(PrivateService).filter(PrivateService.name == name, PrivateService.vendor == vendor,
+                                                          PrivateService.version == version).first()
+    return descriptor
+
+
 def find_by_priority(user_data, ws_id, project_id, vendor, name, version, is_vnf):
     """
     Tries to find vnf / network services by descending priority project / private catalogue / public catalogue.
@@ -56,7 +79,10 @@ def find_by_priority(user_data, ws_id, project_id, vendor, name, version, is_vnf
         return function
 
     # 2. Try to find in private catalogue
-    # @TODO private catalogue search
+    # private catalogue funcs/nss are cached in db
+    function = query_private_nsfs(vendor, name, version, is_vnf)
+    if function is not None:
+        return function
 
     # 3. Try to find in public catalogue
     catalogues = get_catalogues(ws_id)

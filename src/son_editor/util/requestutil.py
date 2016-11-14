@@ -71,6 +71,11 @@ def allowed_origin():
 
 
 def get_json(request: Request) -> dict:
+    """
+    Helper function to get a json dict out of a request
+    :param request: Request to get the json data from
+    :return: json data as dict
+    """
     json_data = request.get_json()
     if json_data is None:
         json_data = request.form
@@ -80,5 +85,13 @@ def get_json(request: Request) -> dict:
 
 
 def rreplace(s, old, new, occurrence):
+    """
+    Replaces 'occurences' occurences of string 'old' in the given string 's' from right by 'new'
+    :param s: String that contains the replacing string
+    :param old: String that gets replaced
+    :param new: New string that replaces the old string
+    :param occurrence: How many occurences get replaced
+    :return: String that has replaced strings
+    """
     li = s.rsplit(old, occurrence)
     return new.join(li)
