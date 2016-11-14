@@ -17,7 +17,7 @@ from son_editor.tests.utils import *
 
 class TestPublishutil(TestCase):
     def setUp(self):
-        self.test_package_location = pkg_resources.resource_filename("son_editor.tests", "test.son")
+        self.test_package_location = pkg_resources.resource_filename(__name__, "test.son")
         self.app = init_test_context()
         self.user = create_logged_in_user(self.app, 'username')
         self.wsid = str(create_workspace(self.user, 'workspaceName'))
