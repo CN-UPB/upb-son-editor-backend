@@ -20,9 +20,13 @@ class ServiceAPITest(unittest.TestCase):
 
         session.commit()
 
-        postArg = json.dumps({"vendor": "de.upb.cs.cn.pgsandman",
-                              "name": "Service Name",
-                              "version": "0.0.1"})
+        postArg = json.dumps({
+            'descriptor':
+                {"vendor": "de.upb.cs.cn.pgsandman",
+                 "name": "Service Name",
+                 "version": "0.0.1"},
+            'meta': {'positions': []}
+        })
         response = self.app.post("/" + constants.WORKSPACES + "/" + str(self.wsid)
                                  + "/" + constants.PROJECTS + "/" + str(self.pid)
                                  + "/" + constants.SERVICES + "/", headers={'Content-Type': 'application/json'},
@@ -47,7 +51,7 @@ class ServiceAPITest(unittest.TestCase):
 
     def test_update_service(self):
         # test partial update
-        postArg = json.dumps({"name": "New Service Name"})
+        postArg = json.dumps({'descriptor': {"name": "New Service Name"}})
         response = self.app.put("/" + constants.WORKSPACES + "/" + str(self.wsid)
                                 + "/" + constants.PROJECTS + "/" + str(self.pid)
                                 + "/" + constants.SERVICES + "/" + str(self.sid),
@@ -57,9 +61,11 @@ class ServiceAPITest(unittest.TestCase):
         self.assertEqual(service['name'], "'New Service Name'")
 
         # test complete update
-        postArg = json.dumps({"vendor": "de.upb.cs",
-                              "name": "Service Name",
-                              "version": "1.0"})
+        postArg = json.dumps({'descriptor': {"vendor": "de.upb.cs",
+                                             "name": "Service Name",
+                                             "version": "1.0"},
+                              'meta': {"positions": [{"vnf_1": {'x': 0, 'y': 1}}]}
+                              })
 
         response = self.app.put("/" + constants.WORKSPACES + "/" + str(self.wsid)
                                 + "/" + constants.PROJECTS + "/" + str(self.pid)
