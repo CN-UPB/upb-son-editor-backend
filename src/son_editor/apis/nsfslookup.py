@@ -41,7 +41,7 @@ class Lookup(Resource):
         """Retrieves a network service by vendor name version
 
         Finds a specific network service with given vendor / name / version"""
-        service = nsfslookupimpl.find_network_service(session["userData"], ws_id, project_id, vendor, name, version)
+        service = nsfslookupimpl.find_network_service(session["user_data"], ws_id, project_id, vendor, name, version)
         return prepare_response(service)
 
 
@@ -57,5 +57,5 @@ class Lookup(Resource):
         """Retrieves a virtual network function by vendor name version
 
         Finds a specific virtual network with given vendor / name / version"""
-        function = nsfslookupimpl.find_vnf(session["userData"], ws_id, project_id, vendor, name, version)
+        function = nsfslookupimpl.find_vnf(session["user_data"], ws_id, project_id, vendor, name, version)
         return prepare_response(function)

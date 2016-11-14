@@ -18,9 +18,9 @@ def check_access(request):
         ws_id = request.view_args['ws_id']
         data_session = db_session()
         ws = data_session.query(Workspace).filter_by(id=ws_id).first()
-        if 'userData' in session:
+        if 'user_data' in session:
             # Get current user
-            user = get_user(session['userData'])
+            user = get_user(session['user_data'])
             # If the requested workspace is in his workspaces, he is allowed to access it
             if ws in user.workspaces:
                 if 'project_id' in request.view_args:

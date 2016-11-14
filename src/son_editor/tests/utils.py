@@ -74,7 +74,7 @@ def create_logged_in_user(app, user_name) -> User:
     # Add some session stuff ( need for finding the user's workspace )
     with app as c:
         with c.session_transaction() as session:
-            session['userData'] = {'login': user_name}
+            session['user_data'] = {'login': user_name}
 
     # Add some dummy objects
     user = User(name=user_name, email=user_name + "@bar.com")
