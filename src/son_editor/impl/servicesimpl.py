@@ -43,9 +43,9 @@ def create_service(ws_id: int, project_id: int, service_data: dict) -> dict:
 
     if project:
         # Retrieve post parameters
-        service_name = shlex.quote(service_data["name"])
-        vendor_name = shlex.quote(service_data["vendor"])
-        version = shlex.quote(service_data["version"])
+        service_name = shlex.quote(service_data['descriptor']["name"])
+        vendor_name = shlex.quote(service_data['descriptor']["vendor"])
+        version = shlex.quote(service_data['descriptor']["version"])
 
         existing_services = list(session.query(Service)
                                  .join(Project)
@@ -56,13 +56,14 @@ def create_service(ws_id: int, project_id: int, service_data: dict) -> dict:
                                  .filter(Service.vendor == vendor_name)
                                  .filter(Service.version == version))
         if len(existing_services) > 0:
-            raise NameConflict("A service with this name already exists")
+            raise NameConflict("A service with this name/vendor/version already exists")
         # Create db object
         service = Service(name=service_name,
                           vendor=vendor_name,
                           version=version,
                           project=project,
-                          descriptor=json.dumps(service_data))
+                          descriptor=json.dumps(service_data["descriptor"]),
+                          meta=json.dumps(service_data["meta"]))
         session.add(service)
         try:
             write_ns_vnf_to_disk("nsd", service)
@@ -96,13 +97,16 @@ def update_service(ws_id, project_id, service_id, service_data):
     if service:
         old_file_name = get_file_path("nsd", service)
         # Parse parameters and update record
-        service.descriptor = json.dumps(service_data)
-        if 'name' in service_data:
-            service.name = shlex.quote(service_data["name"])
-        if 'vendor' in service_data:
-            service.vendor = shlex.quote(service_data["vendor"])
-        if 'version' in service_data:
-            service.version = shlex.quote(service_data["version"])
+        if 'descriptor' in service_data:
+            service.descriptor = json.dumps(service_data["descriptor"])
+            if 'name' in service_data["descriptor"]:
+                service.name = shlex.quote(service_data["descriptor"]["name"])
+            if 'vendor' in service_data["descriptor"]:
+                service.vendor = shlex.quote(service_data["descriptor"]["vendor"])
+            if 'version' in service_data["descriptor"]:
+                service.version = shlex.quote(service_data["descriptor"]["version"])
+        if 'meta' in service_data:
+            service.meta = json.dumps(service_data["meta"])
         new_file_name = get_file_path("nsd", service)
         try:
             if not old_file_name == new_file_name:

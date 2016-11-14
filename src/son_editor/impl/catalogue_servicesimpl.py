@@ -187,6 +187,9 @@ def update_service_catalogue(ws_id, catalogue_id, function_id, function_data, is
 
     service_url = build_URL(is_vnf, name, vendor, version)
     function_data = function_data.copy()
+    if not is_vnf:
+        function_data = function_data["descriptor"]
+
     response = requests.put(catalogue.url + service_url, json=function_data, timeout=TIMEOUT)
     if response.status_code != 200:
         raise Exception(
