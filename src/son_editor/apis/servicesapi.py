@@ -112,7 +112,7 @@ class Service(Resource):
     @proj_namespace.expect(serv)
     @plat_namespace.expect(serv_id)
     @proj_namespace.response(200, "Updated", serv_response)
-    @proj_namespace.doc("Updates  the given service in the project/catalogue or platform")
+    @proj_namespace.doc("Updates the given service in the project/catalogue or platform")
     def put(self, ws_id, parent_id, service_id):
         """Update the service
 

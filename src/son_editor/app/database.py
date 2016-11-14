@@ -1,6 +1,7 @@
 import contextlib
 import logging
 import os
+from pathlib import Path
 
 import shutil
 from sqlalchemy import MetaData
@@ -8,7 +9,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
 
-from son_editor.util.descriptorutil import load_ns_vnf_from_disk, load_workspace_descriptor, get_file_path, get_file_name, \
+from son_editor.util.descriptorutil import load_ns_vnf_from_disk, load_workspace_descriptor, get_file_path, \
+    get_file_name, \
     sync_project_descriptor
 from son_editor.util.requestutil import CONFIG
 
@@ -34,6 +36,7 @@ def init_db():
     import son_editor.models.workspace
     import son_editor.models.descriptor
     import son_editor.models.repository
+    import son_editor.models.private_descriptor
     Base.metadata.create_all(bind=engine)
 
 
@@ -54,6 +57,8 @@ def scan_workspaces_dir():
     if os.path.exists(wss_dir):
         session = db_session()
         for user_name in os.listdir(wss_dir):
+            if not Path(os.path.join(wss_dir, user_name)).is_dir():
+                continue
             user = session.query(User).filter(User.name == user_name).first()
             if user is None:
                 logger.info("Found user: {}!".format(user_name))
@@ -71,6 +76,8 @@ def _scan_user_dir(ws_dir, user):
             filter(Workspace.name == ws_name). \
             filter(Workspace.owner == user).first()
         ws_path = os.path.join(ws_dir, user.name, ws_name)
+        if not Path(os.path.join(ws_path)).is_dir():
+            continue
         if ws is None:
             logger.info("Found workspace at {}!".format(ws_path))
             ws = Workspace(ws_name, ws_path, user)
@@ -83,7 +90,12 @@ def _scan_user_dir(ws_dir, user):
 def _scan_workspace_dir(ws_path, ws):
     from son_editor.models.project import Project
     session = db_session()
+    # Scan private catalogue in workspace
+    _scan_private_catalogue(ws_path + "/catalogues")
+
     for project_name in os.listdir(os.path.join(ws_path, "projects")):
+        if not Path(os.path.join(ws_path, project_name)).is_dir():
+            continue
         pj = session.query(Project). \
             filter(Project.name == project_name). \
             filter(Project.workspace == ws).first()
@@ -99,6 +111,41 @@ def _scan_workspace_dir(ws_path, ws):
 def scan_project_dir(project_path, pj):
     _scan_for_services(os.path.join(project_path, "sources", "nsd"), pj)
     _scan_for_functions(os.path.join(project_path, "sources", "vnf"), pj)
+
+
+def _scan_private_catalogue(catalogue_dir):
+    from son_editor.models.descriptor import Service, Function
+    # Configure ns catalogue path
+    ns_path = Path(catalogue_dir + "/ns_catalogue/")
+    vnf_path = Path(catalogue_dir + "/vnf_catalogue/")
+
+    _scan_catalogue(ns_path, Service())
+    _scan_catalogue(vnf_path, Function())
+
+
+def _scan_catalogue(cat_path, model):
+    from pathlib import Path
+    from son_editor.models.descriptor import Descriptor
+    session = db_session()
+    try:
+        for vendor in cat_path.iterdir():
+            if not vendor.is_dir():
+                continue
+            for name in vendor.iterdir():
+                if not name.is_dir():
+                    continue
+                for version in name.iterdir():
+                    path = Path(str(version) + "/descriptor.yml")
+                    if path.exists() and path.is_file():
+                        function = model
+                        function = load_ns_vnf_from_disk(str(path), function)
+                        if not session.query(Descriptor).filter(Descriptor.uid == function.uid).first():
+                            session.add(function)
+                            session.commit()
+                        else:
+                            session.rollback()
+    except:
+        session.rollback()
 
 
 def _scan_for_services(services_dir, pj):
