@@ -2,6 +2,8 @@ import json
 import os
 from unittest import TestCase
 
+import pkg_resources
+
 from son_editor.app.database import db_session
 from son_editor.app.exceptions import PackException, ExtNotReachable
 from son_editor.models.project import Project
@@ -15,6 +17,7 @@ from son_editor.tests.utils import *
 
 class TestPublishutil(TestCase):
     def setUp(self):
+        self.test_package_location = pkg_resources.resource_filename(__name__, "test.son")
         self.app = init_test_context()
         self.user = create_logged_in_user(self.app, 'username')
         self.wsid = str(create_workspace(self.user, 'workspaceName'))
@@ -60,9 +63,7 @@ class TestPublishutil(TestCase):
         session.commit()
 
     def test_push_project(self):
-        session = db_session()
-        project = session.query(Project).filter(Project.id == self.pjid).first()
-        package_path = publishutil.pack_project(project)
+        package_path = self.test_package_location
         result = publishutil.push_to_platform(package_path=package_path,
                                               platform=Platform(url="http://fg-cn-sandman2.cs.upb.de:1234"))
         self.assertTrue(result)
