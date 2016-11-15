@@ -7,12 +7,14 @@ import logging
 from os import path
 import shlex
 import shutil
+import requests
+from requests.exceptions import ConnectionError
 from subprocess import Popen, PIPE
 
 import yaml
 
 from son_editor.app.database import db_session
-from son_editor.app.exceptions import NameConflict, NotFound, InvalidArgument
+from son_editor.app.exceptions import NameConflict, NotFound, InvalidArgument, ExtNotReachable
 from son_editor.impl.usermanagement import get_user
 from son_editor.models.repository import Platform, Catalogue
 from son_editor.models.workspace import Workspace
@@ -83,9 +85,11 @@ def create_workspace(user_data: dict, workspace_data: dict) -> dict:
         if 'platforms' in workspace_data:
             for platform in workspace_data['platforms']:
                 session.add(Platform(platform['name'], platform['url'], ws))
+                test_url(platform['name'], platform['url']+"/packages")
         if 'catalogues' in workspace_data:
             for catalogue in workspace_data['catalogues']:
                 session.add(Catalogue(catalogue['name'], catalogue['url'], ws))
+                test_url(catalogue['name'], catalogue['url'])
     except:
         logger.exception()
         session.rollback()
@@ -164,10 +168,12 @@ def update_workspace(workspace_data, wsid):
                     first()
             if platform:
                 # update existing
+                test_url(updated_platform['name'], updated_platform['url']+"/packages")
                 platform.name = updated_platform['name']
                 platform.url = updated_platform['url']
             else:
                 # create new
+                test_url(updated_platform['name'], updated_platform['url']+"/packages")
                 new_platform = Platform(updated_platform['name'], updated_platform['url'], True, workspace)
                 session.add(new_platform)
     for catalogue in workspace.catalogues:
@@ -183,7 +189,7 @@ def update_workspace(workspace_data, wsid):
                 if catalogue.name in project.publish_to:
                     raise InvalidArgument(
                         "Cannot delete catalogue '{}' because it is still used in project '{}'!".format(catalogue.name,
-                                                                                                       project.name))
+                                                                                                        project.name))
             session.delete(catalogue)
     if 'catalogues' in workspace_data:
         for updated_catalogue in workspace_data['catalogues']:
@@ -195,10 +201,12 @@ def update_workspace(workspace_data, wsid):
                     first()
             if catalogue:
                 # update existing
+                test_url(updated_catalogue['name'], updated_catalogue['url'])
                 catalogue.name = updated_catalogue['name']
                 catalogue.url = updated_catalogue['url']
             else:
                 # create new
+                test_url(updated_catalogue['name'], updated_catalogue['url'])
                 new_catalogue = Catalogue(updated_catalogue['name'], updated_catalogue['url'], True, workspace)
                 session.add(new_catalogue)
     update_workspace_descriptor(workspace)
@@ -223,3 +231,14 @@ def delete_workspace(wsid):
         return workspace.as_dict()
     else:
         raise NotFound("Workspace with id {} was not found".format(wsid))
+
+
+def test_url(name, url):
+    try:
+        response = requests.get(url)
+        if response.status_code != 200:
+            raise ExtNotReachable("Could not reach server {} at url '{}':{}".format(url, name, response.text))
+    except ConnectionError as e:
+        raise ExtNotReachable("Could not reach server {} at url '{}':{}".format(url, name, e.args[0]))
+    except Exception as err:
+        raise ExtNotReachable("Could not reach server {} at url '{}':{}".format(url, name, err.args[0]))
