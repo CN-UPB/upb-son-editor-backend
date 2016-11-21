@@ -11,7 +11,7 @@ from son_editor.impl import nsfslookupimpl
 from son_editor.util.constants import WORKSPACES, PROJECTS, NSFS, SERVICES, VNFS
 from son_editor.util.requestutil import prepare_response
 
-namespace = Namespace(WORKSPACES + '/<int:ws_id>/' + PROJECTS + '/<int:project_id>/' + NSFS + '/',
+namespace = Namespace(WORKSPACES + '/<int:ws_id>/' + PROJECTS + '/<int:project_id>/' + NSFS,
                       description="Project VNF Resources")
 vendor_name_version_path = "/<string:vendor>/<string:name>/<string:version>"
 
