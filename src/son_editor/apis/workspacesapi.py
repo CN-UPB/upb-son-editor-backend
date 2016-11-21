@@ -43,7 +43,7 @@ class Workspaces(Resource):
         """List workspaces
 
         Gets all available workspaces"""
-        workspaces = workspaceimpl.get_workspaces(session['user_data'])
+        workspaces = workspaceimpl.get_workspaces(session['user_data']['login'])
         return prepare_response(workspaces)
 
     @namespace.expect(ws)
@@ -54,7 +54,7 @@ class Workspaces(Resource):
 
         Creates a new workspace"""
         workspace_data = get_json(request)
-        workspace = workspaceimpl.create_workspace(session['user_data'], workspace_data)
+        workspace = workspaceimpl.create_workspace(session['user_data']['login'], workspace_data)
         return prepare_response(workspace, 201)
 
 

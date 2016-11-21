@@ -10,10 +10,10 @@ from son_editor.util.requestutil import CONFIG
 logger = logging.getLogger(__name__)
 
 
-def get():
+def login():
     """ Login the User with a referral code from the github oauth process"""
     session['session_code'] = request.args.get('code')
-    if request_access_token() and load_user_data():
+    if _request_access_token() and _load_user_data():
         logger.info("User " + session['user_data']['login'] + " logged in")
         if request.referrer is not None and 'github' not in request.referrer:
             origin = origin_from_referrer(request.referrer)
@@ -21,7 +21,7 @@ def get():
         return redirect(CONFIG['frontend-host'] + CONFIG['frontend-redirect'])
 
 
-def request_access_token():
+def _request_access_token():
     """ Request an access token from Github using the referral code"""
     # TODO add error handling
     data = {'client_id': CONFIG['authentication']['ClientID'],
@@ -34,22 +34,24 @@ def request_access_token():
     return True
 
 
-def load_user_data():
+def _load_user_data():
     """Load user data using the access token"""
     # TODO add error handling
-    headers = {"Accept": "application/json",
-               "Authorization": "token " + session['access_token']}
-    user_data_result = requests.get('https://api.github.com/user', headers=headers)
-    user_data = json.loads(user_data_result.text)
-    session['user_data'] = user_data
-    logger.info("user_data: %s" % user_data)
-    return True
+    if 'access_token' in session:
+        headers = {"Accept": "application/json",
+                   "Authorization": "token " + session['access_token']}
+        user_data_result = requests.get('https://api.github.com/user', headers=headers)
+        user_data = json.loads(user_data_result.text)
+        session['user_data'] = user_data
+        logger.info("user_data: %s" % user_data)
+        return True
+    return False
 
 
 def get_user_info():
     """Returns current user information"""
     # Only allow logged in users to retrieve user information
-    if session['access_token'] in session:
+    if 'access_token' in session and 'user_data' in session:
         return session['user_data']
     else:
         return "Unauthorized", 401

@@ -4,6 +4,7 @@ import son_editor.impl.servicesimpl
 import son_editor.impl.workspaceimpl
 import son_editor.impl.cataloguesimpl
 from son_editor.app.database import db_session
+from son_editor.impl.usermanagement import get_user
 from son_editor.models.user import User
 from son_editor.util import constants
 
@@ -54,9 +55,8 @@ def create_workspace(user: User, ws_name: str) -> int:
     :return: ID of the created workspace
     """
 
-    user_data = {'login': user.name}
     ws_data = {'name': ws_name}
-    workspace_data = son_editor.impl.workspaceimpl.create_workspace(user_data, ws_data)
+    workspace_data = son_editor.impl.workspaceimpl.create_workspace(user.name, ws_data)
     return workspace_data['id']
 
 
@@ -74,6 +74,7 @@ def create_logged_in_user(app, user_name) -> User:
     # Add some session stuff ( need for finding the user's workspace )
     with app as c:
         with c.session_transaction() as session:
+            session['access_token'] = "fake_access_token"
             session['user_data'] = {'login': user_name}
 
     # Add some dummy objects

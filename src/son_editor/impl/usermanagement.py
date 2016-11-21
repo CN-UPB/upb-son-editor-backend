@@ -13,18 +13,18 @@ from son_editor.app.database import db_session
 from son_editor.models.user import User
 
 
-def get_user(user_data):
+def get_user(login: str):
     """
     Gets the user from the Database if it exists or
     creates a new user in the Database using the
     login data from the session. If the database does
     not yet have the full user Data it is queried
     from Github using the access Token
-    :param user_data: The users login data from the session
     :return: The database user model
     """
+
     session = db_session()
-    user_name = shlex.quote(user_data['login'])
+    user_name = shlex.quote(login)
 
     user = session.query(User).filter(User.name == user_name).first()
     # for now: if user does not exist we will create a user
