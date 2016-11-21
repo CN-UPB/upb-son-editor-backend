@@ -4,12 +4,16 @@ import os
 import shlex
 import shutil
 
+import jsonschema
+from jsonschema import ValidationError
+from son.schema.validator import SchemaValidator
+
 from son_editor.app.database import db_session
-from son_editor.app.exceptions import NotFound, NameConflict
+from son_editor.app.exceptions import NotFound, NameConflict, InvalidArgument
 from son_editor.models.descriptor import Service
 from son_editor.models.project import Project
 from son_editor.models.workspace import Workspace
-from son_editor.util.descriptorutil import write_ns_vnf_to_disk, get_file_path
+from son_editor.util.descriptorutil import write_ns_vnf_to_disk, get_file_path, get_schema
 
 logger = logging.getLogger(__name__)
 
@@ -57,6 +61,17 @@ def create_service(ws_id: int, project_id: int, service_data: dict) -> dict:
                                  .filter(Service.version == version))
         if len(existing_services) > 0:
             raise NameConflict("A service with this name/vendor/version already exists")
+
+        #validate service descriptor
+        workspace = session.query(Workspace).filter(Workspace.id == ws_id).first()
+        schema = get_schema(workspace.path, SchemaValidator.SCHEMA_SERVICE_DESCRIPTOR)
+
+        try:
+            jsonschema.validate(service_data["descriptor"], schema)
+        except ValidationError as ve:
+            raise InvalidArgument(ve.message)
+
+
         # Create db object
         service = Service(name=service_name,
                           vendor=vendor_name,

@@ -27,7 +27,8 @@ def create_vnf(wsid: int, pjid: int, name: str, vendor: str, version: str) -> st
     result = son_editor.impl.functionsimpl.create_function(wsid, pjid,
                                                            {"vendor": vendor,
                                                             "name": name,
-                                                            "version": version})
+                                                            "version": version,
+                                                            "descriptor_version": "0.1"})
     return result['id']
 
 
@@ -41,7 +42,10 @@ def create_ns(wsid: int, pjid: int, name: str, vendor: str, version: str) -> int
     :param version: Version name for the function to create
     :returns: ID of the created function
     """
-    service_data = {'descriptor': {'name': name, 'vendor': vendor, 'version': version},
+    service_data = {'descriptor': {'name': name,
+                                   'vendor': vendor,
+                                   'version': version,
+                                   "descriptor_version": "0.1"},
                     'meta': {'positions': []}}
     result = son_editor.impl.servicesimpl.create_service(wsid, pjid, service_data)
     return result['id']
