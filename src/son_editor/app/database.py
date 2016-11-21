@@ -94,7 +94,7 @@ def _scan_workspace_dir(ws_path, ws):
     _scan_private_catalogue(ws_path + "/catalogues")
 
     for project_name in os.listdir(os.path.join(ws_path, "projects")):
-        if not Path(os.path.join(ws_path, project_name)).is_dir():
+        if not Path(os.path.join(ws_path, "projects", project_name)).is_dir():
             continue
         pj = session.query(Project). \
             filter(Project.name == project_name). \

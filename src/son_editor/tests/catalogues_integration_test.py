@@ -21,13 +21,20 @@ class CatalogueServiceTest(unittest.TestCase):
 
         self.catalogue_id = create_catalogue(self.wsid, "Catalogue_Integration_Test", CATALOGUE_INSTANCE_URL)
 
-        self.ns_dict = {"vendor": "de.upb.integration_test",
-                        "name": "service_1",
-                        "version": "0.0.1"}
-
-        self.ns_dict_2 = {"vendor": "de.upb.integration_test",
-                          "name": "service_2",
-                          "version": "0.0.2"}
+        self.ns_dict = {'descriptor': {"vendor": "de.upb.integration_test",
+                                       "name": "service_1",
+                                       "version": "0.0.1"},
+                        'meta': {}}
+        self.ns_dict_2 = {'descriptor': {"vendor": "de.upb.integration_test",
+                                         "name": "service_2",
+                                         "version": "0.0.2"},
+                          'meta': {}}
+        self.vnf_dict = {"vendor": "de.upb.integration_test",
+                         "name": "service_1",
+                         "version": "0.0.1"}
+        self.vnf_dict_2 = {"vendor": "de.upb.integration_test",
+                           "name": "service_2",
+                           "version": "0.0.2"}
 
     def tearDown(self):
         response = self.app.delete('/' + WORKSPACES + '/' + str(self.wsid))
@@ -45,21 +52,24 @@ class CatalogueServiceTest(unittest.TestCase):
 
         if is_vnf:
             url_function_name = VNFS
+            data_dict = self.vnf_dict
+            data_dict_2 = self.vnf_dict_2
+
         else:
             url_function_name = SERVICES
+            data_dict = self.ns_dict
+            data_dict_2 = self.ns_dict_2
 
         # Create a sample function
-        ns_dict = self.ns_dict
         session = db_session()
         response = self.app.post("/" + WORKSPACES + "/" + str(self.wsid)
                                  + "/" + PROJECTS + "/" + str(self.pjid)
                                  + "/" + url_function_name + "/", headers={'Content-Type': 'application/json'},
-                                 data=json.dumps(ns_dict))
+                                 data=json.dumps(data_dict))
         function = json.loads(response.data.decode())
-        self.assertTrue(response.status_code == 201)
-        self.assertTrue(function['descriptor']['name'] == ns_dict['name'])
-        self.assertTrue(function['descriptor']['version'] == ns_dict['version'])
-        self.assertTrue(function['descriptor']['vendor'] == ns_dict['vendor'])
+        self.assertEqual(response.status_code, 201)
+        self.assertTrue(self.check_equals(function["descriptor"], data_dict, is_vnf))
+
         service_id = function['id']
 
         # Check if ns already in remote catalogue
@@ -70,8 +80,7 @@ class CatalogueServiceTest(unittest.TestCase):
         exists = False
         service_uid = None
         for function in functions:
-            if function['vendor'] == ns_dict['vendor'] and function['name'] == ns_dict['name'] and function[
-                'version'] == ns_dict['version']:
+            if self.check_equals(function, data_dict, is_vnf):
                 service_uid = function['id']
                 exists = True
 
@@ -97,14 +106,12 @@ class CatalogueServiceTest(unittest.TestCase):
                                 + "/" + url_function_name + "/")
         functions = json.loads(response.data.decode())
         for function in functions:
-            if function['vendor'] == ns_dict['vendor'] and function['name'] == ns_dict['name'] and function[
-                'version'] == ns_dict['version']:
+            if self.check_equals(function, data_dict, is_vnf):
                 exists = True
 
         self.assertTrue(exists)
 
         # Check if ns already in remote catalogue
-        ns_dict_2 = self.ns_dict_2
 
         response = self.app.get("/" + WORKSPACES + "/" + str(self.wsid)
                                 + "/" + CATALOGUES + "/" + str(self.catalogue_id)
@@ -113,8 +120,7 @@ class CatalogueServiceTest(unittest.TestCase):
         exists = False
         service_uid_2 = None
         for function in functions:
-            if function['vendor'] == ns_dict_2['vendor'] and function['name'] == ns_dict_2['name'] and function[
-                'version'] == ns_dict_2['version']:
+            if self.check_equals(function, data_dict_2, is_vnf):
                 service_uid_2 = function['id']
                 exists = True
 
@@ -127,10 +133,11 @@ class CatalogueServiceTest(unittest.TestCase):
         # Update it
         response = self.app.put("/" + WORKSPACES + "/" + str(self.wsid)
                                 + "/" + CATALOGUES + "/" + str(self.catalogue_id)
-                                + "/" + url_function_name + "/" + str(service_uid), data=ns_dict_2)
+                                + "/" + url_function_name + "/" + str(service_uid),
+                                data=json.dumps(data_dict_2),
+                                headers={'Content-Type': 'application/json'})
         for function in functions:
-            if function['vendor'] == ns_dict_2['vendor'] and function['name'] == ns_dict_2['name'] and function[
-                'version'] == ns_dict_2['version']:
+            if self.check_equals(function, data_dict_2, is_vnf):
                 exists = True
         self.assertTrue(exists)
 
@@ -139,8 +146,17 @@ class CatalogueServiceTest(unittest.TestCase):
                                 + "/" + CATALOGUES + "/" + str(self.catalogue_id)
                                 + "/" + url_function_name + "/" + str(service_uid_2))
         function = json.loads(response.data.decode())
-        self.assertTrue(function['name'] == ns_dict_2['name'])
-        self.assertTrue(function['version'] == ns_dict_2['version'])
-        self.assertTrue(function['vendor'] == ns_dict_2['vendor'])
+        self.assertTrue(self.check_equals(function, data_dict_2, is_vnf))
 
         session.close()
+
+    @staticmethod
+    def check_equals(response, data, is_vnf):
+        if is_vnf:
+            return response['vendor'] == data['vendor'] \
+                   and response['name'] == data['name'] \
+                   and response['version'] == data['version']
+        else:
+            return response['vendor'] == data['descriptor']['vendor'] \
+                   and response['name'] == data['descriptor']['name'] \
+                   and response['version'] == data['descriptor']['version']

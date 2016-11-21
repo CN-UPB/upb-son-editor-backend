@@ -81,12 +81,33 @@ class WorkspacesTest(unittest.TestCase):
         # try to delete referenced catalogue
         response = json.loads(self.app.post('/' + WORKSPACES + '/', data={"name": "catalogue_ref"}).data.decode())
         id = response["id"]
-        cat_id = response["catalogues"][0]['name']
+        cat_name = response["catalogues"][0]['name']
+        cat_id = response["catalogues"][0]['id']
         response = self.app.post('/' + WORKSPACES + '/{}'.format(id) + "/" + PROJECTS + "/",
-                                 data=json.dumps({"name": "project", "publish_to": [cat_id]}),
+                                 data=json.dumps({"name": "project", "publish_to": [cat_name]}),
                                  content_type='application/json')
         response = self.app.put('/' + WORKSPACES + '/{}'.format(id), data={"name": "catalogue_ref"})
         self.assertEqual(400, response.status_code)
+
+        request_dict = {"name": "catalogue_ref",
+                        "catalogues": [
+                            {"id": cat_id,
+                             "name": "new_name",
+                             "url": "http://fg-cn-sandman2.cs.upb.de:4012/"}]}
+        response = self.app.put('/' + WORKSPACES + '/{}'.format(id),
+                                data=json.dumps(request_dict),
+                                content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+
+        request_dict = {"name": "catalogue_ref",
+                        "catalogues": [
+                            {"id": cat_id,
+                             "name": "new_name",
+                             "url": "http://fg-cn-sandman2.cs.upb.de:4011/"}]}#invalid port
+        response = self.app.put('/' + WORKSPACES + '/{}'.format(id),
+                                data=json.dumps(request_dict),
+                                content_type='application/json')
+        self.assertEqual(response.status_code, 404)
 
     def testDeleteWorkspace(self):
         # Create at first a workspace

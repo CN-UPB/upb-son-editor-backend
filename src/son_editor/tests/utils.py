@@ -33,7 +33,6 @@ def create_vnf(wsid: int, pjid: int, name: str, vendor: str, version: str) -> st
 def create_ns(wsid: int, pjid: int, name: str, vendor: str, version: str) -> int:
     """
     Creates a function with given name, vendor and version in the given project returns the id
-    :param testcase: Testcase instance to call HTTP requests
     :param wsid: ID of the workspace
     :param pjid: ID of the project
     :param name: Name for the function to create
@@ -41,17 +40,17 @@ def create_ns(wsid: int, pjid: int, name: str, vendor: str, version: str) -> int
     :param version: Version name for the function to create
     :returns: ID of the created function
     """
-
-    result = son_editor.impl.servicesimpl.create_service(wsid, pjid,
-                                                         {'name': name, 'vendor': vendor, 'version': version})
+    service_data = {'descriptor': {'name': name, 'vendor': vendor, 'version': version},
+                    'meta': {'positions': []}}
+    result = son_editor.impl.servicesimpl.create_service(wsid, pjid, service_data)
     return result['id']
 
 
 def create_workspace(user: User, ws_name: str) -> int:
     """
     Creates a workspace
-    :param testcase: Testcase instance to call HTTP requests
-    :param name: Name of the workspace that gets created
+    :param user: the user for which to insert the workspace
+    :param ws_name: Name of the workspace that gets created
     :return: ID of the created workspace
     """
 
@@ -75,7 +74,7 @@ def create_logged_in_user(app, user_name) -> User:
     # Add some session stuff ( need for finding the user's workspace )
     with app as c:
         with c.session_transaction() as session:
-            session['userData'] = {'login': user_name}
+            session['user_data'] = {'login': user_name}
 
     # Add some dummy objects
     user = User(name=user_name, email=user_name + "@bar.com")
