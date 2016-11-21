@@ -129,7 +129,7 @@ class Function(Resource):
 
         Deletes a function in the project or catalogue by its id"""
         if get_parent(request) is Category.project:
-            deleted = functionsimpl.delete_function( ws_id, parent_id, vnf_id)
+            deleted = functionsimpl.delete_function(ws_id, parent_id, vnf_id)
             return prepare_response(deleted)
         if get_parent(request) is Category.catalogue:
             deleted = catalogue_servicesimpl.delete_service_catalogue(ws_id, parent_id, vnf_id, True)
