@@ -15,36 +15,30 @@ from son_editor.util.descriptorutil import write_ns_vnf_to_disk, get_file_path
 logger = logging.getLogger(__name__)
 
 
-def get_functions(user_data, ws_id: int, project_id: int) -> list:
+def get_functions(ws_id: int, project_id: int) -> list:
     """
     Get a list of all functions
-    :param user_data:
     :param ws_id: The workspace ID
     :param project_id: The project id
     :return:
     """
-    user = get_user(user_data)
     session = db_session()
     functions = session.query(Function).join(Project).join(Workspace). \
-        filter(Workspace.owner == user). \
         filter(Workspace.id == ws_id). \
         filter(Function.project_id == project_id).all()
     return list(map(lambda x: x.as_dict(), functions))
 
 
-def get_function_project(user_data: dict, ws_id: int, project_id: int, vnf_id: int) -> dict:
+def get_function_project(ws_id: int, project_id: int, vnf_id: int) -> dict:
     """
     Get a single function from the specified project
-    :param user_data:
     :param ws_id:
     :param project_id:
     :param vnf_id:
     :return:
     """
-    user = get_user(user_data)
     session = db_session()
     function = session.query(Function).join(Project).join(Workspace). \
-        filter(Workspace.owner == user). \
         filter(Workspace.id == ws_id). \
         filter(Function.project_id == project_id). \
         filter(Function.id == vnf_id).first()
@@ -54,7 +48,6 @@ def get_function_project(user_data: dict, ws_id: int, project_id: int, vnf_id: i
 def create_function(ws_id: int, project_id: int, function_data: dict) -> dict:
     """
     Creates a new vnf in the project
-    :param user_data:
     :param ws_id:
     :param project_id:
     :param function_data:
@@ -93,10 +86,9 @@ def create_function(ws_id: int, project_id: int, function_data: dict) -> dict:
     return function.as_dict()
 
 
-def update_function(user_data: dict, ws_id: int, prj_id: int, func_id: int, func_data: dict) -> dict:
+def update_function(ws_id: int, prj_id: int, func_id: int, func_data: dict) -> dict:
     """
     Update the function descriptor
-    :param user_data:
     :param ws_id:
     :param prj_id:
     :param func_id:
@@ -106,17 +98,15 @@ def update_function(user_data: dict, ws_id: int, prj_id: int, func_id: int, func
     session = db_session()
 
     # test if ws Name exists in database
-    user = get_user(user_data)
     function = session.query(Function). \
         join(Project). \
         join(Workspace). \
-        filter(Workspace.owner == user). \
         filter(Workspace.id == ws_id). \
         filter(Project.id == prj_id). \
         filter(Function.id == func_id).first()
     if function is None:
         session.rollback()
-        raise NotFound("Function with id " + func_id + " does not exist")
+        raise NotFound("Function with id {} does not exist".format(func_id))
     function.descriptor = json.dumps(func_data)
     old_file_name = get_file_path("vnf", function)
     if 'name' in func_data:
@@ -138,21 +128,18 @@ def update_function(user_data: dict, ws_id: int, prj_id: int, func_id: int, func
     return function.as_dict()
 
 
-def delete_function(user_data: dict, ws_id: int, project_id: int, function_id: int) -> dict:
+def delete_function(ws_id: int, project_id: int, function_id: int) -> dict:
     """
     Deletes the function
-    :param user_data:
     :param ws_id:
     :param project_id:
     :param function_id:
     :return: the deleted function
     """
     session = db_session()
-    user = get_user(user_data)
     function = session.query(Function). \
         join(Project). \
         join(Workspace). \
-        filter(Workspace.owner == user). \
         filter(Workspace.id == ws_id). \
         filter(Project.id == project_id). \
         filter(Function.id == function_id).first()

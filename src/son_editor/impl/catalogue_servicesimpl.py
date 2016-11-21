@@ -104,10 +104,9 @@ def build_URL(is_vnf, name, vendor, version):
 
 ## Actual catalogue HTTP actions
 
-def create_in_catalogue(user_data, catalogue_id, function_id, is_vnf):
+def create_in_catalogue(catalogue_id, function_id, is_vnf):
     """
     Creates a function on the catalogue
-    :param user_data:
     :param catalogue_id:
     :param function_id:
     :param is_vnf:
@@ -128,10 +127,9 @@ def create_in_catalogue(user_data, catalogue_id, function_id, is_vnf):
     return json.loads(response.text)
 
 
-def get_all_in_catalogue(user_data, ws_id, catalogue_id, is_vnf):
+def get_all_in_catalogue(ws_id, catalogue_id, is_vnf):
     """
     Retrieves a list of catalogue functions
-    :param user_data:
     :param ws_id:
     :param catalogue_id:
     :param is_vnf:

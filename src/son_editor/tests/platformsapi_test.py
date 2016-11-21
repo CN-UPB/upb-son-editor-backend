@@ -13,7 +13,6 @@ class PlatformTest(unittest.TestCase):
         self.user = create_logged_in_user(self.app, 'user')
         self.wsid = create_workspace(self.user, 'PlatformTest')
 
-
     # Create platform
     def test_create_platform(self):
         # Setup request dict

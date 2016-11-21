@@ -42,3 +42,11 @@ class PackException(Exception):
 
     def __str__(self):
         return self.msg
+
+class UnauthorizedException(Exception):
+    def __init__(self, msg: str):
+        super().__init__(msg)
+        self.msg = msg
+
+    def __str__(self):
+        return self.msg

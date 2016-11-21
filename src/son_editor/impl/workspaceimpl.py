@@ -28,14 +28,13 @@ WORKSPACES_DIR = path.normpath(WORKSPACES_DIR)
 logger = logging.getLogger(__name__)
 
 
-def get_workspaces(user_data: dict) -> list:
+def get_workspaces(login: str) -> list:
     """
     Get all workspaces for the current user
-    :param user_data: the data identifying the user
     :return: A list wof workspace dictionaries
     """
     session = db_session()
-    user = get_user(user_data)
+    user = get_user(login)
     workspaces = session.query(Workspace). \
         filter(Workspace.owner == user).all()
     session.commit()
@@ -58,10 +57,9 @@ def get_workspace(ws_id: int) -> dict:
         raise NotFound("No workspace with id " + ws_id + " exists")
 
 
-def create_workspace(user_data: dict, workspace_data: dict) -> dict:
+def create_workspace(login: str, workspace_data: dict) -> dict:
     """
     Creates a workspace (on disk and in the database) from the given workspace data
-    :param user_data: The data identifiying the User
     :param workspace_data: The workspace configuration data
     :return: The created workspace
     """
@@ -69,7 +67,7 @@ def create_workspace(user_data: dict, workspace_data: dict) -> dict:
     session = db_session()
 
     # test if ws Name exists in database
-    user = get_user(user_data)
+    user = get_user(login)
 
     existingWorkspaces = list(session.query(Workspace)
                               .filter(Workspace.owner == user)
@@ -85,7 +83,7 @@ def create_workspace(user_data: dict, workspace_data: dict) -> dict:
         if 'platforms' in workspace_data:
             for platform in workspace_data['platforms']:
                 session.add(Platform(platform['name'], platform['url'], ws))
-                test_url(platform['name'], platform['url']+"/packages")
+                test_url(platform['name'], platform['url'] + "/packages")
         if 'catalogues' in workspace_data:
             for catalogue in workspace_data['catalogues']:
                 session.add(Catalogue(catalogue['name'], catalogue['url'], ws))
@@ -168,12 +166,12 @@ def update_workspace(workspace_data, wsid):
                     first()
             if platform:
                 # update existing
-                test_url(updated_platform['name'], updated_platform['url']+"/packages")
+                test_url(updated_platform['name'], updated_platform['url'] + "/packages")
                 platform.name = updated_platform['name']
                 platform.url = updated_platform['url']
             else:
                 # create new
-                test_url(updated_platform['name'], updated_platform['url']+"/packages")
+                test_url(updated_platform['name'], updated_platform['url'] + "/packages")
                 new_platform = Platform(updated_platform['name'], updated_platform['url'], True, workspace)
                 session.add(new_platform)
     for catalogue in workspace.catalogues:

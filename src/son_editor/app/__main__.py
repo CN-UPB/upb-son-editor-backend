@@ -14,7 +14,8 @@ from flask_restplus import Api
 
 from son_editor import apis
 from son_editor.app.database import db_session, init_db, scan_workspaces_dir
-from son_editor.app.exceptions import NameConflict, NotFound, ExtNotReachable, PackException, InvalidArgument
+from son_editor.app.exceptions import NameConflict, NotFound, ExtNotReachable, PackException, InvalidArgument, \
+    UnauthorizedException
 from son_editor.util.requestutil import CONFIG, prepare_response, prepare_error
 from son_editor.app.securityservice import check_access
 from son_editor.util.requestutil import CONFIG, prepare_response, prepare_error
@@ -84,7 +85,7 @@ def shutdown_session(exception=None):
 
 
 @app.before_request
-def checkLoggedIn():
+def check_logged_in():
     if request.method == 'OPTIONS':
         return prepare_response()
     elif CONFIG['testing']:
@@ -93,14 +94,22 @@ def checkLoggedIn():
         return
     # Check if the user is not logged in
     elif 'access_token' not in session and request.endpoint not in ['login', 'static', 'shutdown']:
-        args = {"scope": "user:email",
-                "client_id": CONFIG['authentication']['ClientID']}
-        session["requested_endpoint"] = request.endpoint
-        return prepare_response(
-            {'authorizationUrl': 'https://github.com/login/oauth/authorize/?{}'.format(urllib.parse.urlencode(args))},
-            401)
+        # show request for github login
+        return handle_unauthorized("Please log in")
     # Check if the user is allowed access the requested workspace resource
-    check_access(request)
+    try:
+        check_access(request)
+    except UnauthorizedException as uae:
+        return handle_unauthorized(uae.msg)
+
+
+def handle_unauthorized(msg: str):
+    args = {"scope": "user:email",
+            "client_id": CONFIG['authentication']['ClientID']}
+    session["requested_endpoint"] = request.endpoint
+    return prepare_response({
+        'authorizationUrl': 'https://github.com/login/oauth/authorize/?{}'.format(urllib.parse.urlencode(args)),
+        "message": msg}, 401)
 
 
 def setup():

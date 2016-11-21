@@ -65,10 +65,10 @@ class Functions(Resource):
 
         Lists all available functions in the given project or catalogue."""
         if get_parent(request) is Category.project:
-            functions = functionsimpl.get_functions(session["user_data"], ws_id, parent_id)
+            functions = functionsimpl.get_functions(ws_id, parent_id)
             return prepare_response(functions)
         if get_parent(request) is Category.catalogue:
-            functions = catalogue_servicesimpl.get_all_in_catalogue(session["user_data"], ws_id, parent_id, True)
+            functions = catalogue_servicesimpl.get_all_in_catalogue(ws_id, parent_id, True)
             return prepare_response(functions)
         return prepare_response("not yet implemented")
 
@@ -84,7 +84,7 @@ class Functions(Resource):
             return prepare_response(vnf_data, 201)
         if get_parent(request) is Category.catalogue:
             vnf_data = get_json(request)
-            vnf_data = catalogue_servicesimpl.create_in_catalogue(session['user_data'], parent_id, vnf_data['id'],
+            vnf_data = catalogue_servicesimpl.create_in_catalogue(parent_id, vnf_data['id'],
                                                                   True)
             return prepare_response(vnf_data, 201)
         # TODO implement for catalog and platform
@@ -115,7 +115,7 @@ class Function(Resource):
         Updates a function in the project or catalogue by its id"""
         if get_parent(request) is Category.project:
             vnf_data = get_json(request)
-            vnf_data = functionsimpl.update_function(session['user_data'], ws_id, parent_id, vnf_id, vnf_data)
+            vnf_data = functionsimpl.update_function(ws_id, parent_id, vnf_id, vnf_data)
             return prepare_response(vnf_data)
         if get_parent(request) is Category.catalogue:
             vnf_data = get_json(request)
@@ -129,7 +129,7 @@ class Function(Resource):
 
         Deletes a function in the project or catalogue by its id"""
         if get_parent(request) is Category.project:
-            deleted = functionsimpl.delete_function(session['user_data'], ws_id, parent_id, vnf_id)
+            deleted = functionsimpl.delete_function( ws_id, parent_id, vnf_id)
             return prepare_response(deleted)
         if get_parent(request) is Category.catalogue:
             deleted = catalogue_servicesimpl.delete_service_catalogue(ws_id, parent_id, vnf_id, True)
@@ -144,7 +144,7 @@ class Function(Resource):
 
         Gets a specific function information by its id"""
         if get_parent(request) is Category.project:
-            functions = functionsimpl.get_function_project(session["user_data"], ws_id, parent_id, vnf_id)
+            functions = functionsimpl.get_function_project(ws_id, parent_id, vnf_id)
             return prepare_response(functions)
             # TODO implement for catalog and platform
         if get_parent(request) is Category.catalogue:
