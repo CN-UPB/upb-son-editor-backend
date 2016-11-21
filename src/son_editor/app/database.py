@@ -4,7 +4,6 @@ import os
 from pathlib import Path
 
 import shutil
-from sqlalchemy import MetaData
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -114,18 +113,18 @@ def scan_project_dir(project_path, pj):
 
 
 def _scan_private_catalogue(catalogue_dir):
-    from son_editor.models.descriptor import Service, Function
+    from son_editor.models.private_descriptor import PrivateFunction, PrivateService
     # Configure ns catalogue path
     ns_path = Path(catalogue_dir + "/ns_catalogue/")
     vnf_path = Path(catalogue_dir + "/vnf_catalogue/")
 
-    _scan_catalogue(ns_path, Service())
-    _scan_catalogue(vnf_path, Function())
+    _scan_catalogue(ns_path, PrivateService())
+    _scan_catalogue(vnf_path, PrivateFunction())
 
 
 def _scan_catalogue(cat_path, model):
     from pathlib import Path
-    from son_editor.models.descriptor import Descriptor
+    from son_editor.models.private_descriptor import PrivateDescriptor
     session = db_session()
     try:
         for vendor in cat_path.iterdir():
@@ -137,9 +136,10 @@ def _scan_catalogue(cat_path, model):
                 for version in name.iterdir():
                     path = Path(str(version) + "/descriptor.yml")
                     if path.exists() and path.is_file():
+                        logger.info("Found private ns/vnf: {}".format(path))
                         function = model
                         function = load_ns_vnf_from_disk(str(path), function)
-                        if not session.query(Descriptor).filter(Descriptor.uid == function.uid).first():
+                        if not session.query(PrivateDescriptor).filter(PrivateDescriptor.uid == function.uid).first():
                             session.add(function)
                             session.commit()
                         else:
