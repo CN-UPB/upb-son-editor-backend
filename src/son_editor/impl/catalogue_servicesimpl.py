@@ -139,8 +139,12 @@ def get_all_in_catalogue(ws_id, catalogue_id, is_vnf):
     catalogue = get_catalogue(catalogue_id)
 
     # Retrieve network services
-    response = requests.get(catalogue.url + url_suffix, headers={'content-type': 'application/json'}, timeout=TIMEOUT)
-    function_list = json.loads(response.text)
+    try:
+        response = requests.get(catalogue.url + url_suffix, headers={'content-type': 'application/json'},
+                                timeout=TIMEOUT)
+        function_list = json.loads(response.text)
+    except:
+        raise Exception("Could not reach {}".format(catalogue.url + url_suffix))
 
     # Append an id to the elements, it consists of name,vendor,version
     for function in function_list:
