@@ -56,10 +56,9 @@ def query_private_nsfs(vendor, name, version, is_vnf):
     return descriptor
 
 
-def find_by_priority(user_data, ws_id, project_id, vendor, name, version, is_vnf):
+def find_by_priority(ws_id, project_id, vendor, name, version, is_vnf):
     """
     Tries to find vnf / network services by descending priority project / private catalogue / public catalogue.
-    :param user_data:
     :param ws_id:
     :param project_id:
     :param vendor:
@@ -87,7 +86,7 @@ def find_by_priority(user_data, ws_id, project_id, vendor, name, version, is_vnf
     # 3. Try to find in public catalogue
     catalogues = get_catalogues(ws_id)
     for catalogue in catalogues:
-        function_list = get_all_in_catalogue(user_data, ws_id, catalogue.id, is_vnf)
+        function_list = get_all_in_catalogue(ws_id, catalogue.id, is_vnf)
         for func in function_list:
             if func['vendor'] == vendor and func['name'] == name and func['version'] == version:
                 function = func
@@ -97,10 +96,9 @@ def find_by_priority(user_data, ws_id, project_id, vendor, name, version, is_vnf
     raise NotFound("VNF" if is_vnf else "NS" + " {}:{}:{} not found".format(vendor, name, version))
 
 
-def find_network_service(user_data, ws_id, project_id, vendor, name, version):
+def find_network_service(ws_id, project_id, vendor, name, version):
     """
     Finds a network service in the priority: project / private catalogue / public catalogue
-    :param user_data:
     :param ws_id:
     :param project_id:
     :param vendor: Vendor name of the function
@@ -108,13 +106,12 @@ def find_network_service(user_data, ws_id, project_id, vendor, name, version):
     :param version: The version of the function
     :return: If found, it returns the network service
     """
-    return find_by_priority(user_data, ws_id, project_id, vendor, name, version, False)
+    return find_by_priority(ws_id, project_id, vendor, name, version, False)
 
 
-def find_vnf(user_data, ws_id, project_id, vendor, name, version):
+def find_vnf(ws_id, project_id, vendor, name, version):
     """
     Finds a vnf in the priority: project / private catalogue / public catalogue
-    :param user_data:
     :param ws_id:
     :param project_id:
     :param vendor:
@@ -122,4 +119,4 @@ def find_vnf(user_data, ws_id, project_id, vendor, name, version):
     :param version:
     :return:
     """
-    return find_by_priority(user_data, ws_id, project_id, vendor, name, version, True)
+    return find_by_priority(ws_id, project_id, vendor, name, version, True)

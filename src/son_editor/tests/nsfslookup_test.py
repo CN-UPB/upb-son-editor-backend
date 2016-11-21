@@ -12,7 +12,7 @@ class NsfslookupTest(unittest.TestCase):
         # Create login
         self.user = create_logged_in_user(self.app, "user_a")
 
-        self.wsid = create_workspace(self.user, "workspace_a")
+        self.wsid = create_workspace(self.user,  "workspace_a")
         self.pjid = create_project(self.wsid, "project_a")
         self.vnf_vendor = "de.upb.cs.cn.pgsandman"
         self.vnf_name = "virtual_function_a"

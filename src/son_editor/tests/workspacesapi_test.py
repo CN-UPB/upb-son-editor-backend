@@ -1,8 +1,8 @@
-'''
+""""
 Created on 26.07.2016
 
 @author: Jonas
-'''
+"""
 import json
 import unittest
 
@@ -59,19 +59,19 @@ class WorkspacesTest(unittest.TestCase):
         response = self.app.post('/' + WORKSPACES + '/',
                                  data=json.dumps(request_dict),
                                  content_type='application/json')
-        id = json.loads(response.data.decode())['id']
+        ws_id = json.loads(response.data.decode())['id']
 
-        response = self.app.put('/' + WORKSPACES + '/{}'.format(id), data={"name": "workspaceToMove2"})
+        response = self.app.put('/' + WORKSPACES + '/{}'.format(ws_id), data={"name": "workspaceToMove2"})
         self.assertEqual(json.loads(response.data.decode())['name'], "workspaceToMove2")
 
         # creating it again with the old name should work
         response = self.app.post('/' + WORKSPACES + '/',
                                  data=json.dumps(request_dict),
                                  content_type='application/json')
-        id = json.loads(response.data.decode())['id']
+        ws_id = json.loads(response.data.decode())['id']
 
         # renaming again to other name should create a conflict
-        response = self.app.put('/' + WORKSPACES + '/{}'.format(id), data={"name": "workspaceToMove2"})
+        response = self.app.put('/' + WORKSPACES + '/{}'.format(ws_id), data={"name": "workspaceToMove2"})
         self.assertEqual(409, response.status_code)
 
         # try to update non existing
@@ -80,13 +80,14 @@ class WorkspacesTest(unittest.TestCase):
 
         # try to delete referenced catalogue
         response = json.loads(self.app.post('/' + WORKSPACES + '/', data={"name": "catalogue_ref"}).data.decode())
-        id = response["id"]
+        ws_id = response["id"]
         cat_name = response["catalogues"][0]['name']
         cat_id = response["catalogues"][0]['id']
-        response = self.app.post('/' + WORKSPACES + '/{}'.format(id) + "/" + PROJECTS + "/",
+        response = self.app.post('/' + WORKSPACES + '/{}'.format(ws_id) + "/" + PROJECTS + "/",
                                  data=json.dumps({"name": "project", "publish_to": [cat_name]}),
                                  content_type='application/json')
-        response = self.app.put('/' + WORKSPACES + '/{}'.format(id), data={"name": "catalogue_ref"})
+        self.assertEqual(201, response.status_code)
+        response = self.app.put('/' + WORKSPACES + '/{}'.format(ws_id), data={"name": "catalogue_ref"})
         self.assertEqual(400, response.status_code)
 
         request_dict = {"name": "catalogue_ref",
@@ -94,7 +95,7 @@ class WorkspacesTest(unittest.TestCase):
                             {"id": cat_id,
                              "name": "new_name",
                              "url": "http://fg-cn-sandman2.cs.upb.de:4012/"}]}
-        response = self.app.put('/' + WORKSPACES + '/{}'.format(id),
+        response = self.app.put('/' + WORKSPACES + '/{}'.format(ws_id),
                                 data=json.dumps(request_dict),
                                 content_type='application/json')
         self.assertEqual(response.status_code, 200)
@@ -103,8 +104,8 @@ class WorkspacesTest(unittest.TestCase):
                         "catalogues": [
                             {"id": cat_id,
                              "name": "new_name",
-                             "url": "http://fg-cn-sandman2.cs.upb.de:4011/"}]}#invalid port
-        response = self.app.put('/' + WORKSPACES + '/{}'.format(id),
+                             "url": "http://fg-cn-sandman2.cs.upb.de:4011/"}]}  # invalid port
+        response = self.app.put('/' + WORKSPACES + '/{}'.format(ws_id),
                                 data=json.dumps(request_dict),
                                 content_type='application/json')
         self.assertEqual(response.status_code, 404)
@@ -114,8 +115,8 @@ class WorkspacesTest(unittest.TestCase):
         request_dict = {"name": "workspaceToDelete"}
         response = self.app.post('/' + WORKSPACES + '/', data=json.dumps(request_dict), content_type='application/json',
                                  follow_redirects=True)
-        id = json.loads(response.data.decode())['id']
-        response = self.app.delete('/' + WORKSPACES + '/{}'.format(id))
+        ws_id = json.loads(response.data.decode())['id']
+        response = self.app.delete('/' + WORKSPACES + '/{}'.format(ws_id))
         self.assertEqual(200, response.status_code)
 
         # test workspace no longer exists

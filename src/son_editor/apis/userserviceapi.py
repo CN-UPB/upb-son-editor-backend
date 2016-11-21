@@ -8,7 +8,8 @@ namespace = Namespace("", description="User Service API")
 @namespace.route("/user")
 @namespace.response(200, "OK")
 class Information(Resource):
-    def get(self):
+    @staticmethod
+    def get():
         """ Returns github information about the current user """
         return get_user_info()
 
@@ -18,28 +19,15 @@ class Information(Resource):
 class Logout(Resource):
     """ Logs out the current user """
 
-    def get(self):
+    @staticmethod
+    def get():
         return logout()
 
 
 @namespace.route("/login", endpoint="login")
 @namespace.response(200, "OK")
 class Login(Resource):
-    def get(self):
+    @staticmethod
+    def get():
         """ Login the User with a referral code from the github oauth process"""
-        return get()
-
-    @staticmethod
-    def request_access_token():
-        """ Request an access token from Github using the referral code"""
-        return request_access_token()
-
-    @staticmethod
-    def load_user_data():
-        """Load user data using the access token"""
-        # TODO add error handling
-        return load_user_data()
-
-    @staticmethod
-    def origin_from_referrer(referrer):
-        return origin_from_referrer()
+        return login()
