@@ -1,8 +1,11 @@
 import unittest
+import json
 
 from son_editor.tests.utils import *
-from son_editor.util.constants import WORKSPACES, PROJECTS, NSFS
+from son_editor.util.constants import WORKSPACES, PROJECTS, NSFS, VNFS, SERVICES
 from son_editor.util.context import init_test_context
+from son_editor.tests.utils import create_private_catalogue_descriptor
+from son_editor.app.database import _scan_private_catalogue
 
 
 class NsfslookupTest(unittest.TestCase):
@@ -12,22 +15,53 @@ class NsfslookupTest(unittest.TestCase):
         # Create login
         self.user = create_logged_in_user(self.app, "user_a")
 
-        self.wsid = create_workspace(self.user,  "workspace_a")
+        self.wsid = create_workspace(self.user, "workspace_a")
         self.pjid = create_project(self.wsid, "project_a")
         self.vnf_vendor = "de.upb.cs.cn.pgsandman"
         self.vnf_name = "virtual_function_a"
         self.vnf_version = "0.0.1"
+        self.ns_name = "network_service_a"
+        self.ns_vendor = "de.upb.cs.cn.pgsandman"
+        self.ns_version = "0.0.1"
         self.vnfid = create_vnf(self.wsid, self.pjid, "virtual_function_a", "de.upb.cs.cn.pgsandman", "0.0.1")
-        self.nsid = create_ns(self.wsid, self.pjid, "network_service_a", "de.upb.cs.cn.pgsandman",
-                              "0.0.1")
+        self.nsid = create_ns(self.wsid, self.pjid, self.ns_name, self.ns_vendor,
+                              self.ns_version)
 
     def tearDown(self):
         session = db_session()
         delete_workspace(self, self.wsid)
-        session.delete(self.user)
         session.commit()
 
     def test_simple_project(self):
         response = self.app.get(
-            WORKSPACES + '/<int:ws_id>/' + PROJECTS + '/<int:project_id>/' + NSFS + '/' + self.vnf_vendor + "/" + self.vnf_name + "/" + self.vnf_version)
-        self.assertTrue(response.status_code, 200)
+            WORKSPACES + '/' + str(self.wsid) + '/' + PROJECTS + '/' + str(
+                self.pjid) + '/' + NSFS + '/' + VNFS + '/' + self.vnf_vendor + "/" + self.vnf_name + "/" + self.vnf_version)
+        response_json = json.loads(response.data.decode())
+        self.assertTrue(
+            response_json['vendor'] == self.vnf_vendor and response_json['name'] == self.vnf_name and response_json[
+                'version'] == self.vnf_version)
+
+        response = self.app.get(
+            WORKSPACES + '/' + str(self.wsid) + '/' + PROJECTS + '/' + str(
+                self.pjid) + '/' + NSFS + '/' + SERVICES + '/' + self.ns_vendor + "/" + self.ns_name + "/" + self.ns_version)
+        response_json = json.loads(response.data.decode())
+        self.assertTrue(
+            response_json['vendor'] == self.ns_vendor and response_json['name'] == self.ns_name and response_json[
+                'version'] == self.ns_version)
+
+    def test_private_catalogue(self):
+        session = db_session()
+        vendor = "de.upb"
+        name = "private_vnf"
+        version = "0.1"
+
+        workspace = session.query(Workspace).filter(Workspace.id == self.wsid)[0]
+
+        create_private_catalogue_descriptor(workspace, vendor, name, version, True)
+        _scan_private_catalogue(workspace.path + "/catalogues")
+        response = self.app.get(
+            WORKSPACES + '/' + str(self.wsid) + '/' + PROJECTS + '/' + str(
+                self.pjid) + '/' + NSFS + '/' + VNFS + '/' + vendor + "/" + name + "/" + version)
+        response_json = json.loads(response.data.decode())
+        self.assertTrue(response_json['vendor'] == vendor and response_json['name'] == name,
+                        response_json['version'] == version)

@@ -3,9 +3,11 @@ import son_editor.impl.projectsimpl
 import son_editor.impl.servicesimpl
 import son_editor.impl.workspaceimpl
 import son_editor.impl.cataloguesimpl
+import os
 from son_editor.app.database import db_session
 from son_editor.impl.usermanagement import get_user
 from son_editor.models.user import User
+from son_editor.models.workspace import Workspace
 from son_editor.util import constants
 
 
@@ -58,6 +60,17 @@ def create_workspace(user: User, ws_name: str) -> int:
     ws_data = {'name': ws_name}
     workspace_data = son_editor.impl.workspaceimpl.create_workspace(user.name, ws_data)
     return workspace_data['id']
+
+
+def create_private_catalogue_descriptor(ws: Workspace, vendor: str, name: str, version: str, isVNF: bool):
+    catalogue_type = "vnf_catalogue" if isVNF else "ns_catalogue"
+    path = ws.path + "/catalogues/{}/{}/{}/{}/".format(catalogue_type, vendor, name, version)
+    os.makedirs(path)
+    file = open(path + "descriptor.yml", 'a')
+    file.write('vendor: "{}"\n'.format(vendor) +
+               'name: "{}"\n'.format(name) +
+               'version: "{}"'.format(version))
+    file.close()
 
 
 def create_catalogue(wsid: int, name: str, url: str):
