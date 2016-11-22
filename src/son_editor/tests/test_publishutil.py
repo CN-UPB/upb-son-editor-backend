@@ -39,10 +39,7 @@ class TestPublishutil(TestCase):
         self.assertTrue(os.path.isfile(package_path))
 
         # create another service in project
-        request_dict = {'descriptor': {"name": "servicename",
-                                       "vendor": "vendorname",
-                                       "version": "0.1",
-                                       "descriptor_version": "0.1"},
+        request_dict = {'descriptor': {"name": "servicename", "vendor": "vendorname", "version": "0.1"},
                         'meta': {}}
         response = self.app.post(
             '/' + WORKSPACES + '/' + self.wsid + '/' + PROJECTS + '/' + str(self.pjid) + '/' + SERVICES + '/',

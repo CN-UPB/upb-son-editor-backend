@@ -13,7 +13,7 @@ class ServiceAPITest(unittest.TestCase):
         # Create a workspace and project
         self.wsid = create_workspace(self.user, 'WorkspaceA')
         self.pid = create_project(self.wsid, 'ProjectA')
-        self.sid = create_ns(self.wsid, self.pid, "service_a", "de.upb.cs.cn.pgsandman", "0.0.1")
+        self.sid = create_ns(self.wsid, self.pid, "ServiceA", "de.upb.cs.cn.pgsandman", "0.0.1")
 
     def test_create_service(self):
         session = db_session()
@@ -23,9 +23,8 @@ class ServiceAPITest(unittest.TestCase):
         postArg = json.dumps({
             'descriptor':
                 {"vendor": "de.upb.cs.cn.pgsandman",
-                 "name": "service_name",
-                 "version": "0.0.1",
-                 "descriptor_version": "0.1"},
+                 "name": "Service Name",
+                 "version": "0.0.1"},
             'meta': {'positions': []}
         })
         response = self.app.post("/" + constants.WORKSPACES + "/" + str(self.wsid)
@@ -63,9 +62,8 @@ class ServiceAPITest(unittest.TestCase):
 
         # test complete update
         postArg = json.dumps({'descriptor': {"vendor": "de.upb.cs",
-                                             "name": "service_name",
-                                             "version": "1.0",
-                                             "descriptor_version": "0.1"},
+                                             "name": "Service Name",
+                                             "version": "1.0"},
                               'meta': {"positions": [{"vnf_1": {'x': 0, 'y': 1}}]}
                               })
 
@@ -76,7 +74,7 @@ class ServiceAPITest(unittest.TestCase):
                                 data=postArg)
         service = json.loads(response.data.decode())
         self.assertEqual(service['vendor'], "de.upb.cs")
-        self.assertEqual(service['name'], "service_name")
+        self.assertEqual(service['name'], "'Service Name'")
         self.assertEqual(service['version'], "1.0")
 
     def test_delete_exists_service(self):

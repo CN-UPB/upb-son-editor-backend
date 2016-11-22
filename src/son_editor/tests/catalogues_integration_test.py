@@ -23,22 +23,18 @@ class CatalogueServiceTest(unittest.TestCase):
 
         self.ns_dict = {'descriptor': {"vendor": "de.upb.integration_test",
                                        "name": "service_1",
-                                       "version": "0.0.1",
-                                       "descriptor_version": "0.1"},
+                                       "version": "0.0.1"},
                         'meta': {}}
         self.ns_dict_2 = {'descriptor': {"vendor": "de.upb.integration_test",
                                          "name": "service_2",
-                                         "version": "0.0.2",
-                                         "descriptor_version": "0.1"},
+                                         "version": "0.0.2"},
                           'meta': {}}
         self.vnf_dict = {"vendor": "de.upb.integration_test",
                          "name": "service_1",
-                         "version": "0.0.1",
-                         "descriptor_version": "0.1"}
+                         "version": "0.0.1"}
         self.vnf_dict_2 = {"vendor": "de.upb.integration_test",
                            "name": "service_2",
-                           "version": "0.0.2",
-                           "descriptor_version": "0.1"}
+                           "version": "0.0.2"}
 
     def tearDown(self):
         response = self.app.delete('/' + WORKSPACES + '/' + str(self.wsid))

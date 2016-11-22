@@ -2,7 +2,6 @@ import json
 import os
 
 import yaml
-from son.schema.validator import SchemaValidator
 
 
 def load_ns_vnf_from_disk(file: str, model):
@@ -188,10 +187,3 @@ def sync_project_descriptor(project) -> None:
         project.publish_to = ','.join(project_descriptor['publish_to'])
 
     write_project_descriptor(project, project_descriptor)
-
-
-def get_schema(ws_path: str, schema_id : str) -> dict:
-    from son.workspace.workspace import Workspace
-
-    workspace = Workspace(ws_path)
-    return SchemaValidator(workspace).load_schema(schema_id)
