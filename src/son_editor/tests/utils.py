@@ -13,6 +13,28 @@ def _get_header():
     return {'Content-Type': 'application/json'}
 
 
+def get_sample_vnf(name: str, vendor: str, version: str):
+    return {
+        "vendor": vendor,
+        "name": name,
+        "version": version,
+        "descriptor_version": "0.1",
+        "virtual_deployment_units": [
+            {
+                "id": "vdu_id",
+                "resource_requirements": {
+                    "cpu": {
+                        "vcpus": 1
+                    },
+                    "memory": {
+                        "size": 1
+                    }
+                }
+            }
+        ]
+    }
+
+
 def create_vnf(wsid: int, pjid: int, name: str, vendor: str, version: str) -> str:
     """
     Creates a function with given name, vendor and version in the given project returns the id
@@ -24,11 +46,7 @@ def create_vnf(wsid: int, pjid: int, name: str, vendor: str, version: str) -> st
     :param version: Version name for the function to create
     :returns: ID of the created function
     """
-    result = son_editor.impl.functionsimpl.create_function(wsid, pjid,
-                                                           {"vendor": vendor,
-                                                            "name": name,
-                                                            "version": version,
-                                                            "descriptor_version": "0.1"})
+    result = son_editor.impl.functionsimpl.create_function(wsid, pjid, get_sample_vnf(name, vendor, version))
     return result['id']
 
 

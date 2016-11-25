@@ -15,7 +15,7 @@ class FunctionTest(unittest.TestCase):
         # Create a workspace and project
         self.wsid = str(create_workspace(self.user, 'WorkspaceA'))
         self.pjid = str(create_project(self.wsid, 'ProjectA'))
-        self.fid = create_vnf(self.wsid, self.pjid, "FunctionA", "de.upb.cs.cn.pgsandman", "0.0.1")
+        self.fid = create_vnf(self.wsid, self.pjid, "function_a", "de.upb.cs.cn.pgsandman", "0.0.1")
 
     def tearDown(self):
         session = db_session()
@@ -25,10 +25,8 @@ class FunctionTest(unittest.TestCase):
         session.commit()
 
     def test_create_function(self):
+        dict = get_sample_vnf("vnf_1", "de.upb.cs.cn.pgsandman", "0.0.1")
         session = db_session()
-        dict = {"vendor": "de.upb.cs.cn.pgsandman",
-                "name": "vnf_1",
-                "version": "0.0.1"}
         post_arg = json.dumps(dict)
         response = self.app.post("/" + constants.WORKSPACES + "/" + str(self.wsid)
                                  + "/" + constants.PROJECTS + "/" + str(self.pjid)
@@ -43,9 +41,7 @@ class FunctionTest(unittest.TestCase):
 
     def test_get_specific_function(self):
         session = db_session()
-        dict = {"vendor": "de.upb.cs.cn.pgsandman",
-                "name": "vnf_3",
-                "version": "0.0.1"}
+        dict = get_sample_vnf("vnf_3", "de.upb.cs.cn.pgsandman", "0.0.1")
         post_arg = json.dumps(dict)
         response = self.app.post("/" + constants.WORKSPACES + "/" + str(self.wsid)
                                  + "/" + constants.PROJECTS + "/" + str(self.pjid)
@@ -66,9 +62,7 @@ class FunctionTest(unittest.TestCase):
 
     def test_get_function(self):
         # put vnf in table
-        dict = {"vendor": "de.upb.cs.cn.pgsandman",
-                "name": "vnf_2",
-                "version": "0.0.1"}
+        dict = get_sample_vnf("vnf_2", "de.upb.cs.cn.pgsandman", "0.0.1")
         postArg = json.dumps(dict)
         response = self.app.post("/" + constants.WORKSPACES + "/" + str(self.wsid)
                                  + "/" + constants.PROJECTS + "/" + str(self.pjid)
@@ -87,9 +81,7 @@ class FunctionTest(unittest.TestCase):
 
     def test_update_function(self):
         # put vnf in table
-        dict = {"vendor": "de.upb.cs.cn.pgsandman",
-                "name": "vnf_2",
-                "version": "0.0.1"}
+        dict = get_sample_vnf("vnf_2", "de.upb.cs.cn.pgsandman", "0.0.1")
         postArg = json.dumps(dict)
         response = self.app.post("/" + constants.WORKSPACES + "/" + str(self.wsid)
                                  + "/" + constants.PROJECTS + "/" + str(self.pjid)
@@ -97,9 +89,7 @@ class FunctionTest(unittest.TestCase):
                                  data=postArg)
         js = json.loads(response.data.decode())
         self.assertEqual(js['descriptor'], dict)
-        updateDict = {"vendor": "de.upb.cs.cn.pgsandman1",
-                      "name": "vnf_3",
-                      "version": "0.0.2"}
+        updateDict = get_sample_vnf("vnf_3", "de.upb.cs.cn.pgsandman1", "0.0.2")
         updateArg = json.dumps(updateDict)
         response = self.app.post("/" + constants.WORKSPACES + "/" + str(self.wsid)
                                  + "/" + constants.PROJECTS + "/" + str(self.pjid)
@@ -112,9 +102,7 @@ class FunctionTest(unittest.TestCase):
 
     def test_delete_function(self):
         # put vnf in table
-        dict = {"vendor": "de.upb.cs.cn.pgsandman",
-                "name": "vnf_2",
-                "version": "0.0.1"}
+        dict = get_sample_vnf("vnf_2", "de.upb.cs.cn.pgsandman", "0.0.1")
         postArg = json.dumps(dict)
         response = self.app.post("/" + constants.WORKSPACES + "/" + str(self.wsid)
                                  + "/" + constants.PROJECTS + "/" + str(self.pjid)

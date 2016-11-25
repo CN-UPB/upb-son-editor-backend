@@ -4,13 +4,17 @@ import os
 import shlex
 import shutil
 
+import jsonschema
+from jsonschema import ValidationError
+
 from son_editor.app.database import db_session
-from son_editor.app.exceptions import NameConflict, NotFound
+from son_editor.app.exceptions import NameConflict, NotFound, InvalidArgument
 from son_editor.impl.usermanagement import get_user
 from son_editor.models.descriptor import Function
 from son_editor.models.project import Project
 from son_editor.models.workspace import Workspace
-from son_editor.util.descriptorutil import write_ns_vnf_to_disk, get_file_path
+from son_editor.util.descriptorutil import write_ns_vnf_to_disk, get_file_path, get_schema
+from son.schema.validator import SchemaValidator
 
 logger = logging.getLogger(__name__)
 
@@ -58,6 +62,14 @@ def create_function(ws_id: int, project_id: int, function_data: dict) -> dict:
     version = shlex.quote(function_data["version"])
     session = db_session()
 
+    ws = session.query(Workspace).filter(Workspace.id == ws_id).first()  # type: Workspace
+    schema = get_schema(ws.path, SchemaValidator.SCHEMA_FUNCTION_DESCRIPTOR)
+    try:
+        jsonschema.validate(function_data, schema)
+    except ValidationError as ve:
+        session.rollback()
+        raise InvalidArgument("Validation failed: " + ve.message)
+
     # test if function Name exists in database
     existing_functions = list(session.query(Function)
                               .join(Project)
@@ -97,6 +109,14 @@ def update_function(ws_id: int, prj_id: int, func_id: int, func_data: dict) -> d
     """
     session = db_session()
 
+    ws = session.query(Workspace).filter(Workspace.id == ws_id).first()  # type: Workspace
+    schema = get_schema(ws.path, SchemaValidator.SCHEMA_FUNCTION_DESCRIPTOR)
+    try:
+        jsonschema.validate(func_data, schema)
+    except ValidationError as ve:
+        session.rollback()
+        raise InvalidArgument("Validation failed: " + ve.message)
+
     # test if ws Name exists in database
     function = session.query(Function). \
         join(Project). \
@@ -108,6 +128,7 @@ def update_function(ws_id: int, prj_id: int, func_id: int, func_data: dict) -> d
         session.rollback()
         raise NotFound("Function with id {} does not exist".format(func_id))
     function.descriptor = json.dumps(func_data)
+
     old_file_name = get_file_path("vnf", function)
     if 'name' in func_data:
         function.name = shlex.quote(func_data["name"])
