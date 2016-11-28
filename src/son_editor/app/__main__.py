@@ -106,7 +106,7 @@ def check_logged_in():
 
 
 def handle_unauthorized(msg: str):
-    args = {"scope": "user:email",
+    args = {"scope": "user:email repo",
             "client_id": CONFIG['authentication']['ClientID']}
     session["requested_endpoint"] = request.endpoint
     return prepare_response({

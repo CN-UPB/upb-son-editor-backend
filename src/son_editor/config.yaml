@@ -1,13 +1,13 @@
 authentication:
-    ClientID: 9d6665533bcf1495e986
-    ClientSecret: fe046449c98c89606e16ae3fd7126f09962b22cf
+    ClientID: 54e6b84b3eb8f6a460bc
+    ClientSecret: 277c00823cf9f3795e01ed6cd79ae1269aaf9844
 
 
 session:
     secretKey: randomSecretKeyHere
 
 frontend-redirect: "/src/loginRedirect.html"
-frontend-host: "http://jonas-msi:8000"
+frontend-host: "http://localhost:5000"
 
 workspaces-location: "~/son-editor/workspaces/"
 
