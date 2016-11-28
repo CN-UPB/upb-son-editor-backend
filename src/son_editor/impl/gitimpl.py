@@ -25,24 +25,24 @@ def is_github(netloc):
 
 
 def create(user_data, ws_id: int, url: str):
-    dbsession = db_session()
-    workspace = dbsession.query(Workspace).filter(Workspace.id == ws_id).first()
+    workspace = db_session().query(Workspace).filter(Workspace.id == ws_id).first()
     url_decode = parse.urlparse(url)
 
     if is_github(url_decode.netloc):
         # If url in github domain, access by token
         logger.info('Cloning from github repo...')
         url_with_token = 'https://{}@github.com/{}'.format(session['access_token'], url_decode.path)
-        gitproc = Popen(['git', 'clone', url,
-                         workspace.path + "/" + PROJECT_REL_PATH + "/{}".format(os.path.split(url_decode.path)[-1])],
-                        stdout=PIPE, stderr=PIPE)
+        git_proc = Popen(['git', 'clone', url_with_token,
+                          workspace.path + "/" + PROJECT_REL_PATH + "/{}".format(os.path.split(url_decode.path)[-1])],
+                         stdout=PIPE, stderr=PIPE)
 
-        out, err = gitproc.communicate()
-        exitcode = gitproc.returncode
+        out, err = git_proc.communicate()
+        exitcode = git_proc.returncode
         if exitcode is not 0:
             raise NameConflict(err.decode())
 
     else:
         logger.info('Cloning from another repo...')
+        raise NotImplemented("Cloning from other is not implemented yet.")
         # gitproc = check_call(['git', 'clone', url])
     return True
