@@ -14,7 +14,7 @@ namespace = Namespace(WORKSPACES + '/<int:ws_id>', description='Git API')
 @namespace.response(200, "OK")
 class Git(Resource):
     def post(self, ws_id):
-        """ Clones a project into the workspace """
+        """ Clones projects into the workspace """
         json_data = get_json(request)
         result = create(session["user_data"], ws_id, shlex.quote(json_data['url']))
         return prepare_response(result, 200)
