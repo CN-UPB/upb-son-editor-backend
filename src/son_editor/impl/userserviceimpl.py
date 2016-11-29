@@ -5,6 +5,7 @@ import requests
 from flask import request, redirect
 from flask import session
 
+from son_editor.app.exceptions import UnauthorizedException
 from son_editor.util.requestutil import CONFIG
 
 logger = logging.getLogger(__name__)
@@ -48,13 +49,13 @@ def _load_user_data():
     return False
 
 
-def get_user_info():
+def get_user_info()-> dict:
     """Returns current user information"""
     # Only allow logged in users to retrieve user information
     if 'access_token' in session and 'user_data' in session:
         return session['user_data']
     else:
-        return "Unauthorized", 401
+        raise UnauthorizedException("Not logged in")
 
 
 def logout():
@@ -63,7 +64,7 @@ def logout():
     """
     # Remove all session related informations
     session.clear()
-    return "logged out", 200
+    return "logged out"
 
 
 def origin_from_referrer(referrer):

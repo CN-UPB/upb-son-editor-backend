@@ -1,6 +1,7 @@
 from flask_restplus import Resource, Namespace
 
 from son_editor.impl.userserviceimpl import *
+from son_editor.util.requestutil import prepare_response
 
 namespace = Namespace("", description="User Service API")
 
@@ -8,10 +9,11 @@ namespace = Namespace("", description="User Service API")
 @namespace.route("/user")
 @namespace.response(200, "OK")
 class Information(Resource):
+    """User information"""
     @staticmethod
     def get():
         """ Returns github information about the current user """
-        return get_user_info()
+        return prepare_response(get_user_info())
 
 
 @namespace.route("/logout")
@@ -21,7 +23,7 @@ class Logout(Resource):
 
     @staticmethod
     def get():
-        return logout()
+        return prepare_response(logout())
 
 
 @namespace.route("/login", endpoint="login")

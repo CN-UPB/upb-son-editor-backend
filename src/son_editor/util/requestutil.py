@@ -22,7 +22,7 @@ def prepare_response(data=None, code=200) -> Response:
     """
     response = Response()
     headers = response.headers
-    if allowed_origin():
+    if _is_allowed_origin():
         headers['Access-Control-Allow-Origin'] = request.headers['Origin']
     headers['Access-Control-Allow-Methods'] = "GET,POST,PUT,DELETE,OPTIONS"
     headers['Access-Control-Allow-Headers'] = "Content-Type, Authorization, X-Requested-With"
@@ -49,7 +49,7 @@ def prepare_error(data=None, code=500) -> tuple:
     """
     response = Response()
     headers = response.headers
-    if allowed_origin():
+    if _is_allowed_origin():
         headers['Access-Control-Allow-Origin'] = request.headers['Origin']
     headers['Access-Control-Allow-Methods'] = "GET,POST,PUT,DELETE,OPTIONS"
     headers['Access-Control-Allow-Headers'] = "Content-Type, Authorization, X-Requested-With"
@@ -58,10 +58,10 @@ def prepare_error(data=None, code=500) -> tuple:
     return data, code, headers
 
 
-def allowed_origin():
+def _is_allowed_origin():
     """Checks if the request originates from a known origin"""
     if 'Origin' in request.headers:
-        #strip the http method because we are only interested in the host
+        # strip the http method because we are only interested in the host
         origin = request.headers['Origin'].replace("http://", "").replace("https://", "")
         origin_parts = origin.split(":")
         if len(origin_parts) > 1:
