@@ -7,6 +7,7 @@ from son_editor.apis import functionsapi
 from son_editor.apis import workspacesapi
 from son_editor.apis import nsfslookup
 from son_editor.apis import userserviceapi
+from son_editor.apis import gitapi
 
 
 def init(api):
@@ -23,3 +24,4 @@ def init(api):
     api.add_namespace(misc.namespace)
     api.add_namespace(nsfslookup.namespace)
     api.add_namespace(userserviceapi.namespace)
+    api.add_namespace(gitapi.namespace)

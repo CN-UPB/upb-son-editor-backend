@@ -5,7 +5,7 @@ Created on 22.07.2016
 '''
 import logging
 
-from flask import request, session
+from flask import request
 from flask_restplus import Model, Resource, Namespace, fields
 
 from son_editor.impl import platform_connector
@@ -30,6 +30,11 @@ serv = Model("Service", {
 
 })
 
+serv_update = Model("Service Update", {
+    "descriptor": fields.Nested(model=serv, description="The Complete Service Descriptor")
+
+})
+
 serv_id = Model("Service ID", {
     'id': fields.Integer(required=True, description='The son-editor id of the service being published')
 })
@@ -40,6 +45,7 @@ serv_response = serv.inherit("ServiceResponse", serv, {
     "project_id": fields.Integer(description='The parent workspace id'),
 })
 
+proj_namespace.add_model(serv_update.name, serv_update)
 proj_namespace.add_model(serv.name, serv)
 proj_namespace.add_model(serv_response.name, serv_response)
 
@@ -109,7 +115,7 @@ class Services(Resource):
 @plat_namespace.param('parent_id', 'The Platform identifier')
 @proj_namespace.response(200, "OK")
 class Service(Resource):
-    @proj_namespace.expect(serv)
+    @proj_namespace.expect(serv_update)
     @plat_namespace.expect(serv_id)
     @proj_namespace.response(200, "Updated", serv_response)
     @proj_namespace.doc("Updates the given service in the project/catalogue or platform")

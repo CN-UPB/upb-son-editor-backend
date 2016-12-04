@@ -16,6 +16,7 @@ class PrivateDescriptor(Base):
     vendor = Column(String(50))
     version = Column(String(50))
     uid = Column(String(150))
+    descriptor = Column(Text())
 
     UniqueConstraint('ws_id', 'uid', name='uix_1')
 
