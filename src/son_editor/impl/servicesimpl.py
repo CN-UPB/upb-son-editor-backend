@@ -4,6 +4,10 @@ import os
 import shlex
 import shutil
 
+import jsonschema
+from jsonschema import ValidationError
+from son.schema.validator import SchemaValidator
+
 from son_editor.app.database import db_session
 from son_editor.app.exceptions import NotFound, NameConflict
 from son_editor.models.descriptor import Service
@@ -43,9 +47,12 @@ def create_service(ws_id: int, project_id: int, service_data: dict) -> dict:
 
     if project:
         # Retrieve post parameters
-        service_name = shlex.quote(service_data['descriptor']["name"])
-        vendor_name = shlex.quote(service_data['descriptor']["vendor"])
-        version = shlex.quote(service_data['descriptor']["version"])
+        try:
+            service_name = shlex.quote(service_data['descriptor']["name"])
+            vendor_name = shlex.quote(service_data['descriptor']["vendor"])
+            version = shlex.quote(service_data['descriptor']["version"])
+        except KeyError as ke:
+            raise InvalidArgument("Missing key {} in service data".format(str(ke)))
 
         existing_services = list(session.query(Service)
                                  .join(Project)
@@ -57,6 +64,11 @@ def create_service(ws_id: int, project_id: int, service_data: dict) -> dict:
                                  .filter(Service.version == version))
         if len(existing_services) > 0:
             raise NameConflict("A service with this name/vendor/version already exists")
+
+        # validate service descriptor
+        workspace = session.query(Workspace).filter(Workspace.id == ws_id).first()
+        validate_service_descriptor(workspace.path, service_data["descriptor"])
+
         # Create db object
         service = Service(name=service_name,
                           vendor=vendor_name,
@@ -73,6 +85,7 @@ def create_service(ws_id: int, project_id: int, service_data: dict) -> dict:
             raise
         session.commit()
         return service.as_dict()
+
     else:
         session.rollback()
         raise NotFound("Project with id '{}‘ not found".format(project_id))
@@ -98,16 +111,20 @@ def update_service(ws_id, project_id, service_id, service_data):
         old_file_name = get_file_path("nsd", service)
         # Parse parameters and update record
         if 'descriptor' in service_data:
+            # validate service descriptor
+            workspace = session.query(Workspace).filter(Workspace.id == ws_id).first()
+            validate_service_descriptor(workspace.path, service_data["descriptor"])
             service.descriptor = json.dumps(service_data["descriptor"])
-            if 'name' in service_data["descriptor"]:
+            try:
                 service.name = shlex.quote(service_data["descriptor"]["name"])
-            if 'vendor' in service_data["descriptor"]:
                 service.vendor = shlex.quote(service_data["descriptor"]["vendor"])
-            if 'version' in service_data["descriptor"]:
                 service.version = shlex.quote(service_data["descriptor"]["version"])
+            except KeyError as ke:
+                raise InvalidArgument("Missing key {} in function data".format(str(ke)))
+
         if 'meta' in service_data:
             service.meta = json.dumps(service_data["meta"])
-            logger.info(service.meta)
+
         new_file_name = get_file_path("nsd", service)
         try:
             if not old_file_name == new_file_name:
@@ -168,3 +185,17 @@ def get_service(ws_id, parent_id, service_id):
         return service.as_dict()
     else:
         raise NotFound("No Service matching id {}".format(parent_id))
+
+
+def validate_service_descriptor(workspace_path: str, descriptor: dict) -> None:
+    """
+    Validates the given descriptor with the schema loaded from SchemaValidator
+    :param workspace_path: the path of the workspace
+    :param descriptor: the service descriptor
+    :raises: InvalidArgument: if the validation fails
+    """
+    schema = get_schema(workspace_path, SchemaValidator.SCHEMA_SERVICE_DESCRIPTOR)
+    try:
+        jsonschema.validate(descriptor, schema)
+    except ValidationError as ve:
+        raise InvalidArgument(ve.message)
