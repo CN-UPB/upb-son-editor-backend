@@ -66,7 +66,7 @@ class TestPublishutil(TestCase):
         package_path = self.test_package_location
         result = publishutil.push_to_platform(package_path=package_path,
                                               platform=Platform(url="http://fg-cn-sandman2.cs.upb.de:1234"))
-        self.assertTrue(result)
+        self.assertTrue('service_uuid' in result)
         caught = False
         try:
             result = publishutil.push_to_platform(package_path=package_path,
