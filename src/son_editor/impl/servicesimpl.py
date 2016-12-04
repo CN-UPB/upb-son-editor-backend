@@ -62,15 +62,9 @@ def create_service(ws_id: int, project_id: int, service_data: dict) -> dict:
         if len(existing_services) > 0:
             raise NameConflict("A service with this name/vendor/version already exists")
 
-        #validate service descriptor
+        # validate service descriptor
         workspace = session.query(Workspace).filter(Workspace.id == ws_id).first()
-        schema = get_schema(workspace.path, SchemaValidator.SCHEMA_SERVICE_DESCRIPTOR)
-
-        try:
-            jsonschema.validate(service_data["descriptor"], schema)
-        except ValidationError as ve:
-            raise InvalidArgument(ve.message)
-
+        validate_service_descriptor(workspace.path, service_data["descriptor"])
 
         # Create db object
         service = Service(name=service_name,
@@ -110,6 +104,10 @@ def update_service(ws_id, project_id, service_id, service_data):
         filter(Project.id == project_id). \
         filter(Service.id == service_id).first()
     if service:
+        # validate service descriptor
+        workspace = session.query(Workspace).filter(Workspace.id == ws_id).first()
+        validate_service_descriptor(workspace.path, service_data["descriptor"])
+
         old_file_name = get_file_path("nsd", service)
         # Parse parameters and update record
         if 'descriptor' in service_data:
@@ -183,3 +181,11 @@ def get_service(ws_id, parent_id, service_id):
         return service.as_dict()
     else:
         raise NotFound("No Service matching id {}".format(parent_id))
+
+
+def validate_service_descriptor(workspace_path, descriptor):
+    schema = get_schema(workspace_path, SchemaValidator.SCHEMA_SERVICE_DESCRIPTOR)
+    try:
+        jsonschema.validate(descriptor, schema)
+    except ValidationError as ve:
+        raise InvalidArgument(ve.message)
