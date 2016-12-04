@@ -9,11 +9,11 @@ from jsonschema import ValidationError
 from son.schema.validator import SchemaValidator
 
 from son_editor.app.database import db_session
-from son_editor.app.exceptions import NotFound, NameConflict
+from son_editor.app.exceptions import NotFound, NameConflict, InvalidArgument
 from son_editor.models.descriptor import Service
 from son_editor.models.project import Project
 from son_editor.models.workspace import Workspace
-from son_editor.util.descriptorutil import write_ns_vnf_to_disk, get_file_path
+from son_editor.util.descriptorutil import write_ns_vnf_to_disk, get_file_path, get_schema
 
 logger = logging.getLogger(__name__)
 
