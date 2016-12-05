@@ -92,7 +92,7 @@ class Services(Resource):
             service = servicesimpl.create_service(ws_id, parent_id, get_json(request))
             return prepare_response(service, 201)
         elif get_parent(request) is Category.platform:
-            result = platform_connector.create_service_on_platform(ws_id, parent_id)
+            result = platform_connector.create_service_on_platform(ws_id, parent_id, get_json(request))
             return prepare_response(result, 201)
         if get_parent(request) is Category.catalogue:
             vnf_data = get_json(request)
@@ -134,7 +134,7 @@ class Service(Resource):
         elif get_parent(request) is Category.platform:
             # platform only has one upload method
             result = platform_connector.create_service_on_platform(ws_id, parent_id, get_json(request))
-            return prepare_response(result, 201)
+            return prepare_response(result)
         return prepare_response("not yet implemented")
 
     @proj_namespace.doc("Deletes a specific service by its id")

@@ -44,7 +44,7 @@ class ServiceAPITest(unittest.TestCase):
                                  + "/" + constants.SERVICES + "/", headers={'Content-Type': 'application/json'},
                                  data=json.dumps(invalid_service))
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(json.loads(response.data.decode())['message'], "'descriptor_version' is a required property")
+        self.assertTrue("descriptor_version" in json.loads(response.data.decode())['message'])
 
         # create invalid service
         invalid_service = get_sample_ns("NameFormat", "de.upb.cs.cn.pgsandman", "0.0.1")
@@ -53,8 +53,7 @@ class ServiceAPITest(unittest.TestCase):
                                  + "/" + constants.SERVICES + "/", headers={'Content-Type': 'application/json'},
                                  data=json.dumps(invalid_service))
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(json.loads(response.data.decode())['message'],
-                         "'NameFormat' does not match '^[a-z0-9\\\\-_.]+$'")
+        self.assertTrue('NameFormat' in json.loads(response.data.decode())['message'])
 
     def test_get_services(self):
         response = self.app.get("/" + constants.WORKSPACES + "/" + str(self.wsid)
@@ -63,7 +62,7 @@ class ServiceAPITest(unittest.TestCase):
 
         services = json.loads(response.data.decode())
         self.assertEqual(len(services), 2)
-        self.assertEqual(services[1]['vendor'], "de.upb.cs.cn.pgsandman")
+        self.assertEqual(services[1]['descriptor']['vendor'], "de.upb.cs.cn.pgsandman")
 
         self.assertEqual(response.status_code, 200)
 
@@ -84,7 +83,7 @@ class ServiceAPITest(unittest.TestCase):
                                 data=json.dumps(service))
         service = json.loads(response.data.decode())
         self.assertEqual(response.status_code, 200, response.data.decode())
-        self.assertEqual(service['name'], "new_service_name")
+        self.assertEqual(service["descriptor"]['name'], "new_service_name")
 
         # test complete update
         service = get_sample_ns("service_name", "de.upb.cs", "1.0")

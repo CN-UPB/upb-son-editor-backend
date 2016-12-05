@@ -198,4 +198,4 @@ def validate_service_descriptor(workspace_path: str, descriptor: dict) -> None:
     try:
         jsonschema.validate(descriptor, schema)
     except ValidationError as ve:
-        raise InvalidArgument(ve.message)
+        raise InvalidArgument("Validation failed: <br/> Path: {} <br/> Error: {}".format(list(ve.path), ve.message))

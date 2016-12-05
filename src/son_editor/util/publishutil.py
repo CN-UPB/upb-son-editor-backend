@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 from subprocess import Popen, PIPE
@@ -58,8 +59,35 @@ def push_to_platform(package_path: str, platform: Platform) -> str:
         raise ExtNotReachable("Could not connect to platform.")
     elif "error" in out.lower() or err.lower():
         raise NameConflict("Out: " + out + "Error: " + err)
-    elif "201" or "200" in out:
-        message = out.split(":", 1)[1]
-        return message
+    elif "201" in out:
+        message = out.split(":", 1)[1]  # remove son-push message
+        message = message.strip()[1:-1]  # remove line break and outer quotes
+        uuid = json.loads(message)
+        return uuid
+    else:
+        return out
+
+
+def deploy_on_platform(service_uuid: dict, platform: Platform) -> str:
+    """
+    Pushes the package located at the package_path to the specified Platform
+    :param service_uuid: a dictionary with the service uuid on the platform
+    :param platform: The platform to upload to
+    :return:
+    """
+    proc = Popen(['son-push', platform.url, '-D', str(service_uuid['service_uuid'])], stdout=PIPE, stderr=PIPE)
+
+    out, err = proc.communicate()
+    out = out.decode()
+    err = err.decode()
+
+    logger.info("Out:" + out)
+    logger.info("Error:" + err)
+
+    exitcode = proc.returncode  # as of now exitcode is 0 even if there is an error
+    if "ConnectionError" in out or err:
+        raise ExtNotReachable("Could not connect to platform.")
+    elif "error" in out.lower() or err.lower():
+        raise NameConflict("Out: " + out + "Error: " + err)
     else:
         return out
