@@ -4,13 +4,17 @@ import os
 import shlex
 import shutil
 
+import jsonschema
+from jsonschema import ValidationError
+
 from son_editor.app.database import db_session
-from son_editor.app.exceptions import NameConflict, NotFound
+from son_editor.app.exceptions import NameConflict, NotFound, InvalidArgument
 from son_editor.impl.usermanagement import get_user
 from son_editor.models.descriptor import Function
 from son_editor.models.project import Project
 from son_editor.models.workspace import Workspace
-from son_editor.util.descriptorutil import write_ns_vnf_to_disk, get_file_path
+from son_editor.util.descriptorutil import write_ns_vnf_to_disk, get_file_path, get_schema, get_file_name
+from son.schema.validator import SchemaValidator
 
 logger = logging.getLogger(__name__)
 
@@ -53,10 +57,17 @@ def create_function(ws_id: int, project_id: int, function_data: dict) -> dict:
     :param function_data:
     :return: The created function as a dict
     """
-    function_name = shlex.quote(function_data["name"])
-    vendor_name = shlex.quote(function_data["vendor"])
-    version = shlex.quote(function_data["version"])
+    try:
+        function_name = shlex.quote(function_data["name"])
+        vendor_name = shlex.quote(function_data["vendor"])
+        version = shlex.quote(function_data["version"])
+    except KeyError as ke:
+        raise InvalidArgument("Missing key {} in function data".format(str(ke)))
+
     session = db_session()
+
+    ws = session.query(Workspace).filter(Workspace.id == ws_id).first()  # type: Workspace
+    validate_vnf(ws.path, function_data)
 
     # test if function Name exists in database
     existing_functions = list(session.query(Function)
@@ -97,6 +108,9 @@ def update_function(ws_id: int, prj_id: int, func_id: int, func_data: dict) -> d
     """
     session = db_session()
 
+    ws = session.query(Workspace).filter(Workspace.id == ws_id).first()
+    validate_vnf(ws.path, func_data)
+
     # test if ws Name exists in database
     function = session.query(Function). \
         join(Project). \
@@ -108,17 +122,31 @@ def update_function(ws_id: int, prj_id: int, func_id: int, func_data: dict) -> d
         session.rollback()
         raise NotFound("Function with id {} does not exist".format(func_id))
     function.descriptor = json.dumps(func_data)
+
     old_file_name = get_file_path("vnf", function)
-    if 'name' in func_data:
+    old_folder_path = old_file_name.replace(get_file_name(function), "")
+    try:
         function.name = shlex.quote(func_data["name"])
-    if 'vendor' in func_data:
         function.vendor = shlex.quote(func_data["vendor"])
-    if 'version' in func_data:
         function.version = shlex.quote(func_data["version"])
+    except KeyError as ke:
+        session.rollback()
+        raise InvalidArgument("Missing key {} in function data".format(str(ke)))
+
     try:
         new_file_name = get_file_path("vnf", function)
+        new_folder_path = new_file_name.replace(get_file_name(function), "")
+        if old_folder_path != new_folder_path:
+            # move old files to new location
+            os.makedirs(new_folder_path)
+            for file in os.listdir(old_folder_path):
+                if not old_file_name == os.path.join(old_folder_path, file):  # don't move descriptor yet
+                    shutil.move(os.path.join(old_folder_path, file), os.path.join(new_folder_path, file))
         if not new_file_name == old_file_name:
             shutil.move(old_file_name, new_file_name)
+        if old_folder_path != new_folder_path:
+            # cleanup old folder
+            shutil.rmtree(old_folder_path)
         write_ns_vnf_to_disk("vnf", function)
     except:
         session.rollback()
@@ -156,3 +184,11 @@ def delete_function(ws_id: int, project_id: int, function_id: int) -> dict:
         raise
     session.commit()
     return function.as_dict()
+
+
+def validate_vnf(workspace_path: str, descriptor: dict) -> None:
+    schema = get_schema(workspace_path, SchemaValidator.SCHEMA_FUNCTION_DESCRIPTOR)
+    try:
+        jsonschema.validate(descriptor, schema)
+    except ValidationError as ve:
+        raise InvalidArgument("Validation failed: <br/> Path: {} <br/> Error: {}".format(list(ve.path), ve.message))
