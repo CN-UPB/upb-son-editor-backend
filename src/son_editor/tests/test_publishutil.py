@@ -74,3 +74,12 @@ class TestPublishutil(TestCase):
         except ExtNotReachable:
             caught = True
         self.assertTrue(caught)
+
+    def test_deploy_project(self):
+        package_path = self.test_package_location
+        result = publishutil.push_to_platform(package_path=package_path,
+                                              platform=Platform(url="http://fg-cn-sandman2.cs.upb.de:1234"))
+        self.assertTrue('service_uuid' in result)
+        result = publishutil.deploy_on_platform(service_uuid=result,
+                                                platform=Platform(url="http://fg-cn-sandman2.cs.upb.de:1234"))
+        self.assertTrue(result)

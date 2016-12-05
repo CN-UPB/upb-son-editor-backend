@@ -63,7 +63,7 @@ class ServiceAPITest(unittest.TestCase):
 
         services = json.loads(response.data.decode())
         self.assertEqual(len(services), 2)
-        self.assertEqual(services[1]['vendor'], "de.upb.cs.cn.pgsandman")
+        self.assertEqual(services[1]['descriptor']['vendor'], "de.upb.cs.cn.pgsandman")
 
         self.assertEqual(response.status_code, 200)
 
@@ -84,7 +84,7 @@ class ServiceAPITest(unittest.TestCase):
                                 data=json.dumps(service))
         service = json.loads(response.data.decode())
         self.assertEqual(response.status_code, 200, response.data.decode())
-        self.assertEqual(service['name'], "new_service_name")
+        self.assertEqual(service["descriptor"]['name'], "new_service_name")
 
         # test complete update
         service = get_sample_ns("service_name", "de.upb.cs", "1.0")

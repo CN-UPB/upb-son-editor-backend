@@ -75,7 +75,7 @@ def deploy_on_platform(service_uuid: dict, platform: Platform) -> str:
     :param platform: The platform to upload to
     :return:
     """
-    proc = Popen(['son-push', platform.url, '-D', service_uuid['service_uuid']], stdout=PIPE, stderr=PIPE)
+    proc = Popen(['son-push', platform.url, '-D', str(service_uuid['service_uuid'])], stdout=PIPE, stderr=PIPE)
 
     out, err = proc.communicate()
     out = out.decode()
