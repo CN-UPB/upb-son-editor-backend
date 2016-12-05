@@ -15,6 +15,35 @@ def _get_header():
     return {'Content-Type': 'application/json'}
 
 
+def get_sample_vnf(name: str, vendor: str, version: str):
+    """
+    Creates a minimal valid example vnf from the given name, vendor and version
+    :param name: The VNF name
+    :param vendor: The VNF vendor
+    :param version: The VNF version
+    :return: a dictionary with a valid vnf descriptor that will pass validation
+    """
+    return {
+        "vendor": vendor,
+        "name": name,
+        "version": version,
+        "descriptor_version": "0.1",
+        "virtual_deployment_units": [
+            {
+                "id": "vdu_id",
+                "resource_requirements": {
+                    "cpu": {
+                        "vcpus": 1
+                    },
+                    "memory": {
+                        "size": 1
+                    }
+                }
+            }
+        ]
+    }
+
+
 def create_vnf(wsid: int, pjid: int, name: str, vendor: str, version: str) -> str:
     """
     Creates a function with given name, vendor and version in the given project returns the id
@@ -26,11 +55,23 @@ def create_vnf(wsid: int, pjid: int, name: str, vendor: str, version: str) -> st
     :param version: Version name for the function to create
     :returns: ID of the created function
     """
-    result = son_editor.impl.functionsimpl.create_function(wsid, pjid,
-                                                           {"vendor": vendor,
-                                                            "name": name,
-                                                            "version": version})
+    result = son_editor.impl.functionsimpl.create_function(wsid, pjid, get_sample_vnf(name, vendor, version))
     return result['id']
+
+
+def get_sample_ns(name: str, vendor: str, version: str) -> dict:
+    """
+    Creates a minimal valid service descriptor with the given name, vendor and version
+    :param name: The name of the service
+    :param vendor: the vendor of the service
+    :param version: the version of the service
+    :return: A dict containing a descriptor that will pass validation and a metadata object for the service
+    """
+    return {'descriptor': {'name': name,
+                           'vendor': vendor,
+                           'version': version,
+                           "descriptor_version": "0.1"},
+            'meta': {'positions': []}}
 
 
 def create_ns(wsid: int, pjid: int, name: str, vendor: str, version: str) -> int:
@@ -43,9 +84,8 @@ def create_ns(wsid: int, pjid: int, name: str, vendor: str, version: str) -> int
     :param version: Version name for the function to create
     :returns: ID of the created function
     """
-    service_data = {'descriptor': {'name': name, 'vendor': vendor, 'version': version},
-                    'meta': {'positions': []}}
-    result = son_editor.impl.servicesimpl.create_service(wsid, pjid, service_data)
+
+    result = son_editor.impl.servicesimpl.create_service(wsid, pjid, get_sample_ns(name, vendor, version))
     return result['id']
 
 

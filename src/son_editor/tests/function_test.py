@@ -15,7 +15,7 @@ class FunctionTest(unittest.TestCase):
         # Create a workspace and project
         self.wsid = str(create_workspace(self.user, 'WorkspaceA'))
         self.pjid = str(create_project(self.wsid, 'ProjectA'))
-        self.fid = create_vnf(self.wsid, self.pjid, "FunctionA", "de.upb.cs.cn.pgsandman", "0.0.1")
+        self.fid = create_vnf(self.wsid, self.pjid, "function_a", "de.upb.cs.cn.pgsandman", "0.0.1")
 
     def tearDown(self):
         session = db_session()
@@ -25,27 +25,34 @@ class FunctionTest(unittest.TestCase):
         session.commit()
 
     def test_create_function(self):
-        session = db_session()
-        dict = {"vendor": "de.upb.cs.cn.pgsandman",
-                "name": "vnf_1",
-                "version": "0.0.1"}
-        post_arg = json.dumps(dict)
+        post_arg = get_sample_vnf("vnf_1", "de.upb.cs.cn.pgsandman", "0.0.1")
         response = self.app.post("/" + constants.WORKSPACES + "/" + str(self.wsid)
                                  + "/" + constants.PROJECTS + "/" + str(self.pjid)
                                  + "/" + constants.VNFS + "/", headers={'Content-Type': 'application/json'},
-                                 data=post_arg)
+                                 data=json.dumps(post_arg))
+        self.assertEqual(response.status_code, 201, json.loads(response.data.decode()))
         function = json.loads(response.data.decode())
-        self.assertTrue(response.status_code == 201)
-        self.assertTrue(function['descriptor']['name'] == dict['name'])
-        self.assertTrue(function['descriptor']['version'] == dict['version'])
-        self.assertTrue(function['descriptor']['vendor'] == dict['vendor'])
-        session.close()
+        self.assertTrue(function['descriptor'], post_arg)
+
+        post_arg = get_sample_vnf("invalid name", "de.upb.cs.cn.pgsandman", "0.0.1")
+        response = self.app.post("/" + constants.WORKSPACES + "/" + str(self.wsid)
+                                 + "/" + constants.PROJECTS + "/" + str(self.pjid)
+                                 + "/" + constants.VNFS + "/", headers={'Content-Type': 'application/json'},
+                                 data=json.dumps(post_arg))
+        self.assertEqual(response.status_code, 400, json.loads(response.data.decode()))
+
+        # create invalid vnf: missing vendor
+        post_arg = get_sample_vnf("name", "de.upb.cs.cn.pgsandman", "0.0.1")
+        post_arg.pop("vendor", None)  # remove vendor
+        response = self.app.post("/" + constants.WORKSPACES + "/" + str(self.wsid)
+                                 + "/" + constants.PROJECTS + "/" + str(self.pjid)
+                                 + "/" + constants.VNFS + "/", headers={'Content-Type': 'application/json'},
+                                 data=json.dumps(post_arg))
+        self.assertEqual(response.status_code, 400, json.loads(response.data.decode()))
 
     def test_get_specific_function(self):
         session = db_session()
-        dict = {"vendor": "de.upb.cs.cn.pgsandman",
-                "name": "vnf_3",
-                "version": "0.0.1"}
+        dict = get_sample_vnf("vnf_3", "de.upb.cs.cn.pgsandman", "0.0.1")
         post_arg = json.dumps(dict)
         response = self.app.post("/" + constants.WORKSPACES + "/" + str(self.wsid)
                                  + "/" + constants.PROJECTS + "/" + str(self.pjid)
@@ -66,9 +73,7 @@ class FunctionTest(unittest.TestCase):
 
     def test_get_function(self):
         # put vnf in table
-        dict = {"vendor": "de.upb.cs.cn.pgsandman",
-                "name": "vnf_2",
-                "version": "0.0.1"}
+        dict = get_sample_vnf("vnf_2", "de.upb.cs.cn.pgsandman", "0.0.1")
         postArg = json.dumps(dict)
         response = self.app.post("/" + constants.WORKSPACES + "/" + str(self.wsid)
                                  + "/" + constants.PROJECTS + "/" + str(self.pjid)
@@ -87,34 +92,30 @@ class FunctionTest(unittest.TestCase):
 
     def test_update_function(self):
         # put vnf in table
-        dict = {"vendor": "de.upb.cs.cn.pgsandman",
-                "name": "vnf_2",
-                "version": "0.0.1"}
-        postArg = json.dumps(dict)
-        response = self.app.post("/" + constants.WORKSPACES + "/" + str(self.wsid)
-                                 + "/" + constants.PROJECTS + "/" + str(self.pjid)
-                                 + "/" + constants.VNFS + "/", headers={'Content-Type': 'application/json'},
-                                 data=postArg)
-        js = json.loads(response.data.decode())
-        self.assertEqual(js['descriptor'], dict)
-        updateDict = {"vendor": "de.upb.cs.cn.pgsandman1",
-                      "name": "vnf_3",
-                      "version": "0.0.2"}
-        updateArg = json.dumps(updateDict)
-        response = self.app.post("/" + constants.WORKSPACES + "/" + str(self.wsid)
-                                 + "/" + constants.PROJECTS + "/" + str(self.pjid)
-                                 + "/" + constants.VNFS + "/", headers={'Content-Type': 'application/json'},
-                                 data=updateArg)
+        result_id = create_vnf(self.wsid, self.pjid, "vnf_2", "de.upb.cs.cn.pgsandman", "0.0.1")
+        update_dict = get_sample_vnf("vnf_3", "de.upb.cs.cn.pgsandman1", "0.0.2")
+        response = self.app.put("/" + constants.WORKSPACES + "/" + str(self.wsid)
+                                + "/" + constants.PROJECTS + "/" + str(self.pjid)
+                                + "/" + constants.VNFS + "/" + str(result_id),
+                                headers={'Content-Type': 'application/json'},
+                                data=json.dumps(update_dict))
         result = json.loads(response.data.decode())
-        self.assertTrue(result['descriptor']['name'] == updateDict['name'])
-        self.assertTrue(result['descriptor']['version'] == updateDict['version'])
-        self.assertTrue(result['descriptor']['vendor'] == updateDict['vendor'])
+        self.assertEqual(response.status_code, 200, result)
+        self.assertEqual(result['descriptor'], update_dict)
+
+        # test invalid function update
+        update_dict = get_sample_vnf("vnf_ 3", "de.upb.cs.cn.pgsandman1", "0.0.2")
+        response = self.app.put("/" + constants.WORKSPACES + "/" + str(self.wsid)
+                                + "/" + constants.PROJECTS + "/" + str(self.pjid)
+                                + "/" + constants.VNFS + "/" + str(result['id']),
+                                headers={'Content-Type': 'application/json'},
+                                data=json.dumps(update_dict))
+        result = json.loads(response.data.decode())
+        self.assertEqual(response.status_code, 400, result)
 
     def test_delete_function(self):
         # put vnf in table
-        dict = {"vendor": "de.upb.cs.cn.pgsandman",
-                "name": "vnf_2",
-                "version": "0.0.1"}
+        dict = get_sample_vnf("vnf_2", "de.upb.cs.cn.pgsandman", "0.0.1")
         postArg = json.dumps(dict)
         response = self.app.post("/" + constants.WORKSPACES + "/" + str(self.wsid)
                                  + "/" + constants.PROJECTS + "/" + str(self.pjid)
