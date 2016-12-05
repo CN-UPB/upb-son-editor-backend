@@ -44,7 +44,7 @@ class ServiceAPITest(unittest.TestCase):
                                  + "/" + constants.SERVICES + "/", headers={'Content-Type': 'application/json'},
                                  data=json.dumps(invalid_service))
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(json.loads(response.data.decode())['message'], "'descriptor_version' is a required property")
+        self.assertTrue("descriptor_version" in json.loads(response.data.decode())['message'])
 
         # create invalid service
         invalid_service = get_sample_ns("NameFormat", "de.upb.cs.cn.pgsandman", "0.0.1")
@@ -53,8 +53,7 @@ class ServiceAPITest(unittest.TestCase):
                                  + "/" + constants.SERVICES + "/", headers={'Content-Type': 'application/json'},
                                  data=json.dumps(invalid_service))
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(json.loads(response.data.decode())['message'],
-                         "'NameFormat' does not match '^[a-z0-9\\\\-_.]+$'")
+        self.assertTrue('NameFormat' in json.loads(response.data.decode())['message'])
 
     def test_get_services(self):
         response = self.app.get("/" + constants.WORKSPACES + "/" + str(self.wsid)
