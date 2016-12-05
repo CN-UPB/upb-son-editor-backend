@@ -63,6 +63,7 @@ def _is_allowed_origin():
     if 'Origin' in request.headers:
         # strip the http method because we are only interested in the host
         origin = request.headers['Origin'].replace("http://", "").replace("https://", "")
+        # strip the port
         origin_parts = origin.split(":")
         if len(origin_parts) > 1:
             origin = origin_parts[0]
