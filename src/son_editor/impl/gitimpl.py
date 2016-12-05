@@ -21,10 +21,24 @@ def is_github(netloc):
     return False
 
 
-"""Clones a repository given the url as json"""
+def pull(user_data, ws_id: int, project_id: int):
+    """
+    Pulls data from the given project_id.
+    :param user_data: Session data to get access token for GitHub
+    :param ws_id:
+    :param project_id:
+    :return:
+    """
 
 
-def create(user_data, ws_id: int, url: str):
+def clone(user_data, ws_id: int, url: str):
+    """
+    Clones a repository by url into given workspace
+    :param user_data: Session data to get access token for GitHub
+    :param ws_id: Destination workspace to clone
+    :param url: URL of the source repository
+    :return: True if successful, otherwise NameConflict is thrown
+    """
     workspace = db_session().query(Workspace).filter(Workspace.id == ws_id).first()
     url_decode = parse.urlparse(url)
 
