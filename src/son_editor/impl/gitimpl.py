@@ -40,7 +40,7 @@ def git_command(git_args: list, cwd: str = None):
     return out.decode(), err.decode(), exitcode
 
 
-def create_info_dict(out: str = None, err: str = None, exitcode: int = None) -> dict:
+def create_info_dict(out: str = None, err: str = None, exitcode: int = 0) -> dict:
     """
     Creates a dict that holds process information
     :param out: Out bytes
@@ -49,7 +49,8 @@ def create_info_dict(out: str = None, err: str = None, exitcode: int = None) -> 
     :return: Dict with packed information.
     """
     # Empty result_dict
-    result_dict = {}
+    result_dict = {'success': exitcode is 0}
+
     if out:
         result_dict.update({'out': out})
     if err:
@@ -146,4 +147,4 @@ def clone(user_data, ws_id: int, url: str):
     else:
         raise NotImplemented("Cloning from other is not implemented yet. Only github supported for now.")
 
-    return create_info_dict(out=out, err=err, exitcode=exitcode)
+    return create_info_dict(out=out)
