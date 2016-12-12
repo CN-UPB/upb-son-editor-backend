@@ -187,6 +187,11 @@ def sync_project_descriptor(project) -> None:
     elif 'publish_to' in project_descriptor:
         project.publish_to = ','.join(project_descriptor['publish_to'])
 
+    if project.repo_url is not None:
+        project_descriptor['repo_url'] = project.repo_url
+    elif 'repo_url' in project_descriptor:
+        project.repo_url = project_descriptor['repo_url']
+
     write_project_descriptor(project, project_descriptor)
 
 
