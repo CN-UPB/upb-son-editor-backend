@@ -5,14 +5,14 @@ from urllib import parse
 
 from flask import session
 
-from son_editor.app.database import db_session
-from son_editor.app.exceptions import NotFound, InvalidArgument
+from son_editor.util.constants import PROJECT_REL_PATH
+from son_editor.app.database import db_session, scan_project_dir, sync_project_descriptor
+from son_editor.app.exceptions import NotFound, InvalidArgument, NameConflict
 from son_editor.models.project import Project
 from son_editor.models.workspace import Workspace
 
 # Github domains to check if github is used
 GITHUB_DOMAINS = ['github.com', 'www.github.com']
-PROJECT_REL_PATH = "/projects"
 
 logger = logging.getLogger(__name__)
 
@@ -31,7 +31,8 @@ def git_command(git_args: list, cwd: str = None):
     :param cwd: Optional current working directory
     :return: out, error, exitcode
     """
-    args = ['git'].join(git_args)
+    args = ['git']
+    args.extend(git_args)
     git_process = Popen(args,
                         stdout=PIPE, stderr=PIPE, cwd=cwd)
 
@@ -51,17 +52,18 @@ def create_info_dict(out: str = None, err: str = None, exitcode: int = 0) -> dic
     # Empty result_dict
     result_dict = {'success': exitcode is 0}
 
-    if out:
-        result_dict.update({'out': out})
+    # Prioritize err message
     if err:
-        result_dict.update({'err': err})
+        result_dict.update({'message': err})
+    elif out:
+        result_dict.update({'message': out})
     if exitcode:
         result_dict.update({'exitcode': exitcode})
     return result_dict
 
 
-def get_project(pj_id: int) -> Project:
-    project = db_session().query(Project).filter(Project.id == pj_id).first()
+def get_project(ws_id, pj_id: int) -> Project:
+    project = db_session().query(Project).join(Workspace).filter(Workspace.id == ws_id and Project.id == pj_id).first()
     if not project:
         raise NotFound("Could not find project with id {}".format(pj_id))
     return project
@@ -74,11 +76,18 @@ def get_workspace(ws_id: int) -> Workspace:
     return workspace
 
 
-def commit(project_id: int, commit_message: str):
-    project = get_project(project_id)
+def commit_and_push(ws_id: int, project_id: int, commit_message: str):
+    """
+    Commits and then pushes changes.
+    :param ws_id:
+    :param project_id:
+    :param commit_message:
+    :return:
+    """
+    project = get_project(ws_id, project_id)
 
     project_full_path = project.workspace.path + project.rel_path
-    # Add all stuff and modified files
+    # Stage all modified, added, removed files
     out, err, exitcode = git_command(['add', '-A'], cwd=project_full_path)
     if exitcode is not 0:
         return create_info_dict(err, exitcode)
@@ -88,11 +97,16 @@ def commit(project_id: int, commit_message: str):
     if exitcode is not 0:
         return create_info_dict(err, exitcode)
 
+    # Push all changes to the repo url
+    out, err, exitcode = git_command(['push'], project.repo_url, cwd=project_full_path)
+    if exitcode is not 0:
+        return create_info_dict(err, exitcode)
+
     # Success on commit
     return create_info_dict(out)
 
 
-def pull(project_id: int):
+def pull(ws_id: int, project_id: int):
     """
     Pulls data from the given project_id.
     :param user_data: Session data to get access token for GitHub
@@ -100,9 +114,9 @@ def pull(project_id: int):
     :param project_id:
     :return:
     """
-    project = get_project(project_id)
+    project = get_project(ws_id, project_id)
 
-    project_full_path = project.workspace.path + project.rel_path
+    project_full_path = os.path.join(project.workspace.path, PROJECT_REL_PATH, project.rel_path)
 
     # Error handling
     if not os.path.isdir(project_full_path):
@@ -117,7 +131,7 @@ def pull(project_id: int):
 
     if exitcode is not 0:
         return create_info_dict(err=err, exitcode=exitcode)
-    return create_info_dict(out=out, err=err, exitcode=exitcode)
+    return create_info_dict(out=out)
 
 
 def clone(user_data, ws_id: int, url: str):
@@ -133,18 +147,38 @@ def clone(user_data, ws_id: int, url: str):
 
     if is_github(url_decode.netloc):
         # Take the suffix of url as first name candidate
-        project_target_name = os.path.split(url_decode.path)[-1]
-        project_target_path = workspace.path + "/" + PROJECT_REL_PATH + "/" + project_target_name
+        github_project_name = os.path.split(url_decode.path)[-1]
+
+        pj = db_session().query(Project).filter(Workspace.id == workspace.id).filter(
+            Project.name == github_project_name).first()
+
+        # Error when the project name in given workspace already exists
+        if pj is not None:
+            raise NameConflict('A project with name {} already exists'.format(github_project_name))
+
+        project_target_path = os.path.join(workspace.path, PROJECT_REL_PATH, github_project_name)
+
+        logger.info('Cloning from github repo...')
 
         # If url in GitHub domain, access by token
-        logger.info('Cloning from github repo...')
         url_with_token = 'https://{}@github.com/{}'.format(session['access_token'], url_decode.path)
         out, err, exitcode = git_command(['clone', url_with_token, project_target_path])
 
-        if exitcode is not 0:
+        if exitcode is 0:
+            # Create project and scan it.
+            dbsession = db_session()
+            try:
+                pj = Project(github_project_name, github_project_name, workspace)
+                pj.repo_url = url
+                sync_project_descriptor(pj)
+                dbsession.add(pj)
+                dbsession.commit()
+                scan_project_dir(project_target_path, pj)
+                return create_info_dict(out=out)
+            except:
+                dbsession.rollback()
+                raise Exception("Scan project failed")
+        else:
             return create_info_dict(err=err, exitcode=exitcode)
 
-    else:
-        raise NotImplemented("Cloning from other is not implemented yet. Only github supported for now.")
-
-    return create_info_dict(out=out)
+    raise NotImplemented("Cloning from other is not implemented yet. Only github supported for now.")

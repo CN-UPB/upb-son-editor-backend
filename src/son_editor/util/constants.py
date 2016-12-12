@@ -21,6 +21,10 @@ VNFS = "functions"
 """ The network services and funtions url constant"""
 NSFS = "nsfs"
 
+# PATH constants
+"""The project path relative to the workspace"""
+PROJECT_REL_PATH = "projects"
+
 
 class Category(Enum):
     project = 1
