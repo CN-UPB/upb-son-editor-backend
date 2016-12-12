@@ -15,6 +15,7 @@ class Project(Base):
     vendor = Column(String(50))
     version = Column(String(50))
     rel_path = Column(String(255))
+    repo_url = Column(Text())
     workspace_id = Column(Integer, ForeignKey('workspace.id'))
     workspace = relationship("Workspace", back_populates="projects")
 
