@@ -3,7 +3,7 @@ import shlex
 from flask import session, request
 from flask_restplus import Resource, Namespace, fields
 
-from son_editor.impl.gitimpl import clone, pull, commit
+from son_editor.impl.gitimpl import clone, pull, commit_and_push
 from son_editor.util.constants import WORKSPACES
 from son_editor.util.requestutil import get_json, prepare_response
 
@@ -52,9 +52,9 @@ class GitCommit(Resource):
     @namespace.response(200, "OK", response_model)
     @namespace.response(404, "When project or workspace not found", exception_model)
     def post(self, ws_id):
-        """ Makes a commit """
+        """ Commits and pushes changes """
         json_data = get_json(request)
-        result = commit(ws_id, shlex.quote(json_data['project_id']), shlex.quote(json_data['commit_message']))
+        result = commit_and_push(ws_id, shlex.quote(json_data['project_id']), shlex.quote(json_data['commit_message']))
         return prepare_response(result, 200)
 
 
@@ -66,5 +66,5 @@ class GitPull(Resource):
     def post(self, ws_id):
         """ Pulls updates from a project """
         json_data = get_json(request)
-        result = pull(ws_id, shlex.quote(json_data['project_id']))
+        result = pull(ws_id, json_data['project_id'])
         return prepare_response(result, 200)

@@ -5,6 +5,7 @@ from urllib import parse
 
 from flask import session
 
+from son_editor.util.constants import PROJECT_REL_PATH
 from son_editor.app.database import db_session, scan_project_dir, sync_project_descriptor
 from son_editor.app.exceptions import NotFound, InvalidArgument, NameConflict
 from son_editor.models.project import Project
@@ -12,7 +13,6 @@ from son_editor.models.workspace import Workspace
 
 # Github domains to check if github is used
 GITHUB_DOMAINS = ['github.com', 'www.github.com']
-PROJECT_REL_PATH = "/projects"
 
 logger = logging.getLogger(__name__)
 
@@ -63,8 +63,7 @@ def create_info_dict(out: str = None, err: str = None, exitcode: int = 0) -> dic
 
 
 def get_project(ws_id, pj_id: int) -> Project:
-    project = db_session().query(Workspace).filter(Workspace.id == ws_id).query(Project).filter(
-        Project.id == pj_id).first()
+    project = db_session().query(Project).join(Workspace).filter(Workspace.id == ws_id and Project.id == pj_id).first()
     if not project:
         raise NotFound("Could not find project with id {}".format(pj_id))
     return project
@@ -77,17 +76,29 @@ def get_workspace(ws_id: int) -> Workspace:
     return workspace
 
 
-def commit(ws_id: int, project_id: int, commit_message: str):
+def commit_and_push(ws_id: int, project_id: int, commit_message: str):
+    """
+    Commits and then pushes changes.
+    :param ws_id:
+    :param project_id:
+    :param commit_message:
+    :return:
+    """
     project = get_project(ws_id, project_id)
 
     project_full_path = project.workspace.path + project.rel_path
-    # Add all stuff and modified files
+    # Stage all modified, added, removed files
     out, err, exitcode = git_command(['add', '-A'], cwd=project_full_path)
     if exitcode is not 0:
         return create_info_dict(err, exitcode)
 
     # Commit with message
     out, err, exitcode = git_command(['commit', "-m '{}'".format(commit_message)], cwd=project_full_path)
+    if exitcode is not 0:
+        return create_info_dict(err, exitcode)
+
+    # Push all changes to the repo url
+    out, err, exitcode = git_command(['push'], project.repo_url, cwd=project_full_path)
     if exitcode is not 0:
         return create_info_dict(err, exitcode)
 
@@ -105,7 +116,7 @@ def pull(ws_id: int, project_id: int):
     """
     project = get_project(ws_id, project_id)
 
-    project_full_path = project.workspace.path + project.rel_path
+    project_full_path = os.path.join(project.workspace.path, PROJECT_REL_PATH, project.rel_path)
 
     # Error handling
     if not os.path.isdir(project_full_path):
@@ -145,7 +156,7 @@ def clone(user_data, ws_id: int, url: str):
         if pj is not None:
             raise NameConflict('A project with name {} already exists'.format(github_project_name))
 
-        project_target_path = workspace.path + "/" + PROJECT_REL_PATH + "/" + github_project_name
+        project_target_path = os.path.join(workspace.path, PROJECT_REL_PATH, github_project_name)
 
         logger.info('Cloning from github repo...')
 
