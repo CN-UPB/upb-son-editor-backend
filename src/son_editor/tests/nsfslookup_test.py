@@ -34,20 +34,20 @@ class NsfslookupTest(unittest.TestCase):
 
     def test_simple_project(self):
         response = self.app.get(
-            WORKSPACES + '/' + str(self.wsid) + '/' + PROJECTS + '/' + str(
-                self.pjid) + '/' + NSFS + '/' + VNFS + '/' + self.vnf_vendor + "/" + self.vnf_name + "/" + self.vnf_version)
+            WORKSPACES + '/' + str(self.wsid) + '/' + PROJECTS + '/' + str(self.pjid) + '/' +
+            NSFS + '/' + VNFS + '/' + self.vnf_vendor + "/" + self.vnf_name + "/" + self.vnf_version)
         response_json = json.loads(response.data.decode())
-        self.assertTrue(
-            response_json['vendor'] == self.vnf_vendor and response_json['name'] == self.vnf_name and response_json[
-                'version'] == self.vnf_version)
+        self.assertEqual(response_json['descriptor']['vendor'], self.vnf_vendor)
+        self.assertEqual(response_json['descriptor']['name'], self.vnf_name)
+        self.assertEqual(response_json['descriptor']['version'], self.vnf_version)
 
         response = self.app.get(
-            WORKSPACES + '/' + str(self.wsid) + '/' + PROJECTS + '/' + str(
-                self.pjid) + '/' + NSFS + '/' + SERVICES + '/' + self.ns_vendor + "/" + self.ns_name + "/" + self.ns_version)
+            WORKSPACES + '/' + str(self.wsid) + '/' + PROJECTS + '/' + str(self.pjid) + '/' +
+            NSFS + '/' + SERVICES + '/' + self.ns_vendor + "/" + self.ns_name + "/" + self.ns_version)
         response_json = json.loads(response.data.decode())
-        self.assertTrue(
-            response_json['vendor'] == self.ns_vendor and response_json['name'] == self.ns_name and response_json[
-                'version'] == self.ns_version)
+        self.assertEqual(response_json['descriptor']['vendor'], self.ns_vendor)
+        self.assertEqual(response_json['descriptor']['name'], self.ns_name)
+        self.assertEqual(response_json['descriptor']['version'], self.ns_version)
 
     def test_private_catalogue(self):
         session = db_session()

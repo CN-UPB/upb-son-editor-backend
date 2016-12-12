@@ -31,7 +31,7 @@ class Descriptor(Base):
         return '<Descriptor {}>'.format(self.uid)
 
     def as_dict(self):
-        return {'id': self.id, 'name': self.name, 'vendor': self.vendor, 'version': self.version, 'uid': self.uid,
+        return {'id': self.id, 'uid': self.uid,
                 'descriptor': json.loads(self.descriptor)}
 
 
