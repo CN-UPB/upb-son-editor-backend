@@ -100,3 +100,5 @@ config.yaml
 .doctrees/
 doc/doctrees/
 doc/_source/
+docs/doctrees/
+docs/html/_sources/
