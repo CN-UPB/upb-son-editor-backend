@@ -4,8 +4,7 @@ from son_editor.app.database import db_session
 from son_editor.app.exceptions import NotFound
 from son_editor.impl.catalogue_servicesimpl import get_all_in_catalogue
 from son_editor.impl.cataloguesimpl import get_catalogues
-from son_editor.impl.usermanagement import get_user
-from son_editor.models.private_descriptor import PrivateFunction, PrivateService
+from son_editor.impl.private_catalogue_impl import query_private_nsfs
 from son_editor.models.project import Project
 
 logger = logging.getLogger(__name__)
@@ -36,30 +35,6 @@ def get_function(functions, vendor, name, version):
     return None
 
 
-def query_private_nsfs(vendor, name, version, is_vnf):
-    """
-    Finds a function in the private catalogue
-    :param vendor:
-    :param name:
-    :param version:
-    :return:
-    """
-    session = db_session()
-    if is_vnf:
-        descriptor = session.query(PrivateFunction).filter(PrivateFunction.name == name and
-                                                           PrivateFunction.vendor == vendor and
-                                                           PrivateFunction.version == version and
-                                                           PrivateFunction.workspace.owner == get_user(
-                                                               session['user_data'])).first()
-    else:
-        descriptor = session.query(PrivateService).filter(
-            PrivateService.name == name and
-            PrivateService.vendor == vendor and
-            PrivateService.version == version and PrivateFunction.workspace.owner == get_user(
-                session['user_data'])).first()
-    return descriptor
-
-
 def find_by_priority(user_data, ws_id, project_id, vendor, name, version, is_vnf):
     """
     Tries to find vnf / network services by descending priority project / private catalogue / public catalogue.
@@ -85,7 +60,7 @@ def find_by_priority(user_data, ws_id, project_id, vendor, name, version, is_vnf
 
     # 2. Try to find in private catalogue
     # private catalogue funcs/nss are cached in db
-    function = query_private_nsfs(vendor, name, version, is_vnf)
+    function = query_private_nsfs(ws_id, vendor, name, version, is_vnf)
     if function is not None:
         return function.as_dict()
 

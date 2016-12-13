@@ -90,7 +90,7 @@ def _scan_workspace_dir(ws_path, ws):
     from son_editor.models.project import Project
     session = db_session()
     # Scan private catalogue in workspace
-    _scan_private_catalogue(ws_path + "/catalogues")
+    _scan_private_catalogue(ws_path + "/catalogues", ws)
 
     for project_name in os.listdir(os.path.join(ws_path, "projects")):
         if not Path(os.path.join(ws_path, "projects", project_name)).is_dir():
@@ -112,17 +112,17 @@ def scan_project_dir(project_path, pj):
     _scan_for_functions(os.path.join(project_path, "sources", "vnf"), pj)
 
 
-def _scan_private_catalogue(catalogue_dir):
+def _scan_private_catalogue(catalogue_dir, ws):
     from son_editor.models.private_descriptor import PrivateFunction, PrivateService
     # Configure ns catalogue path
     ns_path = Path(catalogue_dir + "/ns_catalogue/")
     vnf_path = Path(catalogue_dir + "/vnf_catalogue/")
 
-    _scan_catalogue(ns_path, PrivateService())
-    _scan_catalogue(vnf_path, PrivateFunction())
+    _scan_catalogue(ns_path, PrivateService(), ws)
+    _scan_catalogue(vnf_path, PrivateFunction(), ws)
 
 
-def _scan_catalogue(cat_path, model):
+def _scan_catalogue(cat_path, model, ws):
     from pathlib import Path
     from son_editor.models.private_descriptor import PrivateDescriptor
     session = db_session()
@@ -137,10 +137,10 @@ def _scan_catalogue(cat_path, model):
                     path = Path(str(version) + "/descriptor.yml")
                     if path.exists() and path.is_file():
                         logger.info("Found private ns/vnf: {}".format(path))
-                        function = model
-                        function = load_ns_vnf_from_disk(str(path), function)
-                        if not session.query(PrivateDescriptor).filter(PrivateDescriptor.uid == function.uid).first():
-                            session.add(function)
+                        model = load_ns_vnf_from_disk(str(path), model)
+                        model.workspace = ws
+                        if not session.query(PrivateDescriptor).filter(PrivateDescriptor.uid == model.uid).first():
+                            session.add(model)
                             session.commit()
                         else:
                             session.rollback()

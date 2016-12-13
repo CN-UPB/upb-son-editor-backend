@@ -8,6 +8,7 @@ from flask_restplus import Namespace, Model, fields
 from flask_restplus import Resource
 
 from son_editor.impl import functionsimpl, catalogue_servicesimpl
+from son_editor.impl.private_catalogue_impl import publish_private_nsfs
 from son_editor.util.constants import get_parent, Category, WORKSPACES, PROJECTS, CATALOGUES, PLATFORMS, VNFS
 from son_editor.util.requestutil import prepare_response, get_json
 
@@ -41,6 +42,10 @@ funct_response = funct.inherit("FunctionResponse", funct, {
     "descriptor": fields.Nested(model=funct, description="The Complete VNF Descriptor"),
     "id": fields.Integer(description='The Project ID'),
     "project_id": fields.Integer(description='The parent project id'),
+})
+
+message_response = proj_namespace.model("Message", {
+    'message': fields.String(required=True, description="The result message")
 })
 
 proj_namespace.add_model(funct.name, funct)
@@ -152,3 +157,26 @@ class Function(Resource):
             return prepare_response(functions)
         # TODO implement for catalog and platform
         return prepare_response("not yet implemented")
+
+
+@proj_namespace.route('/<int:vnf_id>/publish')
+@proj_namespace.param('ws_id', 'The Workspace identifier')
+@proj_namespace.param('parent_id', 'The Project identifier')
+@proj_namespace.param('vnf_id', 'The VNF identifier')
+class PrivateService(Resource):
+    @proj_namespace.response(200, "OK", message_response)
+    def get(self, ws_id, parent_id, vnf_id):
+        """
+        Publish function to private
+
+        Publishes the function to the workspace wide catalogue
+        :param ws_id:
+        :param parent_id:
+        :param vnf_id:
+        :return:
+        """
+        function = functionsimpl.get_function_project(ws_id, parent_id, vnf_id)
+        publish_private_nsfs(ws_id, function["descriptor"], True)
+        return prepare_response(
+            {"message": "Function {} was published to private catalogue".format(function['descriptor']['name'])},
+            201)
