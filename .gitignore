@@ -97,3 +97,6 @@ config.yaml
 .pydevproject
 *.db
 .idea/
+.doctrees/
+doc/doctrees/
+doc/_source/
