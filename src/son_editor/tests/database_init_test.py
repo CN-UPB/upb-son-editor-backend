@@ -47,7 +47,7 @@ class ProjectTest(unittest.TestCase):
         create_private_catalogue_descriptor(ws, vnf_vendor, vnf_name, vnf_version, True)
 
         # Scan the private catalogue
-        _scan_private_catalogue(ws.path + "/catalogues/")
+        _scan_private_catalogue(ws.path + "/catalogues/", ws)
 
         # Check if the created services / vnfs were read in and placed in db
         result_ns = session.query(PrivateService).filter(PrivateService.uid == ns_uid)[0]
