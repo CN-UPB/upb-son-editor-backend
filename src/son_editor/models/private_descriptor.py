@@ -20,11 +20,12 @@ class PrivateDescriptor(Base):
 
     UniqueConstraint('ws_id', 'uid', name='uix_1')
 
-    def __init__(self, name=None, version=None, vendor=None, descriptor=None):
+    def __init__(self, ws_id=None, name=None, version=None, vendor=None, descriptor=None):
         self.name = name
         self.vendor = vendor
         self.version = version
         self.descriptor = descriptor
+        self.ws_id = ws_id
         if self.name and self.vendor and self.version:
             self.uid = "{}:{}:{}".format(self.vendor, self.name, self.version)
 

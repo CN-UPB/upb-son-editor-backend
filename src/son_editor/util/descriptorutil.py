@@ -195,8 +195,24 @@ def sync_project_descriptor(project) -> None:
     write_project_descriptor(project, project_descriptor)
 
 
-def get_schema(ws_path: str, schema_id : str) -> dict:
+def get_schema(ws_path: str, schema_id: str) -> dict:
     from son.workspace.workspace import Workspace
 
     workspace = Workspace(ws_path)
     return SchemaValidator(workspace).load_schema(schema_id)
+
+
+def write_private_descriptor(workspace_path: str, is_vnf: bool, descriptor: dict):
+    type_folder = "ns"
+    if is_vnf:
+        type_folder = "vnf"
+    dirs = os.path.join(workspace_path,
+                        type_folder,
+                        descriptor['vendor'],
+                        descriptor['name'],
+                        descriptor['version'])
+    if not os.path.exists(dirs):
+        os.makedirs(dirs)
+    file_path = os.path.join(dirs, "descriptor.yml")
+    with open(file_path, "w") as stream:
+        return yaml.safe_dump(descriptor, stream)

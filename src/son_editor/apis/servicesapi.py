@@ -10,6 +10,7 @@ from flask_restplus import Model, Resource, Namespace, fields
 
 from son_editor.impl import platform_connector
 from son_editor.impl import servicesimpl, catalogue_servicesimpl
+from son_editor.impl.private_catalogue_impl import publish_private_nsfs
 from son_editor.util.constants import get_parent, Category, WORKSPACES, PROJECTS, CATALOGUES, PLATFORMS, SERVICES
 from son_editor.util.requestutil import prepare_response, get_json
 
@@ -43,6 +44,10 @@ serv_response = serv.inherit("ServiceResponse", serv, {
     "descriptor": fields.Nested(model=serv, description="The Complete Service Descriptor"),
     "id": fields.Integer(description='The Project ID'),
     "project_id": fields.Integer(description='The parent workspace id'),
+})
+
+message_response = proj_namespace.model("Message", {
+    'message': fields.String(required=True, description="The result message")
 })
 
 proj_namespace.add_model(serv_update.name, serv_update)
@@ -164,3 +169,23 @@ class Service(Resource):
             service = catalogue_servicesimpl.get_in_catalogue(ws_id, parent_id, service_id, False)
             return prepare_response(service)
         return prepare_response("not yet implemented")
+
+
+@proj_namespace.route('/<int:service_id>/publish')
+class PrivateService(Resource):
+    """Private service publishing method"""
+
+    @proj_namespace.response(201, "OK", message_response)
+    def get(self, ws_id, parent_id, service_id):
+        """
+        Publish service to private
+
+        Publishes the service to the workspace wide catalogue
+        :param ws_id:
+        :param parent_id:
+        :param service_id:
+        :return:
+        """
+        service = servicesimpl.get_service(ws_id, parent_id, service_id)
+        publish_private_nsfs(ws_id, service["descriptor"], False)
+        return prepare_response({"message": "Service {} was published to private catalogue".format(service.name)}, 201)

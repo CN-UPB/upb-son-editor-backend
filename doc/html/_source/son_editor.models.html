@@ -1,0 +1,701 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>son_editor.models package &#8212; Sonata Editor Backend 0.9 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.9',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="son_editor.util package" href="son_editor.util.html" />
+    <link rel="prev" title="son_editor.impl package" href="son_editor.impl.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="son-editor-models-package">
+<h1>son_editor.models package<a class="headerlink" href="#son-editor-models-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-son_editor.models.descriptor">
+<span id="son-editor-models-descriptor-module"></span><h2>son_editor.models.descriptor module<a class="headerlink" href="#module-son_editor.models.descriptor" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="son_editor.models.descriptor.Descriptor">
+<em class="property">class </em><code class="descclassname">son_editor.models.descriptor.</code><code class="descname">Descriptor</code><span class="sig-paren">(</span><em>name=None</em>, <em>version=None</em>, <em>vendor=None</em>, <em>descriptor=None</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.models.descriptor.Descriptor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">sqlalchemy.ext.declarative.api.Base</span></code></p>
+<dl class="method">
+<dt id="son_editor.models.descriptor.Descriptor.as_dict">
+<code class="descname">as_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.models.descriptor.Descriptor.as_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.descriptor.Descriptor.descriptor">
+<code class="descname">descriptor</code><a class="headerlink" href="#son_editor.models.descriptor.Descriptor.descriptor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.descriptor.Descriptor.id">
+<code class="descname">id</code><a class="headerlink" href="#son_editor.models.descriptor.Descriptor.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.descriptor.Descriptor.name">
+<code class="descname">name</code><a class="headerlink" href="#son_editor.models.descriptor.Descriptor.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.descriptor.Descriptor.project_id">
+<code class="descname">project_id</code><a class="headerlink" href="#son_editor.models.descriptor.Descriptor.project_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.descriptor.Descriptor.uid">
+<code class="descname">uid</code><a class="headerlink" href="#son_editor.models.descriptor.Descriptor.uid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.descriptor.Descriptor.vendor">
+<code class="descname">vendor</code><a class="headerlink" href="#son_editor.models.descriptor.Descriptor.vendor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.descriptor.Descriptor.version">
+<code class="descname">version</code><a class="headerlink" href="#son_editor.models.descriptor.Descriptor.version" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="son_editor.models.descriptor.Function">
+<em class="property">class </em><code class="descclassname">son_editor.models.descriptor.</code><code class="descname">Function</code><span class="sig-paren">(</span><em>name=None</em>, <em>version=None</em>, <em>vendor=None</em>, <em>descriptor=None</em>, <em>project=None</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.models.descriptor.Function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#son_editor.models.descriptor.Descriptor" title="son_editor.models.descriptor.Descriptor"><code class="xref py py-class docutils literal"><span class="pre">son_editor.models.descriptor.Descriptor</span></code></a></p>
+<dl class="attribute">
+<dt id="son_editor.models.descriptor.Function.descriptor">
+<code class="descname">descriptor</code><a class="headerlink" href="#son_editor.models.descriptor.Function.descriptor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.descriptor.Function.id">
+<code class="descname">id</code><a class="headerlink" href="#son_editor.models.descriptor.Function.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.descriptor.Function.name">
+<code class="descname">name</code><a class="headerlink" href="#son_editor.models.descriptor.Function.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.descriptor.Function.project">
+<code class="descname">project</code><a class="headerlink" href="#son_editor.models.descriptor.Function.project" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.descriptor.Function.project_id">
+<code class="descname">project_id</code><a class="headerlink" href="#son_editor.models.descriptor.Function.project_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.descriptor.Function.uid">
+<code class="descname">uid</code><a class="headerlink" href="#son_editor.models.descriptor.Function.uid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.descriptor.Function.vendor">
+<code class="descname">vendor</code><a class="headerlink" href="#son_editor.models.descriptor.Function.vendor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.descriptor.Function.version">
+<code class="descname">version</code><a class="headerlink" href="#son_editor.models.descriptor.Function.version" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="son_editor.models.descriptor.Service">
+<em class="property">class </em><code class="descclassname">son_editor.models.descriptor.</code><code class="descname">Service</code><span class="sig-paren">(</span><em>name=None</em>, <em>version=None</em>, <em>vendor=None</em>, <em>descriptor=None</em>, <em>project=None</em>, <em>meta='{}'</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.models.descriptor.Service" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#son_editor.models.descriptor.Descriptor" title="son_editor.models.descriptor.Descriptor"><code class="xref py py-class docutils literal"><span class="pre">son_editor.models.descriptor.Descriptor</span></code></a></p>
+<dl class="method">
+<dt id="son_editor.models.descriptor.Service.as_dict">
+<code class="descname">as_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.models.descriptor.Service.as_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.descriptor.Service.descriptor">
+<code class="descname">descriptor</code><a class="headerlink" href="#son_editor.models.descriptor.Service.descriptor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.descriptor.Service.id">
+<code class="descname">id</code><a class="headerlink" href="#son_editor.models.descriptor.Service.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.descriptor.Service.meta">
+<code class="descname">meta</code><a class="headerlink" href="#son_editor.models.descriptor.Service.meta" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.descriptor.Service.name">
+<code class="descname">name</code><a class="headerlink" href="#son_editor.models.descriptor.Service.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.descriptor.Service.project">
+<code class="descname">project</code><a class="headerlink" href="#son_editor.models.descriptor.Service.project" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.descriptor.Service.project_id">
+<code class="descname">project_id</code><a class="headerlink" href="#son_editor.models.descriptor.Service.project_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.descriptor.Service.uid">
+<code class="descname">uid</code><a class="headerlink" href="#son_editor.models.descriptor.Service.uid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.descriptor.Service.vendor">
+<code class="descname">vendor</code><a class="headerlink" href="#son_editor.models.descriptor.Service.vendor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.descriptor.Service.version">
+<code class="descname">version</code><a class="headerlink" href="#son_editor.models.descriptor.Service.version" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-son_editor.models.private_descriptor">
+<span id="son-editor-models-private-descriptor-module"></span><h2>son_editor.models.private_descriptor module<a class="headerlink" href="#module-son_editor.models.private_descriptor" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="son_editor.models.private_descriptor.PrivateDescriptor">
+<em class="property">class </em><code class="descclassname">son_editor.models.private_descriptor.</code><code class="descname">PrivateDescriptor</code><span class="sig-paren">(</span><em>ws_id=None</em>, <em>name=None</em>, <em>version=None</em>, <em>vendor=None</em>, <em>descriptor=None</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.models.private_descriptor.PrivateDescriptor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">sqlalchemy.ext.declarative.api.Base</span></code></p>
+<dl class="method">
+<dt id="son_editor.models.private_descriptor.PrivateDescriptor.as_dict">
+<code class="descname">as_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.models.private_descriptor.PrivateDescriptor.as_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.private_descriptor.PrivateDescriptor.descriptor">
+<code class="descname">descriptor</code><a class="headerlink" href="#son_editor.models.private_descriptor.PrivateDescriptor.descriptor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.private_descriptor.PrivateDescriptor.id">
+<code class="descname">id</code><a class="headerlink" href="#son_editor.models.private_descriptor.PrivateDescriptor.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.private_descriptor.PrivateDescriptor.name">
+<code class="descname">name</code><a class="headerlink" href="#son_editor.models.private_descriptor.PrivateDescriptor.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.private_descriptor.PrivateDescriptor.uid">
+<code class="descname">uid</code><a class="headerlink" href="#son_editor.models.private_descriptor.PrivateDescriptor.uid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.private_descriptor.PrivateDescriptor.vendor">
+<code class="descname">vendor</code><a class="headerlink" href="#son_editor.models.private_descriptor.PrivateDescriptor.vendor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.private_descriptor.PrivateDescriptor.version">
+<code class="descname">version</code><a class="headerlink" href="#son_editor.models.private_descriptor.PrivateDescriptor.version" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.private_descriptor.PrivateDescriptor.ws_id">
+<code class="descname">ws_id</code><a class="headerlink" href="#son_editor.models.private_descriptor.PrivateDescriptor.ws_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="son_editor.models.private_descriptor.PrivateFunction">
+<em class="property">class </em><code class="descclassname">son_editor.models.private_descriptor.</code><code class="descname">PrivateFunction</code><span class="sig-paren">(</span><em>ws_id=None</em>, <em>name=None</em>, <em>version=None</em>, <em>vendor=None</em>, <em>descriptor=None</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.models.private_descriptor.PrivateFunction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#son_editor.models.private_descriptor.PrivateDescriptor" title="son_editor.models.private_descriptor.PrivateDescriptor"><code class="xref py py-class docutils literal"><span class="pre">son_editor.models.private_descriptor.PrivateDescriptor</span></code></a></p>
+<dl class="attribute">
+<dt id="son_editor.models.private_descriptor.PrivateFunction.descriptor">
+<code class="descname">descriptor</code><a class="headerlink" href="#son_editor.models.private_descriptor.PrivateFunction.descriptor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.private_descriptor.PrivateFunction.id">
+<code class="descname">id</code><a class="headerlink" href="#son_editor.models.private_descriptor.PrivateFunction.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.private_descriptor.PrivateFunction.name">
+<code class="descname">name</code><a class="headerlink" href="#son_editor.models.private_descriptor.PrivateFunction.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.private_descriptor.PrivateFunction.uid">
+<code class="descname">uid</code><a class="headerlink" href="#son_editor.models.private_descriptor.PrivateFunction.uid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.private_descriptor.PrivateFunction.vendor">
+<code class="descname">vendor</code><a class="headerlink" href="#son_editor.models.private_descriptor.PrivateFunction.vendor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.private_descriptor.PrivateFunction.version">
+<code class="descname">version</code><a class="headerlink" href="#son_editor.models.private_descriptor.PrivateFunction.version" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.private_descriptor.PrivateFunction.workspace">
+<code class="descname">workspace</code><a class="headerlink" href="#son_editor.models.private_descriptor.PrivateFunction.workspace" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.private_descriptor.PrivateFunction.ws_id">
+<code class="descname">ws_id</code><a class="headerlink" href="#son_editor.models.private_descriptor.PrivateFunction.ws_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="son_editor.models.private_descriptor.PrivateService">
+<em class="property">class </em><code class="descclassname">son_editor.models.private_descriptor.</code><code class="descname">PrivateService</code><span class="sig-paren">(</span><em>ws_id=None</em>, <em>name=None</em>, <em>version=None</em>, <em>vendor=None</em>, <em>descriptor=None</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.models.private_descriptor.PrivateService" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#son_editor.models.private_descriptor.PrivateDescriptor" title="son_editor.models.private_descriptor.PrivateDescriptor"><code class="xref py py-class docutils literal"><span class="pre">son_editor.models.private_descriptor.PrivateDescriptor</span></code></a></p>
+<dl class="attribute">
+<dt id="son_editor.models.private_descriptor.PrivateService.descriptor">
+<code class="descname">descriptor</code><a class="headerlink" href="#son_editor.models.private_descriptor.PrivateService.descriptor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.private_descriptor.PrivateService.id">
+<code class="descname">id</code><a class="headerlink" href="#son_editor.models.private_descriptor.PrivateService.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.private_descriptor.PrivateService.name">
+<code class="descname">name</code><a class="headerlink" href="#son_editor.models.private_descriptor.PrivateService.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.private_descriptor.PrivateService.uid">
+<code class="descname">uid</code><a class="headerlink" href="#son_editor.models.private_descriptor.PrivateService.uid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.private_descriptor.PrivateService.vendor">
+<code class="descname">vendor</code><a class="headerlink" href="#son_editor.models.private_descriptor.PrivateService.vendor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.private_descriptor.PrivateService.version">
+<code class="descname">version</code><a class="headerlink" href="#son_editor.models.private_descriptor.PrivateService.version" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.private_descriptor.PrivateService.workspace">
+<code class="descname">workspace</code><a class="headerlink" href="#son_editor.models.private_descriptor.PrivateService.workspace" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.private_descriptor.PrivateService.ws_id">
+<code class="descname">ws_id</code><a class="headerlink" href="#son_editor.models.private_descriptor.PrivateService.ws_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-son_editor.models.project">
+<span id="son-editor-models-project-module"></span><h2>son_editor.models.project module<a class="headerlink" href="#module-son_editor.models.project" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="son_editor.models.project.Project">
+<em class="property">class </em><code class="descclassname">son_editor.models.project.</code><code class="descname">Project</code><span class="sig-paren">(</span><em>name=None</em>, <em>rel_path=None</em>, <em>workspace=None</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.models.project.Project" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">sqlalchemy.ext.declarative.api.Base</span></code></p>
+<dl class="method">
+<dt id="son_editor.models.project.Project.as_dict">
+<code class="descname">as_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.models.project.Project.as_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.project.Project.description">
+<code class="descname">description</code><a class="headerlink" href="#son_editor.models.project.Project.description" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.project.Project.functions">
+<code class="descname">functions</code><a class="headerlink" href="#son_editor.models.project.Project.functions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.project.Project.id">
+<code class="descname">id</code><a class="headerlink" href="#son_editor.models.project.Project.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.project.Project.maintainer">
+<code class="descname">maintainer</code><a class="headerlink" href="#son_editor.models.project.Project.maintainer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.project.Project.name">
+<code class="descname">name</code><a class="headerlink" href="#son_editor.models.project.Project.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.project.Project.publish_to">
+<code class="descname">publish_to</code><a class="headerlink" href="#son_editor.models.project.Project.publish_to" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.project.Project.rel_path">
+<code class="descname">rel_path</code><a class="headerlink" href="#son_editor.models.project.Project.rel_path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.project.Project.repo_url">
+<code class="descname">repo_url</code><a class="headerlink" href="#son_editor.models.project.Project.repo_url" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.project.Project.services">
+<code class="descname">services</code><a class="headerlink" href="#son_editor.models.project.Project.services" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.project.Project.vendor">
+<code class="descname">vendor</code><a class="headerlink" href="#son_editor.models.project.Project.vendor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.project.Project.version">
+<code class="descname">version</code><a class="headerlink" href="#son_editor.models.project.Project.version" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.project.Project.workspace">
+<code class="descname">workspace</code><a class="headerlink" href="#son_editor.models.project.Project.workspace" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.project.Project.workspace_id">
+<code class="descname">workspace_id</code><a class="headerlink" href="#son_editor.models.project.Project.workspace_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-son_editor.models.repository">
+<span id="son-editor-models-repository-module"></span><h2>son_editor.models.repository module<a class="headerlink" href="#module-son_editor.models.repository" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="son_editor.models.repository.Catalogue">
+<em class="property">class </em><code class="descclassname">son_editor.models.repository.</code><code class="descname">Catalogue</code><span class="sig-paren">(</span><em>name=None</em>, <em>url=None</em>, <em>publish=None</em>, <em>workspace=None</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.models.repository.Catalogue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#son_editor.models.repository.Repository" title="son_editor.models.repository.Repository"><code class="xref py py-class docutils literal"><span class="pre">son_editor.models.repository.Repository</span></code></a></p>
+<dl class="attribute">
+<dt id="son_editor.models.repository.Catalogue.id">
+<code class="descname">id</code><a class="headerlink" href="#son_editor.models.repository.Catalogue.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.repository.Catalogue.name">
+<code class="descname">name</code><a class="headerlink" href="#son_editor.models.repository.Catalogue.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.repository.Catalogue.publish">
+<code class="descname">publish</code><a class="headerlink" href="#son_editor.models.repository.Catalogue.publish" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.repository.Catalogue.url">
+<code class="descname">url</code><a class="headerlink" href="#son_editor.models.repository.Catalogue.url" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.repository.Catalogue.workspace">
+<code class="descname">workspace</code><a class="headerlink" href="#son_editor.models.repository.Catalogue.workspace" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.repository.Catalogue.workspace_id">
+<code class="descname">workspace_id</code><a class="headerlink" href="#son_editor.models.repository.Catalogue.workspace_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="son_editor.models.repository.Platform">
+<em class="property">class </em><code class="descclassname">son_editor.models.repository.</code><code class="descname">Platform</code><span class="sig-paren">(</span><em>name=None</em>, <em>url=None</em>, <em>publish=None</em>, <em>workspace=None</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.models.repository.Platform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#son_editor.models.repository.Repository" title="son_editor.models.repository.Repository"><code class="xref py py-class docutils literal"><span class="pre">son_editor.models.repository.Repository</span></code></a></p>
+<dl class="attribute">
+<dt id="son_editor.models.repository.Platform.id">
+<code class="descname">id</code><a class="headerlink" href="#son_editor.models.repository.Platform.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.repository.Platform.name">
+<code class="descname">name</code><a class="headerlink" href="#son_editor.models.repository.Platform.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.repository.Platform.publish">
+<code class="descname">publish</code><a class="headerlink" href="#son_editor.models.repository.Platform.publish" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.repository.Platform.url">
+<code class="descname">url</code><a class="headerlink" href="#son_editor.models.repository.Platform.url" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.repository.Platform.workspace">
+<code class="descname">workspace</code><a class="headerlink" href="#son_editor.models.repository.Platform.workspace" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.repository.Platform.workspace_id">
+<code class="descname">workspace_id</code><a class="headerlink" href="#son_editor.models.repository.Platform.workspace_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="son_editor.models.repository.Repository">
+<em class="property">class </em><code class="descclassname">son_editor.models.repository.</code><code class="descname">Repository</code><span class="sig-paren">(</span><em>name=None</em>, <em>url=None</em>, <em>publish=False</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.models.repository.Repository" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">sqlalchemy.ext.declarative.api.Base</span></code></p>
+<dl class="method">
+<dt id="son_editor.models.repository.Repository.as_dict">
+<code class="descname">as_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.models.repository.Repository.as_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.repository.Repository.id">
+<code class="descname">id</code><a class="headerlink" href="#son_editor.models.repository.Repository.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.repository.Repository.name">
+<code class="descname">name</code><a class="headerlink" href="#son_editor.models.repository.Repository.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.repository.Repository.publish">
+<code class="descname">publish</code><a class="headerlink" href="#son_editor.models.repository.Repository.publish" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.repository.Repository.url">
+<code class="descname">url</code><a class="headerlink" href="#son_editor.models.repository.Repository.url" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.repository.Repository.workspace_id">
+<code class="descname">workspace_id</code><a class="headerlink" href="#son_editor.models.repository.Repository.workspace_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-son_editor.models.user">
+<span id="son-editor-models-user-module"></span><h2>son_editor.models.user module<a class="headerlink" href="#module-son_editor.models.user" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="son_editor.models.user.User">
+<em class="property">class </em><code class="descclassname">son_editor.models.user.</code><code class="descname">User</code><span class="sig-paren">(</span><em>name=None</em>, <em>email=None</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.models.user.User" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">sqlalchemy.ext.declarative.api.Base</span></code></p>
+<dl class="attribute">
+<dt id="son_editor.models.user.User.email">
+<code class="descname">email</code><a class="headerlink" href="#son_editor.models.user.User.email" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.user.User.id">
+<code class="descname">id</code><a class="headerlink" href="#son_editor.models.user.User.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.user.User.name">
+<code class="descname">name</code><a class="headerlink" href="#son_editor.models.user.User.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.user.User.workspaces">
+<code class="descname">workspaces</code><a class="headerlink" href="#son_editor.models.user.User.workspaces" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-son_editor.models.workspace">
+<span id="son-editor-models-workspace-module"></span><h2>son_editor.models.workspace module<a class="headerlink" href="#module-son_editor.models.workspace" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="son_editor.models.workspace.Workspace">
+<em class="property">class </em><code class="descclassname">son_editor.models.workspace.</code><code class="descname">Workspace</code><span class="sig-paren">(</span><em>name=None</em>, <em>path=None</em>, <em>owner=None</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.models.workspace.Workspace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">sqlalchemy.ext.declarative.api.Base</span></code></p>
+<dl class="method">
+<dt id="son_editor.models.workspace.Workspace.as_dict">
+<code class="descname">as_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.models.workspace.Workspace.as_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.workspace.Workspace.catalogues">
+<code class="descname">catalogues</code><a class="headerlink" href="#son_editor.models.workspace.Workspace.catalogues" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.workspace.Workspace.id">
+<code class="descname">id</code><a class="headerlink" href="#son_editor.models.workspace.Workspace.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.workspace.Workspace.name">
+<code class="descname">name</code><a class="headerlink" href="#son_editor.models.workspace.Workspace.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.workspace.Workspace.owner">
+<code class="descname">owner</code><a class="headerlink" href="#son_editor.models.workspace.Workspace.owner" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.workspace.Workspace.owner_id">
+<code class="descname">owner_id</code><a class="headerlink" href="#son_editor.models.workspace.Workspace.owner_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.workspace.Workspace.path">
+<code class="descname">path</code><a class="headerlink" href="#son_editor.models.workspace.Workspace.path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.workspace.Workspace.platforms">
+<code class="descname">platforms</code><a class="headerlink" href="#son_editor.models.workspace.Workspace.platforms" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.workspace.Workspace.priv_functions">
+<code class="descname">priv_functions</code><a class="headerlink" href="#son_editor.models.workspace.Workspace.priv_functions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.workspace.Workspace.priv_services">
+<code class="descname">priv_services</code><a class="headerlink" href="#son_editor.models.workspace.Workspace.priv_services" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.workspace.Workspace.projects">
+<code class="descname">projects</code><a class="headerlink" href="#son_editor.models.workspace.Workspace.projects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-son_editor.models">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-son_editor.models" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">son_editor.models package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-son_editor.models.descriptor">son_editor.models.descriptor module</a></li>
+<li><a class="reference internal" href="#module-son_editor.models.private_descriptor">son_editor.models.private_descriptor module</a></li>
+<li><a class="reference internal" href="#module-son_editor.models.project">son_editor.models.project module</a></li>
+<li><a class="reference internal" href="#module-son_editor.models.repository">son_editor.models.repository module</a></li>
+<li><a class="reference internal" href="#module-son_editor.models.user">son_editor.models.user module</a></li>
+<li><a class="reference internal" href="#module-son_editor.models.workspace">son_editor.models.workspace module</a></li>
+<li><a class="reference internal" href="#module-son_editor.models">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">src</a><ul>
+  <li><a href="son_editor.html">son_editor package</a><ul>
+      <li>Previous: <a href="son_editor.impl.html" title="previous chapter">son_editor.impl package</a></li>
+      <li>Next: <a href="son_editor.util.html" title="next chapter">son_editor.util package</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/_source/son_editor.models.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, PG SanDMAN.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+      |
+      <a href="../_sources/_source/son_editor.models.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

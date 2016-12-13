@@ -58,7 +58,7 @@ class NsfslookupTest(unittest.TestCase):
         workspace = session.query(Workspace).filter(Workspace.id == self.wsid)[0]
 
         create_private_catalogue_descriptor(workspace, vendor, name, version, True)
-        _scan_private_catalogue(workspace.path + "/catalogues")
+        _scan_private_catalogue(workspace.path + "/catalogues", workspace)
         response = self.app.get(
             WORKSPACES + '/' + str(self.wsid) + '/' + PROJECTS + '/' + str(
                 self.pjid) + '/' + NSFS + '/' + VNFS + '/' + vendor + "/" + name + "/" + version)
