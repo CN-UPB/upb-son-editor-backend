@@ -66,4 +66,5 @@ To use this feature you will need to create a fork of the repository under your 
 ### Known Issues:
 If the database design changes it may happen that the automated deployment fails due to the old database not conforming to the new schema. If this is the case, the docker container should be torn down and rebuild as described in the Manual Update section. The data is preserved by writing the descriptors onto disk and the database will automatically be rebuilt by scanning the workspaces on startup.
   
-
+## Documentation
+The server code is documented using sphinx: [documentation](https://cn-upb.github.io/upb-son-editor-backend/)
