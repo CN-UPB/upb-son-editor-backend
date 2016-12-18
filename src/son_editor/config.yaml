@@ -14,6 +14,7 @@ workspaces-location: "~/son-editor/workspaces/"
 allowed-hosts:
   - "localhost"
   - "fg-cn-sandman1.cs.upb.de"
+  - "cn-upb.github.io"
 database:
     location: "production.db"
 testing: False
