@@ -42,7 +42,7 @@ class GitClone(Resource):
     def post(self, ws_id):
         """ Clones projects into the workspace """
         json_data = get_json(request)
-        result = clone(session["user_data"], ws_id, shlex.quote(json_data['url']))
+        result = clone(ws_id, shlex.quote(json_data['url']))
         return prepare_response(result, 200)
 
 
