@@ -10,6 +10,7 @@ from subprocess import Popen, PIPE
 
 from son_editor.app.database import db_session, scan_project_dir
 from son_editor.app.exceptions import NotFound, NameConflict
+from son_editor.impl import gitimpl
 from son_editor.models.project import Project
 from son_editor.models.workspace import Workspace
 from son_editor.util.descriptorutil import sync_project_descriptor
@@ -55,6 +56,13 @@ def create_project(ws_id: int, project_data: dict) -> dict:
     :return: The new project descriptor as a dict
     """
     project_name = shlex.quote(project_data["name"])
+    repo = None
+    if "repo" in project_data:
+        repo = project_data["repo"]
+
+    if repo:
+        return gitimpl.clone(ws_id, repo, project_name)
+
     session = db_session()
 
     # test if ws Name exists in database
