@@ -44,7 +44,7 @@ def _load_user_data():
         user_data_result = requests.get('https://api.github.com/user', headers=headers)
         user_data = json.loads(user_data_result.text)
         session['user_data'] = user_data
-        logger.info("user_data: %s" % user_data)
+        logger.debug("user_data: %s" % user_data)
         return True
     return False
 

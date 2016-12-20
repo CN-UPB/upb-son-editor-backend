@@ -30,5 +30,6 @@ class Shutdown(Resource):
 class Log(Resource):
     def get(self):
         """Return the logfile as string"""
-        with open("editor-backend.log") as logfile:
+        with open("editor-backend-public.log") as logfile:
             return Response(logfile.read().replace("\n", "<br/>"))
+
