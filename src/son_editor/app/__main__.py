@@ -144,6 +144,13 @@ def setup_logging():
                         datefmt='%m-%d %H:%M',
                         filename='editor-backend.log',
                         filemode='w')
+    # define handler to use for api-> log to display warnings only
+    public = logging.FileHandler('editor-backend-public.log')
+    public.setLevel(logging.WARN)
+    formatter = logging.Formatter(fmt='%(asctime)s %(name)-12s %(levelname)-8s %(message)s', datefmt='%m-%d %H:%M')
+    public.setFormatter(formatter)
+    logging.getLogger('').addHandler(public)
+
     # define a Handler which writes INFO messages or higher to the sys.stderr
     console = logging.StreamHandler()
     console.setLevel(logging.INFO)

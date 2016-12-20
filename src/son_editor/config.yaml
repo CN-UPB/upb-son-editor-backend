@@ -17,4 +17,10 @@ allowed-hosts:
   - "cn-upb.github.io"
 database:
     location: "production.db"
+
+schemas:
+  vnf:
+    - https://raw.githubusercontent.com/sonata-nfv/son-schema/master/function-descriptor/vnfd-schema.yml
+  ns:
+    - https://raw.githubusercontent.com/sonata-nfv/son-schema/master/service-descriptor/nsd-schema.yml
 testing: False
