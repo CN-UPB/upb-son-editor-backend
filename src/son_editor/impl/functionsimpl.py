@@ -9,12 +9,10 @@ from jsonschema import ValidationError
 
 from son_editor.app.database import db_session
 from son_editor.app.exceptions import NameConflict, NotFound, InvalidArgument
-from son_editor.impl.usermanagement import get_user
 from son_editor.models.descriptor import Function
 from son_editor.models.project import Project
 from son_editor.models.workspace import Workspace
-from son_editor.util.descriptorutil import write_ns_vnf_to_disk, get_file_path, get_schema, get_file_name
-from son.schema.validator import SchemaValidator
+from son_editor.util.descriptorutil import write_ns_vnf_to_disk, get_file_path, get_schema, get_file_name, SCHEMA_ID_VNF
 
 logger = logging.getLogger(__name__)
 
@@ -67,7 +65,7 @@ def create_function(ws_id: int, project_id: int, function_data: dict) -> dict:
     session = db_session()
 
     ws = session.query(Workspace).filter(Workspace.id == ws_id).first()  # type: Workspace
-    validate_vnf(ws.path, function_data)
+    validate_vnf(ws.vnf_schema_index, function_data)
 
     # test if function Name exists in database
     existing_functions = list(session.query(Function)
@@ -109,7 +107,7 @@ def update_function(ws_id: int, prj_id: int, func_id: int, func_data: dict) -> d
     session = db_session()
 
     ws = session.query(Workspace).filter(Workspace.id == ws_id).first()
-    validate_vnf(ws.path, func_data)
+    validate_vnf(ws.vnf_schema_index, func_data)
 
     # test if ws Name exists in database
     function = session.query(Function). \
@@ -186,8 +184,8 @@ def delete_function(ws_id: int, project_id: int, function_id: int) -> dict:
     return function.as_dict()
 
 
-def validate_vnf(workspace_path: str, descriptor: dict) -> None:
-    schema = get_schema(workspace_path, SchemaValidator.SCHEMA_FUNCTION_DESCRIPTOR)
+def validate_vnf(schema_index: int, descriptor: dict) -> None:
+    schema = get_schema(schema_index, SCHEMA_ID_VNF)
     try:
         jsonschema.validate(descriptor, schema)
     except ValidationError as ve:
