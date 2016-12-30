@@ -1,0 +1,400 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>son_editor.util package &#8212; Sonata Editor Backend 0.9 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.9',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="son_editor.models package" href="son_editor.models.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="son-editor-util-package">
+<h1>son_editor.util package<a class="headerlink" href="#son-editor-util-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-son_editor.util.constants">
+<span id="son-editor-util-constants-module"></span><h2>son_editor.util.constants module<a class="headerlink" href="#module-son_editor.util.constants" title="Permalink to this headline">¶</a></h2>
+<p>Created on 22.07.2016</p>
+<p>&#64;author: Jonas</p>
+<dl class="data">
+<dt id="son_editor.util.constants.CATALOGUES">
+<code class="descclassname">son_editor.util.constants.</code><code class="descname">CATALOGUES</code><em class="property"> = 'catalogues'</em><a class="headerlink" href="#son_editor.util.constants.CATALOGUES" title="Permalink to this definition">¶</a></dt>
+<dd><p>The network service url constant</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="son_editor.util.constants.Category">
+<em class="property">class </em><code class="descclassname">son_editor.util.constants.</code><code class="descname">Category</code><a class="headerlink" href="#son_editor.util.constants.Category" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="son_editor.util.constants.Category.catalogue">
+<code class="descname">catalogue</code><em class="property"> = 2</em><a class="headerlink" href="#son_editor.util.constants.Category.catalogue" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.util.constants.Category.platform">
+<code class="descname">platform</code><em class="property"> = 3</em><a class="headerlink" href="#son_editor.util.constants.Category.platform" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.util.constants.Category.project">
+<code class="descname">project</code><em class="property"> = 1</em><a class="headerlink" href="#son_editor.util.constants.Category.project" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="data">
+<dt id="son_editor.util.constants.NSFS">
+<code class="descclassname">son_editor.util.constants.</code><code class="descname">NSFS</code><em class="property"> = 'nsfs'</em><a class="headerlink" href="#son_editor.util.constants.NSFS" title="Permalink to this definition">¶</a></dt>
+<dd><p>The project path relative to the workspace</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="son_editor.util.constants.PLATFORMS">
+<code class="descclassname">son_editor.util.constants.</code><code class="descname">PLATFORMS</code><em class="property"> = 'platforms'</em><a class="headerlink" href="#son_editor.util.constants.PLATFORMS" title="Permalink to this definition">¶</a></dt>
+<dd><p>the platform url constant</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="son_editor.util.constants.PROJECTS">
+<code class="descclassname">son_editor.util.constants.</code><code class="descname">PROJECTS</code><em class="property"> = 'projects'</em><a class="headerlink" href="#son_editor.util.constants.PROJECTS" title="Permalink to this definition">¶</a></dt>
+<dd><p>The platform url constant</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="son_editor.util.constants.SERVICES">
+<code class="descclassname">son_editor.util.constants.</code><code class="descname">SERVICES</code><em class="property"> = 'services'</em><a class="headerlink" href="#son_editor.util.constants.SERVICES" title="Permalink to this definition">¶</a></dt>
+<dd><p>The virtual network function url constant</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="son_editor.util.constants.VNFS">
+<code class="descclassname">son_editor.util.constants.</code><code class="descname">VNFS</code><em class="property"> = 'functions'</em><a class="headerlink" href="#son_editor.util.constants.VNFS" title="Permalink to this definition">¶</a></dt>
+<dd><p>The network services and funtions url constant</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="son_editor.util.constants.WORKSPACES">
+<code class="descclassname">son_editor.util.constants.</code><code class="descname">WORKSPACES</code><em class="property"> = 'workspaces'</em><a class="headerlink" href="#son_editor.util.constants.WORKSPACES" title="Permalink to this definition">¶</a></dt>
+<dd><p>The project url constant</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="son_editor.util.constants.get_parent">
+<code class="descclassname">son_editor.util.constants.</code><code class="descname">get_parent</code><span class="sig-paren">(</span><em>request</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.util.constants.get_parent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper method to extract the parent category
+for the services and functions api calls</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-son_editor.util.context">
+<span id="son-editor-util-context-module"></span><h2>son_editor.util.context module<a class="headerlink" href="#module-son_editor.util.context" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="son_editor.util.context.init_test_context">
+<code class="descclassname">son_editor.util.context.</code><code class="descname">init_test_context</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.util.context.init_test_context" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div>Initializes a test-case context and cleans up workspace location beforehand</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-son_editor.util.descriptorutil">
+<span id="son-editor-util-descriptorutil-module"></span><h2>son_editor.util.descriptorutil module<a class="headerlink" href="#module-son_editor.util.descriptorutil" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="son_editor.util.descriptorutil.get_file_name">
+<code class="descclassname">son_editor.util.descriptorutil.</code><code class="descname">get_file_name</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#son_editor.util.descriptorutil.get_file_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the standard file name for a descriptor
+:param model: The database  model of the descriptor
+:return: The standard descriptor file name, computed from the models vendor name and version</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="son_editor.util.descriptorutil.get_file_path">
+<code class="descclassname">son_editor.util.descriptorutil.</code><code class="descname">get_file_path</code><span class="sig-paren">(</span><em>folder: str</em>, <em>model</em><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#son_editor.util.descriptorutil.get_file_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the filepath to the descriptor computed
+from the models vendor name and version
+:param folder: the folder to write to, either &#8220;vnf&#8221; or &#8220;nsd&#8221;
+to specify if a vnf or network service needs to be saved
+:param model: The database  model of the descriptor
+:return:</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="son_editor.util.descriptorutil.get_schema">
+<code class="descclassname">son_editor.util.descriptorutil.</code><code class="descname">get_schema</code><span class="sig-paren">(</span><em>ws_path: str</em>, <em>schema_id: str</em><span class="sig-paren">)</span> &rarr; dict<a class="headerlink" href="#son_editor.util.descriptorutil.get_schema" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="son_editor.util.descriptorutil.load_ns_vnf_from_disk">
+<code class="descclassname">son_editor.util.descriptorutil.</code><code class="descname">load_ns_vnf_from_disk</code><span class="sig-paren">(</span><em>file: str</em>, <em>model</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.util.descriptorutil.load_ns_vnf_from_disk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads a vnf or network service descriptor from disk and initializes the given model
+:param file: the file path of the descriptor
+:param model: The database  model of the descriptor
+:return: the given updated model</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="son_editor.util.descriptorutil.load_project_descriptor">
+<code class="descclassname">son_editor.util.descriptorutil.</code><code class="descname">load_project_descriptor</code><span class="sig-paren">(</span><em>project</em><span class="sig-paren">)</span> &rarr; dict<a class="headerlink" href="#son_editor.util.descriptorutil.load_project_descriptor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads the project descriptor from disk</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="son_editor.util.descriptorutil.load_workspace_descriptor">
+<code class="descclassname">son_editor.util.descriptorutil.</code><code class="descname">load_workspace_descriptor</code><span class="sig-paren">(</span><em>workspace</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#son_editor.util.descriptorutil.load_workspace_descriptor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads the workspace descriptor from disk and updates the database model
+:param workspace: The workspace database model
+:return:</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="son_editor.util.descriptorutil.sync_project_descriptor">
+<code class="descclassname">son_editor.util.descriptorutil.</code><code class="descname">sync_project_descriptor</code><span class="sig-paren">(</span><em>project</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#son_editor.util.descriptorutil.sync_project_descriptor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the project model with data from the project descriptor and vice versa
+:param project: The projects database model
+:return:</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="son_editor.util.descriptorutil.synchronize_workspace_descriptor">
+<code class="descclassname">son_editor.util.descriptorutil.</code><code class="descname">synchronize_workspace_descriptor</code><span class="sig-paren">(</span><em>workspace</em>, <em>session</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#son_editor.util.descriptorutil.synchronize_workspace_descriptor" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Updates both the workspace descriptor on disk and in</dt>
+<dd>the database to contain the same essential data</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>workspace</strong> &#8211; the database workspace model</li>
+<li><strong>session</strong> &#8211; the current database session</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="son_editor.util.descriptorutil.update_workspace_descriptor">
+<code class="descclassname">son_editor.util.descriptorutil.</code><code class="descname">update_workspace_descriptor</code><span class="sig-paren">(</span><em>workspace</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#son_editor.util.descriptorutil.update_workspace_descriptor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the workspace descriptor with data from the workspace model
+:param workspace: The workspace model
+:return:</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="son_editor.util.descriptorutil.write_ns_vnf_to_disk">
+<code class="descclassname">son_editor.util.descriptorutil.</code><code class="descname">write_ns_vnf_to_disk</code><span class="sig-paren">(</span><em>folder: str</em>, <em>model</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#son_editor.util.descriptorutil.write_ns_vnf_to_disk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the given model to disk as a yml file
+:param folder: the folder to write to, either &#8220;vnf&#8221; or &#8220;nsd&#8221;
+to specify if a vnf or network service needs to be saved
+:param model: The database  model of the descriptor
+:return:</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="son_editor.util.descriptorutil.write_private_descriptor">
+<code class="descclassname">son_editor.util.descriptorutil.</code><code class="descname">write_private_descriptor</code><span class="sig-paren">(</span><em>workspace_path: str</em>, <em>is_vnf: bool</em>, <em>descriptor: dict</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.util.descriptorutil.write_private_descriptor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="son_editor.util.descriptorutil.write_project_descriptor">
+<code class="descclassname">son_editor.util.descriptorutil.</code><code class="descname">write_project_descriptor</code><span class="sig-paren">(</span><em>project</em>, <em>project_descriptor</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.util.descriptorutil.write_project_descriptor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes the project database model to disk</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-son_editor.util.publishutil">
+<span id="son-editor-util-publishutil-module"></span><h2>son_editor.util.publishutil module<a class="headerlink" href="#module-son_editor.util.publishutil" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="son_editor.util.publishutil.deploy_on_platform">
+<code class="descclassname">son_editor.util.publishutil.</code><code class="descname">deploy_on_platform</code><span class="sig-paren">(</span><em>service_uuid: dict</em>, <em>platform: son_editor.models.repository.Platform</em><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#son_editor.util.publishutil.deploy_on_platform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pushes the package located at the package_path to the specified Platform
+:param service_uuid: a dictionary with the service uuid on the platform
+:param platform: The platform to upload to
+:return:</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="son_editor.util.publishutil.pack_project">
+<code class="descclassname">son_editor.util.publishutil.</code><code class="descname">pack_project</code><span class="sig-paren">(</span><em>project: son_editor.models.project.Project</em><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#son_editor.util.publishutil.pack_project" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls the son-package cli tool to pack the project and prepare it for deployment
+:param project: The project to pack
+:return:</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="son_editor.util.publishutil.push_to_platform">
+<code class="descclassname">son_editor.util.publishutil.</code><code class="descname">push_to_platform</code><span class="sig-paren">(</span><em>package_path: str</em>, <em>platform: son_editor.models.repository.Platform</em><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#son_editor.util.publishutil.push_to_platform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pushes the package located at the package_path to the specified Platform
+:param package_path: the location of package to be pushed on disk
+:param platform: The platform to upload to
+:return:</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-son_editor.util.requestutil">
+<span id="son-editor-util-requestutil-module"></span><h2>son_editor.util.requestutil module<a class="headerlink" href="#module-son_editor.util.requestutil" title="Permalink to this headline">¶</a></h2>
+<p>Created on 28.07.2016</p>
+<p>&#64;author: Jonas</p>
+<dl class="function">
+<dt id="son_editor.util.requestutil.get_json">
+<code class="descclassname">son_editor.util.requestutil.</code><code class="descname">get_json</code><span class="sig-paren">(</span><em>request: flask.wrappers.Request</em><span class="sig-paren">)</span> &rarr; dict<a class="headerlink" href="#son_editor.util.requestutil.get_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper function to get a json dict out of a request
+:param request: Request to get the json data from
+:return: json data as dict</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="son_editor.util.requestutil.prepare_error">
+<code class="descclassname">son_editor.util.requestutil.</code><code class="descname">prepare_error</code><span class="sig-paren">(</span><em>data=None</em>, <em>code=500</em><span class="sig-paren">)</span> &rarr; tuple<a class="headerlink" href="#son_editor.util.requestutil.prepare_error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepares the error response and returns it as a tuple
+to accommodate for flask_restplus&#8217;s way to deal with errors
+:param data: The error message
+:param code: the http error code, 500 by default
+:return: A tuple of the data, the status code and the headers</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="son_editor.util.requestutil.prepare_response">
+<code class="descclassname">son_editor.util.requestutil.</code><code class="descname">prepare_response</code><span class="sig-paren">(</span><em>data=None</em>, <em>code=200</em><span class="sig-paren">)</span> &rarr; flask.wrappers.Response<a class="headerlink" href="#son_editor.util.requestutil.prepare_response" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the necessary headers and status code on the response
+:param data: The data to be returned to the client
+:param code: the status code. 200 by default
+:return: The Response object with the headers set according to the input data</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="son_editor.util.requestutil.rreplace">
+<code class="descclassname">son_editor.util.requestutil.</code><code class="descname">rreplace</code><span class="sig-paren">(</span><em>s</em>, <em>old</em>, <em>new</em>, <em>occurrence</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.util.requestutil.rreplace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replaces &#8216;occurences&#8217; occurences of string &#8216;old&#8217; in the given string &#8216;s&#8217; from right by &#8216;new&#8217;
+:param s: String that contains the replacing string
+:param old: String that gets replaced
+:param new: New string that replaces the old string
+:param occurrence: How many occurences get replaced
+:return: String that has replaced strings</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-son_editor.util">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-son_editor.util" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">son_editor.util package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-son_editor.util.constants">son_editor.util.constants module</a></li>
+<li><a class="reference internal" href="#module-son_editor.util.context">son_editor.util.context module</a></li>
+<li><a class="reference internal" href="#module-son_editor.util.descriptorutil">son_editor.util.descriptorutil module</a></li>
+<li><a class="reference internal" href="#module-son_editor.util.publishutil">son_editor.util.publishutil module</a></li>
+<li><a class="reference internal" href="#module-son_editor.util.requestutil">son_editor.util.requestutil module</a></li>
+<li><a class="reference internal" href="#module-son_editor.util">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">src</a><ul>
+  <li><a href="son_editor.html">son_editor package</a><ul>
+      <li>Previous: <a href="son_editor.models.html" title="previous chapter">son_editor.models package</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/_source/son_editor.util.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, PG SanDMAN.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+      |
+      <a href="../_sources/_source/son_editor.util.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

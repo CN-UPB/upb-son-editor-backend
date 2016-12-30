@@ -2,7 +2,14 @@ import json
 import os
 
 import yaml
-from son.schema.validator import SchemaValidator
+from urllib import request
+
+from son_editor.util.requestutil import CONFIG
+
+SCHEMA_ID_VNF = "vnf"
+SCHEMA_ID_NS = "ns"
+
+schemas = {}
 
 
 def load_ns_vnf_from_disk(file: str, model):
@@ -93,6 +100,8 @@ def synchronize_workspace_descriptor(workspace, session) -> None:
                 catalogue_server = {'id': cat.name, 'url': cat.url, 'publish': cat.publish}
                 ws_descriptor['catalogue_servers'].append(catalogue_server)
         ws_descriptor['name'] = workspace.name
+        ws_descriptor['ns_schema_index'] = workspace.ns_schema_index
+        ws_descriptor['vnf_schema_index'] = workspace.vnf_schema_index
         yaml.safe_dump(ws_descriptor, stream)
 
 
@@ -104,15 +113,19 @@ def update_workspace_descriptor(workspace) -> None:
     """
     with open(os.path.join(workspace.path, "workspace.yml"), "r") as stream:
         ws_descriptor = yaml.safe_load(stream)
-        ws_descriptor['catalogue_servers'] = []
-        for cat in workspace.catalogues:
-            catalogue_server = {'id': cat.name, 'url': cat.url, 'publish': cat.publish}
-            ws_descriptor['catalogue_servers'].append(catalogue_server)
-        ws_descriptor['platform_servers'] = []
-        for plat in workspace.platforms:
-            platform_server = {'id': plat.name, 'url': plat.url, 'publish': plat.publish}
-            ws_descriptor['platform_servers'].append(platform_server)
-        ws_descriptor['name'] = workspace.name
+
+    ws_descriptor['catalogue_servers'] = []
+    for cat in workspace.catalogues:
+        catalogue_server = {'id': cat.name, 'url': cat.url, 'publish': cat.publish}
+        ws_descriptor['catalogue_servers'].append(catalogue_server)
+    ws_descriptor['platform_servers'] = []
+    for plat in workspace.platforms:
+        platform_server = {'id': plat.name, 'url': plat.url, 'publish': plat.publish}
+        ws_descriptor['platform_servers'].append(platform_server)
+    ws_descriptor['name'] = workspace.name
+    ws_descriptor['ns_schema_index'] = workspace.ns_schema_index
+    ws_descriptor['vnf_schema_index'] = workspace.vnf_schema_index
+
     with open(os.path.join(workspace.path, "workspace.yml"), "w") as stream:
         yaml.safe_dump(ws_descriptor, stream)
 
@@ -140,6 +153,10 @@ def load_workspace_descriptor(workspace) -> None:
                 workspace.platforms.append(Platform(name=platform_server['id'],
                                                     url=platform_server['url'],
                                                     publish=platform_server['publish'] == 'yes'))
+        if 'ns_schema_index' in ws_descriptor:
+            workspace.ns_schema_index = ws_descriptor['ns_schema_index']
+        if 'vnf_schema_index' in ws_descriptor:
+            workspace.vnf_schema_index = ws_descriptor['vnf_schema_index']
 
 
 def load_project_descriptor(project) -> dict:
@@ -195,8 +212,43 @@ def sync_project_descriptor(project) -> None:
     write_project_descriptor(project, project_descriptor)
 
 
-def get_schema(ws_path: str, schema_id : str) -> dict:
-    from son.workspace.workspace import Workspace
+def load_schemas():
+    schemas[SCHEMA_ID_VNF] = []
+    for schema_url in CONFIG["schemas"][SCHEMA_ID_VNF]:
+        response = request.urlopen(schema_url)
+        data = response.read()
+        schemas[SCHEMA_ID_VNF].append(yaml.safe_load(data.decode('utf-8')))
+    schemas[SCHEMA_ID_NS] = []
+    for schema_url in CONFIG["schemas"][SCHEMA_ID_NS]:
+        response = request.urlopen(schema_url)
+        data = response.read()
+        schemas[SCHEMA_ID_NS].append(yaml.safe_load(data.decode('utf-8')))
 
-    workspace = Workspace(ws_path)
-    return SchemaValidator(workspace).load_schema(schema_id)
+
+def get_schemas():
+    if not schemas:
+        load_schemas()
+    return schemas
+
+
+def get_schema(schema_index, schema_id: str) -> dict:
+    if schema_id not in schemas:
+        load_schemas()
+
+    return schemas[schema_id][schema_index]
+
+
+def write_private_descriptor(workspace_path: str, is_vnf: bool, descriptor: dict):
+    type_folder = "ns"
+    if is_vnf:
+        type_folder = "vnf"
+    dirs = os.path.join(workspace_path,
+                        type_folder,
+                        descriptor['vendor'],
+                        descriptor['name'],
+                        descriptor['version'])
+    if not os.path.exists(dirs):
+        os.makedirs(dirs)
+    file_path = os.path.join(dirs, "descriptor.yml")
+    with open(file_path, "w") as stream:
+        return yaml.safe_dump(descriptor, stream)

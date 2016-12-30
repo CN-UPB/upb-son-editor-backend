@@ -6,14 +6,13 @@ import shutil
 
 import jsonschema
 from jsonschema import ValidationError
-from son.schema.validator import SchemaValidator
 
 from son_editor.app.database import db_session
 from son_editor.app.exceptions import NotFound, NameConflict, InvalidArgument
 from son_editor.models.descriptor import Service
 from son_editor.models.project import Project
 from son_editor.models.workspace import Workspace
-from son_editor.util.descriptorutil import write_ns_vnf_to_disk, get_file_path, get_schema
+from son_editor.util.descriptorutil import write_ns_vnf_to_disk, get_file_path, get_schema, SCHEMA_ID_NS
 
 logger = logging.getLogger(__name__)
 
@@ -67,7 +66,7 @@ def create_service(ws_id: int, project_id: int, service_data: dict) -> dict:
 
         # validate service descriptor
         workspace = session.query(Workspace).filter(Workspace.id == ws_id).first()
-        validate_service_descriptor(workspace.path, service_data["descriptor"])
+        validate_service_descriptor(workspace.ns_schema_index, service_data["descriptor"])
 
         # Create db object
         service = Service(name=service_name,
@@ -113,7 +112,7 @@ def update_service(ws_id, project_id, service_id, service_data):
         if 'descriptor' in service_data:
             # validate service descriptor
             workspace = session.query(Workspace).filter(Workspace.id == ws_id).first()
-            validate_service_descriptor(workspace.path, service_data["descriptor"])
+            validate_service_descriptor(workspace.ns_schema_index, service_data["descriptor"])
             service.descriptor = json.dumps(service_data["descriptor"])
             try:
                 service.name = shlex.quote(service_data["descriptor"]["name"])
@@ -187,14 +186,14 @@ def get_service(ws_id, parent_id, service_id):
         raise NotFound("No Service matching id {}".format(parent_id))
 
 
-def validate_service_descriptor(workspace_path: str, descriptor: dict) -> None:
+def validate_service_descriptor(schema_index: int, descriptor: dict) -> None:
     """
-    Validates the given descriptor with the schema loaded from SchemaValidator
-    :param workspace_path: the path of the workspace
+    Validates the given descriptor with the schema loaded from the configuration
+    :param schema_index: the workspace
     :param descriptor: the service descriptor
     :raises: InvalidArgument: if the validation fails
     """
-    schema = get_schema(workspace_path, SchemaValidator.SCHEMA_SERVICE_DESCRIPTOR)
+    schema = get_schema(schema_index, SCHEMA_ID_NS)
     try:
         jsonschema.validate(descriptor, schema)
     except ValidationError as ve:

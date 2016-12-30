@@ -11,7 +11,8 @@ from flask_restplus import Resource, Namespace
 from flask_restplus import fields
 
 from son_editor.impl import workspaceimpl
-from son_editor.util.constants import WORKSPACES
+from son_editor.impl.private_catalogue_impl import get_private_nsfs_list
+from son_editor.util.constants import WORKSPACES, SERVICES, VNFS
 from son_editor.util.requestutil import prepare_response, get_json
 
 namespace = Namespace(WORKSPACES, description="Workspace Resources")
@@ -31,6 +32,13 @@ ws = namespace.model("Workspace", {
 ws_response = namespace.inherit("WorkspaceResponse", ws, {
     "path": fields.String(description='The Physical Workspace location'),
     "id": fields.Integer(description='The Workspace ID')
+})
+
+descriptor_content = namespace.model("Descriptor Content", {})
+
+descriptor = namespace.model("Descriptor", {
+    "id": fields.Integer(description="The descriptor id"),
+    "descriptor": fields.Nested(descriptor_content)
 })
 
 
@@ -91,3 +99,41 @@ class Workspace(Resource):
         Deletes a specific workspace by its id"""
         workspace = workspaceimpl.delete_workspace(ws_id)
         return prepare_response(workspace)
+
+
+@namespace.route('/<int:ws_id>/' + SERVICES)
+@namespace.param("ws_id", "The workpace ID")
+class PrivateServices(Resource):
+    """
+    List Services of private Catalogue
+    """
+
+    @namespace.response(200, "Ok", [descriptor])
+    def get(self, ws_id):
+        """
+        List private Catalogue services
+
+        Lists all services in the Private workspace wide catalogue
+        :param ws_id:
+        :return:
+        """
+        return prepare_response(get_private_nsfs_list(ws_id, False))
+
+
+@namespace.route('/<int:ws_id>/' + VNFS)
+@namespace.param("ws_id", "The workspace ID")
+class PrivateFunctions(Resource):
+    """
+    List functions of private Catalogue
+    """
+
+    @namespace.response(200, "Ok", [descriptor])
+    def get(self, ws_id):
+        """
+        List private Catalogue functions
+
+        Lists all functions in the Private workspace wide catalogue
+        :param ws_id:
+        :return:
+        """
+        return prepare_response(get_private_nsfs_list(ws_id, True))

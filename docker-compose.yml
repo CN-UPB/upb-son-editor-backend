@@ -4,8 +4,12 @@ services:
         build: .
         ports:
             - "5000:5000"
+            - "443:443"
             - "5050:5050"
         volumes:
-            - ./src/son_editor/config.yaml:/upb-son-editor-backend/src/son_editor/config.yaml
-            - ./deployment.yml:/upb-son-editor-backend/deployment.yml
+            - ./src/son_editor/config.yaml:/app/src/son_editor/config.yaml
+            - ./deployment.yml:/app/deployment.yml
             - ./son-editor/workspaces:/root/son-editor/workspaces
+            - /etc/letsencrypt/archive/fg-cn-sandman1.cs.upb.de/fullchain1.pem:/certs/fullchain.pem
+            - /etc/letsencrypt/archive/fg-cn-sandman1.cs.upb.de/privkey1.pem:/certs/privkey.pem
+            - ./nginx.conf:/etc/nginx/conf.d/nginx.conf

@@ -5,7 +5,9 @@ import json
 from subprocess import Popen, PIPE
 from urllib import parse
 
+import shutil
 from flask import session
+from networkx.algorithms.bipartite.projection import project
 
 from son_editor.util.constants import PROJECT_REL_PATH
 from son_editor.app.database import db_session, scan_project_dir, sync_project_descriptor
@@ -75,7 +77,9 @@ def get_project(ws_id, pj_id: int, session=db_session()) -> Project:
     :param db session
     :return: Project model
     """
-    project = session.query(Project).join(Workspace).filter(Workspace.id == ws_id and Project.id == pj_id).first()
+    project = session.query(Project).join(Workspace)\
+        .filter(Workspace.id == ws_id)\
+        .filter(Project.id == pj_id).first()
     if not project:
         raise NotFound("Could not find project with id {}".format(pj_id))
     return project
@@ -98,21 +102,24 @@ def commit_and_push(ws_id: int, project_id: int, commit_message: str):
     """
     project = get_project(ws_id, project_id)
 
-    project_full_path = project.workspace.path + project.rel_path
+    project_full_path = os.path.join(project.workspace.path, PROJECT_REL_PATH, project.rel_path)
     # Stage all modified, added, removed files
     out, err, exitcode = git_command(['add', '-A'], cwd=project_full_path)
     if exitcode is not 0:
-        return create_info_dict(err, exitcode)
+        return create_info_dict(out, err=err, exitcode=exitcode)
 
     # Commit with message
     out, err, exitcode = git_command(['commit', "-m '{}'".format(commit_message)], cwd=project_full_path)
     if exitcode is not 0:
-        return create_info_dict(err, exitcode)
+        git_command(['reset', 'HEAD~1'], cwd=project_full_path)
+        return create_info_dict(out, err=err, exitcode=exitcode)
 
     # Push all changes to the repo url
-    out, err, exitcode = git_command(['push'], project.repo_url, cwd=project_full_path)
+    url_decode = parse.urlparse(project.repo_url)
+    out, err, exitcode = git_command(['push', _get_repo_url(url_decode)], cwd=project_full_path)
     if exitcode is not 0:
-        return create_info_dict(err, exitcode)
+        git_command(['reset', 'HEAD~1'], cwd=project_full_path)
+        return create_info_dict(out, err=err, exitcode=exitcode)
 
     # Success on commit
     return create_info_dict(out)
@@ -174,7 +181,7 @@ def pull(ws_id: int, project_id: int):
     return create_info_dict(out=out)
 
 
-def clone(user_data, ws_id: int, url: str):
+def clone(ws_id: int, url: str, name: str = None):
     """
     Clones a repository by url into given workspace
     :param user_data: Session data to get access token for GitHub
@@ -187,7 +194,9 @@ def clone(user_data, ws_id: int, url: str):
 
     if is_github(url_decode.netloc):
         # Take the suffix of url as first name candidate
-        github_project_name = os.path.split(url_decode.path)[-1]
+        github_project_name = name
+        if github_project_name is None:
+            github_project_name = os.path.split(url_decode.path)[-1]
 
         pj = db_session().query(Project).filter(Workspace.id == workspace.id).filter(
             Project.name == github_project_name).first()
@@ -201,7 +210,7 @@ def clone(user_data, ws_id: int, url: str):
         logger.info('Cloning from github repo...')
 
         # If url in GitHub domain, access by token
-        url_with_token = 'https://{}@github.com/{}'.format(session['access_token'], url_decode.path)
+        url_with_token = _get_repo_url(url_decode)
         out, err, exitcode = git_command(['clone', url_with_token, project_target_path])
 
         if exitcode is 0:
@@ -212,13 +221,20 @@ def clone(user_data, ws_id: int, url: str):
                 pj.repo_url = url
                 sync_project_descriptor(pj)
                 dbsession.add(pj)
-                dbsession.commit()
                 scan_project_dir(project_target_path, pj)
-                return create_info_dict(out=out)
+                dbsession.commit()
+                result = create_info_dict(out=out)
+                result["id"] = pj.id
+                return result
             except:
                 dbsession.rollback()
+                shutil.rmtree(project_target_path)
                 raise Exception("Scan project failed")
         else:
             return create_info_dict(err=err, exitcode=exitcode)
 
     raise NotImplemented("Cloning from other is not implemented yet. Only github supported for now.")
+
+
+def _get_repo_url(url_decode):
+    return 'https://{}@github.com/{}'.format(session['access_token'], url_decode.path)
