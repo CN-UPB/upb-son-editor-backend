@@ -1,5 +1,7 @@
 import logging
 import os
+import requests
+import json
 from subprocess import Popen, PIPE
 from urllib import parse
 
@@ -15,6 +17,9 @@ from son_editor.models.workspace import Workspace
 
 # Github domains to check if github is used
 GITHUB_DOMAINS = ['github.com', 'www.github.com']
+
+GITHUB_API_URL = 'https://api.github.com'
+GITHUB_API_CREATE_REPO_REL = '/user/repos'
 
 logger = logging.getLogger(__name__)
 
@@ -64,10 +69,17 @@ def create_info_dict(out: str = None, err: str = None, exitcode: int = 0) -> dic
     return result_dict
 
 
-def get_project(ws_id, pj_id: int) -> Project:
-    project = db_session().query(Project).join(Workspace). \
-        filter(Workspace.id == ws_id). \
-        filter(Project.id == pj_id).first()
+def get_project(ws_id, pj_id: int, session=db_session()) -> Project:
+    """
+    Returns a project and raises 404, when project not found.
+    :param ws_id: Workspace id
+    :param pj_id: Project id
+    :param db session
+    :return: Project model
+    """
+    project = session.query(Project).join(Workspace)\
+        .filter(Workspace.id == ws_id)\
+        .filter(Project.id == pj_id).first()
     if not project:
         raise NotFound("Could not find project with id {}".format(pj_id))
     return project
@@ -111,6 +123,34 @@ def commit_and_push(ws_id: int, project_id: int, commit_message: str):
 
     # Success on commit
     return create_info_dict(out)
+
+
+def create(ws_id: int, project_id: int, remote_repo_name: str):
+    database_session = db_session()
+    project = get_project(ws_id, project_id, database_session)
+
+    # curl -H "Authorization: token [TOKEN]" -X POST https://api.github.com/user/repos --data '{"name":"repo_name"}'
+
+    repo_data = {'name': remote_repo_name}
+    headers = {'Authorization': ' token {}'.format(session['access_token'])}
+
+    request = requests.post(GITHUB_API_URL + GITHUB_API_CREATE_REPO_REL, data=repo_data, headers=headers)
+
+    # Handle exceptions
+    if request.status_code != 201:
+        # Repository already exists
+        if request.status_code == 422:
+            raise NameConflict("Repository with name {} already exist on GitHub".format(remote_repo_name))
+        raise Exception("Unhandled exception occured")
+
+    # Get git url
+    data = json.loads(request.text)
+    git_url = data['git_url']
+    project.repo_url = git_url
+    database_session.commit()
+
+    # Push project
+    commit_and_push(ws_id, project_id)
 
 
 def pull(ws_id: int, project_id: int):
