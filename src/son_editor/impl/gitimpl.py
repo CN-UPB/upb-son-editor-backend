@@ -7,7 +7,6 @@ from urllib import parse
 
 import shutil
 from flask import session
-from networkx.algorithms.bipartite.projection import project
 
 from son_editor.util.constants import PROJECT_REL_PATH
 from son_editor.app.database import db_session, scan_project_dir, sync_project_descriptor
