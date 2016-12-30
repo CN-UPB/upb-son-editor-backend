@@ -3,7 +3,7 @@ import shlex
 from flask import session, request
 from flask_restplus import Resource, Namespace, fields
 
-from son_editor.impl.gitimpl import clone, pull, commit_and_push, create
+from son_editor.impl.gitimpl import clone, pull, commit_and_push, create_commit_and_push
 from son_editor.util.constants import WORKSPACES
 from son_editor.util.requestutil import get_json, prepare_response
 
@@ -71,7 +71,8 @@ class GitCreate(Resource):
     def post(self, ws_id):
         """ Creates a remote repository and pushes a project for it"""
         json_data = get_json(request)
-        result = create(ws_id, shlex.quote(json_data['project_id']), shlex.quote(json_data['repo_name']))
+        result = create_commit_and_push(ws_id, shlex.quote(json_data['project_id']),
+                                        shlex.quote(json_data['repo_name']))
         return prepare_response(result)
 
 

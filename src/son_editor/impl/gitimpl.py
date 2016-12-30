@@ -124,7 +124,15 @@ def commit_and_push(ws_id: int, project_id: int, commit_message: str):
     return create_info_dict(out)
 
 
-def create(ws_id: int, project_id: int, remote_repo_name: str):
+def create_commit_and_push(ws_id: int, project_id: int, remote_repo_name: str):
+    """
+    Creates a remote GitHub repository.
+
+    :param ws_id: Workspace ID
+    :param project_id: Project ID to create and push it
+    :param remote_repo_name: Remote repository name
+    :return:
+    """
     database_session = db_session()
     project = get_project(ws_id, project_id, database_session)
 
@@ -149,7 +157,7 @@ def create(ws_id: int, project_id: int, remote_repo_name: str):
     database_session.commit()
 
     # Push project
-    commit_and_push(ws_id, project_id)
+    return commit_and_push(ws_id, project_id)
 
 
 def pull(ws_id: int, project_id: int):
