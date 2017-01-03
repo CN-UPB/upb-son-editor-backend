@@ -7,7 +7,6 @@ from urllib import parse
 
 import shutil
 from flask import session
-from networkx.algorithms.bipartite.projection import project
 
 from son_editor.util.constants import PROJECT_REL_PATH
 from son_editor.app.database import db_session, scan_project_dir, sync_project_descriptor
@@ -125,16 +124,24 @@ def commit_and_push(ws_id: int, project_id: int, commit_message: str):
     return create_info_dict(out)
 
 
-def create(ws_id: int, project_id: int, remote_repo_name: str):
+def create_commit_and_push(ws_id: int, project_id: int, remote_repo_name: str):
+    """
+    Creates a remote GitHub repository named remote_repo_name and pushes given project into it.
+
+    :param ws_id: Workspace ID
+    :param project_id: Project ID to create and push it
+    :param remote_repo_name: Remote repository name
+    :return:
+    """
     database_session = db_session()
     project = get_project(ws_id, project_id, database_session)
 
     # curl -H "Authorization: token [TOKEN]" -X POST https://api.github.com/user/repos --data '{"name":"repo_name"}'
 
     repo_data = {'name': remote_repo_name}
-    headers = {'Authorization': ' token {}'.format(session['access_token'])}
+    headers = {'Authorization': 'token {}'.format(session['access_token'])}
 
-    request = requests.post(GITHUB_API_URL + GITHUB_API_CREATE_REPO_REL, data=repo_data, headers=headers)
+    request = requests.post(GITHUB_API_URL + GITHUB_API_CREATE_REPO_REL, json=repo_data, headers=headers)
 
     # Handle exceptions
     if request.status_code != 201:
@@ -143,14 +150,14 @@ def create(ws_id: int, project_id: int, remote_repo_name: str):
             raise NameConflict("Repository with name {} already exist on GitHub".format(remote_repo_name))
         raise Exception("Unhandled exception occured")
 
-    # Get git url
+    # Get git url and commit to db
     data = json.loads(request.text)
     git_url = data['git_url']
     project.repo_url = git_url
     database_session.commit()
 
     # Push project
-    commit_and_push(ws_id, project_id)
+    return commit_and_push(ws_id, project_id, "Initial commit")
 
 
 def pull(ws_id: int, project_id: int):
@@ -237,4 +244,4 @@ def clone(ws_id: int, url: str, name: str = None):
 
 
 def _get_repo_url(url_decode):
-    return 'https://{}@github.com/{}'.format(session['access_token'], url_decode.path)
+    return 'https://{}@github.com{}'.format(session['access_token'], url_decode.path)
