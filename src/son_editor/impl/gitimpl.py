@@ -126,7 +126,7 @@ def commit_and_push(ws_id: int, project_id: int, commit_message: str):
 
 def create_commit_and_push(ws_id: int, project_id: int, remote_repo_name: str):
     """
-    Creates a remote GitHub repository.
+    Creates a remote GitHub repository named remote_repo_name and pushes given project into it.
 
     :param ws_id: Workspace ID
     :param project_id: Project ID to create and push it
@@ -139,9 +139,9 @@ def create_commit_and_push(ws_id: int, project_id: int, remote_repo_name: str):
     # curl -H "Authorization: token [TOKEN]" -X POST https://api.github.com/user/repos --data '{"name":"repo_name"}'
 
     repo_data = {'name': remote_repo_name}
-    headers = {'Authorization': ' token {}'.format(session['access_token'])}
+    headers = {'Authorization': 'token {}'.format(session['access_token'])}
 
-    request = requests.post(GITHUB_API_URL + GITHUB_API_CREATE_REPO_REL, data=repo_data, headers=headers)
+    request = requests.post(GITHUB_API_URL + GITHUB_API_CREATE_REPO_REL, json=repo_data, headers=headers)
 
     # Handle exceptions
     if request.status_code != 201:
@@ -150,14 +150,14 @@ def create_commit_and_push(ws_id: int, project_id: int, remote_repo_name: str):
             raise NameConflict("Repository with name {} already exist on GitHub".format(remote_repo_name))
         raise Exception("Unhandled exception occured")
 
-    # Get git url
+    # Get git url and commit to db
     data = json.loads(request.text)
     git_url = data['git_url']
     project.repo_url = git_url
     database_session.commit()
 
     # Push project
-    return commit_and_push(ws_id, project_id)
+    return commit_and_push(ws_id, project_id, "Initial commit")
 
 
 def pull(ws_id: int, project_id: int):
@@ -244,4 +244,4 @@ def clone(ws_id: int, url: str, name: str = None):
 
 
 def _get_repo_url(url_decode):
-    return 'https://{}@github.com/{}'.format(session['access_token'], url_decode.path)
+    return 'https://{}@github.com{}'.format(session['access_token'], url_decode.path)

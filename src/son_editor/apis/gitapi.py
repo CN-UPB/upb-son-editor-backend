@@ -59,7 +59,7 @@ class GitCommit(Resource):
     def post(self, ws_id):
         """ Commits and pushes changes """
         json_data = get_json(request)
-        result = commit_and_push(ws_id, shlex.quote(json_data['project_id']), shlex.quote(json_data['commit_message']))
+        result = commit_and_push(ws_id, int(json_data['project_id']), shlex.quote(json_data['commit_message']))
         return prepare_response(result, 200)
 
 
@@ -71,7 +71,7 @@ class GitCreate(Resource):
     def post(self, ws_id):
         """ Creates a remote repository and pushes a project for it"""
         json_data = get_json(request)
-        result = create_commit_and_push(ws_id, shlex.quote(json_data['project_id']),
+        result = create_commit_and_push(ws_id, int(json_data['project_id']),
                                         shlex.quote(json_data['repo_name']))
         return prepare_response(result)
 
