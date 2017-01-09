@@ -1,18 +1,18 @@
+import json
 import logging
 import os
-import requests
-import json
+import shutil
 from subprocess import Popen, PIPE
 from urllib import parse
 
-import shutil
+import requests
 from flask import session
 
-from son_editor.util.constants import PROJECT_REL_PATH, Github
 from son_editor.app.database import db_session, scan_project_dir, sync_project_descriptor
 from son_editor.app.exceptions import NotFound, InvalidArgument, NameConflict
 from son_editor.models.project import Project
 from son_editor.models.workspace import Workspace
+from son_editor.util.constants import PROJECT_REL_PATH, Github
 
 # Github domains to check if github is used
 

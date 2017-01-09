@@ -1,6 +1,6 @@
 import shlex
 
-from flask import session, request
+from flask import request
 from flask_restplus import Resource, Namespace, fields
 
 from son_editor.impl.gitimpl import clone, pull, commit_and_push, create_commit_and_push, delete, list
