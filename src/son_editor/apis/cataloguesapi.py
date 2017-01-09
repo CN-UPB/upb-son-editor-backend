@@ -16,7 +16,7 @@ namespace = Namespace(WORKSPACES + '/<int:ws_id>/' + CATALOGUES, description="Ca
 @namespace.route("/")
 @namespace.response(200, "OK")
 class Catalogues(Resource):
-    "Catalogues"
+    """Catalogues"""
 
     def get(self, ws_id):
         """Lists catalogues

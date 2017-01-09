@@ -3,7 +3,7 @@ import shlex
 from flask import request
 from flask_restplus import Resource, Namespace, fields
 
-from son_editor.impl.gitimpl import clone, pull, commit_and_push, create_commit_and_push, delete, list
+from son_editor.impl.gitimpl import clone, pull, commit_and_push, create_commit_and_push, delete, list, diff
 from son_editor.util.constants import WORKSPACES
 from son_editor.util.requestutil import get_json, prepare_response
 
@@ -12,6 +12,11 @@ namespace = Namespace(WORKSPACES + '/<int:ws_id>/git', description='Git API')
 pull_model = namespace.model('Pull information', {
     'project_id': fields.Integer(description='Project ID of the project to get pulled from')
 })
+
+diff_model = namespace.model('Diff information', {
+    'project_id': fields.Integer(description='Project ID of the project to get diff information')
+})
+
 
 clone_model = namespace.model('Clone information', {
     'url': fields.String(description='URL to clone from')
@@ -66,6 +71,17 @@ class GitDelete(Resource):
         """ Deletes a remote repository"""
         json_data = get_json(request)
         result = delete(ws_id, shlex.quote(json_data['repo_name']))
+        return prepare_response(result, 200)
+
+
+@namespace.route('/diff')
+class GitDiff(Resource):
+    @namespace.expect(diff_model)
+    @namespace.response(200, "OK, with output information of 'git diff'")
+    def post(self, ws_id):
+        """ Retrieves the current diff of the project directory"""
+        json_data = get_json(request)
+        result = diff(ws_id, int(json_data['project_id']))
         return prepare_response(result, 200)
 
 
