@@ -39,7 +39,12 @@ def build_github_delete(owner: str, repo_name: str) -> str:
 
 
 def is_github(netloc):
-    """ Checks if the given url is on github """
+    """
+    Checks if the given url is on github
+    :param netloc: http url
+    :return: True
+    """
+
     if netloc.lower() in Github.DOMAINS:
         return True
     return False
@@ -102,6 +107,11 @@ def get_project(ws_id, pj_id: int, session=db_session()) -> Project:
 
 
 def get_workspace(ws_id: int) -> Workspace:
+    """
+    Returns the workspace model of the given workspace
+    :param ws_id:
+    :return:
+    """
     workspace = db_session().query(Workspace).filter(Workspace.id == ws_id).first()
     if not workspace:
         raise NotFound("Could not find workspace with id {}".format(ws_id))
@@ -184,6 +194,13 @@ def create_commit_and_push(ws_id: int, project_id: int, remote_repo_name: str):
 
 
 def delete(ws_id: int, remote_repo_name: str, organization_name: str = None):
+    """
+    Deletes given project on remote repository
+    :param ws_id: Workspace of the project
+    :param remote_repo_name: Remote repository name
+    :param organization_name: Optional parameter to specify the organization / login
+    :return:
+    """
     if organization_name is None:
         owner = session['user_data']['login']
     else:
@@ -196,12 +213,29 @@ def delete(ws_id: int, remote_repo_name: str, organization_name: str = None):
         return create_info_dict(result.text, exitcode=1)
 
 
+def diff(ws_id: int, pj_id: int):
+    """
+    Shows the local changes of the given project.
+    :param ws_id: Workspace of the project.
+    :param pj_id: Given project to show from.
+    :return:
+    """
+    project = get_project(ws_id, pj_id)
+    project_full_path = os.path.join(project.workspace.path, PROJECT_REL_PATH, project.rel_path)
+
+    out, err, exitcode = git_command(['diff'], project_full_path)
+    if exitcode is 0:
+        return create_info_dict(out)
+    else:
+        return create_info_dict(out, err, exitcode)
+
+
 def pull(ws_id: int, project_id: int):
     """
     Pulls data from the given project_id.
     :param user_data: Session data to get access token for GitHub
-    :param ws_id:
-    :param project_id:
+    :param ws_id: Workspace of the project
+    :param project_id: Project to pull.
     :return:
     """
     project = get_project(ws_id, project_id)
@@ -288,7 +322,7 @@ def clone(ws_id: int, url: str, name: str = None):
         else:
             return create_info_dict(err=err, exitcode=exitcode)
 
-    raise NotImplemented("Cloning from other is not implemented yet. Only github supported for now.")
+    raise NotImplemented("Cloning from other is not implemented yet. Only github is supported for now.")
 
 
 def _get_repo_url(url_decode):
