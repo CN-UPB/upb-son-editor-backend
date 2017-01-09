@@ -8,24 +8,39 @@ from urllib import parse
 import shutil
 from flask import session
 
-from son_editor.util.constants import PROJECT_REL_PATH
+from son_editor.util.constants import PROJECT_REL_PATH, Github
 from son_editor.app.database import db_session, scan_project_dir, sync_project_descriptor
 from son_editor.app.exceptions import NotFound, InvalidArgument, NameConflict
 from son_editor.models.project import Project
 from son_editor.models.workspace import Workspace
 
 # Github domains to check if github is used
-GITHUB_DOMAINS = ['github.com', 'www.github.com']
 
-GITHUB_API_URL = 'https://api.github.com'
-GITHUB_API_CREATE_REPO_REL = '/user/repos'
 
 logger = logging.getLogger(__name__)
 
 
+def create_oauth_header() -> dict:
+    """
+    Creates oauth header by providing the access token in the header.
+    :return: Header as dict
+    """
+    return {'Authorization': 'token {}'.format(session['access_token'])}
+
+
+def build_github_delete(owner: str, repo_name: str) -> str:
+    """
+    Builds relative github api url to delete a repository
+    :param owner: Owner of the github repository
+    :param repo_name: Repository name
+    :return:
+    """
+    return Github.API_URL + Github.API_DELETE_REPO.format(owner, repo_name)
+
+
 def is_github(netloc):
     """ Checks if the given url is on github """
-    if netloc.lower() in GITHUB_DOMAINS:
+    if netloc.lower() in Github.DOMAINS:
         return True
     return False
 
@@ -63,8 +78,10 @@ def create_info_dict(out: str = None, err: str = None, exitcode: int = 0) -> dic
         result_dict.update({'message': err})
     elif out:
         result_dict.update({'message': out})
+
     if exitcode:
         result_dict.update({'exitcode': exitcode})
+
     return result_dict
 
 
@@ -76,8 +93,8 @@ def get_project(ws_id, pj_id: int, session=db_session()) -> Project:
     :param db session
     :return: Project model
     """
-    project = session.query(Project).join(Workspace)\
-        .filter(Workspace.id == ws_id)\
+    project = session.query(Project).join(Workspace) \
+        .filter(Workspace.id == ws_id) \
         .filter(Project.id == pj_id).first()
     if not project:
         raise NotFound("Could not find project with id {}".format(pj_id))
@@ -139,9 +156,8 @@ def create_commit_and_push(ws_id: int, project_id: int, remote_repo_name: str):
     # curl -H "Authorization: token [TOKEN]" -X POST https://api.github.com/user/repos --data '{"name":"repo_name"}'
 
     repo_data = {'name': remote_repo_name}
-    headers = {'Authorization': 'token {}'.format(session['access_token'])}
 
-    request = requests.post(GITHUB_API_URL + GITHUB_API_CREATE_REPO_REL, json=repo_data, headers=headers)
+    request = requests.post(Github.API_URL + Github.API_CREATE_REPO_REL, json=repo_data, headers=create_oauth_header())
 
     # Handle exceptions
     if request.status_code != 201:
@@ -156,8 +172,28 @@ def create_commit_and_push(ws_id: int, project_id: int, remote_repo_name: str):
     project.repo_url = git_url
     database_session.commit()
 
-    # Push project
-    return commit_and_push(ws_id, project_id, "Initial commit")
+    # Try to push project
+    try:
+        return commit_and_push(ws_id, project_id, "Initial commit")
+    except Exception:
+        # Delete newly created repository if commit and push failed.
+        result = requests.delete(build_github_delete(session['user_data']['login'], remote_repo_name),
+                                 headers=create_oauth_header())
+        # Reraise
+        raise
+
+
+def delete(ws_id: int, remote_repo_name: str, organization_name: str = None):
+    if organization_name is None:
+        owner = session['user_data']['login']
+    else:
+        owner = organization_name
+
+    result = requests.delete(build_github_delete(owner, remote_repo_name), headers=create_oauth_header())
+    if result.status_code == 204:
+        return create_info_dict("Successful deleted")
+    else:
+        return create_info_dict(result.text, exitcode=1)
 
 
 def pull(ws_id: int, project_id: int):
@@ -188,9 +224,21 @@ def pull(ws_id: int, project_id: int):
     return create_info_dict(out=out)
 
 
+def list(ws_id: int):
+    """
+    Lists the available remote repositories.
+    :param ws_id:
+    :return: https://developer.github.com/v3/repos/#response
+    """
+    result = requests.get(Github.API_URL + Github.API_LIST_REPOS.format(session['user_data']['login']),
+                          headers=create_oauth_header())
+    return json.loads(result.text)
+
+
 def clone(ws_id: int, url: str, name: str = None):
     """
     Clones a repository by url into given workspace
+    :param name: Optional name of the local repository name, otherwise the remote name is taken
     :param user_data: Session data to get access token for GitHub
     :param ws_id: Destination workspace to clone
     :param url: URL of the source repository

@@ -3,7 +3,7 @@ import shlex
 from flask import session, request
 from flask_restplus import Resource, Namespace, fields
 
-from son_editor.impl.gitimpl import clone, pull, commit_and_push, create_commit_and_push
+from son_editor.impl.gitimpl import clone, pull, commit_and_push, create_commit_and_push, delete, list
 from son_editor.util.constants import WORKSPACES
 from son_editor.util.requestutil import get_json, prepare_response
 
@@ -15,6 +15,13 @@ pull_model = namespace.model('Pull information', {
 
 clone_model = namespace.model('Clone information', {
     'url': fields.String(description='URL to clone from')
+})
+
+delete_model = namespace.model('Delete information', {
+    'repo_name': fields.String(description='Remote repository that gets deleted'),
+    'owner': fields.String(
+        description='Owner/organization name of the repository\'s owner, otherwise user as owner is taken',
+        required=False)
 })
 
 commit_model = namespace.model('Commit information', {
@@ -51,6 +58,17 @@ class GitClone(Resource):
         return prepare_response(result, 200)
 
 
+@namespace.route('/delete')
+class GitDelete(Resource):
+    @namespace.expect(delete_model)
+    @namespace.response(200, "OK", response_model)
+    def delete(self, ws_id):
+        """ Deletes a remote repository"""
+        json_data = get_json(request)
+        result = delete(ws_id, shlex.quote(json_data['repo_name']))
+        return prepare_response(result, 200)
+
+
 @namespace.route('/commit')
 class GitCommit(Resource):
     @namespace.expect(commit_model)
@@ -61,6 +79,14 @@ class GitCommit(Resource):
         json_data = get_json(request)
         result = commit_and_push(ws_id, int(json_data['project_id']), shlex.quote(json_data['commit_message']))
         return prepare_response(result, 200)
+
+
+@namespace.route('/list')
+class GitList(Resource):
+    @namespace.response(200, "Visit https://developer.github.com/v3/repos/#response")
+    def get(self, ws_id):
+        """ Lists remote repository information """
+        return list(ws_id)
 
 
 @namespace.route('/create')

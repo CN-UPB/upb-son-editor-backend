@@ -26,6 +26,26 @@ NSFS = "nsfs"
 PROJECT_REL_PATH = "projects"
 
 
+class Github():
+    """
+    Holds GitHub API relevant strings.
+    """
+    DOMAINS = ['github.com', 'www.github.com']
+
+    API_URL = 'https://api.github.com'
+    API_CREATE_REPO_REL = '/user/repos'
+
+    """
+    1. Argument is owner of the repos to delete
+    2. Argument is the name of the remote repository
+    """
+    API_DELETE_REPO = '/repos/{}/{}'
+    """
+        1. Argument is Username
+    """
+    API_LIST_REPOS = '/users/{}/repos'
+
+
 class Category(Enum):
     project = 1
     catalogue = 2
