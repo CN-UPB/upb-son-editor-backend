@@ -62,4 +62,5 @@ class GitAPITest(unittest.TestCase):
                                  headers={'Content-Type': 'application/json'},
                                  data=json.dumps(arg))
         json_data = json.loads(response.data.decode())
+        print(json_data)
         self.assertTrue(json_data['success'], "true")
