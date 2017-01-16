@@ -117,7 +117,7 @@ def create_catalogue(wsid: int, name: str, url: str):
     return son_editor.impl.cataloguesimpl.create_catalogue(wsid, {'name': name, 'url': url})['id']
 
 
-def create_logged_in_user(app, user_name) -> User:
+def create_logged_in_user(app, user_name, access_token='fake_access_token') -> User:
     """
     Creates a user with database record and session
     :param app: Test context / app
@@ -127,7 +127,7 @@ def create_logged_in_user(app, user_name) -> User:
     # Add some session stuff ( need for finding the user's workspace )
     with app as c:
         with c.session_transaction() as session:
-            session['access_token'] = "fake_access_token"
+            session['access_token'] = access_token
             session['user_data'] = {'login': user_name}
 
     # Add some dummy objects

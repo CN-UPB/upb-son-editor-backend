@@ -20,10 +20,15 @@ SERVICES = "services"
 VNFS = "functions"
 """ The network services and funtions url constant"""
 NSFS = "nsfs"
+""" The git api url constant"""
+GIT = "git"
 
 # PATH constants
 """The project path relative to the workspace"""
 PROJECT_REL_PATH = "projects"
+
+# Files that are required to be in terms of file structure, a valid son-project
+REQUIRED_SON_PROJECT_FILES = ['project.yml']
 
 
 class Github():

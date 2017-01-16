@@ -12,10 +12,7 @@ from son_editor.app.database import db_session, scan_project_dir, sync_project_d
 from son_editor.app.exceptions import NotFound, InvalidArgument, NameConflict
 from son_editor.models.project import Project
 from son_editor.models.workspace import Workspace
-from son_editor.util.constants import PROJECT_REL_PATH, Github
-
-# Github domains to check if github is used
-
+from son_editor.util.constants import PROJECT_REL_PATH, Github, REQUIRED_SON_PROJECT_FILES
 
 logger = logging.getLogger(__name__)
 
@@ -106,6 +103,29 @@ def get_project(ws_id, pj_id: int, session=db_session()) -> Project:
     return project
 
 
+def check_son_validity(project_path: str):
+    """
+    Checks if the given project path is a valid son project, otherwise it raises an exception. Valid means, it has
+    a consistent son file structure, so no semantics will be tested.
+    :param project_path:
+    :return:
+    """
+    missing_files = []
+    for file in REQUIRED_SON_PROJECT_FILES:
+        if not os.path.isfile(os.path.join(project_path, file)):
+            missing_files.append(file)
+
+    missing_files_count = missing_files.count()
+    # If project seems to be valid.
+    if missing_files_count is 0:
+        return
+    elif missing_files_count is 1:
+        result = "The project has no '{}' file".format(file)
+    else:
+        result = "The project has the following missing files: '{}'".format(",".join(missing_files_count))
+    raise InvalidArgument(result)
+
+
 def get_workspace(ws_id: int) -> Workspace:
     """
     Returns the workspace model of the given workspace
@@ -116,6 +136,20 @@ def get_workspace(ws_id: int) -> Workspace:
     if not workspace:
         raise NotFound("Could not find workspace with id {}".format(ws_id))
     return workspace
+
+
+def init(ws_id: int, project_id: int):
+    """
+    Initializes a git repository in the given project
+    :param ws_id:
+    :param project_id:
+    :return:
+    """
+    project = get_project(ws_id, project_id)
+
+    project_full_path = os.path.join(project.workspace.path, PROJECT_REL_PATH, project.rel_path)
+    out, err, exitcode = git_command(['init'], cwd=project_full_path)
+    return create_info_dict(out, err=err, exitcode=exitcode)
 
 
 def commit_and_push(ws_id: int, project_id: int, commit_message: str):
@@ -153,7 +187,7 @@ def commit_and_push(ws_id: int, project_id: int, commit_message: str):
 
 def create_commit_and_push(ws_id: int, project_id: int, remote_repo_name: str):
     """
-    Creates a remote GitHub repository named remote_repo_name and pushes given project into it.
+    Creates a remote GitHub repository named remote_repo_name and pushes given git project into it.
 
     :param ws_id: Workspace ID
     :param project_id: Project ID to create and push it
@@ -161,26 +195,31 @@ def create_commit_and_push(ws_id: int, project_id: int, remote_repo_name: str):
     :return:
     """
     database_session = db_session()
-    project = get_project(ws_id, project_id, database_session)
+    try:
+        project = get_project(ws_id, project_id, database_session)
 
-    # curl -H "Authorization: token [TOKEN]" -X POST https://api.github.com/user/repos --data '{"name":"repo_name"}'
+        # curl -H "Authorization: token [TOKEN]" -X POST https://api.github.com/user/repos --data '{"name":"repo_name"}'
 
-    repo_data = {'name': remote_repo_name}
+        repo_data = {'name': remote_repo_name}
 
-    request = requests.post(Github.API_URL + Github.API_CREATE_REPO_REL, json=repo_data, headers=create_oauth_header())
+        request = requests.post(Github.API_URL + Github.API_CREATE_REPO_REL, json=repo_data,
+                                headers=create_oauth_header())
 
-    # Handle exceptions
-    if request.status_code != 201:
-        # Repository already exists
-        if request.status_code == 422:
-            raise NameConflict("Repository with name {} already exist on GitHub".format(remote_repo_name))
-        raise Exception("Unhandled exception occured")
+        # Handle exceptions
+        if request.status_code != 201:
+            # Repository already exists
+            if request.status_code == 422:
+                raise NameConflict("Repository with name {} already exist on GitHub".format(remote_repo_name))
+            raise Exception("Unhandled exception occured")
 
-    # Get git url and commit to db
-    data = json.loads(request.text)
-    git_url = data['git_url']
-    project.repo_url = git_url
-    database_session.commit()
+        # Get git url and commit to db
+        data = json.loads(request.text)
+        git_url = data['git_url']
+        project.repo_url = git_url
+        database_session.commit()
+    except Exception:
+        database_session.rollback()
+        raise
 
     # Try to push project
     try:
@@ -286,10 +325,10 @@ def clone(ws_id: int, url: str, name: str = None):
         github_project_name = name
         if github_project_name is None:
             github_project_name = os.path.split(url_decode.path)[-1]
-
-        pj = db_session().query(Project).filter(Workspace.id == workspace.id).filter(
+        dbsession = db_session()
+        pj = dbsession.query(Project).filter(Workspace.id == workspace.id).filter(
             Project.name == github_project_name).first()
-
+        dbsession.commit()
         # Error when the project name in given workspace already exists
         if pj is not None:
             raise NameConflict('A project with name {} already exists'.format(github_project_name))
@@ -303,6 +342,8 @@ def clone(ws_id: int, url: str, name: str = None):
         out, err, exitcode = git_command(['clone', url_with_token, project_target_path])
 
         if exitcode is 0:
+            # Check if the project is a valid son project
+            check_son_validity(project_target_path)
             # Create project and scan it.
             dbsession = db_session()
             try:
@@ -312,6 +353,7 @@ def clone(ws_id: int, url: str, name: str = None):
                 dbsession.add(pj)
                 scan_project_dir(project_target_path, pj)
                 dbsession.commit()
+                # Check if the project is valid
                 result = create_info_dict(out=out)
                 result["id"] = pj.id
                 return result
