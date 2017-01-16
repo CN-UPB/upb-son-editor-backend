@@ -215,7 +215,7 @@ def create_commit_and_push(ws_id: int, project_id: int, remote_repo_name: str):
             # Repository already exists
             if request.status_code == 422:
                 raise NameConflict("Repository with name {} already exist on GitHub".format(remote_repo_name))
-            raise Exception("Unhandled exception occured")
+            raise Exception("Unhandled status_code: {}\n{}".format(request.status_code, request.text.decode()))
 
         # Get git url and commit to db
         data = json.loads(request.text)
