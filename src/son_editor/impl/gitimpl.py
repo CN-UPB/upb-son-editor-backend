@@ -149,6 +149,11 @@ def init(ws_id: int, project_id: int):
 
     project_full_path = os.path.join(project.workspace.path, PROJECT_REL_PATH, project.rel_path)
     out, err, exitcode = git_command(['init'], cwd=project_full_path)
+    # Additionally set repository user information
+    if exitcode is 0:
+        git_command(['config', 'user.email "{}"'.format(session['user_data']['email'])])
+        git_command(['config', 'user.name "{}"'.format(session['user_data']['login'])])
+
     return create_info_dict(out, err=err, exitcode=exitcode)
 
 
