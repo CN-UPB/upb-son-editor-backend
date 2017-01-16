@@ -125,16 +125,17 @@ def create_logged_in_user(app, user_name, access_token='fake_access_token') -> U
     :return: Model instance
     """
     # Add some session stuff ( need for finding the user's workspace )
-    with app as c:
-        with c.session_transaction() as session:
-            session['access_token'] = access_token
-            session['user_data'] = {'login': user_name}
 
     # Add some dummy objects
     user = User(name=user_name, email=user_name + "@bar.com")
     session = db_session()
     session.add(user)
     session.commit()
+    with app as c:
+        with c.session_transaction() as session:
+            session['access_token'] = access_token
+            session['user_data'] = {'login': user_name, 'email': user.email}
+
     return user
 
 

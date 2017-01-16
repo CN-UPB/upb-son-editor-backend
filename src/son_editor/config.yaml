@@ -1,6 +1,6 @@
 authentication:
     ClientID: 54e6b84b3eb8f6a460bc
-    ClientSecret: 277c00823cf9f3795e01ed6cd79ae1269aaf9844
+    ClientSecret: 789d0a5650b62c47ad72d6fcae876dc5461634ef
 
 
 session:
@@ -17,6 +17,12 @@ allowed-hosts:
   - "cn-upb.github.io"
 database:
     location: "production.db"
+
+
+
+github_bot_user: "pgsandmanbot"
+github_access_token: f7ec6e61e6a265f3e009947305995942d0a5ebac
+
 
 schemas:
   vnf:
