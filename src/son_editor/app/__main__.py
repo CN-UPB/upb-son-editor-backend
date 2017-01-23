@@ -16,16 +16,15 @@ from son_editor import apis
 from son_editor.app.database import db_session, init_db, scan_workspaces_dir
 from son_editor.app.exceptions import NameConflict, NotFound, ExtNotReachable, PackException, InvalidArgument, \
     UnauthorizedException
-from son_editor.util.requestutil import CONFIG, prepare_response, prepare_error
 from son_editor.app.securityservice import check_access
-from son_editor.util.requestutil import CONFIG, prepare_response, prepare_error
+from son_editor.util.requestutil import get_config, prepare_response, prepare_error
 
 app = Flask(__name__)
 # turn off help message for 404 errors, just return error handlers message
 app.config["ERROR_404_HELP"] = False
 app.config["RESTPLUS_MASK_SWAGGER"] = False
 # load secret key from config
-app.secret_key = CONFIG['session']['secretKey']
+app.secret_key = get_config()['session']['secretKey']
 api = Api(app, description="Son Editor Backend API")
 logger = logging.getLogger(__name__)
 
@@ -88,9 +87,11 @@ def shutdown_session(exception=None):
 def check_logged_in():
     if request.endpoint == 'login':
         return
+    if request.endpoint == 'config_configuration':
+        return
     if request.method == 'OPTIONS':
         return prepare_response()
-    elif CONFIG['testing']:
+    elif get_config()['testing']:
         # Check if the user is allowed access the requested workspace resource (even for tests)
         check_access(request)
         return
@@ -106,8 +107,8 @@ def check_logged_in():
 
 
 def handle_unauthorized(msg: str):
-    args = {"scope": "user:email repo delete_repo",
-            "client_id": CONFIG['authentication']['ClientID']}
+    args = {"scope": "user read:org repo delete_repo",
+            "client_id": get_config()['authentication']['ClientID']}
     session["requested_endpoint"] = request.endpoint
     return prepare_response({
         'authorizationUrl': 'https://github.com/login/oauth/authorize/?{}'.format(urllib.parse.urlencode(args)),
@@ -117,7 +118,7 @@ def handle_unauthorized(msg: str):
 def setup():
     setup_logging()
     # Check check if database exists, otherwise create sqlite file
-    dbFile = CONFIG['database']['location']
+    dbFile = get_config()['database']['location']
     if path.exists(dbFile):
         logger.info('Using database file "%s"' % dbFile)
     else:

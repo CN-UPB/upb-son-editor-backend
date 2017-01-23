@@ -7,10 +7,24 @@ import json
 
 from flask import request
 from flask.wrappers import Response, Request
-from pkg_resources import Requirement, resource_string
+from pkg_resources import Requirement, resource_string, resource_filename
 import yaml
 
-CONFIG = yaml.safe_load(resource_string(Requirement.parse("upb-son-editor-backend"), "son_editor/config.yaml"))
+config_path = "son_editor/config.yaml"
+CONFIG = yaml.safe_load(resource_string(Requirement.parse("upb-son-editor-backend"), config_path))
+
+
+def update_config(config):
+    global CONFIG
+    CONFIG = config
+    filename = resource_filename(Requirement.parse("upb-son-editor-backend"), config_path)
+    # write changed config
+    with open(filename, "w") as stream:
+        yaml.safe_dump(CONFIG, stream, default_flow_style=False)
+
+
+def get_config():
+    return CONFIG
 
 
 def prepare_response(data=None, code=200) -> Response:

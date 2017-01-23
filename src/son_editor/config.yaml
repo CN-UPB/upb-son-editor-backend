@@ -24,3 +24,10 @@ schemas:
   ns:
     - https://raw.githubusercontent.com/sonata-nfv/son-schema/master/service-descriptor/nsd-schema.yml
 testing: False
+
+config:
+  pwd: totes-secret
+  user: admin
+
+#github-orgs:
+#  - CN-UPB
