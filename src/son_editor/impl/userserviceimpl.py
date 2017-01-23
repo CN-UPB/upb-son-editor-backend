@@ -6,7 +6,7 @@ from flask import request, redirect
 from flask import session
 
 from son_editor.app.exceptions import UnauthorizedException
-from son_editor.util.requestutil import CONFIG
+from son_editor.util.requestutil import get_config
 
 logger = logging.getLogger(__name__)
 
@@ -18,21 +18,24 @@ def login():
         logger.info("User " + session['user_data']['login'] + " logged in")
         if request.referrer is not None and 'github' not in request.referrer:
             origin = origin_from_referrer(request.referrer)
-            return redirect(origin + CONFIG['frontend-redirect'])
-        return redirect(CONFIG['frontend-host'] + CONFIG['frontend-redirect'])
+            return redirect(origin + get_config()['frontend-redirect'])
+        return redirect(get_config()['frontend-host'] + get_config()['frontend-redirect'])
 
 
 def _request_access_token():
     """ Request an access token from Github using the referral code"""
     # TODO add error handling
-    data = {'client_id': CONFIG['authentication']['ClientID'],
-            'client_secret': CONFIG['authentication']['ClientSecret'],
+    data = {'client_id': get_config()['authentication']['ClientID'],
+            'client_secret': get_config()['authentication']['ClientSecret'],
             'code': session['session_code']}
     headers = {"Accept": "application/json"}
     access_result = requests.post('https://github.com/login/oauth/access_token',
                                   json=data, headers=headers)
-    session['access_token'] = json.loads(access_result.text)['access_token']
-    return True
+    json_result = json.loads(access_result.text)
+    if 'access_token' in json_result:
+        session['access_token'] = json_result['access_token']
+        return True
+    raise Exception(json_result['error_description'])
 
 
 def _load_user_data():

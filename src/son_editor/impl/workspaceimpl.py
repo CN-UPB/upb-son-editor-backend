@@ -19,9 +19,9 @@ from son_editor.impl.usermanagement import get_user
 from son_editor.models.repository import Platform, Catalogue
 from son_editor.models.workspace import Workspace
 from son_editor.util.descriptorutil import synchronize_workspace_descriptor, update_workspace_descriptor
-from son_editor.util.requestutil import CONFIG, rreplace
+from son_editor.util.requestutil import get_config, rreplace
 
-WORKSPACES_DIR = path.expanduser(CONFIG["workspaces-location"])
+WORKSPACES_DIR = path.expanduser(get_config()["workspaces-location"])
 # make ws paths prettier
 WORKSPACES_DIR = path.normpath(WORKSPACES_DIR)
 

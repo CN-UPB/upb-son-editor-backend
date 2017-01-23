@@ -4,7 +4,7 @@ import os
 import yaml
 from urllib import request
 
-from son_editor.util.requestutil import CONFIG
+from son_editor.util.requestutil import get_config
 
 SCHEMA_ID_VNF = "vnf"
 SCHEMA_ID_NS = "ns"
@@ -214,12 +214,12 @@ def sync_project_descriptor(project) -> None:
 
 def load_schemas():
     schemas[SCHEMA_ID_VNF] = []
-    for schema_url in CONFIG["schemas"][SCHEMA_ID_VNF]:
+    for schema_url in get_config()["schemas"][SCHEMA_ID_VNF]:
         response = request.urlopen(schema_url)
         data = response.read()
         schemas[SCHEMA_ID_VNF].append(yaml.safe_load(data.decode('utf-8')))
     schemas[SCHEMA_ID_NS] = []
-    for schema_url in CONFIG["schemas"][SCHEMA_ID_NS]:
+    for schema_url in get_config()["schemas"][SCHEMA_ID_NS]:
         response = request.urlopen(schema_url)
         data = response.read()
         schemas[SCHEMA_ID_NS].append(yaml.safe_load(data.decode('utf-8')))

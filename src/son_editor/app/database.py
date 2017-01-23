@@ -11,11 +11,11 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from son_editor.util.descriptorutil import load_ns_vnf_from_disk, load_workspace_descriptor, get_file_path, \
     get_file_name, \
     sync_project_descriptor
-from son_editor.util.requestutil import CONFIG
+from son_editor.util.requestutil import get_config
 
 # DB URI
 logger = logging.getLogger(__name__)
-DATABASE_SQLITE_URI = "sqlite:///%s" % CONFIG['database']['location']
+DATABASE_SQLITE_URI = "sqlite:///%s" % get_config()['database']['location']
 logger.info("DBSQLITE_URI: " + DATABASE_SQLITE_URI)
 
 engine = create_engine(DATABASE_SQLITE_URI, convert_unicode=True)
@@ -52,7 +52,7 @@ def reset_db():
 
 def scan_workspaces_dir():
     from son_editor.models.user import User
-    wss_dir = os.path.normpath(os.path.expanduser(CONFIG["workspaces-location"]))
+    wss_dir = os.path.normpath(os.path.expanduser(get_config()["workspaces-location"]))
     if os.path.exists(wss_dir):
         session = db_session()
         for user_name in os.listdir(wss_dir):

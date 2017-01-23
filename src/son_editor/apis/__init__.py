@@ -1,3 +1,4 @@
+from son_editor.apis import configapi
 from son_editor.apis import misc
 from son_editor.apis import cataloguesapi
 from son_editor.apis import platformsapi
@@ -27,3 +28,4 @@ def init(api):
     api.add_namespace(userserviceapi.namespace)
     api.add_namespace(gitapi.namespace)
     api.add_namespace(schemaapi.namespace)
+    api.add_namespace(configapi.namespace)
