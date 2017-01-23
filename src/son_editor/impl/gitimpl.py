@@ -112,7 +112,12 @@ def check_son_validity(project_path: str):
     :return:
     """
     missing_files = []
-    logger.warn('Project path: {}'.format(project_path))
+
+    files = [f for f in os.listdir(project_path)]
+    logger.warn('Files in {}: '.format(project_path))
+    for f in files:
+        logger.warn('{}'.format(f))
+
     for file in REQUIRED_SON_PROJECT_FILES:
         if not os.path.isfile(os.path.join(project_path, file)):
             missing_files.append(file)
