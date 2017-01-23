@@ -1,6 +1,5 @@
 import json
 import unittest
-import time
 
 from son_editor.tests.utils import *
 from son_editor.util.context import init_test_context
@@ -9,7 +8,7 @@ from son_editor.util.requestutil import CONFIG
 # Get the github_bot_user / github_access_token from the CONFIG,
 # otherwise take it from the environment variable (which should be set on travis)
 
-self.remote_repo_name = 'test_create'
+REMOTE_REPO_NAME = 'test_create'
 
 GITHUB_USER = os.environ["github_bot_user"] if not 'github_bot_user' in CONFIG else CONFIG['github_bot_user']
 GITHUB_ACCESS_TOKEN = os.environ["github_access_token"] if not 'github_access_token' in CONFIG else CONFIG[
@@ -48,7 +47,7 @@ class GitAPITest(unittest.TestCase):
     def clean_github(self):
         """ Deletes the created test project(s) on github """
         # Clean github repository
-        arg = {'repo_name': self.remote_repo_name}
+        arg = {'repo_name': REMOTE_REPO_NAME}
         self.app.delete("/" + constants.WORKSPACES + "/" + self.wsid + "/" + constants.GIT + "/delete",
                         headers={'Content-Type': 'application/json'},
                         data=json.dumps(arg))
@@ -71,7 +70,7 @@ class GitAPITest(unittest.TestCase):
         self.assertResponseValid(response)
 
         # 2. Create and push git repository
-        arg = {'project_id': self.pjid, 'repo_name': self.remote_repo_name}
+        arg = {'project_id': self.pjid, 'repo_name': REMOTE_REPO_NAME}
         response = self.call_github_post('create', arg)
         self.assertResponseValid(response)
 
@@ -87,7 +86,7 @@ class GitAPITest(unittest.TestCase):
         response = self.call_github_post('clone', arg)
         self.assertResponseValid(response)
 
-        arg = {'repo_name': self.remote_repo_name}
+        arg = {'repo_name': REMOTE_REPO_NAME}
         response = self.app.delete("/" + constants.WORKSPACES + "/" + self.wsid + "/" + constants.GIT + "/delete",
                                    headers={'Content-Type': 'application/json'},
                                    data=json.dumps(arg))
