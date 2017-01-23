@@ -11,6 +11,7 @@ from flask import session
 
 from son_editor.app.database import db_session, scan_project_dir, sync_project_descriptor
 from son_editor.app.exceptions import NotFound, InvalidArgument, NameConflict
+from son_editor.impl import usermanagement
 from son_editor.models.project import Project
 from son_editor.models.workspace import Workspace
 from son_editor.util.constants import PROJECT_REL_PATH, Github, REQUIRED_SON_PROJECT_FILES
@@ -163,8 +164,9 @@ def init(ws_id: int, project_id: int):
 
 
 def setup_git_user_email(project_full_path: str):
-    git_command(['config', 'user.name', session['user_data']['login']], cwd=project_full_path)
-    git_command(['config', 'user.email', session['user_data']['email']], cwd=project_full_path)
+    user = usermanagement.get_user(session['user_data']['login'])
+    git_command(['config', 'user.name', user.name], cwd=project_full_path)
+    git_command(['config', 'user.email', user.email], cwd=project_full_path)
 
 
 def commit_and_push(ws_id: int, project_id: int, commit_message: str):
