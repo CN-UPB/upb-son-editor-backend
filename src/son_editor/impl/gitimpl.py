@@ -167,6 +167,7 @@ def setup_git_user_email(project_full_path: str):
     user = usermanagement.get_user(session['user_data']['login'])
     git_command(['config', 'user.name', user.name], cwd=project_full_path)
     git_command(['config', 'user.email', user.email], cwd=project_full_path)
+    git_command(['config', 'push.default', 'simple'], cwd=project_full_path)
 
 
 def commit_and_push(ws_id: int, project_id: int, commit_message: str):
