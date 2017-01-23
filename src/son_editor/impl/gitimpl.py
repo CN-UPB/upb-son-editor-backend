@@ -338,6 +338,7 @@ def clone(ws_id: int, url: str, name: str = None):
         github_project_name = name
         if github_project_name is None:
             github_project_name = os.path.split(url_decode.path)[-1]
+            github_project_name = github_project_name.replace('.git', '')
         dbsession = db_session()
         pj = dbsession.query(Project).filter(Workspace.id == workspace.id).filter(
             Project.name == github_project_name).first()
