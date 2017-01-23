@@ -10,7 +10,9 @@ import flask
 import requests
 
 from son_editor.app.database import db_session
+from son_editor.app.exceptions import UnauthorizedException
 from son_editor.models.user import User
+from son_editor.util.requestutil import get_config
 
 
 def get_user(login: str):
@@ -35,6 +37,22 @@ def get_user(login: str):
     if user.email is None:
         headers = {"Accept": "application/json",
                    "Authorization": "token " + flask.session['access_token']}
+        if 'github-orgs' in get_config():
+            # request user orgs
+            result = requests.get(flask.session['user_data']['organizations_url'], headers=headers)
+            orgs = json.loads(result.text)
+            valid_org_found = False
+            for org in orgs:
+                if org['login'] in get_config()['github-orgs']:
+                    valid_org_found = True
+                    break
+            if not valid_org_found:
+                raise UnauthorizedException(
+                    "No valid github org found for this user: "
+                    "Please ask the admin of this server to add "
+                    "you to his organization or add your "
+                    "orgaization to the list of valid organizations")
+
         result = requests.get('https://api.github.com/user/emails', headers=headers)
         user_emails = json.loads(result.text)
 

@@ -14,9 +14,9 @@ from son_editor.impl import gitimpl
 from son_editor.models.project import Project
 from son_editor.models.workspace import Workspace
 from son_editor.util.descriptorutil import sync_project_descriptor
-from son_editor.util.requestutil import CONFIG, rreplace
+from son_editor.util.requestutil import get_config, rreplace
 
-WORKSPACES_DIR = os.path.expanduser(CONFIG["workspaces-location"])
+WORKSPACES_DIR = os.path.expanduser(get_config()["workspaces-location"])
 # make ws paths prettier
 WORKSPACES_DIR = os.path.normpath(WORKSPACES_DIR)
 
