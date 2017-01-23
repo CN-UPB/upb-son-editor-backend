@@ -1,6 +1,7 @@
 import json
 import unittest
 import logging
+import time
 
 from son_editor.tests.utils import *
 from son_editor.util.context import init_test_context
@@ -77,7 +78,7 @@ class GitAPITest(unittest.TestCase):
     def test_clone_and_delete_repo(self):
         # Init and create remote repo
         self.test_init_and_create_remote_repo()
-
+        time.sleep(30)
         response = self.app.get("/" + constants.WORKSPACES + "/" + self.wsid + "/" + constants.GIT + "/list")
 
         # List functionality
