@@ -178,6 +178,12 @@ def commit_and_push(ws_id: int, project_id: int, commit_message: str):
     project = get_project(ws_id, project_id)
 
     project_full_path = os.path.join(project.workspace.path, PROJECT_REL_PATH, project.rel_path)
+    logger.warn("Commit and Push files")
+    files = [f for f in os.listdir(project_full_path)]
+    logger.warn('Files in {}: '.format(project_full_path))
+    for f in files:
+        logger.warn('{}'.format(f))
+
     # Stage all modified, added, removed files
     out, err, exitcode = git_command(['add', '-A'], cwd=project_full_path)
     if exitcode is not 0:
