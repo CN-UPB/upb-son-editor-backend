@@ -201,6 +201,7 @@ def commit_and_push(ws_id: int, project_id: int, commit_message: str):
 
     # Push all changes to the repo url
     url_decode = parse.urlparse(project.repo_url)
+    git_command(['push', '--set-upstream', 'origin', 'master'], cwd=project_full_path)
     out, err, exitcode = git_command(['push', _get_repo_url(url_decode)], cwd=project_full_path)
     if exitcode is not 0:
         logger.warn("Push failed: out: {}\n err: {} \n exitcode: {}\n repo url: {}".format(out, err, exitcode,
