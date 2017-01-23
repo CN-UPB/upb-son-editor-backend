@@ -208,12 +208,12 @@ def commit_and_push(ws_id: int, project_id: int, commit_message: str):
     out, err, exitcode = git_command(['push', _get_repo_url(url_decode)], cwd=project_full_path)
     # time.sleep(30)
     if exitcode is not 0:
-        logger.warn("Push failed: out: {}\n err: {} \n exitcode: {}\n repo url: {}".format(out, err, exitcode,
-                                                                                           _get_repo_url(url_decode)))
         git_command(['reset', 'HEAD~1'], cwd=project_full_path)
         return create_info_dict(out, err=err, exitcode=exitcode)
     else:
         logger.warn("Push succeeded: {}".format(out))
+    logger.warn("Push out: {}\n err: {} \n exitcode: {}\n repo url: {}".format(out, err, exitcode,
+                                                                               _get_repo_url(url_decode)))
     logger.warn("Status: out: {}\n err: {} \n exitcode: {}\n".format(sout, serr, sexitcode))
 
     # Success on commit
