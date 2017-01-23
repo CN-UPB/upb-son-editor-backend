@@ -2,6 +2,7 @@ import json
 import logging
 import os
 import shutil
+import time
 from subprocess import Popen, PIPE
 from urllib import parse
 
@@ -112,6 +113,12 @@ def check_son_validity(project_path: str):
     :return:
     """
     missing_files = []
+
+    files = [f for f in os.listdir(project_path)]
+    logger.warn('Files in {}: '.format(project_path))
+    for f in files:
+        logger.warn('{}'.format(f))
+
     for file in REQUIRED_SON_PROJECT_FILES:
         if not os.path.isfile(os.path.join(project_path, file)):
             missing_files.append(file)
@@ -153,7 +160,6 @@ def init(ws_id: int, project_id: int):
     # Additionally set repository user information
     if exitcode is 0:
         setup_git_user_email(project_full_path)
-
     return create_info_dict(out, err=err, exitcode=exitcode)
 
 
@@ -161,6 +167,7 @@ def setup_git_user_email(project_full_path: str):
     user = usermanagement.get_user(session['user_data']['login'])
     git_command(['config', 'user.name', user.name], cwd=project_full_path)
     git_command(['config', 'user.email', user.email], cwd=project_full_path)
+    git_command(['config', 'push.default', 'simple'], cwd=project_full_path)
 
 
 def commit_and_push(ws_id: int, project_id: int, commit_message: str):
@@ -174,23 +181,44 @@ def commit_and_push(ws_id: int, project_id: int, commit_message: str):
     project = get_project(ws_id, project_id)
 
     project_full_path = os.path.join(project.workspace.path, PROJECT_REL_PATH, project.rel_path)
+    logger.warn("Commit and Push files")
+    files = [f for f in os.listdir(project_full_path)]
+    logger.warn('Files in {}: '.format(project_full_path))
+    for f in files:
+        logger.warn('{}'.format(f))
+
     # Stage all modified, added, removed files
     out, err, exitcode = git_command(['add', '-A'], cwd=project_full_path)
     if exitcode is not 0:
         return create_info_dict(out, err=err, exitcode=exitcode)
+    else:
+        logger.warn("Add succeeded: {}".format(out))
 
     # Commit with message
     out, err, exitcode = git_command(['commit', "-m '{}'".format(commit_message)], cwd=project_full_path)
     if exitcode is not 0:
         git_command(['reset', 'HEAD~1'], cwd=project_full_path)
         return create_info_dict(out, err=err, exitcode=exitcode)
+    else:
+        logger.warn("Commit succeeded: {}".format(out))
 
     # Push all changes to the repo url
+    sout, serr, sexitcode = git_command(['status', '-u'], cwd=project_full_path)
     url_decode = parse.urlparse(project.repo_url)
-    out, err, exitcode = git_command(['push', _get_repo_url(url_decode)], cwd=project_full_path)
+    logger.warn("Executed status".format(out))
+    git_command(['remote', 'rm', 'origin', _get_repo_url(url_decode)], cwd=project_full_path)
+    git_command(['remote', 'add', 'origin', _get_repo_url(url_decode)], cwd=project_full_path)
+    git_command(['push', '--set-upstream', 'origin', 'master'], cwd=project_full_path)
+    git_command(['push', '-u'], cwd=project_full_path)
+    # time.sleep(30)
     if exitcode is not 0:
         git_command(['reset', 'HEAD~1'], cwd=project_full_path)
         return create_info_dict(out, err=err, exitcode=exitcode)
+    else:
+        logger.warn("Push succeeded: {}".format(out))
+    logger.warn("Push out: {}\n err: {} \n exitcode: {}\n repo url: {}".format(out, err, exitcode,
+                                                                               _get_repo_url(url_decode)))
+    logger.warn("Status: out: {}\n err: {} \n exitcode: {}\n".format(sout, serr, sexitcode))
 
     # Success on commit
     return create_info_dict(out)
@@ -234,6 +262,10 @@ def create_commit_and_push(ws_id: int, project_id: int, remote_repo_name: str):
 
     # Try to push project
     try:
+        # Give github some time to see created repo
+        # (dirty hack)
+        time.sleep(0.5)
+
         return commit_and_push(ws_id, project_id, "Initial commit")
     except Exception:
         # Delete newly created repository if commit and push failed.
@@ -336,6 +368,7 @@ def clone(ws_id: int, url: str, name: str = None):
         github_project_name = name
         if github_project_name is None:
             github_project_name = os.path.split(url_decode.path)[-1]
+            github_project_name = github_project_name.replace('.git', '')
         dbsession = db_session()
         pj = dbsession.query(Project).filter(Workspace.id == workspace.id).filter(
             Project.name == github_project_name).first()
