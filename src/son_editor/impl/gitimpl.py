@@ -151,10 +151,14 @@ def init(ws_id: int, project_id: int):
     out, err, exitcode = git_command(['init'], cwd=project_full_path)
     # Additionally set repository user information
     if exitcode is 0:
-        git_command(['config', 'user.name', session['user_data']['login']], cwd=project_full_path)
-        git_command(['config', 'user.email', session['user_data']['email']], cwd=project_full_path)
+        setup_git_user_email(project_full_path)
 
     return create_info_dict(out, err=err, exitcode=exitcode)
+
+
+def setup_git_user_email(project_full_path: str):
+    git_command(['config', 'user.name', session['user_data']['login']], cwd=project_full_path)
+    git_command(['config', 'user.email', session['user_data']['email']], cwd=project_full_path)
 
 
 def commit_and_push(ws_id: int, project_id: int, commit_message: str):
@@ -347,6 +351,7 @@ def clone(ws_id: int, url: str, name: str = None):
         out, err, exitcode = git_command(['clone', url_with_token, project_target_path])
 
         if exitcode is 0:
+            setup_git_user_email(project_target_path)
             # Check if the project is a valid son project
             check_son_validity(project_target_path)
             # Create project and scan it.
