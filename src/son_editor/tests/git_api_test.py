@@ -82,7 +82,7 @@ class GitAPITest(unittest.TestCase):
 
         # List functionality
         arg = {'url': json.loads(response.data.decode())[0]['clone_url']}
-        logger.info('arg: {}' + arg)
+        logger.info('arg: {}'.format(json.loads(response.data.decode())[0]['clone_url']))
         response = self.call_github_post('clone', arg)
         self.assertResponseValid(response)
 
