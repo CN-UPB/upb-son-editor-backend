@@ -117,7 +117,7 @@ class GitList(Resource):
     @namespace.response(200, "Visit https://developer.github.com/v3/repos/#response")
     def get(self, ws_id):
         """ Lists remote repository information """
-        return list(ws_id)
+        return prepare_response(list(ws_id))
 
 
 @namespace.route('/create')
