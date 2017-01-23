@@ -2,6 +2,7 @@ import json
 import logging
 import os
 import shutil
+import time
 from subprocess import Popen, PIPE
 from urllib import parse
 
@@ -152,7 +153,6 @@ def init(ws_id: int, project_id: int):
     # Additionally set repository user information
     if exitcode is 0:
         setup_git_user_email(project_full_path)
-
     return create_info_dict(out, err=err, exitcode=exitcode)
 
 
@@ -232,6 +232,10 @@ def create_commit_and_push(ws_id: int, project_id: int, remote_repo_name: str):
 
     # Try to push project
     try:
+        # Give github some time to see created repo
+        # (dirty hack)
+        time.sleep(0.5)
+
         return commit_and_push(ws_id, project_id, "Initial commit")
     except Exception:
         # Delete newly created repository if commit and push failed.
