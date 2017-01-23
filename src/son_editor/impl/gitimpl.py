@@ -188,12 +188,16 @@ def commit_and_push(ws_id: int, project_id: int, commit_message: str):
     out, err, exitcode = git_command(['add', '-A'], cwd=project_full_path)
     if exitcode is not 0:
         return create_info_dict(out, err=err, exitcode=exitcode)
+    else:
+        logger.warn("Add succeeded: {}".format(out))
 
     # Commit with message
     out, err, exitcode = git_command(['commit', "-m '{}'".format(commit_message)], cwd=project_full_path)
     if exitcode is not 0:
         git_command(['reset', 'HEAD~1'], cwd=project_full_path)
         return create_info_dict(out, err=err, exitcode=exitcode)
+    else:
+        logger.warn("Commit succeeded: {}".format(out))
 
     # Push all changes to the repo url
     url_decode = parse.urlparse(project.repo_url)
@@ -201,6 +205,8 @@ def commit_and_push(ws_id: int, project_id: int, commit_message: str):
     if exitcode is not 0:
         git_command(['reset', 'HEAD~1'], cwd=project_full_path)
         return create_info_dict(out, err=err, exitcode=exitcode)
+    else:
+        logger.warn("Push succeeded: {}".format(out))
 
     # Success on commit
     return create_info_dict(out)
