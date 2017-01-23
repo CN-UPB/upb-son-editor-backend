@@ -115,7 +115,7 @@ def check_son_validity(project_path: str):
         if not os.path.isfile(os.path.join(project_path, file)):
             missing_files.append(file)
 
-    missing_files_count = missing_files.count()
+    missing_files_count = len(missing_files)
     # If project seems to be valid.
     if missing_files_count is 0:
         return
