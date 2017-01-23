@@ -1,10 +1,12 @@
 import json
 import unittest
+import logging
 
 from son_editor.tests.utils import *
 from son_editor.util.context import init_test_context
 from son_editor.util.requestutil import CONFIG
 
+logger = logging.getLogger(__name__)
 # Get the github_bot_user / github_access_token from the CONFIG,
 # otherwise take it from the environment variable (which should be set on travis)
 
@@ -25,8 +27,6 @@ class GitAPITest(unittest.TestCase):
         else:
             self.username = GITHUB_USER
         # Name constant
-
-
         self.user = create_logged_in_user(self.app, self.username, GITHUB_ACCESS_TOKEN)
         # Create a workspace and project
         self.wsid = str(create_workspace(self.user, 'WorkspaceA'))
@@ -52,9 +52,9 @@ class GitAPITest(unittest.TestCase):
                         headers={'Content-Type': 'application/json'},
                         data=json.dumps(arg))
 
-    def call_github_post(self, gitmethod: str, arg: dict):
+    def call_github_post(self, git_method: str, arg: dict):
         response = self.app.post(
-            "/" + constants.WORKSPACES + "/" + self.wsid + "/" + constants.GIT + "/{}".format(gitmethod),
+            "/" + constants.WORKSPACES + "/" + self.wsid + "/" + constants.GIT + "/{}".format(git_method),
             headers={'Content-Type': 'application/json'},
             data=json.dumps(arg))
         return response
@@ -82,7 +82,7 @@ class GitAPITest(unittest.TestCase):
 
         # List functionality
         arg = {'url': json.loads(response.data.decode())[0]['clone_url']}
-
+        logger.info('arg: {}' + arg)
         response = self.call_github_post('clone', arg)
         self.assertResponseValid(response)
 
