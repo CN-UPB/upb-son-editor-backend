@@ -205,7 +205,9 @@ def commit_and_push(ws_id: int, project_id: int, commit_message: str):
     # Push all changes to the repo url
     sout, serr, sexitcode = git_command(['status', '-u'], cwd=project_full_path)
     url_decode = parse.urlparse(project.repo_url)
-    git_command(['push', '--set-upstream', 'origin', 'master'], cwd=project_full_path)
+    logger.warn("Executed status".format(out))
+    out, err, exitcode = git_command(['push', '--set-upstream', 'origin', 'master'], cwd=project_full_path)
+    logger.warn("Executed upstream: {}\n err: {} \n exitcode: {}\n".format(out))
     out, err, exitcode = git_command(['push', _get_repo_url(url_decode)], cwd=project_full_path)
     # time.sleep(30)
     if exitcode is not 0:
