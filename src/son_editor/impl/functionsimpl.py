@@ -3,9 +3,11 @@ import logging
 import os
 import shlex
 import shutil
+from pathlib import Path
 
 import jsonschema
 from jsonschema import ValidationError
+from werkzeug.utils import secure_filename
 
 from son_editor.app.database import db_session
 from son_editor.app.exceptions import NameConflict, NotFound, InvalidArgument
@@ -190,3 +192,66 @@ def validate_vnf(schema_index: int, descriptor: dict) -> None:
         jsonschema.validate(descriptor, schema)
     except ValidationError as ve:
         raise InvalidArgument("Validation failed: <br/> Path: {} <br/> Error: {}".format(list(ve.path), ve.message))
+
+
+def save_image_file(ws_id, project_id, function_id, file):
+    if file.filename == '':
+        raise InvalidArgument("No file attached!")
+    if file:
+        filename = secure_filename(file.filename)
+        session = db_session()
+        function = session.query(Function). \
+            join(Project). \
+            join(Workspace). \
+            filter(Workspace.id == ws_id). \
+            filter(Project.id == project_id). \
+            filter(Function.id == function_id).first()
+        if function is not None:
+            file_path = get_file_path("vnf", function)
+            file_path = file_path.replace(get_file_name(function), filename)
+            file.save(file_path)
+            return "File {} successfully uploaded!".format(filename)
+        else:
+            raise NotFound("Function with id " + function_id + " does not exist")
+
+
+def get_image_files(ws_id, project_id, function_id):
+    session = db_session()
+    function = session.query(Function). \
+        join(Project). \
+        join(Workspace). \
+        filter(Workspace.id == ws_id). \
+        filter(Project.id == project_id). \
+        filter(Function.id == function_id).first()
+    if function:
+        folder_path = get_file_path("vnf", function).replace(get_file_name(function), "")
+        image_files = []
+
+        for filename in os.listdir(folder_path):
+            if not Path(os.path.join(folder_path, filename)).is_dir():
+                if not filename == get_file_name(function):
+                    image_files.append(filename)
+        return image_files
+    else:
+        raise NotFound("Function with id " + function_id + " does not exist")
+
+
+def delete_image_file(ws_id, project_id, vnf_id, filename):
+    session = db_session()
+    function = session.query(Function). \
+        join(Project). \
+        join(Workspace). \
+        filter(Workspace.id == ws_id). \
+        filter(Project.id == project_id). \
+        filter(Function.id == vnf_id).first()
+    if function:
+        save_name = secure_filename(filename)
+        if not save_name == get_file_name(function):
+            file_path = get_file_path("vnf", function).replace(get_file_name(function), save_name)
+            if os.path.exists(file_path):
+                os.remove(file_path)
+                return "File {} was deleted".format(save_name)
+            else:
+                raise NotFound("File {} not found!".format(save_name))
+    else:
+        raise NotFound("Function with id " + vnf_id + " does not exist")

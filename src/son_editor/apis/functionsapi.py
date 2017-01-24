@@ -6,7 +6,9 @@ Created on 22.07.2016
 from flask.globals import request, session
 from flask_restplus import Namespace, Model, fields
 from flask_restplus import Resource
+from werkzeug.utils import secure_filename
 
+from son_editor.app.exceptions import InvalidArgument
 from son_editor.impl import functionsimpl, catalogue_servicesimpl
 from son_editor.impl.private_catalogue_impl import publish_private_nsfs
 from son_editor.util.constants import get_parent, Category, WORKSPACES, PROJECTS, CATALOGUES, PLATFORMS, VNFS
@@ -157,6 +159,27 @@ class Function(Resource):
             return prepare_response(functions)
         # TODO implement for catalog and platform
         return prepare_response("not yet implemented")
+
+
+@proj_namespace.route('/<int:vnf_id>/upload')
+class FunctionUpload(Resource):
+    @staticmethod
+    def post(ws_id, parent_id, vnf_id):
+        if 'image' not in request.files:
+            raise InvalidArgument("No file attached!")
+        file = request.files['image']
+        return prepare_response(functionsimpl.save_image_file(ws_id, parent_id, vnf_id, file))
+
+    @staticmethod
+    def get(ws_id, parent_id, vnf_id):
+        return prepare_response(functionsimpl.get_image_files(ws_id, parent_id, vnf_id))
+
+
+@proj_namespace.route('/<int:vnf_id>/upload/<filename>')
+class FunctionUpload(Resource):
+    @staticmethod
+    def delete(ws_id, parent_id, vnf_id, filename):
+        return prepare_response(functionsimpl.delete_image_file(ws_id, parent_id, vnf_id, filename))
 
 
 @proj_namespace.route('/<int:vnf_id>/publish')
