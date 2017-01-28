@@ -298,6 +298,7 @@ def delete(ws_id: int, remote_repo_name: str, organization_name: str = None):
 def diff(ws_id: int, pj_id: int):
     """
     Shows the local changes of the given project.
+
     :param ws_id: Workspace of the project.
     :param pj_id: Given project to show from.
     :return:
@@ -310,6 +311,27 @@ def diff(ws_id: int, pj_id: int):
         return create_info_dict(out)
     else:
         return create_info_dict(out, err, exitcode)
+
+
+def status(ws_id: int, pj_id: int):
+    """
+    Shows the git status of the repository
+
+    :param ws_id:
+    :param pj_id:
+    :return:
+    """
+    project = get_project(ws_id, pj_id)
+    project_full_path = os.path.join(project.workspace.path, PROJECT_REL_PATH, project.rel_path)
+
+    # fetch remote changes
+    out, err, exitcode = git_command(['remote', 'update'], project_full_path)
+    if exitcode is 0:
+        # get the status
+        out, err, exitcode = git_command(['status', '-uno', '-u'], project_full_path)
+        if exitcode is 0:
+            return create_info_dict(out)
+    return create_info_dict(out, err, exitcode)
 
 
 def pull(ws_id: int, project_id: int):

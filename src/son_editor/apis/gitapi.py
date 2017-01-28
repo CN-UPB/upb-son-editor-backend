@@ -3,7 +3,8 @@ import shlex
 from flask import request
 from flask_restplus import Resource, Namespace, fields
 
-from son_editor.impl.gitimpl import clone, pull, commit_and_push, create_commit_and_push, delete, list, diff, init
+from son_editor.impl.gitimpl import clone, pull, commit_and_push, create_commit_and_push, delete, list, diff, init, \
+    status
 from son_editor.util.constants import WORKSPACES, GIT
 from son_editor.util.requestutil import get_json, prepare_response
 
@@ -86,6 +87,17 @@ class GitDiff(Resource):
         """ Retrieves the current diff of the project directory"""
         json_data = get_json(request)
         result = diff(ws_id, int(json_data['project_id']))
+        return prepare_response(result, 200)
+
+
+@namespace.route('/status')
+class GitStatus(Resource):
+    @namespace.expect(diff_model)
+    @namespace.response(200, "OK, with output information of 'git status'")
+    def post(self, ws_id):
+        """ Retrieves the current status of the project directory"""
+        json_data = get_json(request)
+        result = status(ws_id, int(json_data['project_id']))
         return prepare_response(result, 200)
 
 
