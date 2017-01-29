@@ -5,7 +5,7 @@ RUN pip install git+https://github.com/sonata-nfv/son-cli
 
 #install son-editor-backend
 COPY . /app
-COPY .no-ssl-nginx.conf /etc/nginx/conf.d/nginx.conf
+COPY ./no-ssl-nginx.conf /etc/nginx/conf.d/nginx.conf
 
 # Set the default directory where CMD will execute
 WORKDIR /app
