@@ -253,7 +253,7 @@ def create_commit_and_push(ws_id: int, project_id: int, remote_repo_name: str):
 
         # Get git url and commit to db
         data = json.loads(request.text)
-        git_url = data['git_url']
+        git_url = data['svn_url']
         project.repo_url = git_url
         database_session.commit()
     except Exception:
