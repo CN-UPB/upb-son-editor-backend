@@ -3,7 +3,7 @@ Created on 05.08.2016
 
 @author: Jonas
 '''
-import os
+import os, stat
 import shlex
 import shutil
 from subprocess import Popen, PIPE
@@ -19,6 +19,7 @@ from son_editor.util.requestutil import get_config, rreplace
 WORKSPACES_DIR = os.path.expanduser(get_config()["workspaces-location"])
 # make ws paths prettier
 WORKSPACES_DIR = os.path.normpath(WORKSPACES_DIR)
+
 
 def get_projects(ws_id: int) -> list:
     """
@@ -167,6 +168,15 @@ def set_data(project: Project, project_data: dict) -> None:
         project.version = project_data['version']
 
 
+def on_rm_error(func, path, exc_info):
+    """Gets called if rm_tree gets an error, happens
+    especially if trying to remove .git files on windows"""
+    # path contains the path of the file that couldn't be removed
+    # let's just assume that it's read-only and unlink it.
+    os.chmod(path, stat.S_IWRITE)
+    os.unlink(path)
+
+
 def delete_project(project_id: int) -> dict:
     """
     Deletes the project from the database and from the Disk
@@ -177,7 +187,8 @@ def delete_project(project_id: int) -> dict:
     project = session.query(Project).filter(Project.id == int(project_id)).first()
     if project:
         path = get_project_path(project.workspace.path, project.rel_path)
-        shutil.rmtree(path)
+
+        shutil.rmtree(path, onerror=on_rm_error)
         session.delete(project)
     db_session.commit()
     if project:

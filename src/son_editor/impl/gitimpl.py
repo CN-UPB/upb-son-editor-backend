@@ -275,9 +275,10 @@ def create_commit_and_push(ws_id: int, project_id: int, remote_repo_name: str):
         raise
 
 
-def delete(ws_id: int, remote_repo_name: str, organization_name: str = None):
+def delete(ws_id: int, project_id: int, remote_repo_name: str, organization_name: str = None):
     """
     Deletes given project on remote repository
+    :param project_id:
     :param ws_id: Workspace of the project
     :param remote_repo_name: Remote repository name
     :param organization_name: Optional parameter to specify the organization / login
@@ -287,12 +288,19 @@ def delete(ws_id: int, remote_repo_name: str, organization_name: str = None):
         owner = session['user_data']['login']
     else:
         owner = organization_name
-
-    result = requests.delete(build_github_delete(owner, remote_repo_name), headers=create_oauth_header())
-    if result.status_code == 204:
-        return create_info_dict("Successful deleted")
-    else:
-        return create_info_dict(result.text, exitcode=1)
+    sql_session = db_session()
+    project = get_project(ws_id, project_id, sql_session)
+    url_decode = parse.urlparse(project.repo_url)
+    if _repo_name_from_url(url_decode) == remote_repo_name:
+        result = requests.delete(build_github_delete(owner, remote_repo_name), headers=create_oauth_header())
+        if result.status_code == 204:
+            project.repo_url = None
+            sql_session.commit()
+            return create_info_dict("Successfully deleted")
+        else:
+            sql_session.rollback()
+            return create_info_dict(result.text, exitcode=1)
+    raise InvalidArgument("The given repo name does not correspond to the remote repository name")
 
 
 def diff(ws_id: int, pj_id: int):
@@ -373,6 +381,10 @@ def list(ws_id: int):
     return json.loads(result.text)
 
 
+def _repo_name_from_url(url_decode: str):
+    github_project_name = os.path.split(url_decode.path)[-1]
+    return github_project_name.replace('.git', '')
+
 def clone(ws_id: int, url: str, name: str = None):
     """
     Clones a repository by url into given workspace
@@ -389,8 +401,7 @@ def clone(ws_id: int, url: str, name: str = None):
         # Take the suffix of url as first name candidate
         github_project_name = name
         if github_project_name is None:
-            github_project_name = os.path.split(url_decode.path)[-1]
-            github_project_name = github_project_name.replace('.git', '')
+            github_project_name = _repo_name_from_url(url_decode)
         dbsession = db_session()
         pj = dbsession.query(Project).filter(Workspace.id == workspace.id).filter(
             Project.name == github_project_name).first()

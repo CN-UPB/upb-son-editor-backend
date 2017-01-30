@@ -48,7 +48,7 @@ class GitAPITest(unittest.TestCase):
     def clean_github(self):
         """ Deletes the created test project(s) on github """
         # Clean github repository
-        arg = {'repo_name': REMOTE_REPO_NAME}
+        arg = {'project_id': self.pjid, 'repo_name': REMOTE_REPO_NAME}
         self.app.delete("/" + constants.WORKSPACES + "/" + self.wsid + "/" + constants.GIT + "/delete",
                         headers={'Content-Type': 'application/json'},
                         data=json.dumps(arg))
@@ -86,7 +86,7 @@ class GitAPITest(unittest.TestCase):
         response = self.call_github_post('clone', arg)
         self.assertResponseValid(response)
 
-        arg = {'repo_name': REMOTE_REPO_NAME}
+        arg = {'project_id': self.pjid, 'repo_name': REMOTE_REPO_NAME}
         response = self.app.delete("/" + constants.WORKSPACES + "/" + self.wsid + "/" + constants.GIT + "/delete",
                                    headers={'Content-Type': 'application/json'},
                                    data=json.dumps(arg))
