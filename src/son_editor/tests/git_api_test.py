@@ -32,7 +32,7 @@ class GitAPITest(unittest.TestCase):
         # Create a workspace and project
         self.wsid = str(create_workspace(self.user, 'WorkspaceA'))
         # Create sample project
-        self.pjid = str(create_project(self.wsid, 'ProjectA'))
+        self.pjid = str(create_project(int(self.wsid), 'ProjectA'))
         self.clean_github()
 
     def tearDown(self):
@@ -81,12 +81,10 @@ class GitAPITest(unittest.TestCase):
         response = self.app.get("/" + constants.WORKSPACES + "/" + self.wsid + "/" + constants.GIT + "/list")
 
         # List functionality
-        arg = {'url': json.loads(response.data.decode())[0]['clone_url']}
         logger.info('arg: {}'.format(json.loads(response.data.decode())[0]['clone_url']))
-        response = self.call_github_post('clone', arg)
-        self.assertResponseValid(response)
+        pj_id = create_project(int(self.wsid), REMOTE_REPO_NAME, json.loads(response.data.decode())[0]['clone_url'])
 
-        arg = {'project_id': self.pjid, 'repo_name': REMOTE_REPO_NAME}
+        arg = {'project_id': pj_id, 'repo_name': REMOTE_REPO_NAME}
         response = self.app.delete("/" + constants.WORKSPACES + "/" + self.wsid + "/" + constants.GIT + "/delete",
                                    headers={'Content-Type': 'application/json'},
                                    data=json.dumps(arg))

@@ -151,12 +151,13 @@ def delete_workspace(testcase, ws_id: int):
     return response.status_code == 200
 
 
-def create_project(ws_id: int, project_name: str) -> str:
+def create_project(ws_id: int, project_name: str, repo: str = None) -> str:
     """
     Creates a project
-    :param testcase: Testcase instance to call HTTP requests
+
+    :param repo: the repository url, None by default
     :param ws_id: The workspace where the project gets created
     :param project_name: Name of the workspace that gets created
     :return: ID of the created project
     """
-    return son_editor.impl.projectsimpl.create_project(ws_id, {'name': project_name})['id']
+    return son_editor.impl.projectsimpl.create_project(ws_id, {'name': project_name, 'repo': repo})['id']
