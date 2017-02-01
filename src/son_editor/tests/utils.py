@@ -151,7 +151,7 @@ def delete_workspace(testcase, ws_id: int):
     return response.status_code == 200
 
 
-def create_project(ws_id: int, project_name: str, repo: str = None) -> str:
+def create_project(ws_id: int, project_name: str) -> str:
     """
     Creates a project
 
@@ -160,4 +160,4 @@ def create_project(ws_id: int, project_name: str, repo: str = None) -> str:
     :param project_name: Name of the workspace that gets created
     :return: ID of the created project
     """
-    return son_editor.impl.projectsimpl.create_project(ws_id, {'name': project_name, 'repo': repo})['id']
+    return son_editor.impl.projectsimpl.create_project(ws_id, {'name': project_name})['id']

@@ -292,7 +292,7 @@ def delete(ws_id: int, project_id: int, remote_repo_name: str, organization_name
     project = get_project(ws_id, project_id, sql_session)
     url_decode = parse.urlparse(project.repo_url)
     if _repo_name_from_url(url_decode) == remote_repo_name:
-        result = requests.delete(build_github_delete(owner, remote_repo_name), headers=create_oauth_header())
+        result = _do_delete(owner, remote_repo_name)
         if result.status_code == 204:
             project.repo_url = None
             sql_session.commit()
@@ -301,6 +301,10 @@ def delete(ws_id: int, project_id: int, remote_repo_name: str, organization_name
             sql_session.rollback()
             return create_info_dict(result.text, exitcode=1)
     raise InvalidArgument("The given repo name does not correspond to the remote repository name")
+
+
+def _do_delete(owner, remote_repo_name):
+    return requests.delete(build_github_delete(owner, remote_repo_name), headers=create_oauth_header())
 
 
 def diff(ws_id: int, pj_id: int):
@@ -384,6 +388,7 @@ def list(ws_id: int):
 def _repo_name_from_url(url_decode: str):
     github_project_name = os.path.split(url_decode.path)[-1]
     return github_project_name.replace('.git', '')
+
 
 def clone(ws_id: int, url: str, name: str = None):
     """
