@@ -154,7 +154,8 @@ def delete_workspace(testcase, ws_id: int):
 def create_project(ws_id: int, project_name: str) -> str:
     """
     Creates a project
-    :param testcase: Testcase instance to call HTTP requests
+
+    :param repo: the repository url, None by default
     :param ws_id: The workspace where the project gets created
     :param project_name: Name of the workspace that gets created
     :return: ID of the created project

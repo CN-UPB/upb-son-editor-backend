@@ -27,6 +27,7 @@ clone_model = namespace.model('Clone information', {
 })
 
 delete_model = namespace.model('Delete information', {
+    'project_id': fields.Integer(description='Project ID of the project to get diff information'),
     'repo_name': fields.String(description='Remote repository that gets deleted'),
     'owner': fields.String(
         description='Owner/organization name of the repository\'s owner, otherwise user as owner is taken',
@@ -75,7 +76,7 @@ class GitDelete(Resource):
     def delete(self, ws_id):
         """ Deletes a remote repository"""
         json_data = get_json(request)
-        result = delete(ws_id, shlex.quote(json_data['repo_name']))
+        result = delete(ws_id, int(json_data['project_id']), shlex.quote(json_data['repo_name']))
         return prepare_response(result, 200)
 
 
