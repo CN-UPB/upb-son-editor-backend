@@ -7,7 +7,7 @@ from son_editor.models.descriptor import Service, Function
 from son_editor.models.project import Project
 from son_editor.models.repository import Platform
 from son_editor.models.workspace import Workspace
-from son_editor.util.publishutil import pack_project, push_to_platform, deploy_on_platform
+from son_editor.util.publishutil import pack_project, push_to_platform
 
 logger = logging.getLogger(__name__)
 
@@ -52,11 +52,10 @@ def create_service_on_platform(ws_id, platform_id, service_data):
         package_path = pack_project(project)
         service_uuid = push_to_platform(package_path, platform)
         logger.info("Pushed to platform: " + str(service_uuid))
-        message = deploy_on_platform(service_uuid, platform)
         # deploy to private catalogue
         service = project.services[0].as_dict()
         publish_private_nsfs(ws_id, service["descriptor"], is_vnf=False)
         publish_referenced_functions(ws_id, project.id, service["descriptor"])
-        return {'message': 'Deployed successfully: {}'.format(message)}
+        return {'message': 'Deployed successfully: {}'.format(str(service_uuid))}
     finally:
         session.commit()
