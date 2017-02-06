@@ -373,8 +373,21 @@ def pull(ws_id: int, project_id: int):
     # If url in GitHub domain, access by token
     out, err, exitcode = git_command(['pull', project.repo_url], cwd=project_full_path)
 
+    # Return error if pull failed.
     if exitcode is not 0:
         return create_info_dict(err=err, exitcode=exitcode)
+
+    # Rescan project
+    dbsession = db_session()
+    try:
+        sync_project_descriptor(project)
+        dbsession.add(project)
+        scan_project_dir(project_full_path)
+        dbsession.commit()
+    except:
+        dbsession.rollback()
+        raise Exception("Could not scan the project after pull.")
+
     return create_info_dict(out=out)
 
 
