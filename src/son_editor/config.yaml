@@ -32,6 +32,7 @@ config:
 test:
   test-platform: "http://fg-cn-sandman2.cs.upb.de:1234"
   wrong-test-platform: "http://fg-cn-sandman2.cs.upb.de:1010"
+  catalogue-instance: "http://fg-cn-sandman2.cs.upb.de:4012"
 
 
 #github-orgs:
