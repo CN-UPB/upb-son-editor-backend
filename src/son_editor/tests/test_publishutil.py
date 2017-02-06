@@ -13,6 +13,7 @@ from son_editor.util import publishutil
 from son_editor.util.constants import WORKSPACES, PROJECTS, SERVICES
 from son_editor.util.context import init_test_context
 from son_editor.tests.utils import *
+from son_editor.util.requestutil import get_config
 
 
 class TestPublishutil(TestCase):
@@ -64,13 +65,13 @@ class TestPublishutil(TestCase):
     def test_push_project(self):
         package_path = self.test_package_location
         result = publishutil.push_to_platform(package_path=package_path,
-                                              platform=Platform(url="http://fg-cn-sandman2.cs.upb.de:1234"))
+                                              platform=Platform(url=get_config()['test']['test-platform']))
         self.assertTrue('service_uuid' in result)
         caught = False
         try:
             result = publishutil.push_to_platform(package_path=package_path,
                                                   platform=Platform(
-                                                      url="http://fg-cn-sandman2.cs.upb.de:1010"))  # wrong port
+                                                      url=get_config()['test']['wrong-test-platform']))  # wrong port
         except ExtNotReachable:
             caught = True
         self.assertTrue(caught)
@@ -78,8 +79,8 @@ class TestPublishutil(TestCase):
     def test_deploy_project(self):
         package_path = self.test_package_location
         result = publishutil.push_to_platform(package_path=package_path,
-                                              platform=Platform(url="http://fg-cn-sandman2.cs.upb.de:1234"))
+                                              platform=Platform(url=get_config()['test']['test-platform']))
         self.assertTrue('service_uuid' in result)
         result = publishutil.deploy_on_platform(service_uuid=result,
-                                                platform=Platform(url="http://fg-cn-sandman2.cs.upb.de:1234"))
+                                                platform=Platform(url=get_config()['test']['test-platform']))
         self.assertTrue(result)
