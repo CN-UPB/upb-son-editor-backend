@@ -55,12 +55,12 @@ def push_to_platform(package_path: str, ws: Workspace) -> str:
     logger.info("Error:" + err)
 
     exitcode = proc.returncode  # as of now exitcode is 0 even if there is an error
-    if "ConnectionError" in out or err:
+    if "ConnectionError" in out or "ConnectionError" in err:
         raise ExtNotReachable("Could not connect to platform.")
-    elif "error" in out.lower() or err.lower():
+    elif "error" in out.lower() or  "error" in err.lower():
         raise NameConflict("Out: " + out + "Error: " + err)
     elif "201" in out:
-        message = out.split(":", 1)[1]  # remove son-push message
+        message = out.split(":", 8)[8]  # remove son-push message
         message = message.strip()[1:-1]  # remove line break and outer quotes
         uuid = json.loads(message)
         return uuid
