@@ -358,7 +358,8 @@ def pull(ws_id: int, project_id: int):
     :param project_id: Project to pull.
     :return:
     """
-    project = get_project(ws_id, project_id)
+    dbsession = db_session()
+    project = get_project(ws_id, project_id, session=dbsession)
 
     project_full_path = os.path.join(project.workspace.path, PROJECT_REL_PATH, project.rel_path)
 
@@ -378,11 +379,10 @@ def pull(ws_id: int, project_id: int):
         return create_info_dict(err=err, exitcode=exitcode)
 
     # Rescan project
-    dbsession = db_session()
     try:
         sync_project_descriptor(project)
         dbsession.add(project)
-        scan_project_dir(project_full_path)
+        scan_project_dir(project_full_path, project)
         dbsession.commit()
     except:
         dbsession.rollback()
