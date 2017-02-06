@@ -97,7 +97,12 @@ def create_workspace(user: User, ws_name: str) -> int:
     :return: ID of the created workspace
     """
 
-    ws_data = {'name': ws_name}
+    ws_data = {'name': ws_name,
+               'platforms': [
+                   {'name': 'sonEmu',
+                    'url': "http://fg-cn-sandman2.cs.upb.de:1234"}
+               ]
+               }
     workspace_data = son_editor.impl.workspaceimpl.create_workspace(user.name, ws_data)
     return workspace_data['id']
 

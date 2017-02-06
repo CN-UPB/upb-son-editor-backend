@@ -19,7 +19,7 @@ from son_editor.app.exceptions import NameConflict, NotFound, InvalidArgument, E
 from son_editor.impl.usermanagement import get_user
 from son_editor.models.repository import Platform, Catalogue
 from son_editor.models.workspace import Workspace
-from son_editor.util.descriptorutil import synchronize_workspace_descriptor, update_workspace_descriptor
+from son_editor.util.descriptorutil import update_workspace_descriptor
 from son_editor.util.requestutil import get_config, rreplace
 
 WORKSPACES_DIR = path.expanduser(get_config()["workspaces-location"])
@@ -32,6 +32,7 @@ logger = logging.getLogger(__name__)
 def get_workspaces(login: str) -> list:
     """
     Get all workspaces for the current user
+
     :return: A list wof workspace dictionaries
     """
     session = db_session()
@@ -45,7 +46,8 @@ def get_workspaces(login: str) -> list:
 def get_workspace(ws_id: int) -> dict:
     """
     Get a workspace by ID
-    :param ws_id:
+
+    :param ws_id: The workspace ID
     :return: A dictionary wich contains the Workspace configuration
     """
     session = db_session()
@@ -58,9 +60,17 @@ def get_workspace(ws_id: int) -> dict:
         raise NotFound("No workspace with id " + ws_id + " exists")
 
 
+def create_token_file(ws_path, token):
+    file_name = os.path.join(ws_path, "token.txt")
+    with open(file_name, "w") as text_file:
+        text_file.write(token)
+    return file_name
+
+
 def create_workspace(login: str, workspace_data: dict) -> dict:
     """
     Creates a workspace (on disk and in the database) from the given workspace data
+
     :param workspace_data: The workspace configuration data
     :return: The created workspace
     """
@@ -83,11 +93,14 @@ def create_workspace(login: str, workspace_data: dict) -> dict:
         session.add(ws)
         if 'platforms' in workspace_data:
             for platform in workspace_data['platforms']:
-                session.add(Platform(platform['name'], platform['url'], ws))
-                test_url(platform['name'], platform['url'] + "/packages")
+                ptf = Platform(platform['name'], platform['url'], True, ws)
+                if 'token' in platform:
+                    ptf.token_path = create_token_file(platform['token'])
+                session.add(ptf)
+                test_url(platform['name'], platform['url'] + "/api/v2/packages")
         if 'catalogues' in workspace_data:
             for catalogue in workspace_data['catalogues']:
-                session.add(Catalogue(catalogue['name'], catalogue['url'], ws))
+                session.add(Catalogue(catalogue['name'], catalogue['url'], True, ws))
                 test_url(catalogue['name'], catalogue['url'])
     except:
         logger.exception()
@@ -105,7 +118,7 @@ def create_workspace(login: str, workspace_data: dict) -> dict:
         workspace_exists = False
 
     if exitcode == 0 and not workspace_exists:
-        synchronize_workspace_descriptor(ws, session)
+        update_workspace_descriptor(ws)
         session.commit()
         return ws.as_dict()
     else:
@@ -118,6 +131,7 @@ def create_workspace(login: str, workspace_data: dict) -> dict:
 def update_workspace(workspace_data, wsid):
     """
     Updates the workspace with the given workspace data
+
     :param workspace_data: The new workspace configuration
     :param wsid: the workspace ID
     :return: The updated workspace
@@ -167,9 +181,11 @@ def update_workspace(workspace_data, wsid):
                     first()
             if platform:
                 # update existing
-                test_url(updated_platform['name'], updated_platform['url'] + "/packages")
+                test_url(updated_platform['name'], updated_platform['url'] + "/api/v2/packages")
                 platform.name = updated_platform['name']
                 platform.url = updated_platform['url']
+                if 'token' in updated_platform:
+                    platform.token_path = create_token_file(updated_platform['token'])
             else:
                 # create new
                 test_url(updated_platform['name'], updated_platform['url'] + "/packages")
@@ -216,6 +232,7 @@ def update_workspace(workspace_data, wsid):
 def delete_workspace(wsid):
     """
     Deletes the workspace from the database and from disk
+
     :param wsid: The workspace ID
     :return: The deleted workspace
     """
@@ -231,6 +248,7 @@ def delete_workspace(wsid):
     else:
         raise NotFound("Workspace with id {} was not found".format(wsid))
 
+
 def on_rm_error(func, path, exc_info):
     """Gets called if rm_tree gets an error, happens
     especially if trying to remove .git files on windows"""
@@ -238,6 +256,7 @@ def on_rm_error(func, path, exc_info):
     # let's just assume that it's read-only and unlink it.
     os.chmod(path, stat.S_IWRITE)
     os.unlink(path)
+
 
 def test_url(name, url):
     try:

@@ -1,18 +1,15 @@
 import json
-import os
 from unittest import TestCase
 
 import pkg_resources
 
-from son_editor.app.database import db_session
 from son_editor.app.exceptions import PackException, ExtNotReachable
 from son_editor.models.project import Project
-from son_editor.models.repository import Platform
-from son_editor.models.user import User
+from son_editor.tests.utils import *
 from son_editor.util import publishutil
 from son_editor.util.constants import WORKSPACES, PROJECTS, SERVICES
 from son_editor.util.context import init_test_context
-from son_editor.tests.utils import *
+from son_editor.util.descriptorutil import update_workspace_descriptor
 
 
 class TestPublishutil(TestCase):
@@ -63,23 +60,28 @@ class TestPublishutil(TestCase):
 
     def test_push_project(self):
         package_path = self.test_package_location
-        result = publishutil.push_to_platform(package_path=package_path,
-                                              platform=Platform(url="http://fg-cn-sandman2.cs.upb.de:1234"))
+        session = db_session()
+        ws = session.query(Workspace).filter(Workspace.id == self.wsid).first()
+        result = publishutil.push_to_platform(package_path=package_path, ws=ws)
         self.assertTrue('service_uuid' in result)
+
         caught = False
         try:
+            ws.platforms[0].url = "http://fg-cn-sandman2.cs.upb.de:1010"
+            update_workspace_descriptor(ws)
             result = publishutil.push_to_platform(package_path=package_path,
-                                                  platform=Platform(
-                                                      url="http://fg-cn-sandman2.cs.upb.de:1010"))  # wrong port
+                                                  ws=ws)  # wrong port
         except ExtNotReachable:
             caught = True
         self.assertTrue(caught)
+        session.rollback()
 
-    def test_deploy_project(self):
-        package_path = self.test_package_location
-        result = publishutil.push_to_platform(package_path=package_path,
-                                              platform=Platform(url="http://fg-cn-sandman2.cs.upb.de:1234"))
-        self.assertTrue('service_uuid' in result)
-        result = publishutil.deploy_on_platform(service_uuid=result,
-                                                platform=Platform(url="http://fg-cn-sandman2.cs.upb.de:1234"))
-        self.assertTrue(result)
+        # Not supported by son-access anymore
+        # def test_deploy_project(self):
+        #     package_path = self.test_package_location
+        #     result = publishutil.push_to_platform(package_path=package_path,
+        #                                           platform=Platform(url="http://fg-cn-sandman2.cs.upb.de:1234"))
+        #     self.assertTrue('service_uuid' in result)
+        #     result = publishutil.deploy_on_platform(service_uuid=result,
+        #                                             platform=Platform(url="http://fg-cn-sandman2.cs.upb.de:1234"))
+        #     self.assertTrue(result)

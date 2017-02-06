@@ -49,10 +49,13 @@ class Platform(Repository):
     __tablename__ = 'platform'
     id = Column(Integer, ForeignKey('repository.id'), primary_key=True)
     workspace = relationship("Workspace", back_populates="platforms")
+    token_path = Column(String(50))
 
-    def __init__(self, name=None, url=None, publish=None, workspace=None):
+    def __init__(self, name=None, url=None, publish=None, workspace=None, token_path="empty"):
         super().__init__(name=name, url=url, publish=publish)
         self.workspace = workspace
+        self.token_path = token_path
+
 
     __mapper_args__ = {
         'polymorphic_identity': 'platform',

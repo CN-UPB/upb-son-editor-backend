@@ -5,7 +5,7 @@ from subprocess import Popen, PIPE
 
 from son_editor.app.exceptions import PackException, ExtNotReachable, NameConflict
 from son_editor.models.project import Project
-from son_editor.models.repository import Platform
+from son_editor.models.workspace import Workspace
 
 logger = logging.getLogger(__name__)
 
@@ -38,14 +38,14 @@ def pack_project(project: Project) -> str:
     raise PackException(err)
 
 
-def push_to_platform(package_path: str, platform: Platform) -> str:
+def push_to_platform(package_path: str, ws: Workspace) -> str:
     """
     Pushes the package located at the package_path to the specified Platform
     :param package_path: the location of package to be pushed on disk
     :param platform: The platform to upload to
     :return:
     """
-    proc = Popen(['son-push', platform.url, '-U', package_path], stdout=PIPE, stderr=PIPE)
+    proc = Popen(['son-access', "push", "--workspace", ws.path, package_path], stdout=PIPE, stderr=PIPE)
 
     out, err = proc.communicate()
     out = out.decode()
@@ -55,39 +55,39 @@ def push_to_platform(package_path: str, platform: Platform) -> str:
     logger.info("Error:" + err)
 
     exitcode = proc.returncode  # as of now exitcode is 0 even if there is an error
-    if "ConnectionError" in out or err:
+    if "ConnectionError" in out or "ConnectionError" in err:
         raise ExtNotReachable("Could not connect to platform.")
-    elif "error" in out.lower() or err.lower():
+    elif "error" in out.lower() or  "error" in err.lower():
         raise NameConflict("Out: " + out + "Error: " + err)
     elif "201" in out:
-        message = out.split(":", 1)[1]  # remove son-push message
+        message = out.split(":", 8)[8]  # remove son-push message
         message = message.strip()[1:-1]  # remove line break and outer quotes
         uuid = json.loads(message)
         return uuid
     else:
         return out
 
-
-def deploy_on_platform(service_uuid: dict, platform: Platform) -> str:
-    """
-    Pushes the package located at the package_path to the specified Platform
-    :param service_uuid: a dictionary with the service uuid on the platform
-    :param platform: The platform to upload to
-    :return:
-    """
-    proc = Popen(['son-push', platform.url, '-D', str(service_uuid['service_uuid'])], stdout=PIPE, stderr=PIPE)
-
-    out, err = proc.communicate()
-    out = out.decode()
-    err = err.decode()
-
-    logger.info("Out:" + out)
-    logger.info("Error:" + err)
-
-    exitcode = proc.returncode  # as of now exitcode is 0 even if there is an error
-    if "ConnectionError" in out or err:
-        raise ExtNotReachable("Could not connect to platform.")
-    elif "error" in out.lower() or err.lower():
-        raise NameConflict("Out: " + out + "Error: " + err)
-    else:
-        return out
+# Not Supported for now
+# def deploy_on_platform(service_uuid: dict, platform: Platform) -> str:
+#     """
+#     Pushes the package located at the package_path to the specified Platform
+#     :param service_uuid: a dictionary with the service uuid on the platform
+#     :param platform: The platform to upload to
+#     :return:
+#     """
+#     proc = Popen(['son-push', platform.url, '-D', str(service_uuid['service_uuid'])], stdout=PIPE, stderr=PIPE)
+#
+#     out, err = proc.communicate()
+#     out = out.decode()
+#     err = err.decode()
+#
+#     logger.info("Out:" + out)
+#     logger.info("Error:" + err)
+#
+#     exitcode = proc.returncode  # as of now exitcode is 0 even if there is an error
+#     if "ConnectionError" in out or err:
+#         raise ExtNotReachable("Could not connect to platform.")
+#     elif "error" in out.lower() or err.lower():
+#         raise NameConflict("Out: " + out + "Error: " + err)
+#     else:
+#         return out
