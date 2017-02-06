@@ -4,14 +4,15 @@ Created on 25.07.2016
 @author: Jonas
 '''
 import logging
-from os import path
+import os
 import shlex
 import shutil
-import requests
-from requests.exceptions import ConnectionError
+import stat
+from os import path
 from subprocess import Popen, PIPE
 
-import yaml
+import requests
+from requests.exceptions import ConnectionError
 
 from son_editor.app.database import db_session
 from son_editor.app.exceptions import NameConflict, NotFound, InvalidArgument, ExtNotReachable
@@ -222,7 +223,7 @@ def delete_workspace(wsid):
     workspace = session.query(Workspace).filter(Workspace.id == int(wsid)).first()
     if workspace:
         path = workspace.path
-        shutil.rmtree(path)
+        shutil.rmtree(path, onerror=on_rm_error)
         session.delete(workspace)
     db_session.commit()
     if workspace:
@@ -230,6 +231,13 @@ def delete_workspace(wsid):
     else:
         raise NotFound("Workspace with id {} was not found".format(wsid))
 
+def on_rm_error(func, path, exc_info):
+    """Gets called if rm_tree gets an error, happens
+    especially if trying to remove .git files on windows"""
+    # path contains the path of the file that couldn't be removed
+    # let's just assume that it's read-only and unlink it.
+    os.chmod(path, stat.S_IWRITE)
+    os.unlink(path)
 
 def test_url(name, url):
     try:

@@ -253,7 +253,7 @@ def create_commit_and_push(ws_id: int, project_id: int, remote_repo_name: str):
 
         # Get git url and commit to db
         data = json.loads(request.text)
-        git_url = data['git_url']
+        git_url = data['svn_url']
         project.repo_url = git_url
         database_session.commit()
     except Exception:
@@ -275,9 +275,10 @@ def create_commit_and_push(ws_id: int, project_id: int, remote_repo_name: str):
         raise
 
 
-def delete(ws_id: int, remote_repo_name: str, organization_name: str = None):
+def delete(ws_id: int, project_id: int, remote_repo_name: str, organization_name: str = None):
     """
     Deletes given project on remote repository
+    :param project_id:
     :param ws_id: Workspace of the project
     :param remote_repo_name: Remote repository name
     :param organization_name: Optional parameter to specify the organization / login
@@ -287,17 +288,29 @@ def delete(ws_id: int, remote_repo_name: str, organization_name: str = None):
         owner = session['user_data']['login']
     else:
         owner = organization_name
+    sql_session = db_session()
+    project = get_project(ws_id, project_id, sql_session)
+    url_decode = parse.urlparse(project.repo_url)
+    if _repo_name_from_url(url_decode) == remote_repo_name:
+        result = _do_delete(owner, remote_repo_name)
+        if result.status_code == 204:
+            project.repo_url = None
+            sql_session.commit()
+            return create_info_dict("Successfully deleted")
+        else:
+            sql_session.rollback()
+            return create_info_dict(result.text, exitcode=1)
+    raise InvalidArgument("The given repo name does not correspond to the remote repository name")
 
-    result = requests.delete(build_github_delete(owner, remote_repo_name), headers=create_oauth_header())
-    if result.status_code == 204:
-        return create_info_dict("Successful deleted")
-    else:
-        return create_info_dict(result.text, exitcode=1)
+
+def _do_delete(owner, remote_repo_name):
+    return requests.delete(build_github_delete(owner, remote_repo_name), headers=create_oauth_header())
 
 
 def diff(ws_id: int, pj_id: int):
     """
     Shows the local changes of the given project.
+
     :param ws_id: Workspace of the project.
     :param pj_id: Given project to show from.
     :return:
@@ -310,6 +323,27 @@ def diff(ws_id: int, pj_id: int):
         return create_info_dict(out)
     else:
         return create_info_dict(out, err, exitcode)
+
+
+def status(ws_id: int, pj_id: int):
+    """
+    Shows the git status of the repository
+
+    :param ws_id:
+    :param pj_id:
+    :return:
+    """
+    project = get_project(ws_id, pj_id)
+    project_full_path = os.path.join(project.workspace.path, PROJECT_REL_PATH, project.rel_path)
+
+    # fetch remote changes
+    out, err, exitcode = git_command(['remote', 'update'], project_full_path)
+    if exitcode is 0:
+        # get the status
+        out, err, exitcode = git_command(['status', '-uno', '-u'], project_full_path)
+        if exitcode is 0:
+            return create_info_dict(out)
+    return create_info_dict(out, err, exitcode)
 
 
 def pull(ws_id: int, project_id: int):
@@ -351,6 +385,11 @@ def list(ws_id: int):
     return json.loads(result.text)
 
 
+def _repo_name_from_url(url_decode: str):
+    github_project_name = os.path.split(url_decode.path)[-1]
+    return github_project_name.replace('.git', '')
+
+
 def clone(ws_id: int, url: str, name: str = None):
     """
     Clones a repository by url into given workspace
@@ -367,8 +406,7 @@ def clone(ws_id: int, url: str, name: str = None):
         # Take the suffix of url as first name candidate
         github_project_name = name
         if github_project_name is None:
-            github_project_name = os.path.split(url_decode.path)[-1]
-            github_project_name = github_project_name.replace('.git', '')
+            github_project_name = _repo_name_from_url(url_decode)
         dbsession = db_session()
         pj = dbsession.query(Project).filter(Workspace.id == workspace.id).filter(
             Project.name == github_project_name).first()
