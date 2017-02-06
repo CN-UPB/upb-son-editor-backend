@@ -30,8 +30,8 @@ config:
   user: admin
 
 test:
-  test-platform: "http://fg-cn-sandman2.cs.upb.de:1234"
-  wrong-test-platform: "http://fg-cn-sandman2.cs.upb.de:1010"
+  platform-instance: "http://fg-cn-sandman2.cs.upb.de:1234"
+  platform-instance-wrong: "http://fg-cn-sandman2.cs.upb.de:1010"
   catalogue-instance: "http://fg-cn-sandman2.cs.upb.de:4012"
 
 

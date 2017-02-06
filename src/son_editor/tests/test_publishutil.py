@@ -65,13 +65,14 @@ class TestPublishutil(TestCase):
     def test_push_project(self):
         package_path = self.test_package_location
         result = publishutil.push_to_platform(package_path=package_path,
-                                              platform=Platform(url=get_config()['test']['test-platform']))
+                                              platform=Platform(url=get_config()['test']['platform-instance']))
         self.assertTrue('service_uuid' in result)
         caught = False
         try:
             result = publishutil.push_to_platform(package_path=package_path,
                                                   platform=Platform(
-                                                      url=get_config()['test']['wrong-test-platform']))  # wrong port
+                                                      url=get_config()['test'][
+                                                          'platform-instance-wrong']))  # wrong port
         except ExtNotReachable:
             caught = True
         self.assertTrue(caught)
@@ -79,8 +80,8 @@ class TestPublishutil(TestCase):
     def test_deploy_project(self):
         package_path = self.test_package_location
         result = publishutil.push_to_platform(package_path=package_path,
-                                              platform=Platform(url=get_config()['test']['test-platform']))
+                                              platform=Platform(url=get_config()['test']['platform-instance']))
         self.assertTrue('service_uuid' in result)
         result = publishutil.deploy_on_platform(service_uuid=result,
-                                                platform=Platform(url=get_config()['test']['test-platform']))
+                                                platform=Platform(url=get_config()['test']['platform-instance']))
         self.assertTrue(result)
