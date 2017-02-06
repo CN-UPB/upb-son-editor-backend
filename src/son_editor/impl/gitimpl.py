@@ -131,6 +131,10 @@ def check_son_validity(project_path: str):
         result = "The project has no '{}' file".format(file)
     else:
         result = "The project has the following missing files: '{}'".format(",".join(missing_files_count))
+
+    # Delete project, if there are missing files.
+    shutil.rmtree(project_path)
+
     raise InvalidArgument(result)
 
 
