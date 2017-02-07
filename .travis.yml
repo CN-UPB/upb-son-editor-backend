@@ -2,7 +2,7 @@ language: python
 python:
   - "3.5"
 before_install:
-  - pip install git://github.com/CN-UPB/son-cli.git@{editor-base}
+  - pip install git+https://github.com/CN-UPB/son-cli.git@{editor-base}
 install:
   - "python setup.py install"
 script:
