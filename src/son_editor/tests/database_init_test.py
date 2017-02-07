@@ -7,7 +7,7 @@ from son_editor.tests.utils import *
 from son_editor.util.context import init_test_context
 
 
-class ProjectTest(unittest.TestCase):
+class DatabaseInitTest(unittest.TestCase):
     def setUp(self):
         # Initializes test context
         self.app = init_test_context()
