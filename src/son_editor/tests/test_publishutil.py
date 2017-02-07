@@ -68,7 +68,7 @@ class TestPublishutil(TestCase):
 
         caught = False
         try:
-            ws.platforms[0].url = get_config()['platform-instance-wrong']
+            ws.platforms[0].url = get_config()['test']['platform-instance-wrong']
             update_workspace_descriptor(ws)
             result = publishutil.push_to_platform(package_path=package_path,
                                                   ws=ws)  # wrong port

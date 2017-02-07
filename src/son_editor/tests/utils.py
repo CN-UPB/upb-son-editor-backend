@@ -101,7 +101,7 @@ def create_workspace(user: User, ws_name: str) -> int:
     ws_data = {'name': ws_name,
                'platforms': [
                    {'name': 'sonEmu',
-                    'url': get_config()['platform-instance']}
+                    'url': get_config()['test']['platform-instance']}
                ]}
     workspace_data = son_editor.impl.workspaceimpl.create_workspace(user.name, ws_data)
     return workspace_data['id']
