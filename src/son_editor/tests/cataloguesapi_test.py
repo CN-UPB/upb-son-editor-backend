@@ -36,12 +36,11 @@ class CatalogueTest(unittest.TestCase):
         self.assertEqual(409, response.status_code)
 
     def test_get_catalogues(self):
-        # retreive sample catalogues
+        # no more sample catalogues
         response = self.app.get('/' + WORKSPACES + '/' + str(self.wsid) + '/' + CATALOGUES + '/')
 
         result = json.loads(response.data.decode())
-        self.assertEqual(len(result), 1)
-        self.assertEqual(result[0]['name'], "son-catalogue")
+        self.assertEqual(len(result), 0)
 
     def test_get_catalogue(self):
         request_dict = {"name": "catalogueGet", "url": "http://example.com/some/path/"}

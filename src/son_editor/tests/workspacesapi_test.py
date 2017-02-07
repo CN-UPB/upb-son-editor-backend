@@ -79,7 +79,13 @@ class WorkspacesTest(unittest.TestCase):
         self.assertEqual(404, response.status_code)
 
         # try to delete referenced catalogue
-        response = json.loads(self.app.post('/' + WORKSPACES + '/', data={"name": "catalogue_ref"}).data.decode())
+        request_dict = {"name": "catalogue_ref",
+                        "catalogues": [
+                            {"name": "cat_name",
+                             "url": "http://fg-cn-sandman2.cs.upb.de:4012/"}]}
+        response = json.loads(self.app.post('/' + WORKSPACES + '/',
+                                            data=json.dumps(request_dict),
+                                            content_type="application/json").data.decode())
         ws_id = response["id"]
         cat_name = response["catalogues"][0]['name']
         cat_id = response["catalogues"][0]['id']

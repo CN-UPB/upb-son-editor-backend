@@ -45,9 +45,9 @@ class PlatformTest(unittest.TestCase):
         response = self.app.get('/' + WORKSPACES + '/' + str(self.wsid) + '/' + PLATFORMS + '/')
 
         result = json.loads(response.data.decode())
-        self.assertEqual(len(result), 2)
-        self.assertEqual(result[0]['name'], request_dict1['name'])
-        self.assertEqual(result[1]['name'], request_dict2['name'])
+        self.assertEqual(len(result), 3)
+        self.assertEqual(result[1]['name'], request_dict1['name'])
+        self.assertEqual(result[2]['name'], request_dict2['name'])
 
     def test_get_platform(self):
         request_dict = {"name": "platformGet", "url": "http://example.com/some/path/"}
