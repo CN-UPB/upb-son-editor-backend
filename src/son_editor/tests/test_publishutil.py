@@ -10,6 +10,7 @@ from son_editor.util import publishutil
 from son_editor.util.constants import WORKSPACES, PROJECTS, SERVICES
 from son_editor.util.context import init_test_context
 from son_editor.util.descriptorutil import update_workspace_descriptor
+from son_editor.util.requestutil import get_config
 
 
 class TestPublishutil(TestCase):
@@ -67,7 +68,7 @@ class TestPublishutil(TestCase):
 
         caught = False
         try:
-            ws.platforms[0].url = "http://fg-cn-sandman2.cs.upb.de:1010"
+            ws.platforms[0].url = get_config()['test']['platform-instance-wrong']
             update_workspace_descriptor(ws)
             result = publishutil.push_to_platform(package_path=package_path,
                                                   ws=ws)  # wrong port

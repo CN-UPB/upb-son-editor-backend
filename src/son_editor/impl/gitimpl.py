@@ -131,6 +131,10 @@ def check_son_validity(project_path: str):
         result = "The project has no '{}' file".format(file)
     else:
         result = "The project has the following missing files: '{}'".format(",".join(missing_files_count))
+
+    # Delete project, if there are missing files.
+    shutil.rmtree(project_path)
+
     raise InvalidArgument(result)
 
 
@@ -354,7 +358,8 @@ def pull(ws_id: int, project_id: int):
     :param project_id: Project to pull.
     :return:
     """
-    project = get_project(ws_id, project_id)
+    dbsession = db_session()
+    project = get_project(ws_id, project_id, session=dbsession)
 
     project_full_path = os.path.join(project.workspace.path, PROJECT_REL_PATH, project.rel_path)
 
@@ -369,8 +374,20 @@ def pull(ws_id: int, project_id: int):
     # If url in GitHub domain, access by token
     out, err, exitcode = git_command(['pull', project.repo_url], cwd=project_full_path)
 
+    # Return error if pull failed.
     if exitcode is not 0:
         return create_info_dict(err=err, exitcode=exitcode)
+
+    # Rescan project
+    try:
+        sync_project_descriptor(project)
+        dbsession.add(project)
+        scan_project_dir(project_full_path, project)
+        dbsession.commit()
+    except:
+        dbsession.rollback()
+        raise Exception("Could not scan the project after pull.")
+
     return create_info_dict(out=out)
 
 

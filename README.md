@@ -36,6 +36,18 @@ The easiest way to install and run the Editor Backend is by using [docker](https
   
 For instructions on how to setup the web frontend of the editor please visit https://github.com/CN-UPB/upb-son-editor-frontend for more information.
 
+
+## Development configuration
+### Python environment
+We recommend using [venv](https://docs.python.org/dev/tutorial/venv.html). If you have setup your python 3 environment, open a shell in your virtual environment
+and install [son-cli](https://github.com/sonata-nfv/son-cli).
+
+### Test configuration
+ 
+Edit config.yaml and fill in the requested values under the test section. If you are using travis ci or another build server, note that the github credentials to 
+test github configuration can be set as environment variables "github_bot_user" and "github_access_token".
+If you leave out test configuration, some tests will eventually fail. 
+
 ## Manual Updates
  To update the editor backend just run  
   `docker-compose down`  

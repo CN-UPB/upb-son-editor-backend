@@ -9,6 +9,7 @@ from son_editor.impl.usermanagement import get_user
 from son_editor.models.user import User
 from son_editor.models.workspace import Workspace
 from son_editor.util import constants
+from son_editor.util.requestutil import get_config
 
 
 def _get_header():
@@ -100,9 +101,8 @@ def create_workspace(user: User, ws_name: str) -> int:
     ws_data = {'name': ws_name,
                'platforms': [
                    {'name': 'sonEmu',
-                    'url': "http://fg-cn-sandman2.cs.upb.de:1234"}
-               ]
-               }
+                    'url': get_config()['test']['platform-instance']}
+               ]}
     workspace_data = son_editor.impl.workspaceimpl.create_workspace(user.name, ws_data)
     return workspace_data['id']
 
