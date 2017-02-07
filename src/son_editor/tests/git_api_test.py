@@ -14,14 +14,15 @@ REMOTE_REPO_NAME = 'test_create'
 
 CONFIG = get_config()
 
-# Check if there exist testing entries in config.yaml, otherwise use environment (for travis configuration)
-if 'test' in CONFIG and 'github' in CONFIG['test'] and 'user' in CONFIG['test']['github'] and 'access-token' in \
+# Check if there exist testing entries in environment (for travis configuration), otherwise use config.yaml
+
+if 'github_bot_user' in os.environ and "github_access_token" in os.environ:
+    GITHUB_USER = os.environ["github_bot_user"]
+    GITHUB_ACCESS_TOKEN = os.environ["github_access_token"]
+elif 'test' in CONFIG and 'github' in CONFIG['test'] and 'user' in CONFIG['test']['github'] and 'access-token' in \
         CONFIG['test']['github']:
     GITHUB_USER = CONFIG['test']['github']['user']
     GITHUB_ACCESS_TOKEN = CONFIG['test']['github']['access-token']
-else:
-    GITHUB_USER = os.environ["github_bot_user"]
-    GITHUB_ACCESS_TOKEN = os.environ["github_access_token"]
 
 
 class GitAPITest(unittest.TestCase):
