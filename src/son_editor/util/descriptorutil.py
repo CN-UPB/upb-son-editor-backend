@@ -89,13 +89,13 @@ def update_workspace_descriptor(workspace) -> None:
         catalogue_server = {'id': cat.name, 'url': cat.url, 'publish': cat.publish}
         ws_descriptor['catalogue_servers'].append(catalogue_server)
     ws_descriptor['service_platforms'] = {}
-    ws_descriptor.pop('default_service_platform', None)
+    ws_descriptor['default_service_platform'] = ''
     for plat in workspace.platforms:
         platform_server = {'url': plat.url, "credentials": {"token_file": plat.token_path}}
         ws_descriptor['service_platforms'][plat.name] = platform_server
         if plat.publish:
             ws_descriptor['default_service_platform'] = plat.name
-    if 'default_service_platform' not in ws_descriptor and ws_descriptor['service_platforms']:
+    if not ws_descriptor['default_service_platform'] and ws_descriptor['service_platforms']:
         # if no default set, select "first" platform
         ws_descriptor['default_service_platform'] = \
             ws_descriptor['service_platforms'][ws_descriptor['service_platforms'].keys()[0]]['id']
@@ -126,7 +126,7 @@ def load_workspace_descriptor(workspace) -> None:
                                                       publish=catalogue_server['publish'] == 'yes'))
         if 'service_platforms' in ws_descriptor:
             platforms = ws_descriptor['service_platforms']
-            for platform_id, platform in platforms:
+            for platform_id, platform in platforms.items():
                 workspace.platforms.append(Platform(name=platform_id,
                                                     url=platform['url'],
                                                     publish=ws_descriptor['default_service_platform'] == platform_id))
