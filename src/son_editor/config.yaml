@@ -29,5 +29,19 @@ config:
   pwd: totes-secret
   user: admin
 
+# Test configuration
+test:
+  # Running sonata platform url
+  platform-instance: "http://fg-cn-sandman2.cs.upb.de:1234"
+  # Running sonata platform url with wrong port
+  platform-instance-wrong: "http://fg-cn-sandman2.cs.upb.de:1010"
+  # son-catalogue instance
+  catalogue-instance: "http://fg-cn-sandman2.cs.upb.de:4012"
+  # Github test-account information
+  github:
+    user: "user"
+    access-token: token
+
+
 #github-orgs:
 #  - CN-UPB

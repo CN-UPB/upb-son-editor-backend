@@ -24,7 +24,7 @@ class WorkspacesTest(unittest.TestCase):
         db_session.delete(self.user)
         db_session.commit()
 
-    def testCreateWorkSpace(self):
+    def test_create_workspace(self):
         request_dict = {"name": "workspaceName"}
         response = self.app.post('/' + WORKSPACES + '/', data=json.dumps(request_dict), content_type='application/json')
         # Expect workspace gets created
@@ -42,11 +42,11 @@ class WorkspacesTest(unittest.TestCase):
         # Only one workspace was created beforehand
         return int(json.loads(response.data.decode())[0]['id'])
 
-    def testGetWorkSpaces(self):
+    def test_get_workspaces(self):
         response = self.app.get('/' + WORKSPACES + '/')
         self.assertEqual(json.loads(response.data.decode())[0]['name'], "'Workspace A'")
 
-    def testGetWorkSpace(self):
+    def test_get_workspace(self):
         response = self.app.get('/' + WORKSPACES + '/{}'.format(self.get_wsid()))
         self.assertEqual(json.loads(response.data.decode())['name'], "'Workspace A'")
 
@@ -54,7 +54,7 @@ class WorkspacesTest(unittest.TestCase):
         response = self.app.get('/' + WORKSPACES + '/1337')
         self.assertEqual(404, response.status_code)
 
-    def testUpdateWorkSpace(self):
+    def test_update_workspace(self):
         request_dict = {"name": "workspaceToMove"}
         response = self.app.post('/' + WORKSPACES + '/',
                                  data=json.dumps(request_dict),
@@ -116,7 +116,7 @@ class WorkspacesTest(unittest.TestCase):
                                 content_type='application/json')
         self.assertEqual(response.status_code, 404)
 
-    def testDeleteWorkspace(self):
+    def test_delete_workspace(self):
         # Create at first a workspace
         request_dict = {"name": "workspaceToDelete"}
         response = self.app.post('/' + WORKSPACES + '/', data=json.dumps(request_dict), content_type='application/json',

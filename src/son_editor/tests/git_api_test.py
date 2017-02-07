@@ -1,24 +1,27 @@
 import json
-import unittest
 import logging
-import time
+import unittest
 
-from son_editor.impl import gitimpl
 from son_editor.models.project import Project
 from son_editor.tests.utils import *
 from son_editor.util.context import init_test_context
-from son_editor.util.requestutil import CONFIG
+from son_editor.util.requestutil import get_config
 
 logger = logging.getLogger(__name__)
-# Get the github_bot_user / github_access_token from the CONFIG,
-# otherwise take it from the environment variable (which should be set on travis)
 
 GITHUB_URL = "http://github.com"
 REMOTE_REPO_NAME = 'test_create'
 
-GITHUB_USER = os.environ["github_bot_user"] if not 'github_bot_user' in CONFIG else CONFIG['github_bot_user']
-GITHUB_ACCESS_TOKEN = os.environ["github_access_token"] if not 'github_access_token' in CONFIG else CONFIG[
-    'github_access_token']
+CONFIG = get_config()
+
+# Check if there exist testing entries in config.yaml, otherwise use environment (for travis configuration)
+if 'test' in CONFIG and 'github' in CONFIG['test'] and 'user' in CONFIG['test']['github'] and 'access-token' in \
+        CONFIG['test']['github']:
+    GITHUB_USER = CONFIG['test']['github']['user']
+    GITHUB_ACCESS_TOKEN = CONFIG['test']['github']['access-token']
+else:
+    GITHUB_USER = os.environ["github_bot_user"]
+    GITHUB_ACCESS_TOKEN = os.environ["github_access_token"]
 
 
 class GitAPITest(unittest.TestCase):

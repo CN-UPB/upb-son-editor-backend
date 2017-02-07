@@ -1,11 +1,11 @@
 from son_editor.app import __main__
 from son_editor.app.database import reset_db
-from son_editor.util.requestutil import CONFIG
+from son_editor.util.requestutil import CONFIG, get_config
 from os import path
 import shutil
 
 # URL
-CATALOGUE_INSTANCE_URL = "http://fg-cn-sandman2.cs.upb.de:4012"
+CATALOGUE_INSTANCE_URL = get_config()['test']['catalogue-instance']
 
 
 def init_test_context():
