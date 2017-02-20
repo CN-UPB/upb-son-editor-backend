@@ -45,9 +45,7 @@ create_model = namespace.model('Create GitHub repository information', {
 })
 
 response_model = namespace.model('Model response', {
-    'success': fields.Boolean(description='True, if the operation was successful, otherwise false'),
-    'message': fields.String(description='Reason'),
-    'exitcode': fields.Integer(description='Exitcode of git')
+    'message': fields.String(description='Github cli output')
 })
 
 exception_model = namespace.model('Exception response', {
@@ -59,7 +57,8 @@ exception_model = namespace.model('Exception response', {
 class GitClone(Resource):
     @namespace.expect(clone_model)
     @namespace.response(200, "OK", response_model)
-    @namespace.response(400, "When the cloned project seems to be no son project")
+    @namespace.response(400,
+                        "When the cloned project seems to be an invalid son project or github_cli operation failed")
     @namespace.response(404, "When workspace not found", exception_model)
     @namespace.response(409, "When project already exists", exception_model)
     def post(self, ws_id):
@@ -117,6 +116,7 @@ class GitInit(Resource):
 class GitCommit(Resource):
     @namespace.expect(commit_model)
     @namespace.response(200, "OK", response_model)
+    @namespace.response(400, "When github-cli operations failed")
     @namespace.response(404, "When project or workspace not found", exception_model)
     def post(self, ws_id):
         """ Commits and pushes changes """
@@ -130,13 +130,14 @@ class GitList(Resource):
     @namespace.response(200, "Visit https://developer.github.com/v3/repos/#response")
     def get(self, ws_id):
         """ Lists remote repository information """
-        return prepare_response(list(ws_id))
+        return prepare_response(list())
 
 
 @namespace.route('/create')
 class GitCreate(Resource):
     @namespace.expect(create_model)
     @namespace.response(201, "When project got created and push went fine")
+    @namespace.response(400, "When github-cli operations failed.")
     @namespace.response(404, "When project or workspace not found", exception_model)
     def post(self, ws_id):
         """ Creates a remote repository and pushes a project for it"""
@@ -150,6 +151,7 @@ class GitCreate(Resource):
 class GitPull(Resource):
     @namespace.expect(pull_model)
     @namespace.response(200, "OK", response_model)
+    @namespace.response(400, "When github-cli operations failed")
     @namespace.response(404, "When project or workspace not found", exception_model)
     def post(self, ws_id):
         """ Pulls updates from a project """
