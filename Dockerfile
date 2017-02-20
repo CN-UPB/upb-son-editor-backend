@@ -1,11 +1,9 @@
-FROM tiangolo/uwsgi-nginx-flask:flask-python3.5
-
-#install son-cli tools
-RUN pip install git+https://github.com/sonata-nfv/son-cli
+FROM pgsandman2016/upb-son-editor-backend-base:v1
 
 #install son-editor-backend
-COPY . /app
+RUN mkdir -p /root/son-editor/workspaces
 COPY ./no-ssl-nginx.conf /etc/nginx/conf.d/nginx.conf
+COPY . /app
 
 # Set the default directory where CMD will execute
 WORKDIR /app

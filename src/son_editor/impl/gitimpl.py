@@ -202,8 +202,11 @@ def commit_and_push(ws_id: int, project_id: int, commit_message: str):
     # Commit with message
     out, err, exitcode = git_command(['commit', "-m '{}'".format(commit_message)], cwd=project_full_path)
     if exitcode is not 0:
-        git_command(['reset', 'HEAD~1'], cwd=project_full_path)
-        return create_info_dict(out, err=err, exitcode=exitcode)
+        if 'up-to-date' not in out:
+            git_command(['reset', 'HEAD~1'], cwd=project_full_path)
+            return create_info_dict(out, err=err, exitcode=exitcode)
+        else:
+            logger.warn("Nothing to commit. Trying to push anyways".format(out))
     else:
         logger.warn("Commit succeeded: {}".format(out))
 

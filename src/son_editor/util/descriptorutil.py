@@ -75,36 +75,6 @@ def get_file_name(model) -> str:
                                  model.version)
 
 
-def synchronize_workspace_descriptor(workspace, session) -> None:
-    """
-    Updates both the workspace descriptor on disk and in
-     the database to contain the same essential data
-    :param workspace: the database workspace model
-    :param session: the current database session
-    :return:
-    """
-    from son_editor.models.repository import Catalogue
-    with open(os.path.join(workspace.path, "workspace.yml"), "r+") as stream:
-        ws_descriptor = yaml.safe_load(stream)
-        if "catalogue_servers" not in ws_descriptor:
-            ws_descriptor["catalogue_servers"] = []
-        for catalogue_server in ws_descriptor["catalogue_servers"]:
-            if len([x for x in workspace.catalogues if x.name == catalogue_server['id']]) == 0:
-                session.add(Catalogue(name=catalogue_server['id'],
-                                      url=catalogue_server['url'],
-                                      publish=catalogue_server['publish'] == 'yes',
-                                      workspace=workspace)
-                            )
-        for cat in workspace.catalogues:
-            if len([x for x in ws_descriptor["catalogue_servers"] if x['id'] == cat.name]) == 0:
-                catalogue_server = {'id': cat.name, 'url': cat.url, 'publish': cat.publish}
-                ws_descriptor['catalogue_servers'].append(catalogue_server)
-        ws_descriptor['name'] = workspace.name
-        ws_descriptor['ns_schema_index'] = workspace.ns_schema_index
-        ws_descriptor['vnf_schema_index'] = workspace.vnf_schema_index
-        yaml.safe_dump(ws_descriptor, stream)
-
-
 def update_workspace_descriptor(workspace) -> None:
     """
     Updates the workspace descriptor with data from the workspace model
@@ -118,10 +88,17 @@ def update_workspace_descriptor(workspace) -> None:
     for cat in workspace.catalogues:
         catalogue_server = {'id': cat.name, 'url': cat.url, 'publish': cat.publish}
         ws_descriptor['catalogue_servers'].append(catalogue_server)
-    ws_descriptor['platform_servers'] = []
+    ws_descriptor['service_platforms'] = {}
+    ws_descriptor['default_service_platform'] = ''
     for plat in workspace.platforms:
-        platform_server = {'id': plat.name, 'url': plat.url, 'publish': plat.publish}
-        ws_descriptor['platform_servers'].append(platform_server)
+        platform_server = {'url': plat.url, "credentials": {"token_file": plat.token_path}}
+        ws_descriptor['service_platforms'][plat.name] = platform_server
+        if plat.publish:
+            ws_descriptor['default_service_platform'] = plat.name
+    if not ws_descriptor['default_service_platform'] and ws_descriptor['service_platforms']:
+        # if no default set, select "first" platform
+        ws_descriptor['default_service_platform'] = \
+            ws_descriptor['service_platforms'][ws_descriptor['service_platforms'].keys()[0]]['id']
     ws_descriptor['name'] = workspace.name
     ws_descriptor['ns_schema_index'] = workspace.ns_schema_index
     ws_descriptor['vnf_schema_index'] = workspace.vnf_schema_index
@@ -147,12 +124,12 @@ def load_workspace_descriptor(workspace) -> None:
                 workspace.catalogues.append(Catalogue(name=catalogue_server['id'],
                                                       url=catalogue_server['url'],
                                                       publish=catalogue_server['publish'] == 'yes'))
-        if 'platform_servers' in ws_descriptor:
-            platforms = ws_descriptor['platform_servers']
-            for platform_server in platforms:
-                workspace.platforms.append(Platform(name=platform_server['id'],
-                                                    url=platform_server['url'],
-                                                    publish=platform_server['publish'] == 'yes'))
+        if 'service_platforms' in ws_descriptor:
+            platforms = ws_descriptor['service_platforms']
+            for platform_id, platform in platforms.items():
+                workspace.platforms.append(Platform(name=platform_id,
+                                                    url=platform['url'],
+                                                    publish=ws_descriptor['default_service_platform'] == platform_id))
         if 'ns_schema_index' in ws_descriptor:
             workspace.ns_schema_index = ws_descriptor['ns_schema_index']
         if 'vnf_schema_index' in ws_descriptor:
