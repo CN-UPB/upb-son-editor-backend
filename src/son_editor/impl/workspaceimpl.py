@@ -102,8 +102,8 @@ def create_workspace(login: str, workspace_data: dict) -> dict:
             for catalogue in workspace_data['catalogues']:
                 session.add(Catalogue(catalogue['name'], catalogue['url'], True, ws))
                 test_url(catalogue['name'], catalogue['url'])
-    except:
-        logger.exception()
+    except Exception as e:
+        logger.exception(e)
         session.rollback()
         raise
     # create workspace on disk

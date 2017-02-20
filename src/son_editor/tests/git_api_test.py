@@ -12,6 +12,7 @@ logger = logging.getLogger(__name__)
 GITHUB_URL = "http://github.com"
 REMOTE_REPO_NAME = 'test_create'
 REMOTE_INVALID_REPO_NAME = 'invalid-son-repo'
+REMOTE_DOES_NOT_EXIST_REPO_NAME = 'does-not-exist'
 
 CONFIG = get_config()
 
@@ -100,6 +101,7 @@ class GitAPITest(unittest.TestCase):
         response = self.app.get("/" + constants.WORKSPACES + "/" + self.wsid + "/" + constants.GIT + "/list")
 
         # Look for newly created project
+        clone_url = None
         for i in json.loads(response.data.decode()):
             if i['name'] == REMOTE_REPO_NAME:
                 clone_url = i['clone_url']
@@ -127,3 +129,4 @@ class GitAPITest(unittest.TestCase):
         arg = {'url': 'localhost'}
         response = self.call_github_post('clone', arg)
         self.assertInvalidArgument(response)
+
