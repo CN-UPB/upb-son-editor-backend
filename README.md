@@ -1,4 +1,5 @@
 ![alt tag](https://api.travis-ci.org/CN-UPB/upb-son-editor-backend.svg)
+[![codecov](https://codecov.io/gh/chrz89/upb-son-editor-backend/branch/master/graph/badge.svg)](https://codecov.io/gh/chrz89/upb-son-editor-backend)
 
 # upb-son-editor-backend
 Student project group's network service editor backend.
