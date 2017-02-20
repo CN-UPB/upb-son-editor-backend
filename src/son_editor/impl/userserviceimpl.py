@@ -63,6 +63,7 @@ def get_user_info()-> dict:
 
 def logout():
     """Logs out the current user and removes all session related stuff
+
     :return: Redirect
     """
     # Remove all session related informations

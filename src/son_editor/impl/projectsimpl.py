@@ -24,6 +24,7 @@ WORKSPACES_DIR = os.path.normpath(WORKSPACES_DIR)
 def get_projects(ws_id: int) -> list:
     """
     Get a list of projects in this workspace
+
     :param ws_id:
     :return:
     """
@@ -52,6 +53,7 @@ def get_project(ws_id, pj_id):
 def create_project(ws_id: int, project_data: dict) -> dict:
     """
     Create a new Project in this workspace
+
     :param ws_id:
     :param project_data:
     :return: The new project descriptor as a dict
@@ -116,6 +118,7 @@ def create_project(ws_id: int, project_data: dict) -> dict:
 def update_project(project_data, project_id):
     """
     Update the Project
+
     :param project_data:
     :param project_id:
     :return:
@@ -152,6 +155,7 @@ def update_project(project_data, project_id):
 def set_data(project: Project, project_data: dict) -> None:
     """
     Extracts the data from the dictionary and sets it on the database model
+
     :param project: The project database model
     :param project_data: The project data dictionary from the frontend
     :return:
@@ -180,6 +184,7 @@ def on_rm_error(func, path, exc_info):
 def delete_project(project_id: int) -> dict:
     """
     Deletes the project from the database and from the Disk
+
     :param project_id: The id of the project to be deleted
     :return: The deleted project descriptor
     """
@@ -200,6 +205,7 @@ def delete_project(project_id: int) -> dict:
 def get_project_path(workspace_path: str, rel_path: str) -> str:
     """
     Helper method to resolve the project path on disk for the given project
+
     :param workspace_path: the path to the workspace
     :param rel_path: the relative path of the project
     :return:

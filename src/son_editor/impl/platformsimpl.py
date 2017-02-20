@@ -10,6 +10,7 @@ from son_editor.util.descriptorutil import update_workspace_descriptor
 def get_platform(platform_id: int) -> dict:
     """
     Get the platform definition
+
     :param platform_id:
     :return: The platform information
     """
@@ -24,6 +25,7 @@ def get_platform(platform_id: int) -> dict:
 def get_platforms(workspace_id: int) -> list:
     """
     Get a list of platforms for this workspace
+
     :param workspace_id:
     :return:
     """
@@ -36,6 +38,7 @@ def get_platforms(workspace_id: int) -> list:
 def create_platform(workspace_id: int, platform_data) -> dict:
     """
     Create a new platform entry
+
     :param workspace_id:
     :param platform_data:
     :return:
@@ -64,6 +67,7 @@ def create_platform(workspace_id: int, platform_data) -> dict:
 def update_platform(workspace_id: int, platform_id: int, platform_data) -> dict:
     """
     Update the platform entry
+
     :param workspace_id:
     :param platform_id:
     :return: The updated platform definition
@@ -100,6 +104,7 @@ def update_platform(workspace_id: int, platform_id: int, platform_data) -> dict:
 def delete(workspace_id: int, platform_id: int) -> dict:
     """
     Deletes the platform from the workspace
+
     :param workspace_id:
     :param platform_id:
     :return: the deleted platform description

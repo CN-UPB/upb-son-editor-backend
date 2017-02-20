@@ -12,6 +12,7 @@ def check_access(request):
     """
     checks if the current user is allowed to access a given resource.
     Session will be invalidated if the login information cannot be found
+
     :param request:
     :return:
     """

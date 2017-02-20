@@ -23,6 +23,7 @@ def get_project(project_id):
 def get_function(functions, vendor, name, version):
     """
     Finds a function in the given set of functions which matches vendor,name,version
+
     :param functions: Set of functions to look for the specific one
     :param vendor: Vendor name of the function
     :param name: Name of the function
@@ -38,6 +39,7 @@ def get_function(functions, vendor, name, version):
 def find_by_priority(user_data, ws_id, project_id, vendor, name, version, is_vnf):
     """
     Tries to find vnf / network services by descending priority project / private catalogue / public catalogue.
+
     :param user_data:
     :param ws_id:
     :param project_id:
@@ -83,6 +85,7 @@ def find_by_priority(user_data, ws_id, project_id, vendor, name, version, is_vnf
 def find_network_service(user_data, ws_id, project_id, vendor, name, version):
     """
     Finds a network service in the priority: project / private catalogue / public catalogue
+
     :param user_data:
     :param ws_id:
     :param project_id:
@@ -97,6 +100,7 @@ def find_network_service(user_data, ws_id, project_id, vendor, name, version):
 def find_vnf(user_data, ws_id, project_id, vendor, name, version):
     """
     Finds a vnf in the priority: project / private catalogue / public catalogue
+
     :param user_data:
     :param ws_id:
     :param project_id:

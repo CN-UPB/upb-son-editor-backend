@@ -19,6 +19,7 @@ def _get_header():
 def get_sample_vnf(name: str, vendor: str, version: str):
     """
     Creates a minimal valid example vnf from the given name, vendor and version
+
     :param name: The VNF name
     :param vendor: The VNF vendor
     :param version: The VNF version
@@ -51,6 +52,7 @@ def get_sample_vnf(name: str, vendor: str, version: str):
 def create_vnf(wsid: int, pjid: int, name: str, vendor: str, version: str) -> str:
     """
     Creates a function with given name, vendor and version in the given project returns the id
+
     :param testcase: Testcase instance to call HTTP requests
     :param wsid: ID of the workspace
     :param pjid: ID of the project
@@ -66,6 +68,7 @@ def create_vnf(wsid: int, pjid: int, name: str, vendor: str, version: str) -> st
 def get_sample_ns(name: str, vendor: str, version: str) -> dict:
     """
     Creates a minimal valid service descriptor with the given name, vendor and version
+
     :param name: The name of the service
     :param vendor: the vendor of the service
     :param version: the version of the service
@@ -81,6 +84,7 @@ def get_sample_ns(name: str, vendor: str, version: str) -> dict:
 def create_ns(wsid: int, pjid: int, name: str, vendor: str, version: str) -> int:
     """
     Creates a function with given name, vendor and version in the given project returns the id
+
     :param wsid: ID of the workspace
     :param pjid: ID of the project
     :param name: Name for the function to create
@@ -96,6 +100,7 @@ def create_ns(wsid: int, pjid: int, name: str, vendor: str, version: str) -> int
 def create_workspace(user: User, ws_name: str) -> int:
     """
     Creates a workspace
+
     :param user: the user for which to insert the workspace
     :param ws_name: Name of the workspace that gets created
     :return: ID of the created workspace
@@ -128,6 +133,7 @@ def create_catalogue(wsid: int, name: str, url: str):
 def create_logged_in_user(app, user_name, access_token='fake_access_token') -> User:
     """
     Creates a user with database record and session
+
     :param app: Test context / app
     :param user_name: User name
     :return: Model instance
@@ -150,6 +156,7 @@ def create_logged_in_user(app, user_name, access_token='fake_access_token') -> U
 def delete_workspace(testcase, ws_id: int):
     """
     Deletes a workspace
+
     :param testcase: Testcase instance to call HTTP requests
     :param ws_id: The workspace id which gets deleted
     :return: True, if successful

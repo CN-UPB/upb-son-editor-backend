@@ -33,10 +33,7 @@ class GitAPITest(unittest.TestCase):
         # Initializes test context
         self.app = init_test_context()
         # Add some session stuff ( need for finding the user's workspace )
-        if not GITHUB_USER:
-            self.username = 'dummy'
-        else:
-            self.username = GITHUB_USER
+        self.username = GITHUB_USER
         # Create a user with valid github token
         self.user = create_logged_in_user(self.app, self.username, GITHUB_ACCESS_TOKEN)
         # Create a workspace and project
@@ -151,3 +148,15 @@ class GitAPITest(unittest.TestCase):
                                    headers={'Content-Type': 'application/json'},
                                    data=json.dumps(arg))
         self.assertInvalidArgument(response)
+
+    def test_status(self):
+        self.test_init_and_create_remote_repo()
+        arg = {'project_id': self.pjid}
+        response = self.call_github_post('status', arg)
+        self.assertResponseValid(response)
+
+    def test_diff(self):
+        self.test_init_and_create_remote_repo()
+        arg = {'project_id': self.pjid}
+        response = self.call_github_post('diff', arg)
+        self.assertResponseValid(response)

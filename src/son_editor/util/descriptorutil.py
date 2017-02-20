@@ -15,6 +15,7 @@ schemas = {}
 def load_ns_vnf_from_disk(file: str, model):
     """
     Loads a vnf or network service descriptor from disk and initializes the given model
+
     :param file: the file path of the descriptor
     :param model: The database  model of the descriptor
     :return: the given updated model
@@ -31,6 +32,7 @@ def load_ns_vnf_from_disk(file: str, model):
 def write_ns_vnf_to_disk(folder: str, model) -> None:
     """
     Saves the given model to disk as a yml file
+
     :param folder: the folder to write to, either "vnf" or "nsd"
     to specify if a vnf or network service needs to be saved
     :param model: The database  model of the descriptor
@@ -48,6 +50,7 @@ def get_file_path(folder: str, model) -> str:
     """
     Returns the filepath to the descriptor computed
     from the models vendor name and version
+
     :param folder: the folder to write to, either "vnf" or "nsd"
     to specify if a vnf or network service needs to be saved
     :param model: The database  model of the descriptor
@@ -67,6 +70,7 @@ def get_file_path(folder: str, model) -> str:
 def get_file_name(model) -> str:
     """
     Get the standard file name for a descriptor
+
     :param model: The database  model of the descriptor
     :return: The standard descriptor file name, computed from the models vendor name and version
     """
@@ -78,6 +82,7 @@ def get_file_name(model) -> str:
 def update_workspace_descriptor(workspace) -> None:
     """
     Updates the workspace descriptor with data from the workspace model
+
     :param workspace: The workspace model
     :return:
     """
@@ -110,6 +115,7 @@ def update_workspace_descriptor(workspace) -> None:
 def load_workspace_descriptor(workspace) -> None:
     """
     Loads the workspace descriptor from disk and updates the database model
+
     :param workspace: The workspace database model
     :return:
     """
@@ -151,6 +157,7 @@ def write_project_descriptor(project, project_descriptor):
 def sync_project_descriptor(project) -> None:
     """
     Updates the project model with data from the project descriptor and vice versa
+
     :param project: The projects database model
     :return:
     """
