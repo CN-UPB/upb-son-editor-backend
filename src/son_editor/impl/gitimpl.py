@@ -75,7 +75,7 @@ def create_info_dict(out: str = None, err: str = None, exitcode: int = 0) -> dic
     :return: Dict with packed information.
     """
     # Empty result_dict
-    result_dict = {'success': exitcode is 0}
+    result_dict = {}
 
     # Prioritize err message
     if err:
@@ -84,7 +84,8 @@ def create_info_dict(out: str = None, err: str = None, exitcode: int = 0) -> dic
         result_dict.update({'message': out})
 
     if exitcode:
-        result_dict.update({'exitcode': exitcode})
+        # Frontend parses '\n' to <br>
+        output = (out + "\n" if out else '') + (err if err else '')
 
     return result_dict
 
@@ -391,7 +392,7 @@ def pull(ws_id: int, project_id: int):
     return create_info_dict(out=out)
 
 
-def list(ws_id: int):
+def list():
     """
     Lists the available remote repositories.
     :param ws_id:
