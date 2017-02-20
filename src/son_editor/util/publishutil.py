@@ -45,7 +45,7 @@ def push_to_platform(package_path: str, ws: Workspace) -> str:
     :param platform: The platform to upload to
     :return:
     """
-    proc = Popen(['son-access', "push", "--workspace", ws.path, package_path], stdout=PIPE, stderr=PIPE)
+    proc = Popen(['son-access', "push", "--workspace", ws.path, '--upload', package_path], stdout=PIPE, stderr=PIPE)
 
     out, err = proc.communicate()
     out = out.decode()
@@ -62,7 +62,7 @@ def push_to_platform(package_path: str, ws: Workspace) -> str:
     elif "201" in out:
         start_index = out.index('{"service_uuid')
         end_index = out.index('}', start_index)
-        out = out[start_index:end_index+1]
+        out = out[start_index:end_index + 1]
         uuid = json.loads(out)
         return uuid
     else:
