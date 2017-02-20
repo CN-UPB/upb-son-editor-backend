@@ -10,8 +10,8 @@ from jsonschema import ValidationError
 from werkzeug.utils import secure_filename
 
 from son_editor.app.database import db_session
-from son_editor.app.exceptions import NameConflict, NotFound, InvalidArgument
-from son_editor.models.descriptor import Function
+from son_editor.app.exceptions import NameConflict, NotFound, InvalidArgument, StillReferenced
+from son_editor.models.descriptor import Function, Service
 from son_editor.models.project import Project
 from son_editor.models.workspace import Workspace
 from son_editor.util.descriptorutil import write_ns_vnf_to_disk, get_file_path, get_schema, get_file_name, SCHEMA_ID_VNF
@@ -58,16 +58,16 @@ def create_function(ws_id: int, project_id: int, function_data: dict) -> dict:
     :return: The created function as a dict
     """
     try:
-        function_name = shlex.quote(function_data["name"])
-        vendor_name = shlex.quote(function_data["vendor"])
-        version = shlex.quote(function_data["version"])
+        function_name = shlex.quote(function_data['descriptor']["name"])
+        vendor_name = shlex.quote(function_data['descriptor']["vendor"])
+        version = shlex.quote(function_data['descriptor']["version"])
     except KeyError as ke:
         raise InvalidArgument("Missing key {} in function data".format(str(ke)))
 
     session = db_session()
 
     ws = session.query(Workspace).filter(Workspace.id == ws_id).first()  # type: Workspace
-    validate_vnf(ws.vnf_schema_index, function_data)
+    validate_vnf(ws.vnf_schema_index, function_data['descriptor'])
 
     # test if function Name exists in database
     existing_functions = list(session.query(Function)
@@ -85,7 +85,7 @@ def create_function(ws_id: int, project_id: int, function_data: dict) -> dict:
                         project=project,
                         vendor=vendor_name,
                         version=version,
-                        descriptor=json.dumps(function_data))
+                        descriptor=json.dumps(function_data['descriptor']))
     session.add(function)
     try:
         write_ns_vnf_to_disk("vnf", function)
@@ -95,6 +95,10 @@ def create_function(ws_id: int, project_id: int, function_data: dict) -> dict:
         raise
     session.commit()
     return function.as_dict()
+
+
+def get_uid(vendor, name, version):
+    return "{}:{}:{}".format(vendor, name, version)
 
 
 def update_function(ws_id: int, prj_id: int, func_id: int, func_data: dict) -> dict:
@@ -109,7 +113,8 @@ def update_function(ws_id: int, prj_id: int, func_id: int, func_data: dict) -> d
     session = db_session()
 
     ws = session.query(Workspace).filter(Workspace.id == ws_id).first()
-    validate_vnf(ws.vnf_schema_index, func_data)
+    validate_vnf(ws.vnf_schema_index, func_data['descriptor'])
+    edit_mode = func_data['edit_mode']
 
     # test if ws Name exists in database
     function = session.query(Function). \
@@ -121,39 +126,86 @@ def update_function(ws_id: int, prj_id: int, func_id: int, func_data: dict) -> d
     if function is None:
         session.rollback()
         raise NotFound("Function with id {} does not exist".format(func_id))
-    function.descriptor = json.dumps(func_data)
 
     old_file_name = get_file_path("vnf", function)
     old_folder_path = old_file_name.replace(get_file_name(function), "")
+    old_uid = get_uid(function.vendor, function.name, function.version)
     try:
-        function.name = shlex.quote(func_data["name"])
-        function.vendor = shlex.quote(func_data["vendor"])
-        function.version = shlex.quote(func_data["version"])
+        new_name = shlex.quote(func_data['descriptor']["name"])
+        new_vendor = shlex.quote(func_data['descriptor']["vendor"])
+        new_version = shlex.quote(func_data['descriptor']["version"])
     except KeyError as ke:
         session.rollback()
         raise InvalidArgument("Missing key {} in function data".format(str(ke)))
+    new_uid = get_uid(new_vendor, new_name, new_version)
+    refs = get_references(function, session)
+    if old_uid != new_uid:
+        if refs:
+            if edit_mode == "create_new":
+                function = Function(project=function.project)
+                session.add(function)
+            else:
+                replace_function_refs(refs,
+                                      function.vendor, function.name, function.version,
+                                      new_vendor, new_name, new_version)
+        function.vendor = new_vendor
+        function.name = new_name
+        function.version = new_version
+        function.uid = new_uid
+    function.descriptor = json.dumps(func_data['descriptor'])
 
     try:
-        new_file_name = get_file_path("vnf", function)
-        new_folder_path = new_file_name.replace(get_file_name(function), "")
-        if old_folder_path != new_folder_path:
-            # move old files to new location
-            os.makedirs(new_folder_path)
-            for file in os.listdir(old_folder_path):
-                if not old_file_name == os.path.join(old_folder_path, file):  # don't move descriptor yet
-                    shutil.move(os.path.join(old_folder_path, file), os.path.join(new_folder_path, file))
-        if not new_file_name == old_file_name:
-            shutil.move(old_file_name, new_file_name)
-        if old_folder_path != new_folder_path:
-            # cleanup old folder
-            shutil.rmtree(old_folder_path)
+        if old_uid != new_uid:
+            new_file_name = get_file_path("vnf", function)
+            new_folder_path = new_file_name.replace(get_file_name(function), "")
+
+            if old_folder_path != new_folder_path:
+                # move old files to new location
+                os.makedirs(new_folder_path)
+                for file in os.listdir(old_folder_path):
+                    if not old_file_name == os.path.join(old_folder_path, file):  # don't move descriptor yet
+                        if refs and edit_mode == "create_new":
+                            shutil.copy(os.path.join(old_folder_path, file), os.path.join(new_folder_path, file))
+                        else:
+                            shutil.move(os.path.join(old_folder_path, file), os.path.join(new_folder_path, file))
+                if refs and edit_mode == "create_new":
+                    shutil.copy(old_file_name, new_file_name)
+                else:
+                    shutil.move(old_file_name, new_file_name)
+            if old_folder_path != new_folder_path and not (refs and edit_mode == "create_new"):
+                # cleanup old folder
+                shutil.rmtree(old_folder_path)
         write_ns_vnf_to_disk("vnf", function)
+        if refs and old_uid != new_uid and edit_mode == 'replace_refs':
+            for service in refs:
+                write_ns_vnf_to_disk("ns", service)
     except:
         session.rollback()
         logger.exception("Could not update descriptor file:")
         raise
     session.commit()
     return function.as_dict()
+
+
+def replace_function_refs(refs, vendor, name, version, new_vendor, new_name, new_version):
+    for service in refs:
+        service_desc = json.loads(service.descriptor)
+        for ref in service_desc['network_functions']:
+            if ref['vnf_vendor'] == vendor \
+                    and ref['vnf_name'] == name \
+                    and ref['vnf_version'] == version:
+                ref['vnf_vendor'] = new_vendor
+                ref['vnf_name'] = new_name
+                ref['vnf_version'] = new_version
+        if 'vnf_dependencies' in service_desc:
+            for ref in service_desc['vnf_dependencies']:
+                if ref['vendor'] == vendor \
+                        and ref['name'] == name \
+                        and ref['version'] == version:
+                    ref['vendor'] = new_vendor
+                    ref['name'] = new_name
+                    ref['version'] = new_version
+        service.descriptor = json.dumps(service_desc)
 
 
 def delete_function(ws_id: int, project_id: int, function_id: int) -> dict:
@@ -172,6 +224,11 @@ def delete_function(ws_id: int, project_id: int, function_id: int) -> dict:
         filter(Project.id == project_id). \
         filter(Function.id == function_id).first()
     if function is not None:
+        refs = get_references(function, session)
+        if refs:
+            session.rollback()
+            ref_str = ", ".join(ref.uid for ref in refs)
+            raise StillReferenced("Could not delete function because it is still referenced by " + ref_str)
         session.delete(function)
     else:
         session.rollback()
@@ -184,6 +241,26 @@ def delete_function(ws_id: int, project_id: int, function_id: int) -> dict:
         raise
     session.commit()
     return function.as_dict()
+
+
+def get_references(function, session):
+    references = []
+    # fuzzy search to get all services that have all strings
+    maybe_references = session.query(Service). \
+        filter(Service.project == function.project). \
+        filter(Service.descriptor.like("%" + function.name + "%")). \
+        filter(Service.descriptor.like("%" + function.vendor + "%")). \
+        filter(Service.descriptor.like("%" + function.version + "%")).all()
+    # check that strings are really a reference to this function
+    for service in maybe_references:
+        descriptor = json.loads(service.descriptor)
+        if "network_functions" in descriptor:
+            for ref in descriptor["network_functions"]:
+                if ref['vnf_name'] == function.name \
+                        and ref['vnf_vendor'] == function.vendor \
+                        and ref['vnf_version'] == function.version:
+                    references.append(service)
+    return references
 
 
 def validate_vnf(schema_index: int, descriptor: dict) -> None:

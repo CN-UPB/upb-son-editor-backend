@@ -3,6 +3,14 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+class StillReferenced(Exception):
+    def __init__(self, msg: str):
+        self.msg = msg
+
+    def __str__(self):
+        return self.msg
+
+
 class NameConflict(Exception):
     def __init__(self, msg: str):
         self.msg = msg
