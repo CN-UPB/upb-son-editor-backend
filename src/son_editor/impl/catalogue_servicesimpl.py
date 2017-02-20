@@ -67,20 +67,20 @@ def get_function(function_id):
     return function
 
 
-def createID(e: dict):
+def create_id(e: dict):
     """
     Expects a dict type with name, vendor, version
     :param e: dict with name, vendor, version
     :return: the id of the descriptor
     """
-    return e['name'] + ":" + e['vendor'] + ":" + e['version']
+    return e['vendor'] + ":" + e['name'] + ":" + e['version']
 
 
-def decodeID(id) -> tuple:
+def decode_id(id) -> tuple:
     """
     Returns the parts of a given id
     :param id:
-    :return: tuple of name, vendor , version
+    :return: tuple of vendor, name, version
     """
     list = str.split(id, ":")
     return list[0], list[1], list[2]
@@ -114,17 +114,18 @@ def create_in_catalogue(catalogue_id, function_id, is_vnf):
     """
     url_suffix = CATALOGUE_LIST_CREATE_SUFFIX.replace("{type}", getType(is_vnf))
     if is_vnf:
-        function = get_function(function_id)
+        descriptor = get_function(function_id)
     else:
-        function = get_service(function_id)
+        descriptor = get_service(function_id)
     catalogue = get_catalogue(catalogue_id)
 
     # Create network service on the catalogue
-    response = requests.post(catalogue.url + url_suffix, json=json.loads(function.descriptor), timeout=TIMEOUT)
+    response = requests.post(catalogue.url + url_suffix, json=json.loads(descriptor.descriptor), timeout=TIMEOUT)
     if response.status_code != 201 and response.status_code != 200:
         raise Exception("External service '{}' delivered unexpected status code '{}', reason: {}".format(
             catalogue.url + url_suffix, response.status_code, response.text))
-    return json.loads(response.text)
+    catalogue_descriptor = json.loads(response.text)
+    return {'descriptor': catalogue_descriptor, 'id': create_id(catalogue_descriptor)}
 
 
 def get_all_in_catalogue(ws_id, catalogue_id, is_vnf):
@@ -142,19 +143,18 @@ def get_all_in_catalogue(ws_id, catalogue_id, is_vnf):
     try:
         response = requests.get(catalogue.url + url_suffix, headers={'content-type': 'application/json'},
                                 timeout=TIMEOUT)
-        function_list = json.loads(response.text)
+        catalogue_list = json.loads(response.text)
     except:
         raise Exception("Could not reach {}".format(catalogue.url + url_suffix))
 
     # Append an id to the elements, it consists of name,vendor,version
-    for function in function_list:
-        function['id'] = createID(function)
+    descriptor_list = [{'descriptor': descriptor, 'id': create_id(descriptor)} for descriptor in catalogue_list]
 
     if response.status_code != 200:
         raise Exception("External service '{}' delivered unexpected status code '{}', reason: {}".format(
             catalogue.url + url_suffix, response.status_code, response.text))
 
-    return function_list
+    return descriptor_list
 
 
 def get_in_catalogue(ws_id, catalogue_id, function_id, is_vnf):
@@ -166,13 +166,14 @@ def get_in_catalogue(ws_id, catalogue_id, function_id, is_vnf):
     :param is_vnf:
     :return:
     """
-    name, vendor, version = decodeID(function_id)
+    vendor, name, version = decode_id(function_id)
     catalogue = get_catalogue(catalogue_id)
 
     service_url = build_URL(is_vnf, name, vendor, version)
 
     response = requests.get(catalogue.url + service_url, headers={'content-type': 'application/json'}, timeout=TIMEOUT)
-    return json.loads(response.text)
+    descriptor = json.loads(response.text)
+    return {'descriptor': descriptor, 'id': create_id(descriptor)}
 
 
 def update_service_catalogue(ws_id, catalogue_id, function_id, function_data, is_vnf):
@@ -184,13 +185,11 @@ def update_service_catalogue(ws_id, catalogue_id, function_id, function_data, is
     :param is_vnf:
     :return:
     """
-    name, vendor, version = decodeID(function_id)
+    vendor, name, version = decode_id(function_id)
     catalogue = get_catalogue(catalogue_id)
 
     service_url = build_URL(is_vnf, name, vendor, version)
-    function_data = function_data.copy()
-    if not is_vnf:
-        function_data = function_data["descriptor"]
+    function_data = function_data["descriptor"]
 
     response = requests.put(catalogue.url + service_url, json=function_data, timeout=TIMEOUT)
     if response.status_code != 200:
@@ -208,7 +207,7 @@ def delete_service_catalogue(ws_id, catalogue_id, function_id, is_vnf):
     :param is_vnf:
     :return:
     """
-    name, vendor, version = decodeID(function_id)
+    vendor, name, version = decode_id(function_id)
     catalogue = get_catalogue(catalogue_id)
 
     service_url = build_URL(is_vnf, name, vendor, version)

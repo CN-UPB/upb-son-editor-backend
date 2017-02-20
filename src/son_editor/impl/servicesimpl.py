@@ -8,7 +8,7 @@ import jsonschema
 from jsonschema import ValidationError
 
 from son_editor.app.database import db_session
-from son_editor.app.exceptions import NotFound, NameConflict, InvalidArgument
+from son_editor.app.exceptions import NotFound, NameConflict, InvalidArgument, StillReferenced
 from son_editor.models.descriptor import Service
 from son_editor.models.project import Project
 from son_editor.models.workspace import Workspace
@@ -100,42 +100,85 @@ def update_service(ws_id, project_id, service_id, service_data):
     :return:
     """
     session = db_session()
+    project = session.query(Project). \
+        filter(Project.id == project_id).first()
     service = session.query(Service). \
         join(Project). \
         join(Workspace). \
         filter(Workspace.id == ws_id). \
-        filter(Project.id == project_id). \
+        filter(Service.project == project). \
         filter(Service.id == service_id).first()
     if service:
+        refs = get_references(service, session)
         old_file_name = get_file_path("nsd", service)
+        old_uid = get_uid(service.vendor, service.name, service.version)
         # Parse parameters and update record
         if 'descriptor' in service_data:
             # validate service descriptor
             workspace = session.query(Workspace).filter(Workspace.id == ws_id).first()
             validate_service_descriptor(workspace.ns_schema_index, service_data["descriptor"])
-            service.descriptor = json.dumps(service_data["descriptor"])
             try:
-                service.name = shlex.quote(service_data["descriptor"]["name"])
-                service.vendor = shlex.quote(service_data["descriptor"]["vendor"])
-                service.version = shlex.quote(service_data["descriptor"]["version"])
+                newName = shlex.quote(service_data["descriptor"]["name"])
+                newVendor = shlex.quote(service_data["descriptor"]["vendor"])
+                newVersion = shlex.quote(service_data["descriptor"]["version"])
             except KeyError as ke:
                 raise InvalidArgument("Missing key {} in function data".format(str(ke)))
+            new_uid = get_uid(newVendor, newName, newVersion)
+            if old_uid != new_uid:
+                if refs:
+                    # keep old version and create new version in db
+                    service = Service(newName, newVersion, newVendor, project=project)
+                    session.add(service)
+                else:
+                    service.name = newName
+                    service.vendor = newVendor
+                    service.version = newVersion
+            service.descriptor = json.dumps(service_data["descriptor"])
 
         if 'meta' in service_data:
             service.meta = json.dumps(service_data["meta"])
 
-        new_file_name = get_file_path("nsd", service)
-        try:
-            if not old_file_name == new_file_name:
-                shutil.move(old_file_name, new_file_name)
-            write_ns_vnf_to_disk("nsd", service)
-        except:
-            logger.exception("Could not update descriptor file:")
-            raise
+        if old_uid != new_uid:
+            new_file_name = get_file_path("nsd", service)
+            try:
+                if not old_file_name == new_file_name:
+                    if refs:
+                        shutil.copy(old_file_name, new_file_name)
+                    else:
+                        shutil.move(old_file_name, new_file_name)
+                write_ns_vnf_to_disk("nsd", service)
+            except:
+                logger.exception("Could not update descriptor file:")
+                raise
         session.commit()
         return service.as_dict()
     else:
         raise NotFound("Could not update service '{}', because no record was found".format(service_id))
+
+
+def replace_service_refs(refs, vendor, name, version, new_vendor, new_name, new_version):
+    for service in refs:
+        service_desc = json.loads(service.descriptor)
+        for ref in service_desc['network_services']:
+            if ref['vnf_vendor'] == vendor \
+                    and ref['vnf_name'] == name \
+                    and ref['vnf_version'] == version:
+                ref['vnf_vendor'] = new_vendor
+                ref['vnf_name'] = new_name
+                ref['vnf_version'] = new_version
+        if 'services_dependencies' in service_desc:
+            for ref in service_desc['services_dependencies']:
+                if ref['vendor'] == vendor \
+                        and ref['name'] == name \
+                        and ref['version'] == version:
+                    ref['vendor'] = new_vendor
+                    ref['name'] = new_name
+                    ref['version'] = new_version
+        service.descriptor = json.dumps(service_desc)
+
+
+def get_uid(vendor, name, version):
+    return "{}:{}:{}".format(vendor, name, version)
 
 
 def delete_service(project_id: int, service_id: int) -> dict:
@@ -158,6 +201,11 @@ def delete_service(project_id: int, service_id: int) -> dict:
     if service is None:
         raise NotFound("Could not delete service: service with id {} not found".format(service_id))
 
+    refs = get_references(service, session)
+    if refs:
+        session.rollback()
+        ref_str = ",\n".join(ref.uid for ref in refs)
+        raise StillReferenced("Could not delete service because it is still referenced by \n" + ref_str)
     session.delete(service)
     try:
         os.remove(get_file_path("nsd", service))
@@ -167,6 +215,27 @@ def delete_service(project_id: int, service_id: int) -> dict:
         raise
     session.commit()
     return service.as_dict()
+
+
+def get_references(service, session):
+    references = []
+    # fuzzy search to get all services that have all strings
+    maybe_references = session.query(Service). \
+        filter(Service.project == service.project). \
+        filter(Service.id != service.id). \
+        filter(Service.descriptor.like("%" + service.name + "%")). \
+        filter(Service.descriptor.like("%" + service.vendor + "%")). \
+        filter(Service.descriptor.like("%" + service.version + "%")).all()
+    # check that strings are really a reference to this function
+    for ref_service in maybe_references:
+        descriptor = json.loads(ref_service.descriptor)
+        if "network_services" in descriptor:
+            for ref in descriptor["network_services"]:
+                if ref['ns_name'] == service.name \
+                        and ref['ns_vendor'] == service.vendor \
+                        and ref['ns_version'] == service.version:
+                    references.append(service)
+    return references
 
 
 def get_service(ws_id, parent_id, service_id):
