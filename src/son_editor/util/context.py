@@ -11,6 +11,7 @@ CATALOGUE_INSTANCE_URL = get_config()['test']['catalogue-instance']
 def init_test_context():
     """
      Initializes a test-case context and cleans up workspace location beforehand
+
     :return:
     """
     CONFIG['testing'] = True

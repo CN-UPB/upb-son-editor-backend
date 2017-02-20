@@ -27,6 +27,7 @@ def publish_referenced_functions(ws_id, proj_id, descriptor):
 def create_service_on_platform(ws_id, platform_id, service_data):
     """
     Deploys the service on the referenced Platform
+
     :param ws_id:
     :param platform_id:
     :param service_data:

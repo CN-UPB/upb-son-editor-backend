@@ -12,6 +12,7 @@ from son_editor.util.descriptorutil import write_private_descriptor
 def publish_private_nsfs(ws_id: int, descriptor: dict, is_vnf: bool):
     """
     Publishes a function or service to the private catalogue repository
+
     :param ws_id:
     :param descriptor:
     :param is_vnf:
@@ -50,6 +51,7 @@ def publish_private_nsfs(ws_id: int, descriptor: dict, is_vnf: bool):
 def query_private_nsfs(ws_id, vendor, name, version, is_vnf):
     """
     Finds a function in the private catalogue
+
     :param ws_id:
     :param is_vnf:
     :param vendor:
@@ -78,6 +80,7 @@ def query_private_nsfs(ws_id, vendor, name, version, is_vnf):
 def get_private_nsfs_list(ws_id, is_vnf):
     """
     Get a list of all private services or functions
+
     :param ws_id: the Workspace ID
     :param is_vnf: if vnf or services should be queried
     :return: List of all private services or functions

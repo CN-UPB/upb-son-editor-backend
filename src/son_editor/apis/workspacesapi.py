@@ -114,6 +114,7 @@ class PrivateServices(Resource):
         List private Catalogue services
 
         Lists all services in the Private workspace wide catalogue
+
         :param ws_id:
         :return:
         """
@@ -133,6 +134,7 @@ class PrivateFunctions(Resource):
         List private Catalogue functions
 
         Lists all functions in the Private workspace wide catalogue
+
         :param ws_id:
         :return:
         """

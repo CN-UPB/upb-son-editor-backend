@@ -23,6 +23,7 @@ class Schema(Resource):
     def get(self, ws_id, schema_id):
         """
         Return the requested schema
+
         :param ws_id:
         :param schema_id:
         :return:
@@ -42,6 +43,7 @@ class Schemas(Resource):
     def get(self, ws_id):
         """
         Returns a list of all schemas configured for this server
+
         :param ws_id:
         :return:
         """

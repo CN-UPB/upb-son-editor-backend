@@ -10,6 +10,7 @@ from son_editor.util.descriptorutil import update_workspace_descriptor
 def get_catalogue(catalogue_id):
     """
     Retrieves a catalogue by its id
+
     :param catalogue_id:
     :return:
     """
@@ -24,6 +25,7 @@ def get_catalogue(catalogue_id):
 def get_catalogues(workspace_id):
     """
     Retrieves all catalogues of a specific workspace
+
     :param workspace_id:
     :return:
     """
@@ -37,6 +39,7 @@ def create_catalogue(workspace_id: int, catalogue_data):
     """
     Creates a catalgoue in the given workspace. A catalogue is defined by its name and url. These are given as
     json data
+
     :param workspace_id: Workspace ID of the target workspace, where the catalogue should get created.
     :return: Catalogue descriptor
     """
@@ -101,6 +104,7 @@ def update_catalogue(workspace_id, catalogue_id, catalogue_data):
 def delete(workspace_id, catalogue_id):
     """
     Deletes a catalogue by its id
+
     :param workspace_id:
     :param catalogue_id:
     :return:

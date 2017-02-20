@@ -22,6 +22,7 @@ def get_user(login: str):
     login data from the session. If the database does
     not yet have the full user Data it is queried
     from Github using the access Token
+
     :return: The database user model
     """
 

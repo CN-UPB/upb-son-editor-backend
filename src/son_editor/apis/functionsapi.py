@@ -193,6 +193,7 @@ class PrivateService(Resource):
         Publish function to private
 
         Publishes the function to the workspace wide catalogue
+
         :param ws_id:
         :param parent_id:
         :param vnf_id:
