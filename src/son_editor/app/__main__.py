@@ -91,14 +91,13 @@ def shutdown_session(exception=None):
 
 @app.before_request
 def check_logged_in():
-    if request.endpoint == 'login':
-        return
-    if request.endpoint == 'config_configuration':
+    if request.endpoint in ['login', 'doc', 'specs', 'config_configuration']:
+        # no github login requiered
         return
     if request.method == 'OPTIONS':
         return prepare_response()
     elif get_config()['testing']:
-        # Check if the user is allowed access the requested workspace resource (even for tests)
+        # Check if the user is allowed to access the requested workspace resource (even for tests)
         check_access(request)
         return
     # Check if the user is not logged in
