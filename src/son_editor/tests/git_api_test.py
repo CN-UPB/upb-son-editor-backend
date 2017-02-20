@@ -11,6 +11,8 @@ logger = logging.getLogger(__name__)
 
 GITHUB_URL = "http://github.com"
 REMOTE_REPO_NAME = 'test_create'
+REMOTE_INVALID_REPO_NAME = 'invalid-son-repo'
+REMOTE_DOES_NOT_EXIST_REPO_NAME = 'does-not-exist'
 
 CONFIG = get_config()
 
@@ -73,8 +75,12 @@ class GitAPITest(unittest.TestCase):
         return response
 
     def assertResponseValid(self, response):
-        json_data = json.loads(response.data.decode())
-        self.assertTrue(json_data['success'], "true")
+        """ Asserts that the response is valid"""
+        self.assertTrue(response.status_code, 200)
+
+    def assertInvalidArgument(self, response):
+        """ Asserts that the response is invalid"""
+        self.assertTrue(response.status_code, 400)
 
     def test_init_and_create_remote_repo(self):
         # 1. init git repository in the given project
@@ -88,13 +94,21 @@ class GitAPITest(unittest.TestCase):
         self.assertResponseValid(response)
 
     def test_clone_and_delete_repo(self):
-        # Init and create remote repo
+        # 1. Init and create remote repo
         self.test_init_and_create_remote_repo()
+
+        # Check if repository was created, by using list function
         response = self.app.get("/" + constants.WORKSPACES + "/" + self.wsid + "/" + constants.GIT + "/list")
 
-        # List functionality
-        arg = {'url': json.loads(response.data.decode())[0]['clone_url']}
-        logger.info('arg: {}'.format(json.loads(response.data.decode())[0]['clone_url']))
+        # Look for newly created project
+        clone_url = None
+        for i in json.loads(response.data.decode()):
+            if i['name'] == REMOTE_REPO_NAME:
+                clone_url = i['clone_url']
+
+        self.assertTrue(clone_url is not None)
+
+        arg = {'url': clone_url}
         response = self.call_github_post('clone', arg)
         self.assertResponseValid(response)
         json_data = json.loads(response.data.decode())
@@ -104,3 +118,15 @@ class GitAPITest(unittest.TestCase):
                                    headers={'Content-Type': 'application/json'},
                                    data=json.dumps(arg))
         self.assertResponseValid(response)
+
+    def test_clone_invalid_son_repo(self):
+        # Format invalid project url
+        arg = {'url': '{}/{}/{}'.format(GITHUB_URL, GITHUB_USER, REMOTE_INVALID_REPO_NAME)}
+        response = self.call_github_post('clone', arg)
+        self.assertInvalidArgument(response)
+
+        # Invalid url
+        arg = {'url': 'localhost'}
+        response = self.call_github_post('clone', arg)
+        self.assertInvalidArgument(response)
+

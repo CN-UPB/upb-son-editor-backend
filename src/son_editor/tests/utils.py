@@ -24,25 +24,28 @@ def get_sample_vnf(name: str, vendor: str, version: str):
     :param version: The VNF version
     :return: a dictionary with a valid vnf descriptor that will pass validation
     """
-    return {
-        "vendor": vendor,
-        "name": name,
-        "version": version,
-        "descriptor_version": "0.1",
-        "virtual_deployment_units": [
-            {
-                "id": "vdu_id",
-                "resource_requirements": {
-                    "cpu": {
-                        "vcpus": 1
-                    },
-                    "memory": {
-                        "size": 1
+    return \
+        {
+            'descriptor': {
+                "vendor": vendor,
+                "name": name,
+                "version": version,
+                "descriptor_version": "0.1",
+                "virtual_deployment_units": [
+                    {
+                        "id": "vdu_id",
+                        "resource_requirements": {
+                            "cpu": {
+                                "vcpus": 1
+                            },
+                            "memory": {
+                                "size": 1
+                            }
+                        }
                     }
-                }
+                ]
             }
-        ]
-    }
+        }
 
 
 def create_vnf(wsid: int, pjid: int, name: str, vendor: str, version: str) -> str:

@@ -31,8 +31,8 @@ class CatalogueServiceTest(unittest.TestCase):
                                          "version": "0.0.2",
                                          "descriptor_version": "0.1"},
                           'meta': {}}
-        self.vnf_dict = get_sample_vnf("service_1", "de.upb.integration_test", "0.0.1")
-        self.vnf_dict_2 = get_sample_vnf("service_2", "de.upb.integration_test", "0.0.2")
+        self.vnf_dict = get_sample_vnf("vnf_1", "de.upb.integration_test", "0.0.1")
+        self.vnf_dict_2 = get_sample_vnf("vnf_2", "de.upb.integration_test", "0.0.2")
 
     def tearDown(self):
         response = self.app.delete('/' + WORKSPACES + '/' + str(self.wsid))
@@ -66,7 +66,7 @@ class CatalogueServiceTest(unittest.TestCase):
                                  data=json.dumps(data_dict))
         function = json.loads(response.data.decode())
         self.assertEqual(response.status_code, 201)
-        self.assertTrue(self.check_equals(function["descriptor"], data_dict, is_vnf))
+        self.assertTrue(self.check_equals(function, data_dict, is_vnf))
 
         service_id = function['id']
 
@@ -95,9 +95,8 @@ class CatalogueServiceTest(unittest.TestCase):
                                  + "/" + CATALOGUES + "/" + str(self.catalogue_id)
                                  + "/" + url_function_name + "/", headers={'Content-Type': 'application/json'},
                                  data=json.dumps(id_dict))
-        if not exists:
-            function = json.loads(response.data)
-            service_uid = function['id']
+        function = json.loads(response.data.decode())
+        service_uid = function['id']
         # retrieve it again
         response = self.app.get("/" + WORKSPACES + "/" + str(self.wsid)
                                 + "/" + CATALOGUES + "/" + str(self.catalogue_id)
@@ -134,6 +133,12 @@ class CatalogueServiceTest(unittest.TestCase):
                                 + "/" + url_function_name + "/" + str(service_uid),
                                 data=json.dumps(data_dict_2),
                                 headers={'Content-Type': 'application/json'})
+        self.assertTrue(response.status_code, 200)
+        response = self.app.get("/" + WORKSPACES + "/" + str(self.wsid)
+                                + "/" + CATALOGUES + "/" + str(self.catalogue_id)
+                                + "/" + url_function_name + "/")
+        functions = json.loads(response.data.decode())
+        exists = False
         for function in functions:
             if self.check_equals(function, data_dict_2, is_vnf):
                 exists = True
@@ -151,10 +156,10 @@ class CatalogueServiceTest(unittest.TestCase):
     @staticmethod
     def check_equals(response, data, is_vnf):
         if is_vnf:
-            return response['vendor'] == data['vendor'] \
-                   and response['name'] == data['name'] \
-                   and response['version'] == data['version']
+            return response['descriptor']['vendor'] == data['descriptor']['vendor'] \
+                   and response['descriptor']['name'] == data['descriptor']['name'] \
+                   and response['descriptor']['version'] == data['descriptor']['version']
         else:
-            return response['vendor'] == data['descriptor']['vendor'] \
-                   and response['name'] == data['descriptor']['name'] \
-                   and response['version'] == data['descriptor']['version']
+            return response['descriptor']['vendor'] == data['descriptor']['vendor'] \
+                   and response['descriptor']['name'] == data['descriptor']['name'] \
+                   and response['descriptor']['version'] == data['descriptor']['version']

@@ -43,7 +43,7 @@ class FunctionTest(unittest.TestCase):
 
         # create invalid vnf: missing vendor
         post_arg = get_sample_vnf("name", "de.upb.cs.cn.pgsandman", "0.0.1")
-        post_arg.pop("vendor", None)  # remove vendor
+        post_arg['descriptor'].pop("vendor", None)  # remove vendor
         response = self.app.post("/" + constants.WORKSPACES + "/" + str(self.wsid)
                                  + "/" + constants.PROJECTS + "/" + str(self.pjid)
                                  + "/" + constants.VNFS + "/", headers={'Content-Type': 'application/json'},
@@ -67,9 +67,9 @@ class FunctionTest(unittest.TestCase):
                                 + "/" + constants.PROJECTS + "/" + str(self.pjid)
                                 + "/" + constants.VNFS + "/" + str(svcid))
         function = json.loads(response.data.decode())
-        self.assertTrue(function['descriptor']['name'] == dict['name'])
-        self.assertTrue(function['descriptor']['version'] == dict['version'])
-        self.assertTrue(function['descriptor']['vendor'] == dict['vendor'])
+        self.assertTrue(function['descriptor']['name'] == dict['descriptor']['name'])
+        self.assertTrue(function['descriptor']['version'] == dict['descriptor']['version'])
+        self.assertTrue(function['descriptor']['vendor'] == dict['descriptor']['vendor'])
 
     def test_get_function(self):
         # put vnf in table
@@ -86,14 +86,15 @@ class FunctionTest(unittest.TestCase):
         functions = json.loads(response.data.decode())
         self.assertEqual(len(functions), 3)
         result = functions[2]
-        self.assertEqual(result['descriptor']['name'], dict['name'])
-        self.assertTrue(result['descriptor']['version'] == dict['version'])
-        self.assertTrue(result['descriptor']['vendor'] == dict['vendor'])
+        self.assertEqual(result['descriptor']['name'], dict['descriptor']['name'])
+        self.assertTrue(result['descriptor']['version'] == dict['descriptor']['version'])
+        self.assertTrue(result['descriptor']['vendor'] == dict['descriptor']['vendor'])
 
     def test_update_function(self):
         # put vnf in table
         result_id = create_vnf(self.wsid, self.pjid, "vnf_2", "de.upb.cs.cn.pgsandman", "0.0.1")
         update_dict = get_sample_vnf("vnf_3", "de.upb.cs.cn.pgsandman1", "0.0.2")
+        update_dict['edit_mode'] = "replace_refs"
         response = self.app.put("/" + constants.WORKSPACES + "/" + str(self.wsid)
                                 + "/" + constants.PROJECTS + "/" + str(self.pjid)
                                 + "/" + constants.VNFS + "/" + str(result_id),
@@ -101,7 +102,7 @@ class FunctionTest(unittest.TestCase):
                                 data=json.dumps(update_dict))
         result = json.loads(response.data.decode())
         self.assertEqual(response.status_code, 200, result)
-        self.assertEqual(result['descriptor'], update_dict)
+        self.assertEqual(result['descriptor'], update_dict['descriptor'])
 
         # test invalid function update
         update_dict = get_sample_vnf("vnf_ 3", "de.upb.cs.cn.pgsandman1", "0.0.2")
