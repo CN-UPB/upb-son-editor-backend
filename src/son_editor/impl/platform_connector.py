@@ -33,6 +33,7 @@ def create_service_on_platform(ws_id, platform_id, service_data):
     :param service_data:
     :return: A  message if the function was deployed successfully
     """
+    # TODO test this!
     service_id = int(service_data['id'])
     session = db_session()
     try:
@@ -51,7 +52,7 @@ def create_service_on_platform(ws_id, platform_id, service_data):
         platform = session.query(Platform).filter(Platform.id == platform_id). \
             filter(Platform.workspace == workspace).first()
         package_path = pack_project(project)
-        service_uuid = push_to_platform(package_path, platform)
+        service_uuid = push_to_platform(package_path, platform.workspace)
         logger.info("Pushed to platform: " + str(service_uuid))
         # deploy to private catalogue
         service = project.services[0].as_dict()
