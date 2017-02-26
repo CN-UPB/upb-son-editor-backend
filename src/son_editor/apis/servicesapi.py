@@ -181,6 +181,7 @@ class PrivateService(Resource):
         Publish service to private
 
         Publishes the service to the workspace wide catalogue
+
         :param ws_id:
         :param parent_id:
         :param service_id:

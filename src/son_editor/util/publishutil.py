@@ -13,6 +13,7 @@ logger = logging.getLogger(__name__)
 def pack_project(project: Project) -> str:
     """
     Calls the son-package cli tool to pack the project and prepare it for deployment
+
     :param project: The project to pack
     :return:
     """
@@ -41,6 +42,7 @@ def pack_project(project: Project) -> str:
 def push_to_platform(package_path: str, ws: Workspace) -> str:
     """
     Pushes the package located at the package_path to the specified Platform
+
     :param package_path: the location of package to be pushed on disk
     :param platform: The platform to upload to
     :return:

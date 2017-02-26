@@ -22,6 +22,7 @@ logger = logging.getLogger(__name__)
 def create_oauth_header() -> dict:
     """
     Creates oauth header by providing the access token in the header.
+
     :return: Header as dict
     """
     return {'Authorization': 'token {}'.format(session['access_token'])}
@@ -30,6 +31,7 @@ def create_oauth_header() -> dict:
 def build_github_delete(owner: str, repo_name: str) -> str:
     """
     Builds relative github api url to delete a repository
+
     :param owner: Owner of the github repository
     :param repo_name: Repository name
     :return:
@@ -40,6 +42,7 @@ def build_github_delete(owner: str, repo_name: str) -> str:
 def is_github(netloc):
     """
     Checks if the given url is on github
+
     :param netloc: http url
     :return: True
     """
@@ -52,6 +55,7 @@ def is_github(netloc):
 def git_command(git_args: list, cwd: str = None):
     """
     Calls the git command with given args and returns out, err and exitcode
+
     :param git_args: Arguments for git
     :param cwd: Optional current working directory
     :return: out, error, exitcode
@@ -69,6 +73,7 @@ def git_command(git_args: list, cwd: str = None):
 def create_info_dict(out: str = None, err: str = None, exitcode: int = 0) -> dict:
     """
     Creates a dict that holds process information
+
     :param out: Out bytes
     :param err: Err bytes
     :param exitcode: exitcode
@@ -93,6 +98,7 @@ def create_info_dict(out: str = None, err: str = None, exitcode: int = 0) -> dic
 def get_project(ws_id, pj_id: int, session=db_session()) -> Project:
     """
     Returns a project and raises 404, when project not found.
+
     :param ws_id: Workspace id
     :param pj_id: Project id
     :param db session
@@ -110,6 +116,7 @@ def check_son_validity(project_path: str):
     """
     Checks if the given project path is a valid son project, otherwise it raises an exception. Valid means, it has
     a consistent son file structure, so no semantics will be tested.
+
     :param project_path:
     :return:
     """
@@ -142,6 +149,7 @@ def check_son_validity(project_path: str):
 def get_workspace(ws_id: int) -> Workspace:
     """
     Returns the workspace model of the given workspace
+
     :param ws_id:
     :return:
     """
@@ -154,6 +162,7 @@ def get_workspace(ws_id: int) -> Workspace:
 def init(ws_id: int, project_id: int):
     """
     Initializes a git repository in the given project
+
     :param ws_id:
     :param project_id:
     :return:
@@ -178,6 +187,7 @@ def setup_git_user_email(project_full_path: str):
 def commit_and_push(ws_id: int, project_id: int, commit_message: str):
     """
     Commits and then pushes changes.
+
     :param ws_id:
     :param project_id:
     :param commit_message:
@@ -286,6 +296,7 @@ def create_commit_and_push(ws_id: int, project_id: int, remote_repo_name: str):
 def delete(ws_id: int, project_id: int, remote_repo_name: str, organization_name: str = None):
     """
     Deletes given project on remote repository
+
     :param project_id:
     :param ws_id: Workspace of the project
     :param remote_repo_name: Remote repository name
@@ -398,6 +409,7 @@ def pull(ws_id: int, project_id: int):
 def list():
     """
     Lists the available remote repositories.
+
     :param ws_id:
     :return: https://developer.github.com/v3/repos/#response
     """
@@ -414,6 +426,7 @@ def _repo_name_from_url(url_decode: str):
 def clone(ws_id: int, url: str, name: str = None):
     """
     Clones a repository by url into given workspace
+
     :param name: Optional name of the local repository name, otherwise the remote name is taken
     :param user_data: Session data to get access token for GitHub
     :param ws_id: Destination workspace to clone

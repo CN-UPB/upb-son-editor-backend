@@ -58,8 +58,12 @@ class Category(Enum):
 
 
 def get_parent(request):
-    """Helper method to extract the parent category
-    for the services and functions api calls"""
+    """
+    Helper method to extract the parent category
+    for the services and functions api calls
+    :param request:
+    :return:
+    """
     parent = str(request.url_rule).split(sep="/")[3]
     return {
         PROJECTS: Category.project,

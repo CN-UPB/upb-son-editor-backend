@@ -24,6 +24,7 @@ TIMEOUT = 5
 def getType(is_vnf: bool) -> str:
     """
     Returns the vnf / ns prefix
+
     :param is_vnf:
     :return: the prefix for the type
     """
@@ -36,6 +37,7 @@ def getType(is_vnf: bool) -> str:
 def get_catalogue(catalogue_id):
     """
     Retrieves a catalogue by given id
+
     :param catalogue_id: int
     :return:
     """
@@ -89,6 +91,7 @@ def decode_id(id) -> tuple:
 def build_URL(is_vnf, name, vendor, version):
     """
     builds the url from the given name vendor and version
+
     :param is_vnf:
     :param name:
     :param vendor:
@@ -107,6 +110,7 @@ def build_URL(is_vnf, name, vendor, version):
 def create_in_catalogue(catalogue_id, function_id, is_vnf):
     """
     Creates a function on the catalogue
+
     :param catalogue_id:
     :param function_id:
     :param is_vnf:
@@ -131,6 +135,7 @@ def create_in_catalogue(catalogue_id, function_id, is_vnf):
 def get_all_in_catalogue(ws_id, catalogue_id, is_vnf):
     """
     Retrieves a list of catalogue functions
+
     :param ws_id:
     :param catalogue_id:
     :param is_vnf:
@@ -160,6 +165,7 @@ def get_all_in_catalogue(ws_id, catalogue_id, is_vnf):
 def get_in_catalogue(ws_id, catalogue_id, function_id, is_vnf):
     """
     Gets a specific function
+
     :param ws_id:
     :param catalogue_id:
     :param function_id:
@@ -178,6 +184,7 @@ def get_in_catalogue(ws_id, catalogue_id, function_id, is_vnf):
 
 def update_service_catalogue(ws_id, catalogue_id, function_id, function_data, is_vnf):
     """ Update the service in the catalogue
+
     :param ws_id:
     :param catalogue_id:
     :param function_id:
@@ -201,6 +208,7 @@ def update_service_catalogue(ws_id, catalogue_id, function_id, function_data, is
 def delete_service_catalogue(ws_id, catalogue_id, function_id, is_vnf):
     """
     Delete the service in the catalogue
+
     :param ws_id:
     :param catalogue_id:
     :param function_id:

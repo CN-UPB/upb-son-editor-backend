@@ -9,8 +9,9 @@ from son_editor.util.requestutil import get_config
 
 logger = logging.getLogger(__name__)
 
+# Test constants
 GITHUB_URL = "http://github.com"
-REMOTE_REPO_NAME = 'test_create'
+REMOTE_REPO_NAME = 'test-create'
 REMOTE_INVALID_REPO_NAME = 'invalid-son-repo'
 REMOTE_DOES_NOT_EXIST_REPO_NAME = 'does-not-exist'
 
@@ -32,11 +33,8 @@ class GitAPITest(unittest.TestCase):
         # Initializes test context
         self.app = init_test_context()
         # Add some session stuff ( need for finding the user's workspace )
-        if not GITHUB_USER:
-            self.username = 'dummy'
-        else:
-            self.username = GITHUB_USER
-        # Name constant
+        self.username = GITHUB_USER
+        # Create a user with valid github token
         self.user = create_logged_in_user(self.app, self.username, GITHUB_ACCESS_TOKEN)
         # Create a workspace and project
         self.wsid = str(create_workspace(self.user, 'WorkspaceA'))
@@ -54,6 +52,7 @@ class GitAPITest(unittest.TestCase):
         dbsession.delete(user)
         dbsession.commit()
 
+    # Helper function section
     def clean_github(self):
         """ Deletes the created test project(s) on github """
         # set url on project to be able to delete
@@ -82,6 +81,7 @@ class GitAPITest(unittest.TestCase):
         """ Asserts that the response is invalid"""
         self.assertTrue(response.status_code, 400)
 
+    # Test section
     def test_init_and_create_remote_repo(self):
         # 1. init git repository in the given project
         arg = {'project_id': self.pjid}
@@ -92,6 +92,18 @@ class GitAPITest(unittest.TestCase):
         arg = {'project_id': self.pjid, 'repo_name': REMOTE_REPO_NAME}
         response = self.call_github_post('create', arg)
         self.assertResponseValid(response)
+
+    def test_pull(self):
+        self.test_init_and_create_remote_repo()
+        # Already up to date
+        arg = {'project_id': self.pjid}
+        response = self.call_github_post('pull', arg)
+        self.assertResponseValid(response)
+
+        # Invalid project
+        arg = {'project_id': 999}
+        response = self.call_github_post('pull', arg)
+        self.assertInvalidArgument(response)
 
     def test_clone_and_delete_repo(self):
         # 1. Init and create remote repo
@@ -130,3 +142,21 @@ class GitAPITest(unittest.TestCase):
         response = self.call_github_post('clone', arg)
         self.assertInvalidArgument(response)
 
+    def test_invalid_delete(self):
+        arg = {'project_id': 999, 'repo_name': REMOTE_DOES_NOT_EXIST_REPO_NAME}
+        response = self.app.delete("/" + constants.WORKSPACES + "/" + self.wsid + "/" + constants.GIT + "/delete",
+                                   headers={'Content-Type': 'application/json'},
+                                   data=json.dumps(arg))
+        self.assertInvalidArgument(response)
+
+    def test_status(self):
+        self.test_init_and_create_remote_repo()
+        arg = {'project_id': self.pjid}
+        response = self.call_github_post('status', arg)
+        self.assertResponseValid(response)
+
+    def test_diff(self):
+        self.test_init_and_create_remote_repo()
+        arg = {'project_id': self.pjid}
+        response = self.call_github_post('diff', arg)
+        self.assertResponseValid(response)
