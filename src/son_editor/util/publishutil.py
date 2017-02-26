@@ -45,6 +45,8 @@ def push_to_platform(package_path: str, ws: Workspace) -> str:
     :param platform: The platform to upload to
     :return:
     """
+
+    # TODO use platform id instead of default platform for ws
     proc = Popen(['son-access', "push", "--workspace", ws.path, '--upload', package_path], stdout=PIPE, stderr=PIPE)
 
     out, err = proc.communicate()
