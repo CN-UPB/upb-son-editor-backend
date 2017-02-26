@@ -188,7 +188,7 @@ def update_workspace(workspace_data, wsid):
                     platform.token_path = create_token_file(updated_platform['token'])
             else:
                 # create new
-                test_url(updated_platform['name'], updated_platform['url'] + "/packages")
+                test_url(updated_platform['name'], updated_platform['url'] + "/api/v2/packages")#TODO test this!
                 new_platform = Platform(updated_platform['name'], updated_platform['url'], True, workspace)
                 session.add(new_platform)
     for catalogue in workspace.catalogues:
