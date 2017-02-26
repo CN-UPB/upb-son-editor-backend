@@ -5,5 +5,8 @@ before_install:
   - pip install git+https://github.com/CN-UPB/son-cli.git@v2.0
 install:
   - "python setup.py install"
+  - pip install codecov
 script:
-  - "python setup.py test"
+  - "coverage run setup.py test"
+after_success:
+  - "codecov"

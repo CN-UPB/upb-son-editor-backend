@@ -30,6 +30,7 @@ def get_config():
 def prepare_response(data=None, code=200) -> Response:
     """
     Sets the necessary headers and status code on the response
+
     :param data: The data to be returned to the client
     :param code: the status code. 200 by default
     :return: The Response object with the headers set according to the input data
@@ -57,6 +58,7 @@ def prepare_error(data=None, code=500) -> tuple:
     """
     Prepares the error response and returns it as a tuple
     to accommodate for flask_restplus's way to deal with errors
+
     :param data: The error message
     :param code: the http error code, 500 by default
     :return: A tuple of the data, the status code and the headers
@@ -88,6 +90,7 @@ def _is_allowed_origin():
 def get_json(request: Request) -> dict:
     """
     Helper function to get a json dict out of a request
+
     :param request: Request to get the json data from
     :return: json data as dict
     """
@@ -102,6 +105,7 @@ def get_json(request: Request) -> dict:
 def rreplace(s, old, new, occurrence):
     """
     Replaces 'occurences' occurences of string 'old' in the given string 's' from right by 'new'
+
     :param s: String that contains the replacing string
     :param old: String that gets replaced
     :param new: New string that replaces the old string

@@ -20,6 +20,7 @@ logger = logging.getLogger(__name__)
 def get_services(ws_id: int, project_id: int) -> list:
     """
     Get a list of all services in this Project
+
     :param ws_id:
     :param project_id: The project ID
     :return: A list of service descriptors as dicts
@@ -36,6 +37,7 @@ def get_services(ws_id: int, project_id: int) -> list:
 def create_service(ws_id: int, project_id: int, service_data: dict) -> dict:
     """
     Creates a service in the given project
+
     :param ws_id: The Workspace of the project
     :param project_id: The Project of the Service
     :param service_data: the service descriptor
@@ -93,6 +95,7 @@ def create_service(ws_id: int, project_id: int, service_data: dict) -> dict:
 def update_service(ws_id, project_id, service_id, service_data):
     """
     Update the service using the service data from the request
+
     :param ws_id:
     :param project_id:
     :param service_id:
@@ -184,6 +187,7 @@ def get_uid(vendor, name, version):
 def delete_service(project_id: int, service_id: int) -> dict:
     """
     Deletes the service from the Database and from the disk
+
     :param project_id: The Projects ID
     :param service_id: The Services ID
     :return: The descriptor of the deleted service
@@ -241,6 +245,7 @@ def get_references(service, session):
 def get_service(ws_id, parent_id, service_id):
     """
     Get the service by ID
+
     :param ws_id: The workspace ID of the Project
     :param parent_id: The project ID
     :param service_id: the Service ID
@@ -258,6 +263,7 @@ def get_service(ws_id, parent_id, service_id):
 def validate_service_descriptor(schema_index: int, descriptor: dict) -> None:
     """
     Validates the given descriptor with the schema loaded from the configuration
+
     :param schema_index: the workspace
     :param descriptor: the service descriptor
     :raises: InvalidArgument: if the validation fails

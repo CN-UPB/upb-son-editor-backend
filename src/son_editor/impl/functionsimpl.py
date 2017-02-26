@@ -22,6 +22,7 @@ logger = logging.getLogger(__name__)
 def get_functions(ws_id: int, project_id: int) -> list:
     """
     Get a list of all functions
+
     :param ws_id: The workspace ID
     :param project_id: The project id
     :return:
@@ -36,6 +37,7 @@ def get_functions(ws_id: int, project_id: int) -> list:
 def get_function_project(ws_id: int, project_id: int, vnf_id: int) -> dict:
     """
     Get a single function from the specified project
+
     :param ws_id:
     :param project_id:
     :param vnf_id:
@@ -52,6 +54,7 @@ def get_function_project(ws_id: int, project_id: int, vnf_id: int) -> dict:
 def create_function(ws_id: int, project_id: int, function_data: dict) -> dict:
     """
     Creates a new vnf in the project
+
     :param ws_id:
     :param project_id:
     :param function_data:
@@ -104,6 +107,7 @@ def get_uid(vendor, name, version):
 def update_function(ws_id: int, prj_id: int, func_id: int, func_data: dict) -> dict:
     """
     Update the function descriptor
+
     :param ws_id:
     :param prj_id:
     :param func_id:
@@ -211,6 +215,7 @@ def replace_function_refs(refs, vendor, name, version, new_vendor, new_name, new
 def delete_function(ws_id: int, project_id: int, function_id: int) -> dict:
     """
     Deletes the function
+
     :param ws_id:
     :param project_id:
     :param function_id:
