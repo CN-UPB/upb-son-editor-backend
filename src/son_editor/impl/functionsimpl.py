@@ -120,7 +120,7 @@ def update_function(ws_id: int, prj_id: int, func_id: int, func_data: dict) -> d
     validate_vnf(ws.vnf_schema_index, func_data['descriptor'])
     edit_mode = func_data['edit_mode']
 
-    # test if ws Name exists in database
+    # test if function exists in database
     function = session.query(Function). \
         join(Project). \
         join(Workspace). \
@@ -141,6 +141,21 @@ def update_function(ws_id: int, prj_id: int, func_id: int, func_data: dict) -> d
     except KeyError as ke:
         session.rollback()
         raise InvalidArgument("Missing key {} in function data".format(str(ke)))
+
+    # check if new name already exists
+    function_dup = session.query(Function). \
+        join(Project). \
+        join(Workspace). \
+        filter(Workspace.id == ws_id). \
+        filter(Project.id == prj_id). \
+        filter(Function.name == new_name). \
+        filter(Function.vendor == new_vendor).\
+        filter(Function.version == new_version).\
+        filter(Function.id != func_id).first()
+    if function_dup:
+        session.rollback()
+        raise NameConflict("A function with that name, vendor and version already exists")
+
     new_uid = get_uid(new_vendor, new_name, new_version)
     refs = get_references(function, session)
     if old_uid != new_uid:
@@ -169,7 +184,11 @@ def update_function(ws_id: int, prj_id: int, func_id: int, func_data: dict) -> d
                 for file in os.listdir(old_folder_path):
                     if not old_file_name == os.path.join(old_folder_path, file):  # don't move descriptor yet
                         if refs and edit_mode == "create_new":
-                            shutil.copy(os.path.join(old_folder_path, file), os.path.join(new_folder_path, file))
+                            if os.path.isdir(os.path.join(old_folder_path, file)):
+                                shutil.copytree(os.path.join(old_folder_path, file),
+                                                os.path.join(new_folder_path, file))
+                            else:
+                                shutil.copy(os.path.join(old_folder_path, file), os.path.join(new_folder_path, file))
                         else:
                             shutil.move(os.path.join(old_folder_path, file), os.path.join(new_folder_path, file))
                 if refs and edit_mode == "create_new":

@@ -102,6 +102,46 @@ class FunctionTest(unittest.TestCase):
                                 data=json.dumps(update_dict))
         result = json.loads(response.data.decode())
         self.assertEqual(response.status_code, 200, result)
+
+        # create a name conflict
+        create_vnf(self.wsid, self.pjid, "vnf_2", "de.upb.cs.cn.pgsandman", "0.0.1")
+        update_dict = get_sample_vnf("vnf_2", "de.upb.cs.cn.pgsandman", "0.0.1")
+        update_dict['edit_mode'] = "replace_refs"
+        response = self.app.put("/" + constants.WORKSPACES + "/" + str(self.wsid)
+                                + "/" + constants.PROJECTS + "/" + str(self.pjid)
+                                + "/" + constants.VNFS + "/" + str(result_id),
+                                headers={'Content-Type': 'application/json'},
+                                data=json.dumps(update_dict))
+        result = json.loads(response.data.decode())
+        self.assertEqual(response.status_code, 409, result)
+
+        # rename the referenced sample vnf
+        response = self.app.get("/" + constants.WORKSPACES + "/" + str(self.wsid)
+                                + "/" + constants.PROJECTS + "/" + str(self.pjid)
+                                + "/" + constants.VNFS + "/")
+        result = json.loads(response.data.decode())
+        sample_vnf_id = result[0]['id']
+        update_dict = get_sample_vnf("vnf_4", "de.upb.cs.cn.pgsandman1", "0.0.2")
+        update_dict['edit_mode'] = "replace_refs"
+        response = self.app.put("/" + constants.WORKSPACES + "/" + str(self.wsid)
+                                + "/" + constants.PROJECTS + "/" + str(self.pjid)
+                                + "/" + constants.VNFS + "/" + str(sample_vnf_id),
+                                headers={'Content-Type': 'application/json'},
+                                data=json.dumps(update_dict))
+        result = json.loads(response.data.decode())
+        self.assertEqual(response.status_code, 200, result)
+        self.assertEqual(result['descriptor'], update_dict['descriptor'])
+
+        # create_new mode
+        update_dict = get_sample_vnf("vnf_5", "de.upb.cs.cn.pgsandman1", "0.0.2")
+        update_dict['edit_mode'] = "create_new"
+        response = self.app.put("/" + constants.WORKSPACES + "/" + str(self.wsid)
+                                + "/" + constants.PROJECTS + "/" + str(self.pjid)
+                                + "/" + constants.VNFS + "/" + str(sample_vnf_id),
+                                headers={'Content-Type': 'application/json'},
+                                data=json.dumps(update_dict))
+        result = json.loads(response.data.decode())
+        self.assertEqual(response.status_code, 200, result)
         self.assertEqual(result['descriptor'], update_dict['descriptor'])
 
         # test invalid function update
