@@ -188,7 +188,7 @@ def update_workspace(workspace_data, wsid):
                     platform.token_path = create_token_file(updated_platform['token'])
             else:
                 # create new
-                test_url(updated_platform['name'], updated_platform['url'] + "/api/v2/packages")#TODO test this!
+                test_url(updated_platform['name'], updated_platform['url'] + "/api/v2/packages")  # TODO test this!
                 new_platform = Platform(updated_platform['name'], updated_platform['url'], True, workspace)
                 session.add(new_platform)
     for catalogue in workspace.catalogues:
@@ -254,8 +254,10 @@ def on_rm_error(func, path, exc_info):
     especially if trying to remove .git files on windows"""
     # path contains the path of the file that couldn't be removed
     # let's just assume that it's read-only and unlink it.
-    os.chmod(path, stat.S_IWRITE)
-    os.unlink(path)
+    clazz, error, trace = exc_info
+    if not isinstance(error, FileNotFoundError):
+        os.chmod(path, stat.S_IWRITE)
+        os.unlink(path)
 
 
 def test_url(name, url):

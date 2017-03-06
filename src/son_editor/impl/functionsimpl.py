@@ -258,7 +258,17 @@ def delete_function(ws_id: int, project_id: int, function_id: int) -> dict:
         session.rollback()
         raise NotFound("Function with id " + function_id + " does not exist")
     try:
-        os.remove(get_file_path("vnf", function))
+        file_path = get_file_path("vnf", function)
+        os.remove(file_path)
+        # check if other descriptor files present, if not clean the vnf folder
+        folder_path = file_path.replace(get_file_name(function), "")
+        found_descriptor = False
+        for file in os.listdir(folder_path):
+            if file.endswith(".yml"):
+                found_descriptor = True
+                break
+        if not found_descriptor:
+            shutil.rmtree(folder_path)
     except:
         session.rollback()
         logger.exception("Could not delete function:")
