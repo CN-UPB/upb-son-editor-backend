@@ -149,10 +149,11 @@ def update_service(ws_id, project_id, service_id, service_data):
                         shutil.copy(old_file_name, new_file_name)
                     else:
                         shutil.move(old_file_name, new_file_name)
-                write_ns_vnf_to_disk("nsd", service)
             except:
                 logger.exception("Could not update descriptor file:")
                 raise
+
+        write_ns_vnf_to_disk("nsd", service)
         session.commit()
         return service.as_dict()
     else:
