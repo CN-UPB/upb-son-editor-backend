@@ -78,7 +78,9 @@ def create_function(ws_id: int, project_id: int, function_data: dict) -> dict:
                               .join(Workspace)
                               .filter(Workspace.id == ws_id)
                               .filter(Function.project_id == project_id)
-                              .filter(Function.name == function_name))
+                              .filter(Function.vendor == vendor_name)
+                              .filter(Function.name == function_name)
+                              .filter(Function.version == version))
     if len(existing_functions) > 0:
         raise NameConflict("Function with name " + function_name + " already exists")
     project = session.query(Project).filter(Project.id == project_id).first()
@@ -149,8 +151,8 @@ def update_function(ws_id: int, prj_id: int, func_id: int, func_data: dict) -> d
         filter(Workspace.id == ws_id). \
         filter(Project.id == prj_id). \
         filter(Function.name == new_name). \
-        filter(Function.vendor == new_vendor).\
-        filter(Function.version == new_version).\
+        filter(Function.vendor == new_vendor). \
+        filter(Function.version == new_version). \
         filter(Function.id != func_id).first()
     if function_dup:
         session.rollback()
@@ -182,7 +184,7 @@ def update_function(ws_id: int, prj_id: int, func_id: int, func_data: dict) -> d
                 # move old files to new location
                 os.makedirs(new_folder_path)
                 for file in os.listdir(old_folder_path):
-                    if not old_file_name == os.path.join(old_folder_path, file):  # don't move descriptor yet
+                    if not file.endswith(".yml"):  # don't move descriptor yet
                         if refs and edit_mode == "create_new":
                             if os.path.isdir(os.path.join(old_folder_path, file)):
                                 shutil.copytree(os.path.join(old_folder_path, file),
@@ -196,8 +198,9 @@ def update_function(ws_id: int, prj_id: int, func_id: int, func_data: dict) -> d
                 else:
                     shutil.move(old_file_name, new_file_name)
             if old_folder_path != new_folder_path and not (refs and edit_mode == "create_new"):
-                # cleanup old folder
-                shutil.rmtree(old_folder_path)
+                # cleanup old folder if no other descriptor exists
+                if not os.listdir(old_folder_path):
+                    shutil.rmtree(old_folder_path)
         write_ns_vnf_to_disk("vnf", function)
         if refs and old_uid != new_uid and edit_mode == 'replace_refs':
             for service in refs:
