@@ -91,7 +91,7 @@ def shutdown_session(exception=None):
 
 @app.before_request
 def check_logged_in():
-    if request.endpoint in ['login', 'doc', 'specs', 'config_configuration']:
+    if request.endpoint in ['login', 'doc', 'specs', 'config_configuration', 'restplus_doc.static']:
         # no github login requiered
         return
     if request.method == 'OPTIONS':
