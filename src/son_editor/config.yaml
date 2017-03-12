@@ -25,9 +25,10 @@ schemas:
     - https://raw.githubusercontent.com/sonata-nfv/son-schema/master/service-descriptor/nsd-schema.yml
 testing: False
 
-config:
-  pwd: totes-secret
-  user: admin
+#uncomment to enable web configuration
+#config:
+#  pwd: totes-secret
+#  user: admin
 
 # Test configuration
 test:
