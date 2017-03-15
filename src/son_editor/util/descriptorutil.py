@@ -198,15 +198,17 @@ def sync_project_descriptor(project) -> None:
 
 def load_schemas():
     schemas[SCHEMA_ID_VNF] = []
-    for schema_url in get_config()["schemas"][SCHEMA_ID_VNF]:
-        response = request.urlopen(schema_url)
+    for vnf_schema in get_config()["schemas"][SCHEMA_ID_VNF]:
+        response = request.urlopen(vnf_schema['url'])
         data = response.read()
-        schemas[SCHEMA_ID_VNF].append(yaml.safe_load(data.decode('utf-8')))
+        vnf_schema['schema'] = yaml.safe_load(data.decode('utf-8'))
+        schemas[SCHEMA_ID_VNF].append(vnf_schema)
     schemas[SCHEMA_ID_NS] = []
-    for schema_url in get_config()["schemas"][SCHEMA_ID_NS]:
-        response = request.urlopen(schema_url)
+    for ns_schema in get_config()["schemas"][SCHEMA_ID_NS]:
+        response = request.urlopen(ns_schema['url'])
         data = response.read()
-        schemas[SCHEMA_ID_NS].append(yaml.safe_load(data.decode('utf-8')))
+        ns_schema['schema'] = yaml.safe_load(data.decode('utf-8'))
+        schemas[SCHEMA_ID_NS].append(ns_schema)
 
 
 def get_schemas():
@@ -219,7 +221,7 @@ def get_schema(schema_index, schema_id: str) -> dict:
     if schema_id not in schemas:
         load_schemas()
 
-    return schemas[schema_id][schema_index]
+    return schemas[schema_id][schema_index]["schema"]
 
 
 def write_private_descriptor(workspace_path: str, is_vnf: bool, descriptor: dict):

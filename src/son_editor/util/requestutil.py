@@ -21,6 +21,7 @@ def update_config(config):
     # write changed config
     with open(filename, "w") as stream:
         yaml.safe_dump(CONFIG, stream, default_flow_style=False)
+    return {"message": "update successful"}
 
 
 def get_config():

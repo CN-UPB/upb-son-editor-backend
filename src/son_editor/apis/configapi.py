@@ -11,7 +11,10 @@ def check_auth(username, password):
     """This function is called to check if a username /
     password combination is valid.
     """
-    return username == get_config()['config']['user'] and password == get_config()['config']['pwd']
+    if 'config' in get_config():
+        if 'user' in get_config()['config'] and 'pwd' in get_config()['config']:
+            return username == get_config()['config']['user'] and password == get_config()['config']['pwd']
+    return False
 
 
 def authenticate():
@@ -43,4 +46,4 @@ class Configuration(Resource):
 
     @namespace.expect(config_model)
     def post(self):
-        update_config(get_json(request))
+        return prepare_response(update_config(get_json(request)))

@@ -36,24 +36,17 @@ def get_user(login: str):
         user = User(name=user_name)
         session.add(user)
     if user.email is None:
+
+        if 'users' in get_config()['authentication']:
+            # check if user is in list of authorized users
+            if user_name not in get_config()['authentication']['users']:
+                raise UnauthorizedException(
+                    user_name + " was not found in the list of valid users,"
+                                "Please ask the admin of this server to add "
+                                "you to the list of valid users")
+
         headers = {"Accept": "application/json",
                    "Authorization": "token " + flask.session['access_token']}
-        if 'github-orgs' in get_config():
-            # request user orgs
-            result = requests.get(flask.session['user_data']['organizations_url'], headers=headers)
-            orgs = json.loads(result.text)
-            valid_org_found = False
-            for org in orgs:
-                if org['login'] in get_config()['github-orgs']:
-                    valid_org_found = True
-                    break
-            if not valid_org_found:
-                raise UnauthorizedException(
-                    "No valid github org found for this user: "
-                    "Please ask the admin of this server to add "
-                    "you to his organization or add your "
-                    "orgaization to the list of valid organizations")
-
         result = requests.get('https://api.github.com/user/emails', headers=headers)
         user_emails = json.loads(result.text)
 
