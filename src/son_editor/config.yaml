@@ -2,12 +2,14 @@
 authentication:
     ClientID: 54e6b84b3eb8f6a460bc
     ClientSecret: 277c00823cf9f3795e01ed6cd79ae1269aaf9844
+    users:
+      - user1
+      - user2
 
-# Optional session key
-session:
-    secretKey: randomSecretKeyHere
+#uncomment and configure to persist sessions across restarts
+#session:
+#    secretKey: randomSecretKeyHere
 
-# URL setup to frontend
 frontend-redirect: "/src/loginRedirect.html"
 frontend-host: "http://localhost:5000"
 
@@ -27,12 +29,18 @@ database:
 # URL to sonata schemas
 schemas:
   vnf:
-    - https://raw.githubusercontent.com/sonata-nfv/son-schema/master/function-descriptor/vnfd-schema.yml
+    - url: https://raw.githubusercontent.com/CN-UPB/son-schema/master/function-descriptor/vnfd-schema.yml
+      name: CN-UPB VNFD
+    - url: https://raw.githubusercontent.com/sonata-nfv/son-schema/master/function-descriptor/vnfd-schema.yml
+      name: SONATA NFV VNFD
   ns:
-    - https://raw.githubusercontent.com/sonata-nfv/son-schema/master/service-descriptor/nsd-schema.yml
+    - url: https://raw.githubusercontent.com/CN-UPB/son-schema/master/service-descriptor/nsd-schema.yml
+      name: CN-UPB NSD
+    - url: https://raw.githubusercontent.com/sonata-nfv/son-schema/master/service-descriptor/nsd-schema.yml
+      name: SONATA NFV NSD
 testing: False
 
-#uncomment to enable web configuration
+#uncomment and configure to enable web configuration
 #config:
 #  pwd: totes-secret
 #  user: admin
@@ -49,7 +57,3 @@ test:
   github:
     user: "user"
     access-token: token
-
-
-#github-orgs:
-#  - CN-UPB

@@ -5,6 +5,7 @@ Created on 18.07.2016
 '''
 import logging
 import urllib
+import os
 from os import path
 from sys import platform
 
@@ -24,7 +25,10 @@ app = Flask(__name__)
 app.config["ERROR_404_HELP"] = False
 app.config["RESTPLUS_MASK_SWAGGER"] = False
 # load secret key from config
-app.secret_key = get_config()['session']['secretKey']
+if 'session' in get_config() and 'secretKey' in get_config()['session']:
+    app.secret_key = get_config()['session']['secretKey']
+else:
+    app.secret_key = os.urandom(24)
 api = Api(app, description="Son Editor Backend API")
 logger = logging.getLogger(__name__)
 
@@ -91,11 +95,11 @@ def shutdown_session(exception=None):
 
 @app.before_request
 def check_logged_in():
-    if request.endpoint in ['login', 'doc', 'specs', 'config_configuration', 'restplus_doc.static']:
-        # no github login requiered
-        return
     if request.method == 'OPTIONS':
         return prepare_response()
+    elif request.endpoint in ['login', 'doc', 'specs', 'config_configuration', 'restplus_doc.static']:
+        # no github login requiered
+        return
     elif get_config()['testing']:
         # Check if the user is allowed to access the requested workspace resource (even for tests)
         check_access(request)

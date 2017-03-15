@@ -46,4 +46,4 @@ class Configuration(Resource):
 
     @namespace.expect(config_model)
     def post(self):
-        update_config(get_json(request))
+        return prepare_response(update_config(get_json(request)))
