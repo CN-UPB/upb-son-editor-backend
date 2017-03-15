@@ -2,7 +2,7 @@ FROM pgsandman2016/upb-son-editor-backend-base:v1
 
 #install son-editor-backend
 RUN mkdir -p /root/son-editor/workspaces
-COPY ./no-ssl-nginx.conf /etc/nginx/conf.d/nginx.conf
+COPY ./nginx.conf /etc/nginx/conf.d/nginx.conf
 COPY . /app
 
 # Set the default directory where CMD will execute
