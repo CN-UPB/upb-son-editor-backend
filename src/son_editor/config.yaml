@@ -1,23 +1,30 @@
+# GitHub OAuth configuration
 authentication:
     ClientID: 54e6b84b3eb8f6a460bc
     ClientSecret: 277c00823cf9f3795e01ed6cd79ae1269aaf9844
 
-
+# Optional session key
 session:
     secretKey: randomSecretKeyHere
 
+# URL setup to frontend
 frontend-redirect: "/src/loginRedirect.html"
 frontend-host: "http://localhost:5000"
 
+# Workspace location, where user related data (e.g. projects) get saved.
 workspaces-location: "~/son-editor/workspaces/"
 
+# Hosts that are able to access the server
 allowed-hosts:
   - "localhost"
   - "fg-cn-sandman1.cs.upb.de"
   - "cn-upb.github.io"
+
+# Database file name
 database:
     location: "production.db"
 
+# URL to sonata schemas
 schemas:
   vnf:
     - https://raw.githubusercontent.com/sonata-nfv/son-schema/master/function-descriptor/vnfd-schema.yml
