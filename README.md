@@ -41,7 +41,7 @@ For instructions on how to setup the web frontend of the editor please visit htt
 ## Development configuration
 ### Python environment
 We recommend using [venv](https://docs.python.org/dev/tutorial/venv.html). If you have setup your python 3 environment, open a shell in your virtual environment
-and install [son-cli](https://github.com/sonata-nfv/son-cli).
+and install [son-cli:v2](https://github.com/sonata-nfv/son-cli/tree/v2.0).
 
 ### Test configuration
  
