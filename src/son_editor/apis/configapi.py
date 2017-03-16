@@ -19,10 +19,13 @@ def check_auth(username, password):
 
 def authenticate():
     """Sends a 401 response that enables basic auth"""
-    return Response(
-        'Could not verify your access level for that URL.\n'
-        'You have to login with proper credentials', 401,
-        {'WWW-Authenticate': 'Basic realm="Login Required"'})
+    if 'config' in get_config():
+        if 'user' in get_config()['config'] and 'pwd' in get_config()['config']:
+            return Response(
+                'Could not verify your access level for that URL.\n'
+                'You have to login with proper credentials', 401,
+                {'WWW-Authenticate': 'Basic realm="Login Required"'})
+    return Response('Web configuration was deactivated', 404)
 
 
 def requires_auth(f):
