@@ -442,7 +442,8 @@ def clone(ws_id: int, url: str, name: str = None):
         if github_project_name is None:
             github_project_name = _repo_name_from_url(url_decode)
         dbsession = db_session()
-        pj = dbsession.query(Project).filter(Workspace.id == workspace.id).filter(
+        pj = dbsession.query(Project).join(Workspace)\
+            .filter(Workspace.id == workspace.id).filter(
             Project.name == github_project_name).first()
         dbsession.commit()
         # Error when the project name in given workspace already exists

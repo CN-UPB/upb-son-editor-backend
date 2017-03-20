@@ -105,8 +105,8 @@ def update_workspace_descriptor(workspace) -> None:
         ws_descriptor['default_service_platform'] = \
             ws_descriptor['service_platforms'][ws_descriptor['service_platforms'].keys()[0]]['id']
     ws_descriptor['name'] = workspace.name
-    ws_descriptor['ns_schema_index'] = workspace.ns_schema_index
-    ws_descriptor['vnf_schema_index'] = workspace.vnf_schema_index
+    ws_descriptor['schema_index'] = workspace.schema_index
+    ws_descriptor['schemas_remote_master'] = get_config()["schemas"][workspace.schema_index]['url']
 
     with open(os.path.join(workspace.path, "workspace.yml"), "w") as stream:
         yaml.safe_dump(ws_descriptor, stream)
@@ -136,10 +136,8 @@ def load_workspace_descriptor(workspace) -> None:
                 workspace.platforms.append(Platform(name=platform_id,
                                                     url=platform['url'],
                                                     publish=ws_descriptor['default_service_platform'] == platform_id))
-        if 'ns_schema_index' in ws_descriptor:
-            workspace.ns_schema_index = ws_descriptor['ns_schema_index']
-        if 'vnf_schema_index' in ws_descriptor:
-            workspace.vnf_schema_index = ws_descriptor['vnf_schema_index']
+        if 'schema_index' in ws_descriptor:
+            workspace.schema_index = ws_descriptor['schema_index']
 
 
 def load_project_descriptor(project) -> dict:
@@ -198,14 +196,17 @@ def sync_project_descriptor(project) -> None:
 
 def load_schemas():
     schemas[SCHEMA_ID_VNF] = []
-    for vnf_schema in get_config()["schemas"][SCHEMA_ID_VNF]:
-        response = request.urlopen(vnf_schema['url'])
+    schemas[SCHEMA_ID_NS] = []
+    for schema in get_config()["schemas"]:
+        # load vnf schema
+        vnf_schema = dict(schema)
+        response = request.urlopen(vnf_schema['url'] + "function-descriptor/vnfd-schema.yml")
         data = response.read()
         vnf_schema['schema'] = yaml.safe_load(data.decode('utf-8'))
         schemas[SCHEMA_ID_VNF].append(vnf_schema)
-    schemas[SCHEMA_ID_NS] = []
-    for ns_schema in get_config()["schemas"][SCHEMA_ID_NS]:
-        response = request.urlopen(ns_schema['url'])
+        # load ns schema
+        ns_schema = dict(schema)
+        response = request.urlopen(ns_schema['url'] + "service-descriptor/nsd-schema.yml")
         data = response.read()
         ns_schema['schema'] = yaml.safe_load(data.decode('utf-8'))
         schemas[SCHEMA_ID_NS].append(ns_schema)
@@ -218,10 +219,7 @@ def get_schemas():
 
 
 def get_schema(schema_index, schema_id: str) -> dict:
-    if schema_id not in schemas:
-        load_schemas()
-
-    return schemas[schema_id][schema_index]["schema"]
+    return get_schemas()[schema_id][schema_index]["schema"]
 
 
 def write_private_descriptor(workspace_path: str, is_vnf: bool, descriptor: dict):
