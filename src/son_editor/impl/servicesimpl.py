@@ -68,7 +68,7 @@ def create_service(ws_id: int, project_id: int, service_data: dict) -> dict:
 
         # validate service descriptor
         workspace = session.query(Workspace).filter(Workspace.id == ws_id).first()
-        validate_service_descriptor(workspace.ns_schema_index, service_data["descriptor"])
+        validate_service_descriptor(workspace.schema_index, service_data["descriptor"])
 
         # Create db object
         service = Service(name=service_name,
@@ -119,7 +119,7 @@ def update_service(ws_id, project_id, service_id, service_data):
         if 'descriptor' in service_data:
             # validate service descriptor
             workspace = session.query(Workspace).filter(Workspace.id == ws_id).first()
-            validate_service_descriptor(workspace.ns_schema_index, service_data["descriptor"])
+            validate_service_descriptor(workspace.schema_index, service_data["descriptor"])
             try:
                 newName = shlex.quote(service_data["descriptor"]["name"])
                 newVendor = shlex.quote(service_data["descriptor"]["vendor"])

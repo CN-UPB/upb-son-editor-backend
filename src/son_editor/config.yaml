@@ -28,16 +28,11 @@ database:
 
 # URL to sonata schemas
 schemas:
-  vnf:
-    - url: https://raw.githubusercontent.com/CN-UPB/son-schema/master/function-descriptor/vnfd-schema.yml
-      name: CN-UPB VNFD
-    - url: https://raw.githubusercontent.com/sonata-nfv/son-schema/master/function-descriptor/vnfd-schema.yml
-      name: SONATA NFV VNFD
-  ns:
-    - url: https://raw.githubusercontent.com/CN-UPB/son-schema/master/service-descriptor/nsd-schema.yml
-      name: CN-UPB NSD
-    - url: https://raw.githubusercontent.com/sonata-nfv/son-schema/master/service-descriptor/nsd-schema.yml
-      name: SONATA NFV NSD
+  - name: CN-UPB
+    url: https://raw.githubusercontent.com/CN-UPB/son-schema/master/
+  - name: SONATA NFV
+    url: https://raw.githubusercontent.com/sonata-nfv/son-schema/master/
+
 testing: False
 
 #uncomment and configure to enable web configuration

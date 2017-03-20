@@ -70,7 +70,7 @@ def create_function(ws_id: int, project_id: int, function_data: dict) -> dict:
     session = db_session()
 
     ws = session.query(Workspace).filter(Workspace.id == ws_id).first()  # type: Workspace
-    validate_vnf(ws.vnf_schema_index, function_data['descriptor'])
+    validate_vnf(ws.schema_index, function_data['descriptor'])
 
     # test if function Name exists in database
     existing_functions = list(session.query(Function)
@@ -119,7 +119,7 @@ def update_function(ws_id: int, prj_id: int, func_id: int, func_data: dict) -> d
     session = db_session()
 
     ws = session.query(Workspace).filter(Workspace.id == ws_id).first()
-    validate_vnf(ws.vnf_schema_index, func_data['descriptor'])
+    validate_vnf(ws.schema_index, func_data['descriptor'])
     edit_mode = func_data['edit_mode']
 
     # test if function exists in database
