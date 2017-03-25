@@ -51,7 +51,7 @@ setup(
     namespace_packages=['son_editor', ],
     # data_files=[('', ['src/config.yaml'])],
     include_package_data=True,
-    install_requires=['flask-restplus==0.9.2', 'flask', 'sqlalchemy', 'requests', 'pyaml'],
+    install_requires=['flask-restplus==0.9.2', 'flask==0.12', 'sqlalchemy==1.1.6', 'requests==2.13.0', 'pyaml==16.12.2'],
     zip_safe=False,
     entry_points={
         'console_scripts': [
