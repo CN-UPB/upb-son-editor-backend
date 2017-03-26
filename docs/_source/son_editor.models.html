@@ -459,7 +459,7 @@
 
 <dl class="class">
 <dt id="son_editor.models.repository.Platform">
-<em class="property">class </em><code class="descclassname">son_editor.models.repository.</code><code class="descname">Platform</code><span class="sig-paren">(</span><em>name=None</em>, <em>url=None</em>, <em>publish=None</em>, <em>workspace=None</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.models.repository.Platform" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">son_editor.models.repository.</code><code class="descname">Platform</code><span class="sig-paren">(</span><em>name=None</em>, <em>url=None</em>, <em>publish=None</em>, <em>workspace=None</em>, <em>token_path='empty'</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.models.repository.Platform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#son_editor.models.repository.Repository" title="son_editor.models.repository.Repository"><code class="xref py py-class docutils literal"><span class="pre">son_editor.models.repository.Repository</span></code></a></p>
 <dl class="attribute">
 <dt id="son_editor.models.repository.Platform.id">
@@ -474,6 +474,11 @@
 <dl class="attribute">
 <dt id="son_editor.models.repository.Platform.publish">
 <code class="descname">publish</code><a class="headerlink" href="#son_editor.models.repository.Platform.publish" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.repository.Platform.token_path">
+<code class="descname">token_path</code><a class="headerlink" href="#son_editor.models.repository.Platform.token_path" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -563,7 +568,7 @@
 <span id="son-editor-models-workspace-module"></span><h2>son_editor.models.workspace module<a class="headerlink" href="#module-son_editor.models.workspace" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="son_editor.models.workspace.Workspace">
-<em class="property">class </em><code class="descclassname">son_editor.models.workspace.</code><code class="descname">Workspace</code><span class="sig-paren">(</span><em>name=None</em>, <em>path=None</em>, <em>owner=None</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.models.workspace.Workspace" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">son_editor.models.workspace.</code><code class="descname">Workspace</code><span class="sig-paren">(</span><em>name=None</em>, <em>path=None</em>, <em>owner=None</em>, <em>schema_index=0</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.models.workspace.Workspace" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">sqlalchemy.ext.declarative.api.Base</span></code></p>
 <dl class="method">
 <dt id="son_editor.models.workspace.Workspace.as_dict">
@@ -618,6 +623,11 @@
 <dl class="attribute">
 <dt id="son_editor.models.workspace.Workspace.projects">
 <code class="descname">projects</code><a class="headerlink" href="#son_editor.models.workspace.Workspace.projects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.models.workspace.Workspace.schema_index">
+<code class="descname">schema_index</code><a class="headerlink" href="#son_editor.models.workspace.Workspace.schema_index" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>

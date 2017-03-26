@@ -80,9 +80,54 @@
 </dd></dl>
 
 <dl class="data">
+<dt id="son_editor.util.constants.GIT">
+<code class="descclassname">son_editor.util.constants.</code><code class="descname">GIT</code><em class="property"> = 'git'</em><a class="headerlink" href="#son_editor.util.constants.GIT" title="Permalink to this definition">¶</a></dt>
+<dd><p>The project path relative to the workspace</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="son_editor.util.constants.Github">
+<em class="property">class </em><code class="descclassname">son_editor.util.constants.</code><code class="descname">Github</code><a class="headerlink" href="#son_editor.util.constants.Github" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Holds GitHub API relevant strings.</p>
+<dl class="attribute">
+<dt id="son_editor.util.constants.Github.API_CREATE_REPO_REL">
+<code class="descname">API_CREATE_REPO_REL</code><em class="property"> = '/user/repos'</em><a class="headerlink" href="#son_editor.util.constants.Github.API_CREATE_REPO_REL" title="Permalink to this definition">¶</a></dt>
+<dd><ol class="arabic simple">
+<li>Argument is owner of the repos to delete</li>
+<li>Argument is the name of the remote repository</li>
+</ol>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.util.constants.Github.API_DELETE_REPO">
+<code class="descname">API_DELETE_REPO</code><em class="property"> = '/repos/{}/{}'</em><a class="headerlink" href="#son_editor.util.constants.Github.API_DELETE_REPO" title="Permalink to this definition">¶</a></dt>
+<dd><ol class="arabic simple">
+<li>Argument is Username</li>
+</ol>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.util.constants.Github.API_LIST_REPOS">
+<code class="descname">API_LIST_REPOS</code><em class="property"> = '/users/{}/repos'</em><a class="headerlink" href="#son_editor.util.constants.Github.API_LIST_REPOS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.util.constants.Github.API_URL">
+<code class="descname">API_URL</code><em class="property"> = 'https://api.github.com'</em><a class="headerlink" href="#son_editor.util.constants.Github.API_URL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.util.constants.Github.DOMAINS">
+<code class="descname">DOMAINS</code><em class="property"> = ['github.com', 'www.github.com']</em><a class="headerlink" href="#son_editor.util.constants.Github.DOMAINS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="data">
 <dt id="son_editor.util.constants.NSFS">
 <code class="descclassname">son_editor.util.constants.</code><code class="descname">NSFS</code><em class="property"> = 'nsfs'</em><a class="headerlink" href="#son_editor.util.constants.NSFS" title="Permalink to this definition">¶</a></dt>
-<dd><p>The project path relative to the workspace</p>
+<dd><p>The git api url constant</p>
 </dd></dl>
 
 <dl class="data">
@@ -119,7 +164,9 @@
 <dt id="son_editor.util.constants.get_parent">
 <code class="descclassname">son_editor.util.constants.</code><code class="descname">get_parent</code><span class="sig-paren">(</span><em>request</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.util.constants.get_parent" title="Permalink to this definition">¶</a></dt>
 <dd><p>Helper method to extract the parent category
-for the services and functions api calls</p>
+for the services and functions api calls
+:param request:
+:return:</p>
 </dd></dl>
 
 </div>
@@ -146,34 +193,71 @@ for the services and functions api calls</p>
 <dl class="function">
 <dt id="son_editor.util.descriptorutil.get_file_name">
 <code class="descclassname">son_editor.util.descriptorutil.</code><code class="descname">get_file_name</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#son_editor.util.descriptorutil.get_file_name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the standard file name for a descriptor
-:param model: The database  model of the descriptor
-:return: The standard descriptor file name, computed from the models vendor name and version</p>
+<dd><p>Get the standard file name for a descriptor</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>model</strong> &#8211; The database  model of the descriptor</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The standard descriptor file name, computed from the models vendor name and version</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="son_editor.util.descriptorutil.get_file_path">
 <code class="descclassname">son_editor.util.descriptorutil.</code><code class="descname">get_file_path</code><span class="sig-paren">(</span><em>folder: str</em>, <em>model</em><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#son_editor.util.descriptorutil.get_file_path" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the filepath to the descriptor computed
-from the models vendor name and version
-:param folder: the folder to write to, either &#8220;vnf&#8221; or &#8220;nsd&#8221;
-to specify if a vnf or network service needs to be saved
-:param model: The database  model of the descriptor
-:return:</p>
+from the models vendor name and version</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>folder</strong> &#8211; the folder to write to, either &#8220;vnf&#8221; or &#8220;nsd&#8221;
+to specify if a vnf or network service needs to be saved</li>
+<li><strong>model</strong> &#8211; The database  model of the descriptor</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="son_editor.util.descriptorutil.get_schema">
-<code class="descclassname">son_editor.util.descriptorutil.</code><code class="descname">get_schema</code><span class="sig-paren">(</span><em>ws_path: str</em>, <em>schema_id: str</em><span class="sig-paren">)</span> &rarr; dict<a class="headerlink" href="#son_editor.util.descriptorutil.get_schema" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">son_editor.util.descriptorutil.</code><code class="descname">get_schema</code><span class="sig-paren">(</span><em>schema_index</em>, <em>schema_id: str</em><span class="sig-paren">)</span> &rarr; dict<a class="headerlink" href="#son_editor.util.descriptorutil.get_schema" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="son_editor.util.descriptorutil.get_schemas">
+<code class="descclassname">son_editor.util.descriptorutil.</code><code class="descname">get_schemas</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.util.descriptorutil.get_schemas" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="son_editor.util.descriptorutil.load_ns_vnf_from_disk">
 <code class="descclassname">son_editor.util.descriptorutil.</code><code class="descname">load_ns_vnf_from_disk</code><span class="sig-paren">(</span><em>file: str</em>, <em>model</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.util.descriptorutil.load_ns_vnf_from_disk" title="Permalink to this definition">¶</a></dt>
-<dd><p>Loads a vnf or network service descriptor from disk and initializes the given model
-:param file: the file path of the descriptor
-:param model: The database  model of the descriptor
-:return: the given updated model</p>
+<dd><p>Loads a vnf or network service descriptor from disk and initializes the given model</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>file</strong> &#8211; the file path of the descriptor</li>
+<li><strong>model</strong> &#8211; The database  model of the descriptor</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the given updated model</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
@@ -183,40 +267,37 @@ to specify if a vnf or network service needs to be saved
 </dd></dl>
 
 <dl class="function">
+<dt id="son_editor.util.descriptorutil.load_schemas">
+<code class="descclassname">son_editor.util.descriptorutil.</code><code class="descname">load_schemas</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.util.descriptorutil.load_schemas" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
 <dt id="son_editor.util.descriptorutil.load_workspace_descriptor">
 <code class="descclassname">son_editor.util.descriptorutil.</code><code class="descname">load_workspace_descriptor</code><span class="sig-paren">(</span><em>workspace</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#son_editor.util.descriptorutil.load_workspace_descriptor" title="Permalink to this definition">¶</a></dt>
-<dd><p>Loads the workspace descriptor from disk and updates the database model
-:param workspace: The workspace database model
-:return:</p>
+<dd><p>Loads the workspace descriptor from disk and updates the database model</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>workspace</strong> &#8211; The workspace database model</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="son_editor.util.descriptorutil.sync_project_descriptor">
 <code class="descclassname">son_editor.util.descriptorutil.</code><code class="descname">sync_project_descriptor</code><span class="sig-paren">(</span><em>project</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#son_editor.util.descriptorutil.sync_project_descriptor" title="Permalink to this definition">¶</a></dt>
-<dd><p>Updates the project model with data from the project descriptor and vice versa
-:param project: The projects database model
-:return:</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="son_editor.util.descriptorutil.synchronize_workspace_descriptor">
-<code class="descclassname">son_editor.util.descriptorutil.</code><code class="descname">synchronize_workspace_descriptor</code><span class="sig-paren">(</span><em>workspace</em>, <em>session</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#son_editor.util.descriptorutil.synchronize_workspace_descriptor" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="docutils">
-<dt>Updates both the workspace descriptor on disk and in</dt>
-<dd>the database to contain the same essential data</dd>
-</dl>
+<dd><p>Updates the project model with data from the project descriptor and vice versa</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>workspace</strong> &#8211; the database workspace model</li>
-<li><strong>session</strong> &#8211; the current database session</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>project</strong> &#8211; The projects database model</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
-</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
 </tr>
 </tbody>
 </table>
@@ -225,19 +306,39 @@ to specify if a vnf or network service needs to be saved
 <dl class="function">
 <dt id="son_editor.util.descriptorutil.update_workspace_descriptor">
 <code class="descclassname">son_editor.util.descriptorutil.</code><code class="descname">update_workspace_descriptor</code><span class="sig-paren">(</span><em>workspace</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#son_editor.util.descriptorutil.update_workspace_descriptor" title="Permalink to this definition">¶</a></dt>
-<dd><p>Updates the workspace descriptor with data from the workspace model
-:param workspace: The workspace model
-:return:</p>
+<dd><p>Updates the workspace descriptor with data from the workspace model</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>workspace</strong> &#8211; The workspace model</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="son_editor.util.descriptorutil.write_ns_vnf_to_disk">
 <code class="descclassname">son_editor.util.descriptorutil.</code><code class="descname">write_ns_vnf_to_disk</code><span class="sig-paren">(</span><em>folder: str</em>, <em>model</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#son_editor.util.descriptorutil.write_ns_vnf_to_disk" title="Permalink to this definition">¶</a></dt>
-<dd><p>Saves the given model to disk as a yml file
-:param folder: the folder to write to, either &#8220;vnf&#8221; or &#8220;nsd&#8221;
-to specify if a vnf or network service needs to be saved
-:param model: The database  model of the descriptor
-:return:</p>
+<dd><p>Saves the given model to disk as a yml file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>folder</strong> &#8211; the folder to write to, either &#8220;vnf&#8221; or &#8220;nsd&#8221;
+to specify if a vnf or network service needs to be saved</li>
+<li><strong>model</strong> &#8211; The database  model of the descriptor</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
@@ -255,29 +356,40 @@ to specify if a vnf or network service needs to be saved
 <div class="section" id="module-son_editor.util.publishutil">
 <span id="son-editor-util-publishutil-module"></span><h2>son_editor.util.publishutil module<a class="headerlink" href="#module-son_editor.util.publishutil" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
-<dt id="son_editor.util.publishutil.deploy_on_platform">
-<code class="descclassname">son_editor.util.publishutil.</code><code class="descname">deploy_on_platform</code><span class="sig-paren">(</span><em>service_uuid: dict</em>, <em>platform: son_editor.models.repository.Platform</em><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#son_editor.util.publishutil.deploy_on_platform" title="Permalink to this definition">¶</a></dt>
-<dd><p>Pushes the package located at the package_path to the specified Platform
-:param service_uuid: a dictionary with the service uuid on the platform
-:param platform: The platform to upload to
-:return:</p>
-</dd></dl>
-
-<dl class="function">
 <dt id="son_editor.util.publishutil.pack_project">
 <code class="descclassname">son_editor.util.publishutil.</code><code class="descname">pack_project</code><span class="sig-paren">(</span><em>project: son_editor.models.project.Project</em><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#son_editor.util.publishutil.pack_project" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calls the son-package cli tool to pack the project and prepare it for deployment
-:param project: The project to pack
-:return:</p>
+<dd><p>Calls the son-package cli tool to pack the project and prepare it for deployment</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>project</strong> &#8211; The project to pack</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="son_editor.util.publishutil.push_to_platform">
-<code class="descclassname">son_editor.util.publishutil.</code><code class="descname">push_to_platform</code><span class="sig-paren">(</span><em>package_path: str</em>, <em>platform: son_editor.models.repository.Platform</em><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#son_editor.util.publishutil.push_to_platform" title="Permalink to this definition">¶</a></dt>
-<dd><p>Pushes the package located at the package_path to the specified Platform
-:param package_path: the location of package to be pushed on disk
-:param platform: The platform to upload to
-:return:</p>
+<code class="descclassname">son_editor.util.publishutil.</code><code class="descname">push_to_platform</code><span class="sig-paren">(</span><em>package_path: str</em>, <em>ws: son_editor.models.workspace.Workspace</em><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#son_editor.util.publishutil.push_to_platform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pushes the package located at the package_path to the specified Platform</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>package_path</strong> &#8211; the location of package to be pushed on disk</li>
+<li><strong>platform</strong> &#8211; The platform to upload to</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
@@ -286,42 +398,96 @@ to specify if a vnf or network service needs to be saved
 <p>Created on 28.07.2016</p>
 <p>&#64;author: Jonas</p>
 <dl class="function">
+<dt id="son_editor.util.requestutil.get_config">
+<code class="descclassname">son_editor.util.requestutil.</code><code class="descname">get_config</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.util.requestutil.get_config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
 <dt id="son_editor.util.requestutil.get_json">
 <code class="descclassname">son_editor.util.requestutil.</code><code class="descname">get_json</code><span class="sig-paren">(</span><em>request: flask.wrappers.Request</em><span class="sig-paren">)</span> &rarr; dict<a class="headerlink" href="#son_editor.util.requestutil.get_json" title="Permalink to this definition">¶</a></dt>
-<dd><p>Helper function to get a json dict out of a request
-:param request: Request to get the json data from
-:return: json data as dict</p>
+<dd><p>Helper function to get a json dict out of a request</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>request</strong> &#8211; Request to get the json data from</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">json data as dict</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="son_editor.util.requestutil.prepare_error">
 <code class="descclassname">son_editor.util.requestutil.</code><code class="descname">prepare_error</code><span class="sig-paren">(</span><em>data=None</em>, <em>code=500</em><span class="sig-paren">)</span> &rarr; tuple<a class="headerlink" href="#son_editor.util.requestutil.prepare_error" title="Permalink to this definition">¶</a></dt>
 <dd><p>Prepares the error response and returns it as a tuple
-to accommodate for flask_restplus&#8217;s way to deal with errors
-:param data: The error message
-:param code: the http error code, 500 by default
-:return: A tuple of the data, the status code and the headers</p>
+to accommodate for flask_restplus&#8217;s way to deal with errors</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> &#8211; The error message</li>
+<li><strong>code</strong> &#8211; the http error code, 500 by default</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A tuple of the data, the status code and the headers</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="son_editor.util.requestutil.prepare_response">
 <code class="descclassname">son_editor.util.requestutil.</code><code class="descname">prepare_response</code><span class="sig-paren">(</span><em>data=None</em>, <em>code=200</em><span class="sig-paren">)</span> &rarr; flask.wrappers.Response<a class="headerlink" href="#son_editor.util.requestutil.prepare_response" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sets the necessary headers and status code on the response
-:param data: The data to be returned to the client
-:param code: the status code. 200 by default
-:return: The Response object with the headers set according to the input data</p>
+<dd><p>Sets the necessary headers and status code on the response</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> &#8211; The data to be returned to the client</li>
+<li><strong>code</strong> &#8211; the status code. 200 by default</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The Response object with the headers set according to the input data</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="son_editor.util.requestutil.rreplace">
 <code class="descclassname">son_editor.util.requestutil.</code><code class="descname">rreplace</code><span class="sig-paren">(</span><em>s</em>, <em>old</em>, <em>new</em>, <em>occurrence</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.util.requestutil.rreplace" title="Permalink to this definition">¶</a></dt>
-<dd><p>Replaces &#8216;occurences&#8217; occurences of string &#8216;old&#8217; in the given string &#8216;s&#8217; from right by &#8216;new&#8217;
-:param s: String that contains the replacing string
-:param old: String that gets replaced
-:param new: New string that replaces the old string
-:param occurrence: How many occurences get replaced
-:return: String that has replaced strings</p>
+<dd><p>Replaces &#8216;occurences&#8217; occurences of string &#8216;old&#8217; in the given string &#8216;s&#8217; from right by &#8216;new&#8217;</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>s</strong> &#8211; String that contains the replacing string</li>
+<li><strong>old</strong> &#8211; String that gets replaced</li>
+<li><strong>new</strong> &#8211; New string that replaces the old string</li>
+<li><strong>occurrence</strong> &#8211; How many occurences get replaced</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">String that has replaced strings</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
+
+<dl class="function">
+<dt id="son_editor.util.requestutil.update_config">
+<code class="descclassname">son_editor.util.requestutil.</code><code class="descname">update_config</code><span class="sig-paren">(</span><em>config</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.util.requestutil.update_config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </div>
 <div class="section" id="module-son_editor.util">

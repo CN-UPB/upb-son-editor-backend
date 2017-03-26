@@ -148,6 +148,22 @@
 </dd></dl>
 
 <dl class="class">
+<dt id="son_editor.apis.functionsapi.FunctionUpload">
+<em class="property">class </em><code class="descclassname">son_editor.apis.functionsapi.</code><code class="descname">FunctionUpload</code><span class="sig-paren">(</span><em>api=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.functionsapi.FunctionUpload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">flask_restplus.resource.Resource</span></code></p>
+<dl class="staticmethod">
+<dt id="son_editor.apis.functionsapi.FunctionUpload.delete">
+<em class="property">static </em><code class="descname">delete</code><span class="sig-paren">(</span><em>ws_id</em>, <em>parent_id</em>, <em>vnf_id</em>, <em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.functionsapi.FunctionUpload.delete" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.apis.functionsapi.FunctionUpload.methods">
+<code class="descname">methods</code><em class="property"> = ['DELETE']</em><a class="headerlink" href="#son_editor.apis.functionsapi.FunctionUpload.methods" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="son_editor.apis.functionsapi.Functions">
 <em class="property">class </em><code class="descclassname">son_editor.apis.functionsapi.</code><code class="descname">Functions</code><span class="sig-paren">(</span><em>api=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.functionsapi.Functions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">flask_restplus.resource.Resource</span></code></p>
@@ -181,11 +197,23 @@
 <dt id="son_editor.apis.functionsapi.PrivateService.get">
 <code class="descname">get</code><span class="sig-paren">(</span><em>ws_id</em>, <em>parent_id</em>, <em>vnf_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.functionsapi.PrivateService.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Publish function to private</p>
-<p>Publishes the function to the workspace wide catalogue
-:param ws_id:
-:param parent_id:
-:param vnf_id:
-:return:</p>
+<p>Publishes the function to the workspace wide catalogue</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ws_id</strong> &#8211; </li>
+<li><strong>parent_id</strong> &#8211; </li>
+<li><strong>vnf_id</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
@@ -233,6 +261,91 @@
 </dd></dl>
 
 <dl class="class">
+<dt id="son_editor.apis.gitapi.GitCreate">
+<em class="property">class </em><code class="descclassname">son_editor.apis.gitapi.</code><code class="descname">GitCreate</code><span class="sig-paren">(</span><em>api=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.gitapi.GitCreate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">flask_restplus.resource.Resource</span></code></p>
+<dl class="attribute">
+<dt id="son_editor.apis.gitapi.GitCreate.methods">
+<code class="descname">methods</code><em class="property"> = ['POST']</em><a class="headerlink" href="#son_editor.apis.gitapi.GitCreate.methods" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="son_editor.apis.gitapi.GitCreate.post">
+<code class="descname">post</code><span class="sig-paren">(</span><em>ws_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.gitapi.GitCreate.post" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a remote repository and pushes a project for it</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="son_editor.apis.gitapi.GitDelete">
+<em class="property">class </em><code class="descclassname">son_editor.apis.gitapi.</code><code class="descname">GitDelete</code><span class="sig-paren">(</span><em>api=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.gitapi.GitDelete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">flask_restplus.resource.Resource</span></code></p>
+<dl class="method">
+<dt id="son_editor.apis.gitapi.GitDelete.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><em>ws_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.gitapi.GitDelete.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes a remote repository</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.apis.gitapi.GitDelete.methods">
+<code class="descname">methods</code><em class="property"> = ['DELETE']</em><a class="headerlink" href="#son_editor.apis.gitapi.GitDelete.methods" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="son_editor.apis.gitapi.GitDiff">
+<em class="property">class </em><code class="descclassname">son_editor.apis.gitapi.</code><code class="descname">GitDiff</code><span class="sig-paren">(</span><em>api=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.gitapi.GitDiff" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">flask_restplus.resource.Resource</span></code></p>
+<dl class="attribute">
+<dt id="son_editor.apis.gitapi.GitDiff.methods">
+<code class="descname">methods</code><em class="property"> = ['POST']</em><a class="headerlink" href="#son_editor.apis.gitapi.GitDiff.methods" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="son_editor.apis.gitapi.GitDiff.post">
+<code class="descname">post</code><span class="sig-paren">(</span><em>ws_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.gitapi.GitDiff.post" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves the current diff of the project directory</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="son_editor.apis.gitapi.GitInit">
+<em class="property">class </em><code class="descclassname">son_editor.apis.gitapi.</code><code class="descname">GitInit</code><span class="sig-paren">(</span><em>api=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.gitapi.GitInit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">flask_restplus.resource.Resource</span></code></p>
+<dl class="attribute">
+<dt id="son_editor.apis.gitapi.GitInit.methods">
+<code class="descname">methods</code><em class="property"> = ['POST']</em><a class="headerlink" href="#son_editor.apis.gitapi.GitInit.methods" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="son_editor.apis.gitapi.GitInit.post">
+<code class="descname">post</code><span class="sig-paren">(</span><em>ws_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.gitapi.GitInit.post" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes a repository in the given project</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="son_editor.apis.gitapi.GitList">
+<em class="property">class </em><code class="descclassname">son_editor.apis.gitapi.</code><code class="descname">GitList</code><span class="sig-paren">(</span><em>api=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.gitapi.GitList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">flask_restplus.resource.Resource</span></code></p>
+<dl class="method">
+<dt id="son_editor.apis.gitapi.GitList.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>ws_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.gitapi.GitList.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lists remote repository information</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.apis.gitapi.GitList.methods">
+<code class="descname">methods</code><em class="property"> = ['GET']</em><a class="headerlink" href="#son_editor.apis.gitapi.GitList.methods" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="son_editor.apis.gitapi.GitPull">
 <em class="property">class </em><code class="descclassname">son_editor.apis.gitapi.</code><code class="descname">GitPull</code><span class="sig-paren">(</span><em>api=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.gitapi.GitPull" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">flask_restplus.resource.Resource</span></code></p>
@@ -245,6 +358,23 @@
 <dt id="son_editor.apis.gitapi.GitPull.post">
 <code class="descname">post</code><span class="sig-paren">(</span><em>ws_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.gitapi.GitPull.post" title="Permalink to this definition">¶</a></dt>
 <dd><p>Pulls updates from a project</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="son_editor.apis.gitapi.GitStatus">
+<em class="property">class </em><code class="descclassname">son_editor.apis.gitapi.</code><code class="descname">GitStatus</code><span class="sig-paren">(</span><em>api=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.gitapi.GitStatus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">flask_restplus.resource.Resource</span></code></p>
+<dl class="attribute">
+<dt id="son_editor.apis.gitapi.GitStatus.methods">
+<code class="descname">methods</code><em class="property"> = ['POST']</em><a class="headerlink" href="#son_editor.apis.gitapi.GitStatus.methods" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="son_editor.apis.gitapi.GitStatus.post">
+<code class="descname">post</code><span class="sig-paren">(</span><em>ws_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.gitapi.GitStatus.post" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves the current status of the project directory</p>
 </dd></dl>
 
 </dd></dl>
@@ -448,11 +578,23 @@ Updates a service platform by its id</p>
 <dt id="son_editor.apis.servicesapi.PrivateService.get">
 <code class="descname">get</code><span class="sig-paren">(</span><em>ws_id</em>, <em>parent_id</em>, <em>service_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.servicesapi.PrivateService.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Publish service to private</p>
-<p>Publishes the service to the workspace wide catalogue
-:param ws_id:
-:param parent_id:
-:param service_id:
-:return:</p>
+<p>Publishes the service to the workspace wide catalogue</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ws_id</strong> &#8211; </li>
+<li><strong>parent_id</strong> &#8211; </li>
+<li><strong>service_id</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
@@ -591,9 +733,17 @@ Created on 18.07.2016</p>
 <dt id="son_editor.apis.workspacesapi.PrivateFunctions.get">
 <code class="descname">get</code><span class="sig-paren">(</span><em>ws_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.workspacesapi.PrivateFunctions.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>List private Catalogue functions</p>
-<p>Lists all functions in the Private workspace wide catalogue
-:param ws_id:
-:return:</p>
+<p>Lists all functions in the Private workspace wide catalogue</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ws_id</strong> &#8211; </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
@@ -612,9 +762,17 @@ Created on 18.07.2016</p>
 <dt id="son_editor.apis.workspacesapi.PrivateServices.get">
 <code class="descname">get</code><span class="sig-paren">(</span><em>ws_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.workspacesapi.PrivateServices.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>List private Catalogue services</p>
-<p>Lists all services in the Private workspace wide catalogue
-:param ws_id:
-:return:</p>
+<p>Lists all services in the Private workspace wide catalogue</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ws_id</strong> &#8211; </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">

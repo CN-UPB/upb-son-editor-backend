@@ -53,17 +53,29 @@
 <dl class="function">
 <dt id="son_editor.impl.catalogue_servicesimpl.build_URL">
 <code class="descclassname">son_editor.impl.catalogue_servicesimpl.</code><code class="descname">build_URL</code><span class="sig-paren">(</span><em>is_vnf</em>, <em>name</em>, <em>vendor</em>, <em>version</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.catalogue_servicesimpl.build_URL" title="Permalink to this definition">¶</a></dt>
-<dd><p>builds the url from the given name vendor and version
-:param is_vnf:
-:param name:
-:param vendor:
-:param version:
-:return:</p>
+<dd><p>builds the url from the given name vendor and version</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>is_vnf</strong> &#8211; </li>
+<li><strong>name</strong> &#8211; </li>
+<li><strong>vendor</strong> &#8211; </li>
+<li><strong>version</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
-<dt id="son_editor.impl.catalogue_servicesimpl.createID">
-<code class="descclassname">son_editor.impl.catalogue_servicesimpl.</code><code class="descname">createID</code><span class="sig-paren">(</span><em>e: dict</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.catalogue_servicesimpl.createID" title="Permalink to this definition">¶</a></dt>
+<dt id="son_editor.impl.catalogue_servicesimpl.create_id">
+<code class="descclassname">son_editor.impl.catalogue_servicesimpl.</code><code class="descname">create_id</code><span class="sig-paren">(</span><em>e: dict</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.catalogue_servicesimpl.create_id" title="Permalink to this definition">¶</a></dt>
 <dd><p>Expects a dict type with name, vendor, version
 :param e: dict with name, vendor, version
 :return: the id of the descriptor</p>
@@ -72,56 +84,108 @@
 <dl class="function">
 <dt id="son_editor.impl.catalogue_servicesimpl.create_in_catalogue">
 <code class="descclassname">son_editor.impl.catalogue_servicesimpl.</code><code class="descname">create_in_catalogue</code><span class="sig-paren">(</span><em>catalogue_id</em>, <em>function_id</em>, <em>is_vnf</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.catalogue_servicesimpl.create_in_catalogue" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates a function on the catalogue
-:param catalogue_id:
-:param function_id:
-:param is_vnf:
-:return:</p>
+<dd><p>Creates a function on the catalogue</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>catalogue_id</strong> &#8211; </li>
+<li><strong>function_id</strong> &#8211; </li>
+<li><strong>is_vnf</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
-<dt id="son_editor.impl.catalogue_servicesimpl.decodeID">
-<code class="descclassname">son_editor.impl.catalogue_servicesimpl.</code><code class="descname">decodeID</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span> &rarr; tuple<a class="headerlink" href="#son_editor.impl.catalogue_servicesimpl.decodeID" title="Permalink to this definition">¶</a></dt>
+<dt id="son_editor.impl.catalogue_servicesimpl.decode_id">
+<code class="descclassname">son_editor.impl.catalogue_servicesimpl.</code><code class="descname">decode_id</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span> &rarr; tuple<a class="headerlink" href="#son_editor.impl.catalogue_servicesimpl.decode_id" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the parts of a given id
 :param id:
-:return: tuple of name, vendor , version</p>
+:return: tuple of vendor, name, version</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.catalogue_servicesimpl.delete_service_catalogue">
 <code class="descclassname">son_editor.impl.catalogue_servicesimpl.</code><code class="descname">delete_service_catalogue</code><span class="sig-paren">(</span><em>ws_id</em>, <em>catalogue_id</em>, <em>function_id</em>, <em>is_vnf</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.catalogue_servicesimpl.delete_service_catalogue" title="Permalink to this definition">¶</a></dt>
-<dd><p>Delete the service in the catalogue
-:param ws_id:
-:param catalogue_id:
-:param function_id:
-:param is_vnf:
-:return:</p>
+<dd><p>Delete the service in the catalogue</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ws_id</strong> &#8211; </li>
+<li><strong>catalogue_id</strong> &#8211; </li>
+<li><strong>function_id</strong> &#8211; </li>
+<li><strong>is_vnf</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.catalogue_servicesimpl.getType">
 <code class="descclassname">son_editor.impl.catalogue_servicesimpl.</code><code class="descname">getType</code><span class="sig-paren">(</span><em>is_vnf: bool</em><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#son_editor.impl.catalogue_servicesimpl.getType" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the vnf / ns prefix
-:param is_vnf:
-:return: the prefix for the type</p>
+<dd><p>Returns the vnf / ns prefix</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>is_vnf</strong> &#8211; </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the prefix for the type</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.catalogue_servicesimpl.get_all_in_catalogue">
 <code class="descclassname">son_editor.impl.catalogue_servicesimpl.</code><code class="descname">get_all_in_catalogue</code><span class="sig-paren">(</span><em>ws_id</em>, <em>catalogue_id</em>, <em>is_vnf</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.catalogue_servicesimpl.get_all_in_catalogue" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieves a list of catalogue functions
-:param ws_id:
-:param catalogue_id:
-:param is_vnf:
-:return:</p>
+<dd><p>Retrieves a list of catalogue functions</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ws_id</strong> &#8211; </li>
+<li><strong>catalogue_id</strong> &#8211; </li>
+<li><strong>is_vnf</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.catalogue_servicesimpl.get_catalogue">
 <code class="descclassname">son_editor.impl.catalogue_servicesimpl.</code><code class="descname">get_catalogue</code><span class="sig-paren">(</span><em>catalogue_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.catalogue_servicesimpl.get_catalogue" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieves a catalogue by given id
-:param catalogue_id: int
-:return:</p>
+<dd><p>Retrieves a catalogue by given id</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>catalogue_id</strong> &#8211; int</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
@@ -133,12 +197,24 @@
 <dl class="function">
 <dt id="son_editor.impl.catalogue_servicesimpl.get_in_catalogue">
 <code class="descclassname">son_editor.impl.catalogue_servicesimpl.</code><code class="descname">get_in_catalogue</code><span class="sig-paren">(</span><em>ws_id</em>, <em>catalogue_id</em>, <em>function_id</em>, <em>is_vnf</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.catalogue_servicesimpl.get_in_catalogue" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets a specific function
-:param ws_id:
-:param catalogue_id:
-:param function_id:
-:param is_vnf:
-:return:</p>
+<dd><p>Gets a specific function</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ws_id</strong> &#8211; </li>
+<li><strong>catalogue_id</strong> &#8211; </li>
+<li><strong>function_id</strong> &#8211; </li>
+<li><strong>is_vnf</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
@@ -150,13 +226,25 @@
 <dl class="function">
 <dt id="son_editor.impl.catalogue_servicesimpl.update_service_catalogue">
 <code class="descclassname">son_editor.impl.catalogue_servicesimpl.</code><code class="descname">update_service_catalogue</code><span class="sig-paren">(</span><em>ws_id</em>, <em>catalogue_id</em>, <em>function_id</em>, <em>function_data</em>, <em>is_vnf</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.catalogue_servicesimpl.update_service_catalogue" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update the service in the catalogue
-:param ws_id:
-:param catalogue_id:
-:param function_id:
-:param function_data:
-:param is_vnf:
-:return:</p>
+<dd><p>Update the service in the catalogue</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ws_id</strong> &#8211; </li>
+<li><strong>catalogue_id</strong> &#8211; </li>
+<li><strong>function_id</strong> &#8211; </li>
+<li><strong>function_data</strong> &#8211; </li>
+<li><strong>is_vnf</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
@@ -166,34 +254,70 @@
 <dt id="son_editor.impl.cataloguesimpl.create_catalogue">
 <code class="descclassname">son_editor.impl.cataloguesimpl.</code><code class="descname">create_catalogue</code><span class="sig-paren">(</span><em>workspace_id: int</em>, <em>catalogue_data</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.cataloguesimpl.create_catalogue" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a catalgoue in the given workspace. A catalogue is defined by its name and url. These are given as
-json data
-:param workspace_id: Workspace ID of the target workspace, where the catalogue should get created.
-:return: Catalogue descriptor</p>
+json data</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>workspace_id</strong> &#8211; Workspace ID of the target workspace, where the catalogue should get created.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Catalogue descriptor</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.cataloguesimpl.delete">
 <code class="descclassname">son_editor.impl.cataloguesimpl.</code><code class="descname">delete</code><span class="sig-paren">(</span><em>workspace_id</em>, <em>catalogue_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.cataloguesimpl.delete" title="Permalink to this definition">¶</a></dt>
-<dd><p>Deletes a catalogue by its id
-:param workspace_id:
-:param catalogue_id:
-:return:</p>
+<dd><p>Deletes a catalogue by its id</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>workspace_id</strong> &#8211; </li>
+<li><strong>catalogue_id</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.cataloguesimpl.get_catalogue">
 <code class="descclassname">son_editor.impl.cataloguesimpl.</code><code class="descname">get_catalogue</code><span class="sig-paren">(</span><em>catalogue_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.cataloguesimpl.get_catalogue" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieves a catalogue by its id
-:param catalogue_id:
-:return:</p>
+<dd><p>Retrieves a catalogue by its id</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>catalogue_id</strong> &#8211; </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.cataloguesimpl.get_catalogues">
 <code class="descclassname">son_editor.impl.cataloguesimpl.</code><code class="descname">get_catalogues</code><span class="sig-paren">(</span><em>workspace_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.cataloguesimpl.get_catalogues" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieves all catalogues of a specific workspace
-:param workspace_id:
-:return:</p>
+<dd><p>Retrieves all catalogues of a specific workspace</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>workspace_id</strong> &#8211; </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
@@ -212,114 +336,444 @@ applies the given name and url, that are in the json parameter.
 <dl class="function">
 <dt id="son_editor.impl.functionsimpl.create_function">
 <code class="descclassname">son_editor.impl.functionsimpl.</code><code class="descname">create_function</code><span class="sig-paren">(</span><em>ws_id: int</em>, <em>project_id: int</em>, <em>function_data: dict</em><span class="sig-paren">)</span> &rarr; dict<a class="headerlink" href="#son_editor.impl.functionsimpl.create_function" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates a new vnf in the project
-:param ws_id:
-:param project_id:
-:param function_data:
-:return: The created function as a dict</p>
+<dd><p>Creates a new vnf in the project</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ws_id</strong> &#8211; </li>
+<li><strong>project_id</strong> &#8211; </li>
+<li><strong>function_data</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The created function as a dict</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.functionsimpl.delete_function">
 <code class="descclassname">son_editor.impl.functionsimpl.</code><code class="descname">delete_function</code><span class="sig-paren">(</span><em>ws_id: int</em>, <em>project_id: int</em>, <em>function_id: int</em><span class="sig-paren">)</span> &rarr; dict<a class="headerlink" href="#son_editor.impl.functionsimpl.delete_function" title="Permalink to this definition">¶</a></dt>
-<dd><p>Deletes the function
-:param ws_id:
-:param project_id:
-:param function_id:
-:return: the deleted function</p>
+<dd><p>Deletes the function</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ws_id</strong> &#8211; </li>
+<li><strong>project_id</strong> &#8211; </li>
+<li><strong>function_id</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the deleted function</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
+
+<dl class="function">
+<dt id="son_editor.impl.functionsimpl.delete_image_file">
+<code class="descclassname">son_editor.impl.functionsimpl.</code><code class="descname">delete_image_file</code><span class="sig-paren">(</span><em>ws_id</em>, <em>project_id</em>, <em>vnf_id</em>, <em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.functionsimpl.delete_image_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.functionsimpl.get_function_project">
 <code class="descclassname">son_editor.impl.functionsimpl.</code><code class="descname">get_function_project</code><span class="sig-paren">(</span><em>ws_id: int</em>, <em>project_id: int</em>, <em>vnf_id: int</em><span class="sig-paren">)</span> &rarr; dict<a class="headerlink" href="#son_editor.impl.functionsimpl.get_function_project" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get a single function from the specified project
-:param ws_id:
-:param project_id:
-:param vnf_id:
-:return:</p>
+<dd><p>Get a single function from the specified project</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ws_id</strong> &#8211; </li>
+<li><strong>project_id</strong> &#8211; </li>
+<li><strong>vnf_id</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.functionsimpl.get_functions">
 <code class="descclassname">son_editor.impl.functionsimpl.</code><code class="descname">get_functions</code><span class="sig-paren">(</span><em>ws_id: int</em>, <em>project_id: int</em><span class="sig-paren">)</span> &rarr; list<a class="headerlink" href="#son_editor.impl.functionsimpl.get_functions" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get a list of all functions
-:param ws_id: The workspace ID
-:param project_id: The project id
-:return:</p>
+<dd><p>Get a list of all functions</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ws_id</strong> &#8211; The workspace ID</li>
+<li><strong>project_id</strong> &#8211; The project id</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
+
+<dl class="function">
+<dt id="son_editor.impl.functionsimpl.get_image_files">
+<code class="descclassname">son_editor.impl.functionsimpl.</code><code class="descname">get_image_files</code><span class="sig-paren">(</span><em>ws_id</em>, <em>project_id</em>, <em>function_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.functionsimpl.get_image_files" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="son_editor.impl.functionsimpl.get_references">
+<code class="descclassname">son_editor.impl.functionsimpl.</code><code class="descname">get_references</code><span class="sig-paren">(</span><em>function</em>, <em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.functionsimpl.get_references" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="son_editor.impl.functionsimpl.get_uid">
+<code class="descclassname">son_editor.impl.functionsimpl.</code><code class="descname">get_uid</code><span class="sig-paren">(</span><em>vendor</em>, <em>name</em>, <em>version</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.functionsimpl.get_uid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="son_editor.impl.functionsimpl.replace_function_refs">
+<code class="descclassname">son_editor.impl.functionsimpl.</code><code class="descname">replace_function_refs</code><span class="sig-paren">(</span><em>refs</em>, <em>vendor</em>, <em>name</em>, <em>version</em>, <em>new_vendor</em>, <em>new_name</em>, <em>new_version</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.functionsimpl.replace_function_refs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="son_editor.impl.functionsimpl.save_image_file">
+<code class="descclassname">son_editor.impl.functionsimpl.</code><code class="descname">save_image_file</code><span class="sig-paren">(</span><em>ws_id</em>, <em>project_id</em>, <em>function_id</em>, <em>file</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.functionsimpl.save_image_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.functionsimpl.update_function">
 <code class="descclassname">son_editor.impl.functionsimpl.</code><code class="descname">update_function</code><span class="sig-paren">(</span><em>ws_id: int</em>, <em>prj_id: int</em>, <em>func_id: int</em>, <em>func_data: dict</em><span class="sig-paren">)</span> &rarr; dict<a class="headerlink" href="#son_editor.impl.functionsimpl.update_function" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update the function descriptor
-:param ws_id:
-:param prj_id:
-:param func_id:
-:param func_data:
-:return: The updated function descriptor</p>
+<dd><p>Update the function descriptor</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ws_id</strong> &#8211; </li>
+<li><strong>prj_id</strong> &#8211; </li>
+<li><strong>func_id</strong> &#8211; </li>
+<li><strong>func_data</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The updated function descriptor</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.functionsimpl.validate_vnf">
-<code class="descclassname">son_editor.impl.functionsimpl.</code><code class="descname">validate_vnf</code><span class="sig-paren">(</span><em>workspace_path: str</em>, <em>descriptor: dict</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#son_editor.impl.functionsimpl.validate_vnf" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">son_editor.impl.functionsimpl.</code><code class="descname">validate_vnf</code><span class="sig-paren">(</span><em>schema_index: int</em>, <em>descriptor: dict</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#son_editor.impl.functionsimpl.validate_vnf" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
 <div class="section" id="module-son_editor.impl.gitimpl">
 <span id="son-editor-impl-gitimpl-module"></span><h2>son_editor.impl.gitimpl module<a class="headerlink" href="#module-son_editor.impl.gitimpl" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
+<dt id="son_editor.impl.gitimpl.build_github_delete">
+<code class="descclassname">son_editor.impl.gitimpl.</code><code class="descname">build_github_delete</code><span class="sig-paren">(</span><em>owner: str</em>, <em>repo_name: str</em><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#son_editor.impl.gitimpl.build_github_delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Builds relative github api url to delete a repository</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>owner</strong> &#8211; Owner of the github repository</li>
+<li><strong>repo_name</strong> &#8211; Repository name</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="son_editor.impl.gitimpl.check_son_validity">
+<code class="descclassname">son_editor.impl.gitimpl.</code><code class="descname">check_son_validity</code><span class="sig-paren">(</span><em>project_path: str</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.gitimpl.check_son_validity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the given project path is a valid son project, otherwise it raises an exception. Valid means, it has
+a consistent son file structure, so no semantics will be tested.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>project_path</strong> &#8211; </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="son_editor.impl.gitimpl.clone">
-<code class="descclassname">son_editor.impl.gitimpl.</code><code class="descname">clone</code><span class="sig-paren">(</span><em>user_data</em>, <em>ws_id: int</em>, <em>url: str</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.gitimpl.clone" title="Permalink to this definition">¶</a></dt>
-<dd><p>Clones a repository by url into given workspace
-:param user_data: Session data to get access token for GitHub
-:param ws_id: Destination workspace to clone
-:param url: URL of the source repository
-:return: True if successful, otherwise NameConflict is thrown</p>
+<code class="descclassname">son_editor.impl.gitimpl.</code><code class="descname">clone</code><span class="sig-paren">(</span><em>ws_id: int</em>, <em>url: str</em>, <em>name: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.gitimpl.clone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clones a repository by url into given workspace</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> &#8211; Optional name of the local repository name, otherwise the remote name is taken</li>
+<li><strong>user_data</strong> &#8211; Session data to get access token for GitHub</li>
+<li><strong>ws_id</strong> &#8211; Destination workspace to clone</li>
+<li><strong>url</strong> &#8211; URL of the source repository</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True if successful, otherwise NameConflict is thrown</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.gitimpl.commit_and_push">
 <code class="descclassname">son_editor.impl.gitimpl.</code><code class="descname">commit_and_push</code><span class="sig-paren">(</span><em>ws_id: int</em>, <em>project_id: int</em>, <em>commit_message: str</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.gitimpl.commit_and_push" title="Permalink to this definition">¶</a></dt>
-<dd><p>Commits and then pushes changes.
-:param ws_id:
-:param project_id:
-:param commit_message:
-:return:</p>
+<dd><p>Commits and then pushes changes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ws_id</strong> &#8211; </li>
+<li><strong>project_id</strong> &#8211; </li>
+<li><strong>commit_message</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="son_editor.impl.gitimpl.create_commit_and_push">
+<code class="descclassname">son_editor.impl.gitimpl.</code><code class="descname">create_commit_and_push</code><span class="sig-paren">(</span><em>ws_id: int</em>, <em>project_id: int</em>, <em>remote_repo_name: str</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.gitimpl.create_commit_and_push" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a remote GitHub repository named remote_repo_name and pushes given git project into it.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ws_id</strong> &#8211; Workspace ID</li>
+<li><strong>project_id</strong> &#8211; Project ID to create and push it</li>
+<li><strong>remote_repo_name</strong> &#8211; Remote repository name</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.gitimpl.create_info_dict">
 <code class="descclassname">son_editor.impl.gitimpl.</code><code class="descname">create_info_dict</code><span class="sig-paren">(</span><em>out: str = None</em>, <em>err: str = None</em>, <em>exitcode: int = 0</em><span class="sig-paren">)</span> &rarr; dict<a class="headerlink" href="#son_editor.impl.gitimpl.create_info_dict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates a dict that holds process information
-:param out: Out bytes
-:param err: Err bytes
-:param exitcode: exitcode
-:return: Dict with packed information.</p>
+<dd><p>Creates a dict that holds process information</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>out</strong> &#8211; Out bytes</li>
+<li><strong>err</strong> &#8211; Err bytes</li>
+<li><strong>exitcode</strong> &#8211; exitcode</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Dict with packed information.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="son_editor.impl.gitimpl.create_oauth_header">
+<code class="descclassname">son_editor.impl.gitimpl.</code><code class="descname">create_oauth_header</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; dict<a class="headerlink" href="#son_editor.impl.gitimpl.create_oauth_header" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates oauth header by providing the access token in the header.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Header as dict</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="son_editor.impl.gitimpl.delete">
+<code class="descclassname">son_editor.impl.gitimpl.</code><code class="descname">delete</code><span class="sig-paren">(</span><em>ws_id: int</em>, <em>project_id: int</em>, <em>remote_repo_name: str</em>, <em>organization_name: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.gitimpl.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes given project on remote repository</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>project_id</strong> &#8211; </li>
+<li><strong>ws_id</strong> &#8211; Workspace of the project</li>
+<li><strong>remote_repo_name</strong> &#8211; Remote repository name</li>
+<li><strong>organization_name</strong> &#8211; Optional parameter to specify the organization / login</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="son_editor.impl.gitimpl.diff">
+<code class="descclassname">son_editor.impl.gitimpl.</code><code class="descname">diff</code><span class="sig-paren">(</span><em>ws_id: int</em>, <em>pj_id: int</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.gitimpl.diff" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shows the local changes of the given project.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ws_id</strong> &#8211; Workspace of the project.</li>
+<li><strong>pj_id</strong> &#8211; Given project to show from.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.gitimpl.get_project">
-<code class="descclassname">son_editor.impl.gitimpl.</code><code class="descname">get_project</code><span class="sig-paren">(</span><em>ws_id</em>, <em>pj_id: int</em><span class="sig-paren">)</span> &rarr; son_editor.models.project.Project<a class="headerlink" href="#son_editor.impl.gitimpl.get_project" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="descclassname">son_editor.impl.gitimpl.</code><code class="descname">get_project</code><span class="sig-paren">(</span><em>ws_id</em>, <em>pj_id: int</em>, <em>session=&lt;sqlalchemy.orm.session.Session object at 0x000002A62B467208&gt;</em><span class="sig-paren">)</span> &rarr; son_editor.models.project.Project<a class="headerlink" href="#son_editor.impl.gitimpl.get_project" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a project and raises 404, when project not found.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>ws_id</strong> &#8211; Workspace id</li>
+<li><strong>pj_id</strong> &#8211; Project id</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>:param db session
+:return: Project model</p>
+</dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.gitimpl.get_workspace">
 <code class="descclassname">son_editor.impl.gitimpl.</code><code class="descname">get_workspace</code><span class="sig-paren">(</span><em>ws_id: int</em><span class="sig-paren">)</span> &rarr; son_editor.models.workspace.Workspace<a class="headerlink" href="#son_editor.impl.gitimpl.get_workspace" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Returns the workspace model of the given workspace</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ws_id</strong> &#8211; </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.gitimpl.git_command">
 <code class="descclassname">son_editor.impl.gitimpl.</code><code class="descname">git_command</code><span class="sig-paren">(</span><em>git_args: list</em>, <em>cwd: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.gitimpl.git_command" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calls the git command with given args and returns out, err and exitcode
-:param git_args: Arguments for git
-:param cwd: Optional current working directory
-:return: out, error, exitcode</p>
+<dd><p>Calls the git command with given args and returns out, err and exitcode</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>git_args</strong> &#8211; Arguments for git</li>
+<li><strong>cwd</strong> &#8211; Optional current working directory</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">out, error, exitcode</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="son_editor.impl.gitimpl.init">
+<code class="descclassname">son_editor.impl.gitimpl.</code><code class="descname">init</code><span class="sig-paren">(</span><em>ws_id: int</em>, <em>project_id: int</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.gitimpl.init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes a git repository in the given project</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ws_id</strong> &#8211; </li>
+<li><strong>project_id</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.gitimpl.is_github">
 <code class="descclassname">son_editor.impl.gitimpl.</code><code class="descname">is_github</code><span class="sig-paren">(</span><em>netloc</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.gitimpl.is_github" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the given url is on github</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>netloc</strong> &#8211; http url</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="son_editor.impl.gitimpl.list">
+<code class="descclassname">son_editor.impl.gitimpl.</code><code class="descname">list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.gitimpl.list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lists the available remote repositories.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ws_id</strong> &#8211; </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference external" href="https://developer.github.com/v3/repos/#response">https://developer.github.com/v3/repos/#response</a></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
@@ -327,9 +781,35 @@ applies the given name and url, that are in the json parameter.
 <code class="descclassname">son_editor.impl.gitimpl.</code><code class="descname">pull</code><span class="sig-paren">(</span><em>ws_id: int</em>, <em>project_id: int</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.gitimpl.pull" title="Permalink to this definition">¶</a></dt>
 <dd><p>Pulls data from the given project_id.
 :param user_data: Session data to get access token for GitHub
-:param ws_id:
-:param project_id:
+:param ws_id: Workspace of the project
+:param project_id: Project to pull.
 :return:</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="son_editor.impl.gitimpl.setup_git_user_email">
+<code class="descclassname">son_editor.impl.gitimpl.</code><code class="descname">setup_git_user_email</code><span class="sig-paren">(</span><em>project_full_path: str</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.gitimpl.setup_git_user_email" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="son_editor.impl.gitimpl.status">
+<code class="descclassname">son_editor.impl.gitimpl.</code><code class="descname">status</code><span class="sig-paren">(</span><em>ws_id: int</em>, <em>pj_id: int</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.gitimpl.status" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shows the git status of the repository</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ws_id</strong> &#8211; </li>
+<li><strong>pj_id</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
@@ -338,52 +818,100 @@ applies the given name and url, that are in the json parameter.
 <dl class="function">
 <dt id="son_editor.impl.nsfslookupimpl.find_by_priority">
 <code class="descclassname">son_editor.impl.nsfslookupimpl.</code><code class="descname">find_by_priority</code><span class="sig-paren">(</span><em>user_data</em>, <em>ws_id</em>, <em>project_id</em>, <em>vendor</em>, <em>name</em>, <em>version</em>, <em>is_vnf</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.nsfslookupimpl.find_by_priority" title="Permalink to this definition">¶</a></dt>
-<dd><p>Tries to find vnf / network services by descending priority project / private catalogue / public catalogue.
-:param user_data:
-:param ws_id:
-:param project_id:
-:param vendor:
-:param name:
-:param version:
-:param is_vnf:
-:return:</p>
+<dd><p>Tries to find vnf / network services by descending priority project / private catalogue / public catalogue.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user_data</strong> &#8211; </li>
+<li><strong>ws_id</strong> &#8211; </li>
+<li><strong>project_id</strong> &#8211; </li>
+<li><strong>vendor</strong> &#8211; </li>
+<li><strong>name</strong> &#8211; </li>
+<li><strong>version</strong> &#8211; </li>
+<li><strong>is_vnf</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.nsfslookupimpl.find_network_service">
 <code class="descclassname">son_editor.impl.nsfslookupimpl.</code><code class="descname">find_network_service</code><span class="sig-paren">(</span><em>user_data</em>, <em>ws_id</em>, <em>project_id</em>, <em>vendor</em>, <em>name</em>, <em>version</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.nsfslookupimpl.find_network_service" title="Permalink to this definition">¶</a></dt>
-<dd><p>Finds a network service in the priority: project / private catalogue / public catalogue
-:param user_data:
-:param ws_id:
-:param project_id:
-:param vendor: Vendor name of the function
-:param name: Name of the function
-:param version: The   version of the function
-:return: If found, it returns the network service</p>
+<dd><p>Finds a network service in the priority: project / private catalogue / public catalogue</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user_data</strong> &#8211; </li>
+<li><strong>ws_id</strong> &#8211; </li>
+<li><strong>project_id</strong> &#8211; </li>
+<li><strong>vendor</strong> &#8211; Vendor name of the function</li>
+<li><strong>name</strong> &#8211; Name of the function</li>
+<li><strong>version</strong> &#8211; The   version of the function</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">If found, it returns the network service</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.nsfslookupimpl.find_vnf">
 <code class="descclassname">son_editor.impl.nsfslookupimpl.</code><code class="descname">find_vnf</code><span class="sig-paren">(</span><em>user_data</em>, <em>ws_id</em>, <em>project_id</em>, <em>vendor</em>, <em>name</em>, <em>version</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.nsfslookupimpl.find_vnf" title="Permalink to this definition">¶</a></dt>
-<dd><p>Finds a vnf in the priority: project / private catalogue / public catalogue
-:param user_data:
-:param ws_id:
-:param project_id:
-:param vendor:
-:param name:
-:param version:
-:return:</p>
+<dd><p>Finds a vnf in the priority: project / private catalogue / public catalogue</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user_data</strong> &#8211; </li>
+<li><strong>ws_id</strong> &#8211; </li>
+<li><strong>project_id</strong> &#8211; </li>
+<li><strong>vendor</strong> &#8211; </li>
+<li><strong>name</strong> &#8211; </li>
+<li><strong>version</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.nsfslookupimpl.get_function">
 <code class="descclassname">son_editor.impl.nsfslookupimpl.</code><code class="descname">get_function</code><span class="sig-paren">(</span><em>functions</em>, <em>vendor</em>, <em>name</em>, <em>version</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.nsfslookupimpl.get_function" title="Permalink to this definition">¶</a></dt>
-<dd><p>Finds a function in the given set of functions which matches vendor,name,version
-:param functions: Set of functions to look for the specific one
-:param vendor: Vendor name of the function
-:param name: Name of the function
-:param version: The version of the function
-:return: If found, it returns the function. Otherwise it returns None</p>
+<dd><p>Finds a function in the given set of functions which matches vendor,name,version</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>functions</strong> &#8211; Set of functions to look for the specific one</li>
+<li><strong>vendor</strong> &#8211; Vendor name of the function</li>
+<li><strong>name</strong> &#8211; Name of the function</li>
+<li><strong>version</strong> &#8211; The version of the function</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">If found, it returns the function. Otherwise it returns None</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
@@ -398,11 +926,23 @@ applies the given name and url, that are in the json parameter.
 <dl class="function">
 <dt id="son_editor.impl.platform_connector.create_service_on_platform">
 <code class="descclassname">son_editor.impl.platform_connector.</code><code class="descname">create_service_on_platform</code><span class="sig-paren">(</span><em>ws_id</em>, <em>platform_id</em>, <em>service_data</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.platform_connector.create_service_on_platform" title="Permalink to this definition">¶</a></dt>
-<dd><p>Deploys the service on the referenced Platform
-:param ws_id:
-:param platform_id:
-:param service_data:
-:return: A  message if the function was deployed successfully</p>
+<dd><p>Deploys the service on the referenced Platform</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ws_id</strong> &#8211; </li>
+<li><strong>platform_id</strong> &#8211; </li>
+<li><strong>service_data</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A  message if the function was deployed successfully</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
@@ -416,44 +956,96 @@ applies the given name and url, that are in the json parameter.
 <dl class="function">
 <dt id="son_editor.impl.platformsimpl.create_platform">
 <code class="descclassname">son_editor.impl.platformsimpl.</code><code class="descname">create_platform</code><span class="sig-paren">(</span><em>workspace_id: int</em>, <em>platform_data</em><span class="sig-paren">)</span> &rarr; dict<a class="headerlink" href="#son_editor.impl.platformsimpl.create_platform" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new platform entry
-:param workspace_id:
-:param platform_data:
-:return:</p>
+<dd><p>Create a new platform entry</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>workspace_id</strong> &#8211; </li>
+<li><strong>platform_data</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.platformsimpl.delete">
 <code class="descclassname">son_editor.impl.platformsimpl.</code><code class="descname">delete</code><span class="sig-paren">(</span><em>workspace_id: int</em>, <em>platform_id: int</em><span class="sig-paren">)</span> &rarr; dict<a class="headerlink" href="#son_editor.impl.platformsimpl.delete" title="Permalink to this definition">¶</a></dt>
-<dd><p>Deletes the platform from the workspace
-:param workspace_id:
-:param platform_id:
-:return: the deleted platform description</p>
+<dd><p>Deletes the platform from the workspace</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>workspace_id</strong> &#8211; </li>
+<li><strong>platform_id</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the deleted platform description</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.platformsimpl.get_platform">
 <code class="descclassname">son_editor.impl.platformsimpl.</code><code class="descname">get_platform</code><span class="sig-paren">(</span><em>platform_id: int</em><span class="sig-paren">)</span> &rarr; dict<a class="headerlink" href="#son_editor.impl.platformsimpl.get_platform" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the platform definition
-:param platform_id:
-:return: The platform information</p>
+<dd><p>Get the platform definition</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>platform_id</strong> &#8211; </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The platform information</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.platformsimpl.get_platforms">
 <code class="descclassname">son_editor.impl.platformsimpl.</code><code class="descname">get_platforms</code><span class="sig-paren">(</span><em>workspace_id: int</em><span class="sig-paren">)</span> &rarr; list<a class="headerlink" href="#son_editor.impl.platformsimpl.get_platforms" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get a list of platforms for this workspace
-:param workspace_id:
-:return:</p>
+<dd><p>Get a list of platforms for this workspace</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>workspace_id</strong> &#8211; </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.platformsimpl.update_platform">
 <code class="descclassname">son_editor.impl.platformsimpl.</code><code class="descname">update_platform</code><span class="sig-paren">(</span><em>workspace_id: int</em>, <em>platform_id: int</em>, <em>platform_data</em><span class="sig-paren">)</span> &rarr; dict<a class="headerlink" href="#son_editor.impl.platformsimpl.update_platform" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update the platform entry
-:param workspace_id:
-:param platform_id:
-:return: The updated platform definition</p>
+<dd><p>Update the platform entry</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>workspace_id</strong> &#8211; </li>
+<li><strong>platform_id</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The updated platform definition</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
@@ -462,32 +1054,68 @@ applies the given name and url, that are in the json parameter.
 <dl class="function">
 <dt id="son_editor.impl.private_catalogue_impl.get_private_nsfs_list">
 <code class="descclassname">son_editor.impl.private_catalogue_impl.</code><code class="descname">get_private_nsfs_list</code><span class="sig-paren">(</span><em>ws_id</em>, <em>is_vnf</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.private_catalogue_impl.get_private_nsfs_list" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get a list of all private services or functions
-:param ws_id: the Workspace ID
-:param is_vnf: if vnf or services should be queried
-:return: List of all private services or functions</p>
+<dd><p>Get a list of all private services or functions</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ws_id</strong> &#8211; the Workspace ID</li>
+<li><strong>is_vnf</strong> &#8211; if vnf or services should be queried</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">List of all private services or functions</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.private_catalogue_impl.publish_private_nsfs">
 <code class="descclassname">son_editor.impl.private_catalogue_impl.</code><code class="descname">publish_private_nsfs</code><span class="sig-paren">(</span><em>ws_id: int</em>, <em>descriptor: dict</em>, <em>is_vnf: bool</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.private_catalogue_impl.publish_private_nsfs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Publishes a function or service to the private catalogue repository
-:param ws_id:
-:param descriptor:
-:param is_vnf:
-:return:</p>
+<dd><p>Publishes a function or service to the private catalogue repository</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ws_id</strong> &#8211; </li>
+<li><strong>descriptor</strong> &#8211; </li>
+<li><strong>is_vnf</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.private_catalogue_impl.query_private_nsfs">
 <code class="descclassname">son_editor.impl.private_catalogue_impl.</code><code class="descname">query_private_nsfs</code><span class="sig-paren">(</span><em>ws_id</em>, <em>vendor</em>, <em>name</em>, <em>version</em>, <em>is_vnf</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.private_catalogue_impl.query_private_nsfs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Finds a function in the private catalogue
-:param ws_id:
-:param is_vnf:
-:param vendor:
-:param name:
-:param version:
-:return:</p>
+<dd><p>Finds a function in the private catalogue</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ws_id</strong> &#8211; </li>
+<li><strong>is_vnf</strong> &#8211; </li>
+<li><strong>vendor</strong> &#8211; </li>
+<li><strong>name</strong> &#8211; </li>
+<li><strong>version</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
@@ -498,18 +1126,38 @@ applies the given name and url, that are in the json parameter.
 <dl class="function">
 <dt id="son_editor.impl.projectsimpl.create_project">
 <code class="descclassname">son_editor.impl.projectsimpl.</code><code class="descname">create_project</code><span class="sig-paren">(</span><em>ws_id: int</em>, <em>project_data: dict</em><span class="sig-paren">)</span> &rarr; dict<a class="headerlink" href="#son_editor.impl.projectsimpl.create_project" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new Project in this workspace
-:param ws_id:
-:param project_data:
-:return: The new project descriptor as a dict</p>
+<dd><p>Create a new Project in this workspace</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ws_id</strong> &#8211; </li>
+<li><strong>project_data</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The new project descriptor as a dict</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.projectsimpl.delete_project">
 <code class="descclassname">son_editor.impl.projectsimpl.</code><code class="descname">delete_project</code><span class="sig-paren">(</span><em>project_id: int</em><span class="sig-paren">)</span> &rarr; dict<a class="headerlink" href="#son_editor.impl.projectsimpl.delete_project" title="Permalink to this definition">¶</a></dt>
-<dd><p>Deletes the project from the database and from the Disk
-:param project_id: The id of the project to be deleted
-:return: The deleted project descriptor</p>
+<dd><p>Deletes the project from the database and from the Disk</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>project_id</strong> &#8211; The id of the project to be deleted</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The deleted project descriptor</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
@@ -520,36 +1168,87 @@ applies the given name and url, that are in the json parameter.
 <dl class="function">
 <dt id="son_editor.impl.projectsimpl.get_project_path">
 <code class="descclassname">son_editor.impl.projectsimpl.</code><code class="descname">get_project_path</code><span class="sig-paren">(</span><em>workspace_path: str</em>, <em>rel_path: str</em><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#son_editor.impl.projectsimpl.get_project_path" title="Permalink to this definition">¶</a></dt>
-<dd><p>Helper method to resolve the project path on disk for the given project
-:param workspace_path: the path to the workspace
-:param rel_path: the relative path of the project
-:return:</p>
+<dd><p>Helper method to resolve the project path on disk for the given project</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>workspace_path</strong> &#8211; the path to the workspace</li>
+<li><strong>rel_path</strong> &#8211; the relative path of the project</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.projectsimpl.get_projects">
 <code class="descclassname">son_editor.impl.projectsimpl.</code><code class="descname">get_projects</code><span class="sig-paren">(</span><em>ws_id: int</em><span class="sig-paren">)</span> &rarr; list<a class="headerlink" href="#son_editor.impl.projectsimpl.get_projects" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get a list of projects in this workspace
-:param ws_id:
-:return:</p>
+<dd><p>Get a list of projects in this workspace</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ws_id</strong> &#8211; </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="son_editor.impl.projectsimpl.on_rm_error">
+<code class="descclassname">son_editor.impl.projectsimpl.</code><code class="descname">on_rm_error</code><span class="sig-paren">(</span><em>func</em>, <em>path</em>, <em>exc_info</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.projectsimpl.on_rm_error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets called if rm_tree gets an error, happens
+especially if trying to remove .git files on windows</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.projectsimpl.set_data">
 <code class="descclassname">son_editor.impl.projectsimpl.</code><code class="descname">set_data</code><span class="sig-paren">(</span><em>project: son_editor.models.project.Project</em>, <em>project_data: dict</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#son_editor.impl.projectsimpl.set_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Extracts the data from the dictionary and sets it on the database model
-:param project: The project database model
-:param project_data: The project data dictionary from the frontend
-:return:</p>
+<dd><p>Extracts the data from the dictionary and sets it on the database model</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>project</strong> &#8211; The project database model</li>
+<li><strong>project_data</strong> &#8211; The project data dictionary from the frontend</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.projectsimpl.update_project">
 <code class="descclassname">son_editor.impl.projectsimpl.</code><code class="descname">update_project</code><span class="sig-paren">(</span><em>project_data</em>, <em>project_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.projectsimpl.update_project" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update the Project
-:param project_data:
-:param project_id:
-:return:</p>
+<dd><p>Update the Project</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>project_data</strong> &#8211; </li>
+<li><strong>project_id</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
@@ -558,59 +1257,146 @@ applies the given name and url, that are in the json parameter.
 <dl class="function">
 <dt id="son_editor.impl.servicesimpl.create_service">
 <code class="descclassname">son_editor.impl.servicesimpl.</code><code class="descname">create_service</code><span class="sig-paren">(</span><em>ws_id: int</em>, <em>project_id: int</em>, <em>service_data: dict</em><span class="sig-paren">)</span> &rarr; dict<a class="headerlink" href="#son_editor.impl.servicesimpl.create_service" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates a service in the given project
-:param ws_id: The Workspace of the project
-:param project_id: The Project of the Service
-:param service_data: the service descriptor
-:return: The created service descriptor</p>
+<dd><p>Creates a service in the given project</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ws_id</strong> &#8211; The Workspace of the project</li>
+<li><strong>project_id</strong> &#8211; The Project of the Service</li>
+<li><strong>service_data</strong> &#8211; the service descriptor</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The created service descriptor</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.servicesimpl.delete_service">
 <code class="descclassname">son_editor.impl.servicesimpl.</code><code class="descname">delete_service</code><span class="sig-paren">(</span><em>project_id: int</em>, <em>service_id: int</em><span class="sig-paren">)</span> &rarr; dict<a class="headerlink" href="#son_editor.impl.servicesimpl.delete_service" title="Permalink to this definition">¶</a></dt>
-<dd><p>Deletes the service from the Database and from the disk
-:param project_id: The Projects ID
-:param service_id: The Services ID
-:return: The descriptor of the deleted service</p>
+<dd><p>Deletes the service from the Database and from the disk</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>project_id</strong> &#8211; The Projects ID</li>
+<li><strong>service_id</strong> &#8211; The Services ID</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The descriptor of the deleted service</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
+
+<dl class="function">
+<dt id="son_editor.impl.servicesimpl.get_references">
+<code class="descclassname">son_editor.impl.servicesimpl.</code><code class="descname">get_references</code><span class="sig-paren">(</span><em>service</em>, <em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.servicesimpl.get_references" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.servicesimpl.get_service">
 <code class="descclassname">son_editor.impl.servicesimpl.</code><code class="descname">get_service</code><span class="sig-paren">(</span><em>ws_id</em>, <em>parent_id</em>, <em>service_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.servicesimpl.get_service" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the service by ID
-:param ws_id: The workspace ID of the Project
-:param parent_id: The project ID
-:param service_id: the Service ID
-:return:</p>
+<dd><p>Get the service by ID</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ws_id</strong> &#8211; The workspace ID of the Project</li>
+<li><strong>parent_id</strong> &#8211; The project ID</li>
+<li><strong>service_id</strong> &#8211; the Service ID</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.servicesimpl.get_services">
 <code class="descclassname">son_editor.impl.servicesimpl.</code><code class="descname">get_services</code><span class="sig-paren">(</span><em>ws_id: int</em>, <em>project_id: int</em><span class="sig-paren">)</span> &rarr; list<a class="headerlink" href="#son_editor.impl.servicesimpl.get_services" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get a list of all services in this Project
-:param ws_id:
-:param project_id: The project ID
-:return: A list of service descriptors as dicts</p>
+<dd><p>Get a list of all services in this Project</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ws_id</strong> &#8211; </li>
+<li><strong>project_id</strong> &#8211; The project ID</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A list of service descriptors as dicts</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
+
+<dl class="function">
+<dt id="son_editor.impl.servicesimpl.get_uid">
+<code class="descclassname">son_editor.impl.servicesimpl.</code><code class="descname">get_uid</code><span class="sig-paren">(</span><em>vendor</em>, <em>name</em>, <em>version</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.servicesimpl.get_uid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="son_editor.impl.servicesimpl.replace_service_refs">
+<code class="descclassname">son_editor.impl.servicesimpl.</code><code class="descname">replace_service_refs</code><span class="sig-paren">(</span><em>refs</em>, <em>vendor</em>, <em>name</em>, <em>version</em>, <em>new_vendor</em>, <em>new_name</em>, <em>new_version</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.servicesimpl.replace_service_refs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.servicesimpl.update_service">
 <code class="descclassname">son_editor.impl.servicesimpl.</code><code class="descname">update_service</code><span class="sig-paren">(</span><em>ws_id</em>, <em>project_id</em>, <em>service_id</em>, <em>service_data</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.servicesimpl.update_service" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update the service using the service data from the request
-:param ws_id:
-:param project_id:
-:param service_id:
-:param service_data:
-:return:</p>
+<dd><p>Update the service using the service data from the request</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ws_id</strong> &#8211; </li>
+<li><strong>project_id</strong> &#8211; </li>
+<li><strong>service_id</strong> &#8211; </li>
+<li><strong>service_data</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.servicesimpl.validate_service_descriptor">
-<code class="descclassname">son_editor.impl.servicesimpl.</code><code class="descname">validate_service_descriptor</code><span class="sig-paren">(</span><em>workspace_path: str</em>, <em>descriptor: dict</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#son_editor.impl.servicesimpl.validate_service_descriptor" title="Permalink to this definition">¶</a></dt>
-<dd><p>Validates the given descriptor with the schema loaded from SchemaValidator
-:param workspace_path: the path of the workspace
-:param descriptor: the service descriptor
-:raises: InvalidArgument: if the validation fails</p>
+<code class="descclassname">son_editor.impl.servicesimpl.</code><code class="descname">validate_service_descriptor</code><span class="sig-paren">(</span><em>schema_index: int</em>, <em>descriptor: dict</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#son_editor.impl.servicesimpl.validate_service_descriptor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validates the given descriptor with the schema loaded from the configuration</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>schema_index</strong> &#8211; the workspace</li>
+<li><strong>descriptor</strong> &#8211; the service descriptor</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last">InvalidArgument: if the validation fails</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
@@ -625,8 +1411,15 @@ applies the given name and url, that are in the json parameter.
 creates a new user in the Database using the
 login data from the session. If the database does
 not yet have the full user Data it is queried
-from Github using the access Token
-:return: The database user model</p>
+from Github using the access Token</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The database user model</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
@@ -647,8 +1440,15 @@ from Github using the access Token
 <dl class="function">
 <dt id="son_editor.impl.userserviceimpl.logout">
 <code class="descclassname">son_editor.impl.userserviceimpl.</code><code class="descname">logout</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.userserviceimpl.logout" title="Permalink to this definition">¶</a></dt>
-<dd><p>Logs out the current user and removes all session related stuff
-:return: Redirect</p>
+<dd><p>Logs out the current user and removes all session related stuff</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Redirect</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
@@ -662,34 +1462,77 @@ from Github using the access Token
 <p>Created on 25.07.2016</p>
 <p>&#64;author: Jonas</p>
 <dl class="function">
+<dt id="son_editor.impl.workspaceimpl.create_token_file">
+<code class="descclassname">son_editor.impl.workspaceimpl.</code><code class="descname">create_token_file</code><span class="sig-paren">(</span><em>ws_path</em>, <em>token</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.workspaceimpl.create_token_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
 <dt id="son_editor.impl.workspaceimpl.create_workspace">
 <code class="descclassname">son_editor.impl.workspaceimpl.</code><code class="descname">create_workspace</code><span class="sig-paren">(</span><em>login: str</em>, <em>workspace_data: dict</em><span class="sig-paren">)</span> &rarr; dict<a class="headerlink" href="#son_editor.impl.workspaceimpl.create_workspace" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates a workspace (on disk and in the database) from the given workspace data
-:param workspace_data: The workspace configuration data
-:return: The created workspace</p>
+<dd><p>Creates a workspace (on disk and in the database) from the given workspace data</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>workspace_data</strong> &#8211; The workspace configuration data</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The created workspace</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.workspaceimpl.delete_workspace">
 <code class="descclassname">son_editor.impl.workspaceimpl.</code><code class="descname">delete_workspace</code><span class="sig-paren">(</span><em>wsid</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.workspaceimpl.delete_workspace" title="Permalink to this definition">¶</a></dt>
-<dd><p>Deletes the workspace from the database and from disk
-:param wsid: The workspace ID
-:return: The deleted workspace</p>
+<dd><p>Deletes the workspace from the database and from disk</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>wsid</strong> &#8211; The workspace ID</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The deleted workspace</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.workspaceimpl.get_workspace">
 <code class="descclassname">son_editor.impl.workspaceimpl.</code><code class="descname">get_workspace</code><span class="sig-paren">(</span><em>ws_id: int</em><span class="sig-paren">)</span> &rarr; dict<a class="headerlink" href="#son_editor.impl.workspaceimpl.get_workspace" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get a workspace by ID
-:param ws_id:
-:return: A dictionary wich contains the Workspace configuration</p>
+<dd><p>Get a workspace by ID</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ws_id</strong> &#8211; The workspace ID</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A dictionary wich contains the Workspace configuration</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.workspaceimpl.get_workspaces">
 <code class="descclassname">son_editor.impl.workspaceimpl.</code><code class="descname">get_workspaces</code><span class="sig-paren">(</span><em>login: str</em><span class="sig-paren">)</span> &rarr; list<a class="headerlink" href="#son_editor.impl.workspaceimpl.get_workspaces" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get all workspaces for the current user
-:return: A list wof workspace dictionaries</p>
+<dd><p>Get all workspaces for the current user</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A list wof workspace dictionaries</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="son_editor.impl.workspaceimpl.on_rm_error">
+<code class="descclassname">son_editor.impl.workspaceimpl.</code><code class="descname">on_rm_error</code><span class="sig-paren">(</span><em>func</em>, <em>path</em>, <em>exc_info</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.workspaceimpl.on_rm_error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets called if rm_tree gets an error, happens
+especially if trying to remove .git files on windows</p>
 </dd></dl>
 
 <dl class="function">
@@ -700,10 +1543,22 @@ from Github using the access Token
 <dl class="function">
 <dt id="son_editor.impl.workspaceimpl.update_workspace">
 <code class="descclassname">son_editor.impl.workspaceimpl.</code><code class="descname">update_workspace</code><span class="sig-paren">(</span><em>workspace_data</em>, <em>wsid</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.workspaceimpl.update_workspace" title="Permalink to this definition">¶</a></dt>
-<dd><p>Updates the workspace with the given workspace data
-:param workspace_data: The new workspace configuration
-:param wsid: the workspace ID
-:return: The updated workspace</p>
+<dd><p>Updates the workspace with the given workspace data</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>workspace_data</strong> &#8211; The new workspace configuration</li>
+<li><strong>wsid</strong> &#8211; the workspace ID</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The updated workspace</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
