@@ -34,9 +34,9 @@ def write_ns_vnf_to_disk(folder: str, model) -> None:
     Saves the given model to disk as a yml file
 
     :param folder: the folder to write to, either "vnf" or "nsd"
-    to specify if a vnf or network service needs to be saved
+        to specify if a vnf or network service needs to be saved
     :param model: The database  model of the descriptor
-    :return:
+    :return: None
     """
     target_dir = os.path.dirname(get_file_path(folder, model))
     if not os.path.exists(target_dir):
@@ -52,9 +52,9 @@ def get_file_path(folder: str, model) -> str:
     from the models vendor name and version
 
     :param folder: the folder to write to, either "vnf" or "nsd"
-    to specify if a vnf or network service needs to be saved
+        to specify if a vnf or network service needs to be saved
     :param model: The database  model of the descriptor
-    :return:
+    :return: None
     """
     project = model.project
     workspace = project.workspace
