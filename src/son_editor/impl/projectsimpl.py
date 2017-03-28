@@ -25,8 +25,8 @@ def get_projects(ws_id: int) -> list:
     """
     Get a list of projects in this workspace
 
-    :param ws_id:
-    :return:
+    :param ws_id: The workspace ID
+    :return: List of all projects
     """
     session = db_session()
     projects = session.query(Project). \
@@ -37,6 +37,12 @@ def get_projects(ws_id: int) -> list:
 
 
 def get_project(ws_id, pj_id):
+    """
+    Get a specific project 
+    :param ws_id: The workspace ID
+    :param pj_id: The project ID
+    :return: The project descriptor
+    """
     session = db_session()
     project = session.query(Project). \
         join(Workspace). \
@@ -54,8 +60,8 @@ def create_project(ws_id: int, project_data: dict) -> dict:
     """
     Create a new Project in this workspace
 
-    :param ws_id:
-    :param project_data:
+    :param ws_id: The workpace ID
+    :param project_data: The project data to create
     :return: The new project descriptor as a dict
     """
     project_name = shlex.quote(project_data["name"])
@@ -119,9 +125,9 @@ def update_project(project_data, project_id):
     """
     Update the Project
 
-    :param project_data:
-    :param project_id:
-    :return:
+    :param project_data: The project Data
+    :param project_id: The project ID to update
+    :return: The updated project descriptor
     """
     session = db_session()
     project = session.query(Project).filter(Project.id == project_id).first()
@@ -158,7 +164,6 @@ def set_data(project: Project, project_data: dict) -> None:
 
     :param project: The project database model
     :param project_data: The project data dictionary from the frontend
-    :return:
     """
     if "description" in project_data:
         project.description = project_data['description']
@@ -208,6 +213,6 @@ def get_project_path(workspace_path: str, rel_path: str) -> str:
 
     :param workspace_path: the path to the workspace
     :param rel_path: the relative path of the project
-    :return:
+    :return: The absolute project path
     """
     return os.path.join(workspace_path, "projects", rel_path)

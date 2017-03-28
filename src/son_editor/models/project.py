@@ -6,6 +6,11 @@ from son_editor.app.database import Base
 
 
 class Project(Base):
+    """
+    The Project model corresponds to the project folders in the workpace.
+    It stores references to the services and functions of one project in the database.
+    If the project was shared via GitHub the repo_url points to the respective repository.
+    """
     __tablename__ = 'project'
     id = Column(Integer, primary_key=True)
     name = Column(String(50))

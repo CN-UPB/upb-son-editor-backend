@@ -6,12 +6,10 @@ Created on 22.07.2016
 import logging
 
 from flask import request
-from flask_restplus import Model, Resource, Namespace, fields
+from flask_restplus import Resource, Namespace, fields
 
-from son_editor.impl import platform_connector
-from son_editor.impl import servicesimpl, catalogue_servicesimpl
-from son_editor.impl.private_catalogue_impl import publish_private_nsfs
-from son_editor.util.constants import get_parent, Category, WORKSPACES, PROJECTS, CATALOGUES, PLATFORMS, SERVICES
+from son_editor.impl import catalogue_servicesimpl
+from son_editor.util.constants import WORKSPACES, CATALOGUES, SERVICES
 from son_editor.util.requestutil import prepare_response, get_json
 
 logger = logging.getLogger(__name__)

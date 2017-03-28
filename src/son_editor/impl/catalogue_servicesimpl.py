@@ -182,40 +182,39 @@ def get_in_catalogue(ws_id, catalogue_id, function_id, is_vnf):
     return {'descriptor': descriptor, 'id': create_id(descriptor)}
 
 
-def update_service_catalogue(ws_id, catalogue_id, function_id, function_data, is_vnf):
-    """ Update the service in the catalogue
+def update_service_catalogue(ws_id, catalogue_id, descriptor_uid, descriptor_data, is_vnf):
+    """ Update the descriptor in the catalogue
 
-    :param ws_id:
-    :param catalogue_id:
-    :param function_id:
-    :param function_data:
-    :param is_vnf:
-    :return:
+    :param ws_id: The workspace ID
+    :param catalogue_id: The catalogue id
+    :param descriptor_uid: the descriptors uid (vendor:name:version)
+    :param descriptor_data: The descriptor data as a dict containing a "descriptor" property
+    :param is_vnf: if the descriptor is a VNF or NS
     """
-    vendor, name, version = decode_id(function_id)
+    vendor, name, version = decode_id(descriptor_uid)
     catalogue = get_catalogue(catalogue_id)
 
     service_url = build_URL(is_vnf, name, vendor, version)
-    function_data = function_data["descriptor"]
+    descriptor_data = descriptor_data["descriptor"]
 
-    response = requests.put(catalogue.url + service_url, json=function_data, timeout=TIMEOUT)
+    response = requests.put(catalogue.url + service_url, json=descriptor_data, timeout=TIMEOUT)
     if response.status_code != 200:
         raise Exception(
             "External service '{}' delivered unexpected status code '{}', reason: {}".format(
                 catalogue.url + service_url, response.status_code, response.text))
 
 
-def delete_service_catalogue(ws_id, catalogue_id, function_id, is_vnf):
+def delete_service_catalogue(ws_id, catalogue_id, descriptor_uid, is_vnf):
     """
-    Delete the service in the catalogue
+    Delete the descriptor in the catalogue
 
-    :param ws_id:
-    :param catalogue_id:
-    :param function_id:
-    :param is_vnf:
+    :param ws_id: The workspace ID
+    :param catalogue_id: The catalogue ID
+    :param descriptor_uid: The descriptors uid (vendor:name:version)
+    :param is_vnf: If the descriptor is a VNF or NS
     :return:
     """
-    vendor, name, version = decode_id(function_id)
+    vendor, name, version = decode_id(descriptor_uid)
     catalogue = get_catalogue(catalogue_id)
 
     service_url = build_URL(is_vnf, name, vendor, version)

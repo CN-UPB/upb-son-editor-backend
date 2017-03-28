@@ -38,10 +38,10 @@ def get_function_project(ws_id: int, project_id: int, vnf_id: int) -> dict:
     """
     Get a single function from the specified project
 
-    :param ws_id:
-    :param project_id:
-    :param vnf_id:
-    :return:
+    :param ws_id: The Workspace ID
+    :param project_id: The project ID
+    :param vnf_id: The VNF ID
+    :return: The requested function descriptor
     """
     session = db_session()
     function = session.query(Function).join(Project).join(Workspace). \
@@ -55,9 +55,9 @@ def create_function(ws_id: int, project_id: int, function_data: dict) -> dict:
     """
     Creates a new vnf in the project
 
-    :param ws_id:
-    :param project_id:
-    :param function_data:
+    :param ws_id: The workspace ID
+    :param project_id: The Project ID
+    :param function_data: The function data to create
     :return: The created function as a dict
     """
     try:
@@ -110,10 +110,10 @@ def update_function(ws_id: int, prj_id: int, func_id: int, func_data: dict) -> d
     """
     Update the function descriptor
 
-    :param ws_id:
-    :param prj_id:
-    :param func_id:
-    :param func_data:
+    :param ws_id: The Workspace ID
+    :param prj_id: The Project ID
+    :param func_id: The function ID
+    :param func_data: The funtion Data for updating
     :return: The updated function descriptor
     """
     session = db_session()
@@ -214,6 +214,17 @@ def update_function(ws_id: int, prj_id: int, func_id: int, func_data: dict) -> d
 
 
 def replace_function_refs(refs, vendor, name, version, new_vendor, new_name, new_version):
+    """
+    Replaces every reference in refs to the function with (name:vendor:version) with the new_(name:vendor:version)
+    
+    :param refs: The services referencing the function descriptors
+    :param vendor: The old vendor
+    :param name: The old name 
+    :param version: The old version
+    :param new_vendor: The new vendor
+    :param new_name: The new name
+    :param new_version: The new version
+    """
     for service in refs:
         service_desc = json.loads(service.descriptor)
         for ref in service_desc['network_functions']:
@@ -238,9 +249,9 @@ def delete_function(ws_id: int, project_id: int, function_id: int) -> dict:
     """
     Deletes the function
 
-    :param ws_id:
-    :param project_id:
-    :param function_id:
+    :param ws_id: The workspace ID
+    :param project_id: The project ID
+    :param function_id: The function ID
     :return: the deleted function
     """
     session = db_session()
@@ -281,6 +292,13 @@ def delete_function(ws_id: int, project_id: int, function_id: int) -> dict:
 
 
 def get_references(function, session):
+    """
+    Search for references to the function in the database
+    
+    :param function: The referenced function
+    :param session: The database session
+    :return: A list of services referencing the given function.
+    """
     references = []
     # fuzzy search to get all services that have all strings
     maybe_references = session.query(Service). \
@@ -301,6 +319,14 @@ def get_references(function, session):
 
 
 def validate_vnf(schema_index: int, descriptor: dict) -> None:
+    """
+    Validates the VNF against the VNF schema
+    
+    :param schema_index: The index of the schema repository
+    :param descriptor: The descriptor to validate
+    :return: Nothing if descriptor id valid
+    :raises InvalidArgument: if the schema is not Valid
+    """
     schema = get_schema(schema_index, SCHEMA_ID_VNF)
     try:
         jsonschema.validate(descriptor, schema)
@@ -309,6 +335,15 @@ def validate_vnf(schema_index: int, descriptor: dict) -> None:
 
 
 def save_image_file(ws_id, project_id, function_id, file):
+    """
+    Saves the vnf image file into the vnfs folder
+    
+    :param ws_id: The workspace ID 
+    :param project_id: The project ID 
+    :param function_id: The function ID
+    :param file: The image file
+    :return: A success message
+    """
     if file.filename == '':
         raise InvalidArgument("No file attached!")
     if file:
@@ -330,6 +365,14 @@ def save_image_file(ws_id, project_id, function_id, file):
 
 
 def get_image_files(ws_id, project_id, function_id):
+    """
+    Returns a list of image file names located in the vnf folder
+    
+    :param ws_id: The Workspace ID
+    :param project_id: The project ID
+    :param function_id: The function ID
+    :return: A List of image file names for this VNF 
+    """
     session = db_session()
     function = session.query(Function). \
         join(Project). \
@@ -351,6 +394,16 @@ def get_image_files(ws_id, project_id, function_id):
 
 
 def delete_image_file(ws_id, project_id, vnf_id, filename):
+    """
+    Deletes the image file with the given name
+    
+    :param ws_id:  The workspace ID
+    :param project_id: The project ID
+    :param vnf_id: The VNF ID
+    :param filename: The name of the file to delete
+    :return: A success message
+    :raises NotFound: if the image file could not be located
+    """
     session = db_session()
     function = session.query(Function). \
         join(Project). \

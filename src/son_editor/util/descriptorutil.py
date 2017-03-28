@@ -84,7 +84,6 @@ def update_workspace_descriptor(workspace) -> None:
     Updates the workspace descriptor with data from the workspace model
 
     :param workspace: The workspace model
-    :return:
     """
     with open(os.path.join(workspace.path, "workspace.yml"), "r") as stream:
         ws_descriptor = yaml.safe_load(stream)
@@ -117,7 +116,6 @@ def load_workspace_descriptor(workspace) -> None:
     Loads the workspace descriptor from disk and updates the database model
 
     :param workspace: The workspace database model
-    :return:
     """
     from son_editor.models.repository import Catalogue
     from son_editor.models.repository import Platform
@@ -157,7 +155,6 @@ def sync_project_descriptor(project) -> None:
     Updates the project model with data from the project descriptor and vice versa
 
     :param project: The projects database model
-    :return:
     """
     project_descriptor = load_project_descriptor(project)
     project_descriptor['name'] = project.name
@@ -195,6 +192,7 @@ def sync_project_descriptor(project) -> None:
 
 
 def load_schemas():
+    """ Loads the schemas congigured under "schemas" from the schema remotes """
     schemas[SCHEMA_ID_VNF] = []
     schemas[SCHEMA_ID_NS] = []
     for schema in get_config()["schemas"]:
@@ -213,16 +211,34 @@ def load_schemas():
 
 
 def get_schemas():
+    """ Get the schemas
+    
+    Will load the schemas if still empty
+    """
     if not schemas:
         load_schemas()
     return schemas
 
 
 def get_schema(schema_index, schema_id: str) -> dict:
+    """
+    Get the requested schema
+    :param schema_index: The schema index referring to the "schema"-index in the configuration file
+    :param schema_id: either "vnf" or "ns"
+    :return: The requested schema 
+    """
     return get_schemas()[schema_id][schema_index]["schema"]
 
 
 def write_private_descriptor(workspace_path: str, is_vnf: bool, descriptor: dict):
+    """
+    Write the private descriptor into the private cataloge folder on disk
+    
+    :param workspace_path: The workspace path 
+    :param is_vnf: If the descriptor is a vnf
+    :param descriptor: the descriptor data
+    :return: 
+    """
     type_folder = "ns"
     if is_vnf:
         type_folder = "vnf"

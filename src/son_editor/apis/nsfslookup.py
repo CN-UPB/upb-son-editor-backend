@@ -48,7 +48,7 @@ serv_response = namespace.inherit("Response", serv, {
 @namespace.param('vendor', 'The Network Service vendor')
 @namespace.param('name', 'The Network Service name')
 @namespace.param('version', 'The Network Service version')
-class Lookup(Resource):
+class ServiceLookup(Resource):
     @namespace.response(200, "OK", [serv_response])
     def get(self, ws_id, project_id, vendor, name, version):
         """Retrieves a network service by vendor name version
@@ -64,7 +64,7 @@ class Lookup(Resource):
 @namespace.param('vendor', 'The Virtual Nework Function vendor')
 @namespace.param('name', 'The Virtual Nework Function name')
 @namespace.param('version', 'The Virtual Nework Function version')
-class Lookup(Resource):
+class FunctionLookup(Resource):
     @namespace.response(200, "OK", [func_response])
     def get(self, ws_id, project_id, vendor, name, version):
         """Retrieves a virtual network function by vendor name version

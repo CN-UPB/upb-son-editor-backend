@@ -3,15 +3,12 @@ Created on 22.07.2016
 
 @author: Jonas
 '''
-from flask.globals import request, session
-from flask_restplus import Namespace, Model, fields
+from flask.globals import request
+from flask_restplus import Namespace, fields
 from flask_restplus import Resource
-from werkzeug.utils import secure_filename
 
-from son_editor.app.exceptions import InvalidArgument
-from son_editor.impl import functionsimpl, catalogue_servicesimpl
-from son_editor.impl.private_catalogue_impl import publish_private_nsfs
-from son_editor.util.constants import get_parent, Category, WORKSPACES, PROJECTS, CATALOGUES, PLATFORMS, VNFS
+from son_editor.impl import catalogue_servicesimpl
+from son_editor.util.constants import WORKSPACES, CATALOGUES, VNFS
 from son_editor.util.requestutil import prepare_response, get_json
 
 namespace = Namespace(WORKSPACES + '/<int:ws_id>/' + CATALOGUES + "/<int:catalogue_id>/" + VNFS,

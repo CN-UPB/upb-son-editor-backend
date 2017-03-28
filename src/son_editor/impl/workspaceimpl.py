@@ -261,6 +261,12 @@ def on_rm_error(func, path, exc_info):
 
 
 def test_url(name, url):
+    """
+    Tests the url for reachability
+    :param name: the server name
+    :param url: the server url
+    :raises ExtNotReachable: if the external server could not be contacted 
+    """
     try:
         response = requests.get(url)
         if response.status_code != 200:

@@ -3,15 +3,14 @@ Created on 22.07.2016
 
 @author: Jonas
 '''
-from flask.globals import request, session
+from flask.globals import request
 from flask_restplus import Namespace, Model, fields
 from flask_restplus import Resource
-from werkzeug.utils import secure_filename
 
 from son_editor.app.exceptions import InvalidArgument
-from son_editor.impl import functionsimpl, catalogue_servicesimpl
+from son_editor.impl import functionsimpl
 from son_editor.impl.private_catalogue_impl import publish_private_nsfs
-from son_editor.util.constants import get_parent, Category, WORKSPACES, PROJECTS, CATALOGUES, PLATFORMS, VNFS
+from son_editor.util.constants import WORKSPACES, PROJECTS, VNFS
 from son_editor.util.requestutil import prepare_response, get_json
 
 namespace = Namespace(WORKSPACES + '/<int:ws_id>/' + PROJECTS + "/<int:project_id>/" + VNFS,
@@ -166,7 +165,7 @@ class FunctionUpload(Resource):
 @namespace.param('ws_id', 'The Workspace identifier')
 @namespace.param('project_id', 'The Project identifier')
 @namespace.param('vnf_id', 'The VNF identifier')
-class PrivateService(Resource):
+class PrivateFunction(Resource):
     @namespace.response(200, "OK", message_response)
     def get(self, ws_id, project_id, vnf_id):
         """
@@ -174,10 +173,10 @@ class PrivateService(Resource):
 
         Publishes the function to the workspace wide catalogue
 
-        :param ws_id:
-        :param project_id:
-        :param vnf_id:
-        :return:
+        :param ws_id: The Workspace ID
+        :param project_id: The Project ID
+        :param vnf_id: The VNF ID
+        :return: dict with "message" property
         """
         function = functionsimpl.get_function_project(ws_id, project_id, vnf_id)
         publish_private_nsfs(ws_id, function["descriptor"], True)

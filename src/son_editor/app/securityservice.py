@@ -13,8 +13,9 @@ def check_access(request):
     checks if the current user is allowed to access a given resource.
     Session will be invalidated if the login information cannot be found
 
-    :param request:
-    :return:
+    :param request: The http request made to the server
+    :return: nothing if access granted
+    :raises UnauthorizedException: if user not logged in
     """
     if not all(key in session for key in ['user_data', 'access_token']):
         session.clear()

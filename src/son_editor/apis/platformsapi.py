@@ -22,7 +22,7 @@ namespace.add_model(serv_id.name, serv_id)
 @namespace.route("/")
 @namespace.response(200, "OK")
 class Platforms(Resource):
-    "Platforms"
+    """Platforms"""
 
     def get(self, ws_id):
         """List platforms
@@ -44,16 +44,19 @@ class Platforms(Resource):
 class Platform(Resource):
     def get(self, ws_id, platform_id):
         """Get service Platform
+        
         Retrieves a service platform by its id"""
         return prepare_response(platformsimpl.get_platform(platform_id))
 
     def put(self, ws_id, platform_id):
         """Update platform
+        
         Updates a service platform by its id"""
         return prepare_response(platformsimpl.update_platform(ws_id, platform_id, get_json(request)))
 
     def delete(self, ws_id, platform_id):
         """Delete Platform
+        
         Deletes a service platform by its id"""
         return prepare_response(platformsimpl.delete(ws_id, platform_id))
 

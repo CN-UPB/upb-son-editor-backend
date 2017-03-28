@@ -8,10 +8,9 @@ import logging
 from flask import request
 from flask_restplus import Model, Resource, Namespace, fields
 
-from son_editor.impl import platform_connector
-from son_editor.impl import servicesimpl, catalogue_servicesimpl
+from son_editor.impl import servicesimpl
 from son_editor.impl.private_catalogue_impl import publish_private_nsfs
-from son_editor.util.constants import get_parent, Category, WORKSPACES, PROJECTS, CATALOGUES, PLATFORMS, SERVICES
+from son_editor.util.constants import WORKSPACES, PROJECTS, SERVICES
 from son_editor.util.requestutil import prepare_response, get_json
 
 logger = logging.getLogger(__name__)
@@ -59,9 +58,8 @@ class Services(Resource):
     def get(self, ws_id, project_id):
         """Get a list of all Services
         Returns a list of all services available in this resource"""
-        if get_parent(request) is Category.project:
-            service = servicesimpl.get_services(ws_id, project_id)
-            return prepare_response(service)
+        service = servicesimpl.get_services(ws_id, project_id)
+        return prepare_response(service)
 
     @namespace.doc("Creates a new service in the project/platform or catalogue")
     @namespace.expect(serv)
@@ -121,10 +119,10 @@ class PrivateService(Resource):
 
         Publishes the service to the workspace wide catalogue
 
-        :param ws_id:
-        :param project_id:
-        :param service_id:
-        :return:
+        :param ws_id: The Workspace ID
+        :param project_id: The Project ID
+        :param service_id: The Service ID 
+        :return: A dict with a "message" property.
         """
         service = servicesimpl.get_service(ws_id, project_id, service_id)
         publish_private_nsfs(ws_id, service["descriptor"], False)

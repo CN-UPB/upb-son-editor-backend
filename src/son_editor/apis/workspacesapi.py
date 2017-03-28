@@ -1,4 +1,4 @@
-""""
+"""
 Created on 18.07.2016
 
 @author: Jonas
@@ -86,6 +86,7 @@ class Workspace(Resource):
     @namespace.response(409, "Workspace already exists")
     def put(self, ws_id):
         """Update workspace
+        
         Updates a specific workspace by its id"""
         workspace_data = get_json(request)
         workspace = workspaceimpl.update_workspace(workspace_data, ws_id)
@@ -114,9 +115,6 @@ class PrivateServices(Resource):
         List private Catalogue services
 
         Lists all services in the Private workspace wide catalogue
-
-        :param ws_id:
-        :return:
         """
         return prepare_response(get_private_nsfs_list(ws_id, False))
 
@@ -134,8 +132,5 @@ class PrivateFunctions(Resource):
         List private Catalogue functions
 
         Lists all functions in the Private workspace wide catalogue
-
-        :param ws_id:
-        :return:
         """
         return prepare_response(get_private_nsfs_list(ws_id, True))

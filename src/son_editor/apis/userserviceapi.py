@@ -31,7 +31,7 @@ class Logout(Resource):
         
         Logs out the current user
         
-        :return: 
+        :return: "Logged out"
         """
         return prepare_response(logout())
 
@@ -43,5 +43,6 @@ class Login(Resource):
     def get():
         """
          Login User
+         
          Login the User with a referral code from the github oauth process"""
         return login()

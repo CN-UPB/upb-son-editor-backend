@@ -22,11 +22,13 @@ class Schema(Resource):
 
     def get(self, ws_id, schema_id):
         """
-        Return the requested schema
+        Get schema
+        
+        Returns the requested schema from the schema_master at schema_index from this workspace
 
-        :param ws_id:
-        :param schema_id:
-        :return:
+        :param ws_id: The workspace ID
+        :param schema_id: Either "ns" or "vnf"
+        :return: The requested schema
         """
         schema_index = workspaceimpl.get_workspace(ws_id)['schema_index']
         return prepare_response(descriptorutil.get_schema(schema_index, schema_id))
@@ -42,7 +44,7 @@ class Schemas(Resource):
         
         Returns a list of all schemas configured for this server
 
-        :param ws_id:
-        :return:
+        :param ws_id: The workspace ID
+        :return: A list of schemas
         """
         return prepare_response(get_config()["schemas"])

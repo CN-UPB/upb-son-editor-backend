@@ -12,7 +12,7 @@ def init_test_context():
     """
      Initializes a test-case context and cleans up workspace location beforehand
 
-    :return:
+    :return: The test client
     """
     CONFIG['testing'] = True
     # Delete existing workspaces
