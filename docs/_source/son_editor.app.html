@@ -26,6 +26,8 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="son_editor.impl package" href="son_editor.impl.html" />
+    <link rel="prev" title="son_editor.apis package" href="son_editor.apis.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -43,30 +45,60 @@
             
   <div class="section" id="son-editor-app-package">
 <h1>son_editor.app package<a class="headerlink" href="#son-editor-app-package" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
-</div>
 <div class="section" id="module-son_editor.app.database">
 <span id="son-editor-app-database-module"></span><h2>son_editor.app.database module<a class="headerlink" href="#module-son_editor.app.database" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="son_editor.app.database.init_db">
 <code class="descclassname">son_editor.app.database.</code><code class="descname">init_db</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.app.database.init_db" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Import model modules</p>
+<dl class="docutils">
+<dt>Import all modules here that might define models so that</dt>
+<dd>they will be registered properly on the metadata.  Otherwise
+you will have to import them first before calling init_db()</dd>
+</dl>
+</dd></dl>
 
 <dl class="function">
 <dt id="son_editor.app.database.reset_db">
 <code class="descclassname">son_editor.app.database.</code><code class="descname">reset_db</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.app.database.reset_db" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Resets the database</p>
+<p>only used in tests</p>
+</dd></dl>
 
 <dl class="function">
 <dt id="son_editor.app.database.scan_project_dir">
 <code class="descclassname">son_editor.app.database.</code><code class="descname">scan_project_dir</code><span class="sig-paren">(</span><em>project_path</em>, <em>pj</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.app.database.scan_project_dir" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Scan project dir</p>
+<dl class="docutils">
+<dt>Scans the project dir for any new functions and services </dt>
+<dd>via _scan_for_functions and _scan_for_services</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>project_path</strong> &#8211; The path of the project to scan</li>
+<li><strong>pj</strong> &#8211; The project from the database to attach the descriptors to</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="son_editor.app.database.scan_workspaces_dir">
 <code class="descclassname">son_editor.app.database.</code><code class="descname">scan_workspaces_dir</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.app.database.scan_workspaces_dir" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Scan workpaces directory</p>
+<dl class="docutils">
+<dt>Scans the workpaces directory for any users.</dt>
+<dd>Will visit every one to add new workspaces etc via _scan_user_dir</dd>
+</dl>
+</dd></dl>
 
 </div>
 <div class="section" id="module-son_editor.app.exceptions">
@@ -75,42 +107,51 @@
 <dt id="son_editor.app.exceptions.ExtNotReachable">
 <em class="property">exception </em><code class="descclassname">son_editor.app.exceptions.</code><code class="descname">ExtNotReachable</code><span class="sig-paren">(</span><em>msg</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.app.exceptions.ExtNotReachable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Exception</span></code></p>
+<p>Thrown whenever an external host cannot be contacted, be it because of a wrong url or network problems</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="son_editor.app.exceptions.InvalidArgument">
 <em class="property">exception </em><code class="descclassname">son_editor.app.exceptions.</code><code class="descname">InvalidArgument</code><span class="sig-paren">(</span><em>msg: str</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.app.exceptions.InvalidArgument" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Exception</span></code></p>
+<p>Thrown whenever an argument is missing data or is supplying the wrong data</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="son_editor.app.exceptions.NameConflict">
 <em class="property">exception </em><code class="descclassname">son_editor.app.exceptions.</code><code class="descname">NameConflict</code><span class="sig-paren">(</span><em>msg: str</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.app.exceptions.NameConflict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Exception</span></code></p>
+<p>Thrown whenever a name conflict arises for names that must be unique</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="son_editor.app.exceptions.NotFound">
 <em class="property">exception </em><code class="descclassname">son_editor.app.exceptions.</code><code class="descname">NotFound</code><span class="sig-paren">(</span><em>msg: str</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.app.exceptions.NotFound" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Exception</span></code></p>
+<p>Thrown whenever a resource cannot be located, or the user has no access to it</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="son_editor.app.exceptions.PackException">
 <em class="property">exception </em><code class="descclassname">son_editor.app.exceptions.</code><code class="descname">PackException</code><span class="sig-paren">(</span><em>msg: str</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.app.exceptions.PackException" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Exception</span></code></p>
+<p>Thrown whenever a service cannot be packaged by son-package, wraps the cli tools error message</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="son_editor.app.exceptions.StillReferenced">
 <em class="property">exception </em><code class="descclassname">son_editor.app.exceptions.</code><code class="descname">StillReferenced</code><span class="sig-paren">(</span><em>msg: str</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.app.exceptions.StillReferenced" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Exception</span></code></p>
+<p>Thrown whenever an action is taken towards an element that is still 
+referenced by another that would compromise the relationship like 
+deleting the referenced object</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="son_editor.app.exceptions.UnauthorizedException">
 <em class="property">exception </em><code class="descclassname">son_editor.app.exceptions.</code><code class="descname">UnauthorizedException</code><span class="sig-paren">(</span><em>msg: str</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.app.exceptions.UnauthorizedException" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Exception</span></code></p>
+<p>Thrown whenever an unauthorized access is detected, e.g. because the user has not yet logged in</p>
 </dd></dl>
 
 </div>
@@ -125,17 +166,16 @@ Session will be invalidated if the login information cannot be found</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>request</strong> &#8211; </td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>request</strong> &#8211; The http request made to the server</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">nothing if access granted</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="#son_editor.app.exceptions.UnauthorizedException" title="son_editor.app.exceptions.UnauthorizedException"><strong>UnauthorizedException</strong></a> &#8211; if user not logged in</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
-</div>
-<div class="section" id="module-son_editor.app">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-son_editor.app" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
@@ -148,11 +188,9 @@ Session will be invalidated if the login information cannot be found</p>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">son_editor.app package</a><ul>
-<li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-son_editor.app.database">son_editor.app.database module</a></li>
 <li><a class="reference internal" href="#module-son_editor.app.exceptions">son_editor.app.exceptions module</a></li>
 <li><a class="reference internal" href="#module-son_editor.app.securityservice">son_editor.app.securityservice module</a></li>
-<li><a class="reference internal" href="#module-son_editor.app">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -160,6 +198,12 @@ Session will be invalidated if the login information cannot be found</p>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">src</a><ul>
+  <li><a href="son_editor.html">son_editor package</a><ul>
+      <li>Previous: <a href="son_editor.apis.html" title="previous chapter">son_editor.apis package</a></li>
+      <li>Next: <a href="son_editor.impl.html" title="next chapter">son_editor.impl package</a></li>
+  </ul></li>
+  </ul></li>
   </ul></li>
 </ul>
 </div>

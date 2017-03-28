@@ -26,6 +26,8 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="son_editor.models package" href="son_editor.models.html" />
+    <link rel="prev" title="son_editor.app package" href="son_editor.app.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -43,9 +45,6 @@
             
   <div class="section" id="son-editor-impl-package">
 <h1>son_editor.impl package<a class="headerlink" href="#son-editor-impl-package" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
-</div>
 <div class="section" id="module-son_editor.impl.catalogue_servicesimpl">
 <span id="son-editor-impl-catalogue-servicesimpl-module"></span><h2>son_editor.impl.catalogue_servicesimpl module<a class="headerlink" href="#module-son_editor.impl.catalogue_servicesimpl" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
@@ -111,17 +110,17 @@
 
 <dl class="function">
 <dt id="son_editor.impl.catalogue_servicesimpl.delete_service_catalogue">
-<code class="descclassname">son_editor.impl.catalogue_servicesimpl.</code><code class="descname">delete_service_catalogue</code><span class="sig-paren">(</span><em>ws_id</em>, <em>catalogue_id</em>, <em>function_id</em>, <em>is_vnf</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.catalogue_servicesimpl.delete_service_catalogue" title="Permalink to this definition">¶</a></dt>
-<dd><p>Delete the service in the catalogue</p>
+<code class="descclassname">son_editor.impl.catalogue_servicesimpl.</code><code class="descname">delete_service_catalogue</code><span class="sig-paren">(</span><em>ws_id</em>, <em>catalogue_id</em>, <em>descriptor_uid</em>, <em>is_vnf</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.catalogue_servicesimpl.delete_service_catalogue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete the descriptor in the catalogue</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>ws_id</strong> &#8211; </li>
-<li><strong>catalogue_id</strong> &#8211; </li>
-<li><strong>function_id</strong> &#8211; </li>
-<li><strong>is_vnf</strong> &#8211; </li>
+<li><strong>ws_id</strong> &#8211; The workspace ID</li>
+<li><strong>catalogue_id</strong> &#8211; The catalogue ID</li>
+<li><strong>descriptor_uid</strong> &#8211; The descriptors uid (vendor:name:version)</li>
+<li><strong>is_vnf</strong> &#8211; If the descriptor is a VNF or NS</li>
 </ul>
 </td>
 </tr>
@@ -223,22 +222,19 @@
 
 <dl class="function">
 <dt id="son_editor.impl.catalogue_servicesimpl.update_service_catalogue">
-<code class="descclassname">son_editor.impl.catalogue_servicesimpl.</code><code class="descname">update_service_catalogue</code><span class="sig-paren">(</span><em>ws_id</em>, <em>catalogue_id</em>, <em>function_id</em>, <em>function_data</em>, <em>is_vnf</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.catalogue_servicesimpl.update_service_catalogue" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update the service in the catalogue</p>
+<code class="descclassname">son_editor.impl.catalogue_servicesimpl.</code><code class="descname">update_service_catalogue</code><span class="sig-paren">(</span><em>ws_id</em>, <em>catalogue_id</em>, <em>descriptor_uid</em>, <em>descriptor_data</em>, <em>is_vnf</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.catalogue_servicesimpl.update_service_catalogue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the descriptor in the catalogue</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>ws_id</strong> &#8211; </li>
-<li><strong>catalogue_id</strong> &#8211; </li>
-<li><strong>function_id</strong> &#8211; </li>
-<li><strong>function_data</strong> &#8211; </li>
-<li><strong>is_vnf</strong> &#8211; </li>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>ws_id</strong> &#8211; The workspace ID</li>
+<li><strong>catalogue_id</strong> &#8211; The catalogue id</li>
+<li><strong>descriptor_uid</strong> &#8211; the descriptors uid (vendor:name:version)</li>
+<li><strong>descriptor_data</strong> &#8211; The descriptor data as a dict containing a &#8220;descriptor&#8221; property</li>
+<li><strong>is_vnf</strong> &#8211; if the descriptor is a VNF or NS</li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
 </td>
 </tr>
 </tbody>
@@ -274,12 +270,12 @@ json data</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>workspace_id</strong> &#8211; </li>
-<li><strong>catalogue_id</strong> &#8211; </li>
+<li><strong>workspace_id</strong> &#8211; The workspace ID</li>
+<li><strong>catalogue_id</strong> &#8211; The Catalogue ID</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The deleted catalogue descriptor</p>
 </td>
 </tr>
 </tbody>
@@ -294,7 +290,7 @@ json data</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>catalogue_id</strong> &#8211; </td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>catalogue_id</strong> &#8211; The catalogues ID</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
 </tr>
@@ -310,9 +306,9 @@ json data</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>workspace_id</strong> &#8211; </td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>workspace_id</strong> &#8211; the workspace id</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list of catalogue descriptors of this workspace</td>
 </tr>
 </tbody>
 </table>
@@ -323,9 +319,9 @@ json data</p>
 <code class="descclassname">son_editor.impl.cataloguesimpl.</code><code class="descname">update_catalogue</code><span class="sig-paren">(</span><em>workspace_id</em>, <em>catalogue_id</em>, <em>catalogue_data</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.cataloguesimpl.update_catalogue" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates a specific catalogue by its id. The catalogue
 applies the given name and url, that are in the json parameter.
-:param workspace_id:
-:param catalogue_id:
-:return:</p>
+:param workspace_id: The Workspace ID
+:param catalogue_id: The Catalogue ID
+:return: The updated Catalogue descriptor</p>
 </dd></dl>
 
 </div>
@@ -340,9 +336,9 @@ applies the given name and url, that are in the json parameter.
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>ws_id</strong> &#8211; </li>
-<li><strong>project_id</strong> &#8211; </li>
-<li><strong>function_data</strong> &#8211; </li>
+<li><strong>ws_id</strong> &#8211; The workspace ID</li>
+<li><strong>project_id</strong> &#8211; The Project ID</li>
+<li><strong>function_data</strong> &#8211; The function data to create</li>
 </ul>
 </td>
 </tr>
@@ -362,9 +358,9 @@ applies the given name and url, that are in the json parameter.
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>ws_id</strong> &#8211; </li>
-<li><strong>project_id</strong> &#8211; </li>
-<li><strong>function_id</strong> &#8211; </li>
+<li><strong>ws_id</strong> &#8211; The workspace ID</li>
+<li><strong>project_id</strong> &#8211; The project ID</li>
+<li><strong>function_id</strong> &#8211; The function ID</li>
 </ul>
 </td>
 </tr>
@@ -378,7 +374,28 @@ applies the given name and url, that are in the json parameter.
 <dl class="function">
 <dt id="son_editor.impl.functionsimpl.delete_image_file">
 <code class="descclassname">son_editor.impl.functionsimpl.</code><code class="descname">delete_image_file</code><span class="sig-paren">(</span><em>ws_id</em>, <em>project_id</em>, <em>vnf_id</em>, <em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.functionsimpl.delete_image_file" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Deletes the image file with the given name</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ws_id</strong> &#8211; The workspace ID</li>
+<li><strong>project_id</strong> &#8211; The project ID</li>
+<li><strong>vnf_id</strong> &#8211; The VNF ID</li>
+<li><strong>filename</strong> &#8211; The name of the file to delete</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A success message</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference internal" href="son_editor.app.html#son_editor.app.exceptions.NotFound" title="son_editor.app.exceptions.NotFound"><strong>NotFound</strong></a> &#8211; if the image file could not be located</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.functionsimpl.get_function_project">
@@ -389,13 +406,13 @@ applies the given name and url, that are in the json parameter.
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>ws_id</strong> &#8211; </li>
-<li><strong>project_id</strong> &#8211; </li>
-<li><strong>vnf_id</strong> &#8211; </li>
+<li><strong>ws_id</strong> &#8211; The Workspace ID</li>
+<li><strong>project_id</strong> &#8211; The project ID</li>
+<li><strong>vnf_id</strong> &#8211; The VNF ID</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The requested function descriptor</p>
 </td>
 </tr>
 </tbody>
@@ -426,12 +443,45 @@ applies the given name and url, that are in the json parameter.
 <dl class="function">
 <dt id="son_editor.impl.functionsimpl.get_image_files">
 <code class="descclassname">son_editor.impl.functionsimpl.</code><code class="descname">get_image_files</code><span class="sig-paren">(</span><em>ws_id</em>, <em>project_id</em>, <em>function_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.functionsimpl.get_image_files" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Returns a list of image file names located in the vnf folder</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ws_id</strong> &#8211; The Workspace ID</li>
+<li><strong>project_id</strong> &#8211; The project ID</li>
+<li><strong>function_id</strong> &#8211; The function ID</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A List of image file names for this VNF</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.functionsimpl.get_references">
 <code class="descclassname">son_editor.impl.functionsimpl.</code><code class="descname">get_references</code><span class="sig-paren">(</span><em>function</em>, <em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.functionsimpl.get_references" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Search for references to the function in the database</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>function</strong> &#8211; The referenced function</li>
+<li><strong>session</strong> &#8211; The database session</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A list of services referencing the given function.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.functionsimpl.get_uid">
@@ -441,12 +491,48 @@ applies the given name and url, that are in the json parameter.
 <dl class="function">
 <dt id="son_editor.impl.functionsimpl.replace_function_refs">
 <code class="descclassname">son_editor.impl.functionsimpl.</code><code class="descname">replace_function_refs</code><span class="sig-paren">(</span><em>refs</em>, <em>vendor</em>, <em>name</em>, <em>version</em>, <em>new_vendor</em>, <em>new_name</em>, <em>new_version</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.functionsimpl.replace_function_refs" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Replaces every reference in refs to the function with (name:vendor:version) with the new_(name:vendor:version)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>refs</strong> &#8211; The services referencing the function descriptors</li>
+<li><strong>vendor</strong> &#8211; The old vendor</li>
+<li><strong>name</strong> &#8211; The old name</li>
+<li><strong>version</strong> &#8211; The old version</li>
+<li><strong>new_vendor</strong> &#8211; The new vendor</li>
+<li><strong>new_name</strong> &#8211; The new name</li>
+<li><strong>new_version</strong> &#8211; The new version</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.functionsimpl.save_image_file">
 <code class="descclassname">son_editor.impl.functionsimpl.</code><code class="descname">save_image_file</code><span class="sig-paren">(</span><em>ws_id</em>, <em>project_id</em>, <em>function_id</em>, <em>file</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.functionsimpl.save_image_file" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Saves the vnf image file into the vnfs folder</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ws_id</strong> &#8211; The workspace ID</li>
+<li><strong>project_id</strong> &#8211; The project ID</li>
+<li><strong>function_id</strong> &#8211; The function ID</li>
+<li><strong>file</strong> &#8211; The image file</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A success message</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.functionsimpl.update_function">
@@ -457,10 +543,10 @@ applies the given name and url, that are in the json parameter.
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>ws_id</strong> &#8211; </li>
-<li><strong>prj_id</strong> &#8211; </li>
-<li><strong>func_id</strong> &#8211; </li>
-<li><strong>func_data</strong> &#8211; </li>
+<li><strong>ws_id</strong> &#8211; The Workspace ID</li>
+<li><strong>prj_id</strong> &#8211; The Project ID</li>
+<li><strong>func_id</strong> &#8211; The function ID</li>
+<li><strong>func_data</strong> &#8211; The funtion Data for updating</li>
 </ul>
 </td>
 </tr>
@@ -474,7 +560,26 @@ applies the given name and url, that are in the json parameter.
 <dl class="function">
 <dt id="son_editor.impl.functionsimpl.validate_vnf">
 <code class="descclassname">son_editor.impl.functionsimpl.</code><code class="descname">validate_vnf</code><span class="sig-paren">(</span><em>schema_index: int</em>, <em>descriptor: dict</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#son_editor.impl.functionsimpl.validate_vnf" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Validates the VNF against the VNF schema</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>schema_index</strong> &#8211; The index of the schema repository</li>
+<li><strong>descriptor</strong> &#8211; The descriptor to validate</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Nothing if descriptor id valid</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference internal" href="son_editor.app.html#son_editor.app.exceptions.InvalidArgument" title="son_editor.app.exceptions.InvalidArgument"><strong>InvalidArgument</strong></a> &#8211; if the schema is not Valid</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </div>
 <div class="section" id="module-son_editor.impl.gitimpl">
@@ -493,7 +598,7 @@ applies the given name and url, that are in the json parameter.
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the relative GitHub api url</p>
 </td>
 </tr>
 </tbody>
@@ -509,9 +614,7 @@ a consistent son file structure, so no semantics will be tested.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>project_path</strong> &#8211; </td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>project_path</strong> &#8211; the path of the cloned project</td>
 </tr>
 </tbody>
 </table>
@@ -549,13 +652,13 @@ a consistent son file structure, so no semantics will be tested.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>ws_id</strong> &#8211; </li>
-<li><strong>project_id</strong> &#8211; </li>
-<li><strong>commit_message</strong> &#8211; </li>
+<li><strong>ws_id</strong> &#8211; The workspace ID</li>
+<li><strong>project_id</strong> &#8211; The project ID</li>
+<li><strong>commit_message</strong> &#8211; The commit message</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a dictionary containing the result of the operation</p>
 </td>
 </tr>
 </tbody>
@@ -577,7 +680,7 @@ a consistent son file structure, so no semantics will be tested.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a dictionary containing the result of the operation</p>
 </td>
 </tr>
 </tbody>
@@ -636,7 +739,7 @@ a consistent son file structure, so no semantics will be tested.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a dictionary containing the result of the operation</p>
 </td>
 </tr>
 </tbody>
@@ -657,7 +760,7 @@ a consistent son file structure, so no semantics will be tested.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a dictionary containing the result of the operation</p>
 </td>
 </tr>
 </tbody>
@@ -666,22 +769,24 @@ a consistent son file structure, so no semantics will be tested.</p>
 
 <dl class="function">
 <dt id="son_editor.impl.gitimpl.get_project">
-<code class="descclassname">son_editor.impl.gitimpl.</code><code class="descname">get_project</code><span class="sig-paren">(</span><em>ws_id</em>, <em>pj_id: int</em>, <em>session=&lt;sqlalchemy.orm.session.Session object at 0x000002EB2C6962B0&gt;</em><span class="sig-paren">)</span> &rarr; son_editor.models.project.Project<a class="headerlink" href="#son_editor.impl.gitimpl.get_project" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">son_editor.impl.gitimpl.</code><code class="descname">get_project</code><span class="sig-paren">(</span><em>ws_id</em>, <em>pj_id: int</em>, <em>session=&lt;sqlalchemy.orm.session.Session object at 0x000002BDC27C7748&gt;</em><span class="sig-paren">)</span> &rarr; son_editor.models.project.Project<a class="headerlink" href="#son_editor.impl.gitimpl.get_project" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a project and raises 404, when project not found.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>ws_id</strong> &#8211; Workspace id</li>
 <li><strong>pj_id</strong> &#8211; Project id</li>
+<li><strong>session</strong> &#8211; db session</li>
 </ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Project model</p>
 </td>
 </tr>
 </tbody>
 </table>
-<p>:param db session
-:return: Project model</p>
 </dd></dl>
 
 <dl class="function">
@@ -692,9 +797,9 @@ a consistent son file structure, so no semantics will be tested.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ws_id</strong> &#8211; </td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ws_id</strong> &#8211; The workspace ID</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The corresponding workspace model</td>
 </tr>
 </tbody>
 </table>
@@ -730,12 +835,12 @@ a consistent son file structure, so no semantics will be tested.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>ws_id</strong> &#8211; </li>
-<li><strong>project_id</strong> &#8211; </li>
+<li><strong>ws_id</strong> &#8211; The workpace ID</li>
+<li><strong>project_id</strong> &#8211; The project ID to initialize</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a dictionary containing the result of the operation</p>
 </td>
 </tr>
 </tbody>
@@ -752,7 +857,7 @@ a consistent son file structure, so no semantics will be tested.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>netloc</strong> &#8211; http url</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if on github, False else</td>
 </tr>
 </tbody>
 </table>
@@ -766,7 +871,7 @@ a consistent son file structure, so no semantics will be tested.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ws_id</strong> &#8211; </td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ws_id</strong> &#8211; The workspace ID</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference external" href="https://developer.github.com/v3/repos/#response">https://developer.github.com/v3/repos/#response</a></td>
 </tr>
@@ -778,16 +883,24 @@ a consistent son file structure, so no semantics will be tested.</p>
 <dt id="son_editor.impl.gitimpl.pull">
 <code class="descclassname">son_editor.impl.gitimpl.</code><code class="descname">pull</code><span class="sig-paren">(</span><em>ws_id: int</em>, <em>project_id: int</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.gitimpl.pull" title="Permalink to this definition">¶</a></dt>
 <dd><p>Pulls data from the given project_id.
-:param user_data: Session data to get access token for GitHub
 :param ws_id: Workspace of the project
 :param project_id: Project to pull.
-:return:</p>
+:return: a dictionary containing the result of the operation</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.gitimpl.setup_git_user_email">
 <code class="descclassname">son_editor.impl.gitimpl.</code><code class="descname">setup_git_user_email</code><span class="sig-paren">(</span><em>project_full_path: str</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.gitimpl.setup_git_user_email" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Setting up the git user in the local git config to be able to make commits and push</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>project_full_path</strong> &#8211; The absolute project path</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.gitimpl.status">
@@ -798,12 +911,12 @@ a consistent son file structure, so no semantics will be tested.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>ws_id</strong> &#8211; </li>
-<li><strong>pj_id</strong> &#8211; </li>
+<li><strong>ws_id</strong> &#8211; The workspace ID</li>
+<li><strong>pj_id</strong> &#8211; The project ID</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a dictionary containing the result of the operation</p>
 </td>
 </tr>
 </tbody>
@@ -816,23 +929,31 @@ a consistent son file structure, so no semantics will be tested.</p>
 <dl class="function">
 <dt id="son_editor.impl.nsfslookupimpl.find_by_priority">
 <code class="descclassname">son_editor.impl.nsfslookupimpl.</code><code class="descname">find_by_priority</code><span class="sig-paren">(</span><em>user_data</em>, <em>ws_id</em>, <em>project_id</em>, <em>vendor</em>, <em>name</em>, <em>version</em>, <em>is_vnf</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.nsfslookupimpl.find_by_priority" title="Permalink to this definition">¶</a></dt>
-<dd><p>Tries to find vnf / network services by descending priority project / private catalogue / public catalogue.</p>
+<dd><dl class="docutils">
+<dt>Tries to find vnf / network services by descending priority</dt>
+<dd><ol class="first last arabic simple">
+<li>project</li>
+<li>private catalogue</li>
+<li>public catalogues.</li>
+</ol>
+</dd>
+</dl>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>user_data</strong> &#8211; </li>
-<li><strong>ws_id</strong> &#8211; </li>
-<li><strong>project_id</strong> &#8211; </li>
-<li><strong>vendor</strong> &#8211; </li>
-<li><strong>name</strong> &#8211; </li>
-<li><strong>version</strong> &#8211; </li>
-<li><strong>is_vnf</strong> &#8211; </li>
+<li><strong>user_data</strong> &#8211; Information about the current user</li>
+<li><strong>ws_id</strong> &#8211; The Workspace ID</li>
+<li><strong>project_id</strong> &#8211; The project ID</li>
+<li><strong>vendor</strong> &#8211; The descriptors vendor</li>
+<li><strong>name</strong> &#8211; The descriptors name</li>
+<li><strong>version</strong> &#8211; The descriptors versions</li>
+<li><strong>is_vnf</strong> &#8211; if the descriptor is a VNF</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The descriptor if found</p>
 </td>
 </tr>
 </tbody>
@@ -842,18 +963,22 @@ a consistent son file structure, so no semantics will be tested.</p>
 <dl class="function">
 <dt id="son_editor.impl.nsfslookupimpl.find_network_service">
 <code class="descclassname">son_editor.impl.nsfslookupimpl.</code><code class="descname">find_network_service</code><span class="sig-paren">(</span><em>user_data</em>, <em>ws_id</em>, <em>project_id</em>, <em>vendor</em>, <em>name</em>, <em>version</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.nsfslookupimpl.find_network_service" title="Permalink to this definition">¶</a></dt>
-<dd><p>Finds a network service in the priority: project / private catalogue / public catalogue</p>
+<dd><blockquote>
+<div>Tries to find a network service by descending priority
+1. project
+2. private catalogue
+3. public catalogues.</div></blockquote>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>user_data</strong> &#8211; </li>
-<li><strong>ws_id</strong> &#8211; </li>
-<li><strong>project_id</strong> &#8211; </li>
-<li><strong>vendor</strong> &#8211; Vendor name of the function</li>
-<li><strong>name</strong> &#8211; Name of the function</li>
-<li><strong>version</strong> &#8211; The   version of the function</li>
+<li><strong>user_data</strong> &#8211; Information about the current user</li>
+<li><strong>ws_id</strong> &#8211; The Workspace ID</li>
+<li><strong>project_id</strong> &#8211; The project ID</li>
+<li><strong>vendor</strong> &#8211; Vendor name of the network service</li>
+<li><strong>name</strong> &#8211; Name of the network service</li>
+<li><strong>version</strong> &#8211; The   version of the network service</li>
 </ul>
 </td>
 </tr>
@@ -867,22 +992,26 @@ a consistent son file structure, so no semantics will be tested.</p>
 <dl class="function">
 <dt id="son_editor.impl.nsfslookupimpl.find_vnf">
 <code class="descclassname">son_editor.impl.nsfslookupimpl.</code><code class="descname">find_vnf</code><span class="sig-paren">(</span><em>user_data</em>, <em>ws_id</em>, <em>project_id</em>, <em>vendor</em>, <em>name</em>, <em>version</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.nsfslookupimpl.find_vnf" title="Permalink to this definition">¶</a></dt>
-<dd><p>Finds a vnf in the priority: project / private catalogue / public catalogue</p>
+<dd><blockquote>
+<div>Tries to find a vnf by descending priority
+1. project
+2. private catalogue
+3. public catalogues.</div></blockquote>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>user_data</strong> &#8211; </li>
-<li><strong>ws_id</strong> &#8211; </li>
-<li><strong>project_id</strong> &#8211; </li>
-<li><strong>vendor</strong> &#8211; </li>
-<li><strong>name</strong> &#8211; </li>
-<li><strong>version</strong> &#8211; </li>
+<li><strong>user_data</strong> &#8211; Information about the current user</li>
+<li><strong>ws_id</strong> &#8211; The Workspace ID</li>
+<li><strong>project_id</strong> &#8211; The project ID</li>
+<li><strong>vendor</strong> &#8211; Vendor name of the function</li>
+<li><strong>name</strong> &#8211; Name of the function</li>
+<li><strong>version</strong> &#8211; The   version of the function</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">If found, it returns the function</p>
 </td>
 </tr>
 </tbody>
@@ -916,6 +1045,16 @@ a consistent son file structure, so no semantics will be tested.</p>
 <dt id="son_editor.impl.nsfslookupimpl.get_project">
 <code class="descclassname">son_editor.impl.nsfslookupimpl.</code><code class="descname">get_project</code><span class="sig-paren">(</span><em>project_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.nsfslookupimpl.get_project" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieves the project which matches the given project id. Otherwise it raises NotFound Exception</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>project_id</strong> &#8211; The project ID</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The project model</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
@@ -930,9 +1069,9 @@ a consistent son file structure, so no semantics will be tested.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>ws_id</strong> &#8211; </li>
-<li><strong>platform_id</strong> &#8211; </li>
-<li><strong>service_data</strong> &#8211; </li>
+<li><strong>ws_id</strong> &#8211; The workspace ID</li>
+<li><strong>platform_id</strong> &#8211; The platform ID</li>
+<li><strong>service_data</strong> &#8211; The service descriptor data</li>
 </ul>
 </td>
 </tr>
@@ -946,7 +1085,21 @@ a consistent son file structure, so no semantics will be tested.</p>
 <dl class="function">
 <dt id="son_editor.impl.platform_connector.publish_referenced_functions">
 <code class="descclassname">son_editor.impl.platform_connector.</code><code class="descname">publish_referenced_functions</code><span class="sig-paren">(</span><em>ws_id</em>, <em>proj_id</em>, <em>descriptor</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.platform_connector.publish_referenced_functions" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Publishes the referenced functions to the private cataloge after packaging</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>ws_id</strong> &#8211; The workspace ID</li>
+<li><strong>proj_id</strong> &#8211; The project ID</li>
+<li><strong>descriptor</strong> &#8211; The service descriptor</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </div>
 <div class="section" id="module-son_editor.impl.platformsimpl">
@@ -960,12 +1113,12 @@ a consistent son file structure, so no semantics will be tested.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>workspace_id</strong> &#8211; </li>
-<li><strong>platform_data</strong> &#8211; </li>
+<li><strong>workspace_id</strong> &#8211; The workspace ID</li>
+<li><strong>platform_data</strong> &#8211; The platform info</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The newly created platform descriptor</p>
 </td>
 </tr>
 </tbody>
@@ -981,8 +1134,8 @@ a consistent son file structure, so no semantics will be tested.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>workspace_id</strong> &#8211; </li>
-<li><strong>platform_id</strong> &#8211; </li>
+<li><strong>workspace_id</strong> &#8211; The workspace ID</li>
+<li><strong>platform_id</strong> &#8211; The platform ID</li>
 </ul>
 </td>
 </tr>
@@ -1001,7 +1154,7 @@ a consistent son file structure, so no semantics will be tested.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>platform_id</strong> &#8211; </td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>platform_id</strong> &#8211; The platform ID</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The platform information</td>
 </tr>
@@ -1017,9 +1170,9 @@ a consistent son file structure, so no semantics will be tested.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>workspace_id</strong> &#8211; </td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>workspace_id</strong> &#8211; The workspace ID</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A list of all platforms defined for this workspace</td>
 </tr>
 </tbody>
 </table>
@@ -1034,8 +1187,8 @@ a consistent son file structure, so no semantics will be tested.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>workspace_id</strong> &#8211; </li>
-<li><strong>platform_id</strong> &#8211; </li>
+<li><strong>workspace_id</strong> &#8211; The workspace ID</li>
+<li><strong>platform_id</strong> &#8211; The platform ID</li>
 </ul>
 </td>
 </tr>
@@ -1078,14 +1231,10 @@ a consistent son file structure, so no semantics will be tested.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>ws_id</strong> &#8211; </li>
-<li><strong>descriptor</strong> &#8211; </li>
-<li><strong>is_vnf</strong> &#8211; </li>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>ws_id</strong> &#8211; The Workspace ID</li>
+<li><strong>descriptor</strong> &#8211; The descriptor to publish</li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
 </td>
 </tr>
 </tbody>
@@ -1101,15 +1250,15 @@ a consistent son file structure, so no semantics will be tested.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>ws_id</strong> &#8211; </li>
-<li><strong>is_vnf</strong> &#8211; </li>
-<li><strong>vendor</strong> &#8211; </li>
-<li><strong>name</strong> &#8211; </li>
-<li><strong>version</strong> &#8211; </li>
+<li><strong>ws_id</strong> &#8211; The workspace ID</li>
+<li><strong>is_vnf</strong> &#8211; if descriptor is a VNF</li>
+<li><strong>vendor</strong> &#8211; the descriptors vendor</li>
+<li><strong>name</strong> &#8211; the descriptors name</li>
+<li><strong>version</strong> &#8211; the descriptors version</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The requested descriptor if found, None if nothing found</p>
 </td>
 </tr>
 </tbody>
@@ -1130,8 +1279,8 @@ a consistent son file structure, so no semantics will be tested.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>ws_id</strong> &#8211; </li>
-<li><strong>project_data</strong> &#8211; </li>
+<li><strong>ws_id</strong> &#8211; The workpace ID</li>
+<li><strong>project_data</strong> &#8211; The project data to create</li>
 </ul>
 </td>
 </tr>
@@ -1161,7 +1310,11 @@ a consistent son file structure, so no semantics will be tested.</p>
 <dl class="function">
 <dt id="son_editor.impl.projectsimpl.get_project">
 <code class="descclassname">son_editor.impl.projectsimpl.</code><code class="descname">get_project</code><span class="sig-paren">(</span><em>ws_id</em>, <em>pj_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.projectsimpl.get_project" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Get a specific project 
+:param ws_id: The workspace ID
+:param pj_id: The project ID
+:return: The project descriptor</p>
+</dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.projectsimpl.get_project_path">
@@ -1177,7 +1330,7 @@ a consistent son file structure, so no semantics will be tested.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The absolute project path</p>
 </td>
 </tr>
 </tbody>
@@ -1192,9 +1345,9 @@ a consistent son file structure, so no semantics will be tested.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ws_id</strong> &#8211; </td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ws_id</strong> &#8211; The workspace ID</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">List of all projects</td>
 </tr>
 </tbody>
 </table>
@@ -1215,13 +1368,10 @@ especially if trying to remove .git files on windows</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>project</strong> &#8211; The project database model</li>
 <li><strong>project_data</strong> &#8211; The project data dictionary from the frontend</li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
 </td>
 </tr>
 </tbody>
@@ -1237,12 +1387,12 @@ especially if trying to remove .git files on windows</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project_data</strong> &#8211; </li>
-<li><strong>project_id</strong> &#8211; </li>
+<li><strong>project_data</strong> &#8211; The project Data</li>
+<li><strong>project_id</strong> &#8211; The project ID to update</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The updated project descriptor</p>
 </td>
 </tr>
 </tbody>
@@ -1298,7 +1448,23 @@ especially if trying to remove .git files on windows</p>
 <dl class="function">
 <dt id="son_editor.impl.servicesimpl.get_references">
 <code class="descclassname">son_editor.impl.servicesimpl.</code><code class="descname">get_references</code><span class="sig-paren">(</span><em>service</em>, <em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.servicesimpl.get_references" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Searches for references to the service.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>service</strong> &#8211; The service</li>
+<li><strong>session</strong> &#8211; the db_session</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a list of services referencing the given service</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.servicesimpl.get_service">
@@ -1315,7 +1481,7 @@ especially if trying to remove .git files on windows</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The requested service data</p>
 </td>
 </tr>
 </tbody>
@@ -1331,7 +1497,7 @@ especially if trying to remove .git files on windows</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>ws_id</strong> &#8211; </li>
+<li><strong>ws_id</strong> &#8211; The workspace ID</li>
 <li><strong>project_id</strong> &#8211; The project ID</li>
 </ul>
 </td>
@@ -1357,19 +1523,20 @@ especially if trying to remove .git files on windows</p>
 <dt id="son_editor.impl.servicesimpl.update_service">
 <code class="descclassname">son_editor.impl.servicesimpl.</code><code class="descname">update_service</code><span class="sig-paren">(</span><em>ws_id</em>, <em>project_id</em>, <em>service_id</em>, <em>service_data</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.servicesimpl.update_service" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update the service using the service data from the request</p>
+<p>Will also check for references by other services and create a copy if so</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>ws_id</strong> &#8211; </li>
-<li><strong>project_id</strong> &#8211; </li>
-<li><strong>service_id</strong> &#8211; </li>
-<li><strong>service_data</strong> &#8211; </li>
+<li><strong>ws_id</strong> &#8211; The Workspace ID</li>
+<li><strong>project_id</strong> &#8211; The project ID</li>
+<li><strong>service_id</strong> &#8211; The service ID</li>
+<li><strong>service_data</strong> &#8211; The service data containing the &#8220;descriptor&#8221; and optionally some &#8220;meta&#8221; data</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The updated service data</p>
 </td>
 </tr>
 </tbody>
@@ -1536,7 +1703,11 @@ especially if trying to remove .git files on windows</p>
 <dl class="function">
 <dt id="son_editor.impl.workspaceimpl.test_url">
 <code class="descclassname">son_editor.impl.workspaceimpl.</code><code class="descname">test_url</code><span class="sig-paren">(</span><em>name</em>, <em>url</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.impl.workspaceimpl.test_url" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Tests the url for reachability
+:param name: the server name
+:param url: the server url
+:raises ExtNotReachable: if the external server could not be contacted</p>
+</dd></dl>
 
 <dl class="function">
 <dt id="son_editor.impl.workspaceimpl.update_workspace">
@@ -1560,9 +1731,6 @@ especially if trying to remove .git files on windows</p>
 </dd></dl>
 
 </div>
-<div class="section" id="module-son_editor.impl">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-son_editor.impl" title="Permalink to this headline">¶</a></h2>
-</div>
 </div>
 
 
@@ -1574,7 +1742,6 @@ especially if trying to remove .git files on windows</p>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">son_editor.impl package</a><ul>
-<li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-son_editor.impl.catalogue_servicesimpl">son_editor.impl.catalogue_servicesimpl module</a></li>
 <li><a class="reference internal" href="#module-son_editor.impl.cataloguesimpl">son_editor.impl.cataloguesimpl module</a></li>
 <li><a class="reference internal" href="#module-son_editor.impl.functionsimpl">son_editor.impl.functionsimpl module</a></li>
@@ -1588,7 +1755,6 @@ especially if trying to remove .git files on windows</p>
 <li><a class="reference internal" href="#module-son_editor.impl.usermanagement">son_editor.impl.usermanagement module</a></li>
 <li><a class="reference internal" href="#module-son_editor.impl.userserviceimpl">son_editor.impl.userserviceimpl module</a></li>
 <li><a class="reference internal" href="#module-son_editor.impl.workspaceimpl">son_editor.impl.workspaceimpl module</a></li>
-<li><a class="reference internal" href="#module-son_editor.impl">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -1596,6 +1762,12 @@ especially if trying to remove .git files on windows</p>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">src</a><ul>
+  <li><a href="son_editor.html">son_editor package</a><ul>
+      <li>Previous: <a href="son_editor.app.html" title="previous chapter">son_editor.app package</a></li>
+      <li>Next: <a href="son_editor.models.html" title="next chapter">son_editor.models package</a></li>
+  </ul></li>
+  </ul></li>
   </ul></li>
 </ul>
 </div>

@@ -16,7 +16,8 @@ CONFIG = yaml.safe_load(resource_string(Requirement.parse("upb-son-editor-backen
 
 def update_config(config):
     """
-     Update the configuratiion file
+    Update the configuratiion file
+         
     :param config: The new configuration
     :return: Message if successful
     """

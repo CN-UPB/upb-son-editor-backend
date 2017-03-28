@@ -57,19 +57,16 @@
 
 
 \chapter{src}
-\label{_source/modules::doc}\label{_source/modules:welcome-to-sonata-editor-backend-s-documentation}\label{_source/modules:src}
+\label{_source/modules:src}\label{_source/modules:welcome-to-sonata-editor-backend-s-documentation}\label{_source/modules::doc}
 
 \section{son\_editor package}
-\label{_source/son_editor::doc}\label{_source/son_editor:son-editor-package}
+\label{_source/son_editor:son-editor-package}\label{_source/son_editor::doc}
 
 \subsection{Subpackages}
 \label{_source/son_editor:subpackages}
 
 \subsubsection{son\_editor.apis package}
-\label{_source/son_editor.apis::doc}\label{_source/son_editor.apis:son-editor-apis-package}
-
-\paragraph{Submodules}
-\label{_source/son_editor.apis:submodules}
+\label{_source/son_editor.apis:son-editor-apis-package}\label{_source/son_editor.apis::doc}
 
 \paragraph{son\_editor.apis.catalogue\_functionsapi module}
 \label{_source/son_editor.apis:module-son_editor.apis.catalogue_functionsapi}\label{_source/son_editor.apis:son-editor-apis-catalogue-functionsapi-module}\index{son\_editor.apis.catalogue\_functionsapi (module)}
@@ -161,7 +158,7 @@ Creates a new function in the project or catalogue
 
 
 \paragraph{son\_editor.apis.catalogue\_servicesapi module}
-\label{_source/son_editor.apis:module-son_editor.apis.catalogue_servicesapi}\label{_source/son_editor.apis:son-editor-apis-catalogue-servicesapi-module}\index{son\_editor.apis.catalogue\_servicesapi (module)}
+\label{_source/son_editor.apis:son-editor-apis-catalogue-servicesapi-module}\label{_source/son_editor.apis:module-son_editor.apis.catalogue_servicesapi}\index{son\_editor.apis.catalogue\_servicesapi (module)}
 Created on 22.07.2016
 
 @author: Jonas
@@ -202,7 +199,7 @@ Returns the referenced service from the Project or catalogue
 \phantomsection\label{_source/son_editor.apis:son_editor.apis.catalogue_servicesapi.Service.put}\pysiglinewithargsret{\sphinxbfcode{put}}{\emph{ws\_id}, \emph{catalogue\_id}, \emph{service\_id}}{}
 Update the service
 
-Updates the referenced service in the project or in the catalogue or platform
+Updates the referenced service in the catalogue
 
 \end{fulllineitems}
 
@@ -237,8 +234,7 @@ Returns a list of all services available in this resource
 \phantomsection\label{_source/son_editor.apis:son_editor.apis.catalogue_servicesapi.Services.post}\pysiglinewithargsret{\sphinxbfcode{post}}{\emph{ws\_id}, \emph{catalogue\_id}}{}
 Create a new Service
 
-Creates a new Service in this project or
-publishes it in the catalogue or platform
+Publishes a new Service in the catalogue
 
 \end{fulllineitems}
 
@@ -248,7 +244,7 @@ publishes it in the catalogue or platform
 
 
 \paragraph{son\_editor.apis.cataloguesapi module}
-\label{_source/son_editor.apis:module-son_editor.apis.cataloguesapi}\label{_source/son_editor.apis:son-editor-apis-cataloguesapi-module}\index{son\_editor.apis.cataloguesapi (module)}
+\label{_source/son_editor.apis:son-editor-apis-cataloguesapi-module}\label{_source/son_editor.apis:module-son_editor.apis.cataloguesapi}\index{son\_editor.apis.cataloguesapi (module)}
 Created on 18.07.2016
 
 @author: Jonas
@@ -333,11 +329,13 @@ Creates a new service catalogue in the specific workspace
 
 
 \paragraph{son\_editor.apis.configapi module}
-\label{_source/son_editor.apis:module-son_editor.apis.configapi}\label{_source/son_editor.apis:son-editor-apis-configapi-module}\index{son\_editor.apis.configapi (module)}\index{Configuration (class in son\_editor.apis.configapi)}
+\label{_source/son_editor.apis:son-editor-apis-configapi-module}\label{_source/son_editor.apis:module-son_editor.apis.configapi}\index{son\_editor.apis.configapi (module)}\index{Configuration (class in son\_editor.apis.configapi)}
 
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.apis:son_editor.apis.configapi.Configuration}\pysiglinewithargsret{\sphinxstrong{class }\sphinxcode{son\_editor.apis.configapi.}\sphinxbfcode{Configuration}}{\emph{api=None}, \emph{*args}, \emph{**kwargs}}{}
 Bases: \sphinxcode{flask\_restplus.resource.Resource}
+
+Web configuration
 \index{get() (son\_editor.apis.configapi.Configuration method)}
 
 \begin{fulllineitems}
@@ -353,7 +351,7 @@ Bases: \sphinxcode{flask\_restplus.resource.Resource}
 \index{post() (son\_editor.apis.configapi.Configuration method)}
 
 \begin{fulllineitems}
-\phantomsection\label{_source/son_editor.apis:son_editor.apis.configapi.Configuration.post}\pysiglinewithargsret{\sphinxbfcode{post}}{}{}
+\phantomsection\label{_source/son_editor.apis:son_editor.apis.configapi.Configuration.post}\pysiglinewithargsret{\sphinxbfcode{post}}{\emph{*args}, \emph{**kwargs}}{}
 \end{fulllineitems}
 
 
@@ -586,7 +584,7 @@ Retrieves the current status of the project directory
 
 
 \paragraph{son\_editor.apis.misc module}
-\label{_source/son_editor.apis:son-editor-apis-misc-module}\label{_source/son_editor.apis:module-son_editor.apis.misc}\index{son\_editor.apis.misc (module)}\index{Log (class in son\_editor.apis.misc)}
+\label{_source/son_editor.apis:module-son_editor.apis.misc}\label{_source/son_editor.apis:son-editor-apis-misc-module}\index{son\_editor.apis.misc (module)}\index{Log (class in son\_editor.apis.misc)}
 
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.apis:son_editor.apis.misc.Log}\pysiglinewithargsret{\sphinxstrong{class }\sphinxcode{son\_editor.apis.misc.}\sphinxbfcode{Log}}{\emph{api=None}, \emph{*args}, \emph{**kwargs}}{}
@@ -608,56 +606,56 @@ Return the logfile as string
 
 \end{fulllineitems}
 
-\index{Shutdown (class in son\_editor.apis.misc)}
-
-\begin{fulllineitems}
-\phantomsection\label{_source/son_editor.apis:son_editor.apis.misc.Shutdown}\pysiglinewithargsret{\sphinxstrong{class }\sphinxcode{son\_editor.apis.misc.}\sphinxbfcode{Shutdown}}{\emph{api=None}, \emph{*args}, \emph{**kwargs}}{}
-Bases: \sphinxcode{flask\_restplus.resource.Resource}
-\index{get() (son\_editor.apis.misc.Shutdown method)}
-
-\begin{fulllineitems}
-\phantomsection\label{_source/son_editor.apis:son_editor.apis.misc.Shutdown.get}\pysiglinewithargsret{\sphinxbfcode{get}}{}{}
-Shutdown the server
-
-Only works if issued from localhost
-
-\end{fulllineitems}
-
-\index{methods (son\_editor.apis.misc.Shutdown attribute)}
-
-\begin{fulllineitems}
-\phantomsection\label{_source/son_editor.apis:son_editor.apis.misc.Shutdown.methods}\pysigline{\sphinxbfcode{methods}\sphinxstrong{ = {[}'GET'{]}}}
-\end{fulllineitems}
-
-
-\end{fulllineitems}
-
 
 
 \paragraph{son\_editor.apis.nsfslookup module}
-\label{_source/son_editor.apis:son-editor-apis-nsfslookup-module}\label{_source/son_editor.apis:module-son_editor.apis.nsfslookup}\index{son\_editor.apis.nsfslookup (module)}
+\label{_source/son_editor.apis:module-son_editor.apis.nsfslookup}\label{_source/son_editor.apis:son-editor-apis-nsfslookup-module}\index{son\_editor.apis.nsfslookup (module)}
 Created on 22.07.2016
 
 @author: Jonas
-\index{Lookup (class in son\_editor.apis.nsfslookup)}
+\index{FunctionLookup (class in son\_editor.apis.nsfslookup)}
 
 \begin{fulllineitems}
-\phantomsection\label{_source/son_editor.apis:son_editor.apis.nsfslookup.Lookup}\pysiglinewithargsret{\sphinxstrong{class }\sphinxcode{son\_editor.apis.nsfslookup.}\sphinxbfcode{Lookup}}{\emph{api=None}, \emph{*args}, \emph{**kwargs}}{}
+\phantomsection\label{_source/son_editor.apis:son_editor.apis.nsfslookup.FunctionLookup}\pysiglinewithargsret{\sphinxstrong{class }\sphinxcode{son\_editor.apis.nsfslookup.}\sphinxbfcode{FunctionLookup}}{\emph{api=None}, \emph{*args}, \emph{**kwargs}}{}
 Bases: \sphinxcode{flask\_restplus.resource.Resource}
-\index{get() (son\_editor.apis.nsfslookup.Lookup method)}
+\index{get() (son\_editor.apis.nsfslookup.FunctionLookup method)}
 
 \begin{fulllineitems}
-\phantomsection\label{_source/son_editor.apis:son_editor.apis.nsfslookup.Lookup.get}\pysiglinewithargsret{\sphinxbfcode{get}}{\emph{ws\_id}, \emph{project\_id}, \emph{vendor}, \emph{name}, \emph{version}}{}
+\phantomsection\label{_source/son_editor.apis:son_editor.apis.nsfslookup.FunctionLookup.get}\pysiglinewithargsret{\sphinxbfcode{get}}{\emph{ws\_id}, \emph{project\_id}, \emph{vendor}, \emph{name}, \emph{version}}{}
 Retrieves a virtual network function by vendor name version
 
 Finds a specific virtual network with given vendor / name / version
 
 \end{fulllineitems}
 
-\index{methods (son\_editor.apis.nsfslookup.Lookup attribute)}
+\index{methods (son\_editor.apis.nsfslookup.FunctionLookup attribute)}
 
 \begin{fulllineitems}
-\phantomsection\label{_source/son_editor.apis:son_editor.apis.nsfslookup.Lookup.methods}\pysigline{\sphinxbfcode{methods}\sphinxstrong{ = {[}'GET'{]}}}
+\phantomsection\label{_source/son_editor.apis:son_editor.apis.nsfslookup.FunctionLookup.methods}\pysigline{\sphinxbfcode{methods}\sphinxstrong{ = {[}'GET'{]}}}
+\end{fulllineitems}
+
+
+\end{fulllineitems}
+
+\index{ServiceLookup (class in son\_editor.apis.nsfslookup)}
+
+\begin{fulllineitems}
+\phantomsection\label{_source/son_editor.apis:son_editor.apis.nsfslookup.ServiceLookup}\pysiglinewithargsret{\sphinxstrong{class }\sphinxcode{son\_editor.apis.nsfslookup.}\sphinxbfcode{ServiceLookup}}{\emph{api=None}, \emph{*args}, \emph{**kwargs}}{}
+Bases: \sphinxcode{flask\_restplus.resource.Resource}
+\index{get() (son\_editor.apis.nsfslookup.ServiceLookup method)}
+
+\begin{fulllineitems}
+\phantomsection\label{_source/son_editor.apis:son_editor.apis.nsfslookup.ServiceLookup.get}\pysiglinewithargsret{\sphinxbfcode{get}}{\emph{ws\_id}, \emph{project\_id}, \emph{vendor}, \emph{name}, \emph{version}}{}
+Retrieves a network service by vendor name version
+
+Finds a specific network service with given vendor / name / version
+
+\end{fulllineitems}
+
+\index{methods (son\_editor.apis.nsfslookup.ServiceLookup attribute)}
+
+\begin{fulllineitems}
+\phantomsection\label{_source/son_editor.apis:son_editor.apis.nsfslookup.ServiceLookup.methods}\pysigline{\sphinxbfcode{methods}\sphinxstrong{ = {[}'GET'{]}}}
 \end{fulllineitems}
 
 
@@ -666,7 +664,7 @@ Finds a specific virtual network with given vendor / name / version
 
 
 \paragraph{son\_editor.apis.platformsapi module}
-\label{_source/son_editor.apis:son-editor-apis-platformsapi-module}\label{_source/son_editor.apis:module-son_editor.apis.platformsapi}\index{son\_editor.apis.platformsapi (module)}
+\label{_source/son_editor.apis:module-son_editor.apis.platformsapi}\label{_source/son_editor.apis:son-editor-apis-platformsapi-module}\index{son\_editor.apis.platformsapi (module)}
 Created on 18.07.2016
 
 @author: Jonas
@@ -680,6 +678,7 @@ Bases: \sphinxcode{flask\_restplus.resource.Resource}
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.apis:son_editor.apis.platformsapi.Platform.delete}\pysiglinewithargsret{\sphinxbfcode{delete}}{\emph{ws\_id}, \emph{platform\_id}}{}
 Delete Platform
+
 Deletes a service platform by its id
 
 \end{fulllineitems}
@@ -689,6 +688,7 @@ Deletes a service platform by its id
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.apis:son_editor.apis.platformsapi.Platform.get}\pysiglinewithargsret{\sphinxbfcode{get}}{\emph{ws\_id}, \emph{platform\_id}}{}
 Get service Platform
+
 Retrieves a service platform by its id
 
 \end{fulllineitems}
@@ -704,6 +704,7 @@ Retrieves a service platform by its id
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.apis:son_editor.apis.platformsapi.Platform.put}\pysiglinewithargsret{\sphinxbfcode{put}}{\emph{ws\_id}, \emph{platform\_id}}{}
 Update platform
+
 Updates a service platform by its id
 
 \end{fulllineitems}
@@ -831,6 +832,30 @@ Bases: \sphinxcode{flask\_restplus.resource.Resource}
 
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.apis:son_editor.apis.project_functionsapi.FunctionUpload.delete}\pysiglinewithargsret{\sphinxstrong{static }\sphinxbfcode{delete}}{\emph{ws\_id}, \emph{project\_id}, \emph{vnf\_id}, \emph{filename}}{}
+Delete VNF Image
+
+Delete the VNF Image by file name
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{ws\_id} -- The workspace ID
+
+\item {} 
+\sphinxstyleliteralstrong{project\_id} -- The project ID
+
+\item {} 
+\sphinxstyleliteralstrong{vnf\_id} -- The VNF ID
+
+\item {} 
+\sphinxstyleliteralstrong{filename} -- The filename to delete
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+
+
+\end{description}\end{quote}
+
 \end{fulllineitems}
 
 \index{methods (son\_editor.apis.project\_functionsapi.FunctionUpload attribute)}
@@ -878,42 +903,42 @@ Creates a new function in the project or catalogue
 
 \end{fulllineitems}
 
-\index{PrivateService (class in son\_editor.apis.project\_functionsapi)}
+\index{PrivateFunction (class in son\_editor.apis.project\_functionsapi)}
 
 \begin{fulllineitems}
-\phantomsection\label{_source/son_editor.apis:son_editor.apis.project_functionsapi.PrivateService}\pysiglinewithargsret{\sphinxstrong{class }\sphinxcode{son\_editor.apis.project\_functionsapi.}\sphinxbfcode{PrivateService}}{\emph{api=None}, \emph{*args}, \emph{**kwargs}}{}
+\phantomsection\label{_source/son_editor.apis:son_editor.apis.project_functionsapi.PrivateFunction}\pysiglinewithargsret{\sphinxstrong{class }\sphinxcode{son\_editor.apis.project\_functionsapi.}\sphinxbfcode{PrivateFunction}}{\emph{api=None}, \emph{*args}, \emph{**kwargs}}{}
 Bases: \sphinxcode{flask\_restplus.resource.Resource}
-\index{get() (son\_editor.apis.project\_functionsapi.PrivateService method)}
+\index{get() (son\_editor.apis.project\_functionsapi.PrivateFunction method)}
 
 \begin{fulllineitems}
-\phantomsection\label{_source/son_editor.apis:son_editor.apis.project_functionsapi.PrivateService.get}\pysiglinewithargsret{\sphinxbfcode{get}}{\emph{ws\_id}, \emph{project\_id}, \emph{vnf\_id}}{}
+\phantomsection\label{_source/son_editor.apis:son_editor.apis.project_functionsapi.PrivateFunction.get}\pysiglinewithargsret{\sphinxbfcode{get}}{\emph{ws\_id}, \emph{project\_id}, \emph{vnf\_id}}{}
 Publish function to private
 
 Publishes the function to the workspace wide catalogue
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
 \item {} 
-\sphinxstyleliteralstrong{ws\_id} -- 
+\sphinxstyleliteralstrong{ws\_id} -- The Workspace ID
 
 \item {} 
-\sphinxstyleliteralstrong{project\_id} -- 
+\sphinxstyleliteralstrong{project\_id} -- The Project ID
 
 \item {} 
-\sphinxstyleliteralstrong{vnf\_id} -- 
+\sphinxstyleliteralstrong{vnf\_id} -- The VNF ID
 
 \end{itemize}
 
 \item[{Returns}] \leavevmode
-
+dict with ``message'' property
 
 \end{description}\end{quote}
 
 \end{fulllineitems}
 
-\index{methods (son\_editor.apis.project\_functionsapi.PrivateService attribute)}
+\index{methods (son\_editor.apis.project\_functionsapi.PrivateFunction attribute)}
 
 \begin{fulllineitems}
-\phantomsection\label{_source/son_editor.apis:son_editor.apis.project_functionsapi.PrivateService.methods}\pysigline{\sphinxbfcode{methods}\sphinxstrong{ = {[}'GET'{]}}}
+\phantomsection\label{_source/son_editor.apis:son_editor.apis.project_functionsapi.PrivateFunction.methods}\pysigline{\sphinxbfcode{methods}\sphinxstrong{ = {[}'GET'{]}}}
 \end{fulllineitems}
 
 
@@ -943,18 +968,18 @@ Publishes the service to the workspace wide catalogue
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
 \item {} 
-\sphinxstyleliteralstrong{ws\_id} -- 
+\sphinxstyleliteralstrong{ws\_id} -- The Workspace ID
 
 \item {} 
-\sphinxstyleliteralstrong{project\_id} -- 
+\sphinxstyleliteralstrong{project\_id} -- The Project ID
 
 \item {} 
-\sphinxstyleliteralstrong{service\_id} -- 
+\sphinxstyleliteralstrong{service\_id} -- The Service ID
 
 \end{itemize}
 
 \item[{Returns}] \leavevmode
-
+A dict with a ``message'' property.
 
 \end{description}\end{quote}
 
@@ -1052,7 +1077,7 @@ publishes it in the catalogue or platform
 
 
 \paragraph{son\_editor.apis.projectsapi module}
-\label{_source/son_editor.apis:son-editor-apis-projectsapi-module}\label{_source/son_editor.apis:module-son_editor.apis.projectsapi}\index{son\_editor.apis.projectsapi (module)}
+\label{_source/son_editor.apis:module-son_editor.apis.projectsapi}\label{_source/son_editor.apis:son-editor-apis-projectsapi-module}\index{son\_editor.apis.projectsapi (module)}
 Created on 18.07.2016
 
 @author: Jonas
@@ -1137,7 +1162,7 @@ Creates a new project in the given workspace
 
 
 \paragraph{son\_editor.apis.schemaapi module}
-\label{_source/son_editor.apis:module-son_editor.apis.schemaapi}\label{_source/son_editor.apis:son-editor-apis-schemaapi-module}\index{son\_editor.apis.schemaapi (module)}\index{Schema (class in son\_editor.apis.schemaapi)}
+\label{_source/son_editor.apis:son-editor-apis-schemaapi-module}\label{_source/son_editor.apis:module-son_editor.apis.schemaapi}\index{son\_editor.apis.schemaapi (module)}\index{Schema (class in son\_editor.apis.schemaapi)}
 
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.apis:son_editor.apis.schemaapi.Schema}\pysiglinewithargsret{\sphinxstrong{class }\sphinxcode{son\_editor.apis.schemaapi.}\sphinxbfcode{Schema}}{\emph{api=None}, \emph{*args}, \emph{**kwargs}}{}
@@ -1148,19 +1173,21 @@ Single schema retrieval
 
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.apis:son_editor.apis.schemaapi.Schema.get}\pysiglinewithargsret{\sphinxbfcode{get}}{\emph{ws\_id}, \emph{schema\_id}}{}
-Return the requested schema
+Get schema
+
+Returns the requested schema from the schema\_master at schema\_index from this workspace
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
 \item {} 
-\sphinxstyleliteralstrong{ws\_id} -- 
+\sphinxstyleliteralstrong{ws\_id} -- The workspace ID
 
 \item {} 
-\sphinxstyleliteralstrong{schema\_id} -- 
+\sphinxstyleliteralstrong{schema\_id} -- Either ``ns'' or ``vnf''
 
 \end{itemize}
 
 \item[{Returns}] \leavevmode
-
+The requested schema
 
 \end{description}\end{quote}
 
@@ -1191,10 +1218,10 @@ List Schemas
 Returns a list of all schemas configured for this server
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode
-\sphinxstyleliteralstrong{ws\_id} -- 
+\sphinxstyleliteralstrong{ws\_id} -- The workspace ID
 
 \item[{Returns}] \leavevmode
-
+A list of schemas
 
 \end{description}\end{quote}
 
@@ -1223,6 +1250,8 @@ User information
 
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.apis:son_editor.apis.userserviceapi.Information.get}\pysiglinewithargsret{\sphinxstrong{static }\sphinxbfcode{get}}{}{}
+User Information
+
 Returns github information about the current user
 
 \end{fulllineitems}
@@ -1245,6 +1274,8 @@ Bases: \sphinxcode{flask\_restplus.resource.Resource}
 
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.apis:son_editor.apis.userserviceapi.Login.get}\pysiglinewithargsret{\sphinxstrong{static }\sphinxbfcode{get}}{}{}
+Login User
+
 Login the User with a referral code from the github oauth process
 
 \end{fulllineitems}
@@ -1269,6 +1300,15 @@ Logs out the current user
 
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.apis:son_editor.apis.userserviceapi.Logout.get}\pysiglinewithargsret{\sphinxstrong{static }\sphinxbfcode{get}}{}{}
+Logout
+
+Logs out the current user
+\begin{quote}\begin{description}
+\item[{Returns}] \leavevmode
+``Logged out''
+
+\end{description}\end{quote}
+
 \end{fulllineitems}
 
 \index{methods (son\_editor.apis.userserviceapi.Logout attribute)}
@@ -1284,7 +1324,6 @@ Logs out the current user
 
 \paragraph{son\_editor.apis.workspacesapi module}
 \label{_source/son_editor.apis:module-son_editor.apis.workspacesapi}\label{_source/son_editor.apis:son-editor-apis-workspacesapi-module}\index{son\_editor.apis.workspacesapi (module)}
-''
 Created on 18.07.2016
 
 @author: Jonas
@@ -1302,14 +1341,6 @@ List functions of private Catalogue
 List private Catalogue functions
 
 Lists all functions in the Private workspace wide catalogue
-\begin{quote}\begin{description}
-\item[{Parameters}] \leavevmode
-\sphinxstyleliteralstrong{ws\_id} -- 
-
-\item[{Returns}] \leavevmode
-
-
-\end{description}\end{quote}
 
 \end{fulllineitems}
 
@@ -1336,14 +1367,6 @@ List Services of private Catalogue
 List private Catalogue services
 
 Lists all services in the Private workspace wide catalogue
-\begin{quote}\begin{description}
-\item[{Parameters}] \leavevmode
-\sphinxstyleliteralstrong{ws\_id} -- 
-
-\item[{Returns}] \leavevmode
-
-
-\end{description}\end{quote}
 
 \end{fulllineitems}
 
@@ -1394,6 +1417,7 @@ Gets information about a specific workspace
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.apis:son_editor.apis.workspacesapi.Workspace.put}\pysiglinewithargsret{\sphinxbfcode{put}}{\emph{ws\_id}}{}
 Update workspace
+
 Updates a specific workspace by its id
 
 \end{fulllineitems}
@@ -1439,54 +1463,84 @@ Creates a new workspace
 
 
 
-\paragraph{Module contents}
-\label{_source/son_editor.apis:module-contents}\label{_source/son_editor.apis:module-son_editor.apis}\index{son\_editor.apis (module)}\index{init() (in module son\_editor.apis)}
-
-\begin{fulllineitems}
-\phantomsection\label{_source/son_editor.apis:son_editor.apis.init}\pysiglinewithargsret{\sphinxcode{son\_editor.apis.}\sphinxbfcode{init}}{\emph{api}}{}
-\end{fulllineitems}
-
-
-
 \subsubsection{son\_editor.app package}
-\label{_source/son_editor.app::doc}\label{_source/son_editor.app:son-editor-app-package}
-
-\paragraph{Submodules}
-\label{_source/son_editor.app:submodules}
+\label{_source/son_editor.app:son-editor-app-package}\label{_source/son_editor.app::doc}
 
 \paragraph{son\_editor.app.database module}
-\label{_source/son_editor.app:module-son_editor.app.database}\label{_source/son_editor.app:son-editor-app-database-module}\index{son\_editor.app.database (module)}\index{init\_db() (in module son\_editor.app.database)}
+\label{_source/son_editor.app:son-editor-app-database-module}\label{_source/son_editor.app:module-son_editor.app.database}\index{son\_editor.app.database (module)}\index{init\_db() (in module son\_editor.app.database)}
 
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.app:son_editor.app.database.init_db}\pysiglinewithargsret{\sphinxcode{son\_editor.app.database.}\sphinxbfcode{init\_db}}{}{}
+Import model modules
+\begin{description}
+\item[{Import all modules here that might define models so that}] \leavevmode
+they will be registered properly on the metadata.  Otherwise
+you will have to import them first before calling init\_db()
+
+\end{description}
+
 \end{fulllineitems}
 
 \index{reset\_db() (in module son\_editor.app.database)}
 
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.app:son_editor.app.database.reset_db}\pysiglinewithargsret{\sphinxcode{son\_editor.app.database.}\sphinxbfcode{reset\_db}}{}{}
+Resets the database
+
+only used in tests
+
 \end{fulllineitems}
 
 \index{scan\_project\_dir() (in module son\_editor.app.database)}
 
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.app:son_editor.app.database.scan_project_dir}\pysiglinewithargsret{\sphinxcode{son\_editor.app.database.}\sphinxbfcode{scan\_project\_dir}}{\emph{project\_path}, \emph{pj}}{}
+Scan project dir
+\begin{description}
+\item[{Scans the project dir for any new functions and services }] \leavevmode
+via \_scan\_for\_functions and \_scan\_for\_services
+
+\end{description}
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{project\_path} -- The path of the project to scan
+
+\item {} 
+\sphinxstyleliteralstrong{pj} -- The project from the database to attach the descriptors to
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+
+
+\end{description}\end{quote}
+
 \end{fulllineitems}
 
 \index{scan\_workspaces\_dir() (in module son\_editor.app.database)}
 
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.app:son_editor.app.database.scan_workspaces_dir}\pysiglinewithargsret{\sphinxcode{son\_editor.app.database.}\sphinxbfcode{scan\_workspaces\_dir}}{}{}
+Scan workpaces directory
+\begin{description}
+\item[{Scans the workpaces directory for any users.}] \leavevmode
+Will visit every one to add new workspaces etc via \_scan\_user\_dir
+
+\end{description}
+
 \end{fulllineitems}
 
 
 
 \paragraph{son\_editor.app.exceptions module}
-\label{_source/son_editor.app:son-editor-app-exceptions-module}\label{_source/son_editor.app:module-son_editor.app.exceptions}\index{son\_editor.app.exceptions (module)}\index{ExtNotReachable}
+\label{_source/son_editor.app:module-son_editor.app.exceptions}\label{_source/son_editor.app:son-editor-app-exceptions-module}\index{son\_editor.app.exceptions (module)}\index{ExtNotReachable}
 
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.app:son_editor.app.exceptions.ExtNotReachable}\pysiglinewithargsret{\sphinxstrong{exception }\sphinxcode{son\_editor.app.exceptions.}\sphinxbfcode{ExtNotReachable}}{\emph{msg}}{}
 Bases: \sphinxcode{Exception}
+
+Thrown whenever an external host cannot be contacted, be it because of a wrong url or network problems
 
 \end{fulllineitems}
 
@@ -1496,6 +1550,8 @@ Bases: \sphinxcode{Exception}
 \phantomsection\label{_source/son_editor.app:son_editor.app.exceptions.InvalidArgument}\pysiglinewithargsret{\sphinxstrong{exception }\sphinxcode{son\_editor.app.exceptions.}\sphinxbfcode{InvalidArgument}}{\emph{msg: str}}{}
 Bases: \sphinxcode{Exception}
 
+Thrown whenever an argument is missing data or is supplying the wrong data
+
 \end{fulllineitems}
 
 \index{NameConflict}
@@ -1503,6 +1559,8 @@ Bases: \sphinxcode{Exception}
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.app:son_editor.app.exceptions.NameConflict}\pysiglinewithargsret{\sphinxstrong{exception }\sphinxcode{son\_editor.app.exceptions.}\sphinxbfcode{NameConflict}}{\emph{msg: str}}{}
 Bases: \sphinxcode{Exception}
+
+Thrown whenever a name conflict arises for names that must be unique
 
 \end{fulllineitems}
 
@@ -1512,6 +1570,8 @@ Bases: \sphinxcode{Exception}
 \phantomsection\label{_source/son_editor.app:son_editor.app.exceptions.NotFound}\pysiglinewithargsret{\sphinxstrong{exception }\sphinxcode{son\_editor.app.exceptions.}\sphinxbfcode{NotFound}}{\emph{msg: str}}{}
 Bases: \sphinxcode{Exception}
 
+Thrown whenever a resource cannot be located, or the user has no access to it
+
 \end{fulllineitems}
 
 \index{PackException}
@@ -1519,6 +1579,8 @@ Bases: \sphinxcode{Exception}
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.app:son_editor.app.exceptions.PackException}\pysiglinewithargsret{\sphinxstrong{exception }\sphinxcode{son\_editor.app.exceptions.}\sphinxbfcode{PackException}}{\emph{msg: str}}{}
 Bases: \sphinxcode{Exception}
+
+Thrown whenever a service cannot be packaged by son-package, wraps the cli tools error message
 
 \end{fulllineitems}
 
@@ -1528,6 +1590,10 @@ Bases: \sphinxcode{Exception}
 \phantomsection\label{_source/son_editor.app:son_editor.app.exceptions.StillReferenced}\pysiglinewithargsret{\sphinxstrong{exception }\sphinxcode{son\_editor.app.exceptions.}\sphinxbfcode{StillReferenced}}{\emph{msg: str}}{}
 Bases: \sphinxcode{Exception}
 
+Thrown whenever an action is taken towards an element that is still 
+referenced by another that would compromise the relationship like 
+deleting the referenced object
+
 \end{fulllineitems}
 
 \index{UnauthorizedException}
@@ -1535,6 +1601,8 @@ Bases: \sphinxcode{Exception}
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.app:son_editor.app.exceptions.UnauthorizedException}\pysiglinewithargsret{\sphinxstrong{exception }\sphinxcode{son\_editor.app.exceptions.}\sphinxbfcode{UnauthorizedException}}{\emph{msg: str}}{}
 Bases: \sphinxcode{Exception}
+
+Thrown whenever an unauthorized access is detected, e.g. because the user has not yet logged in
 
 \end{fulllineitems}
 
@@ -1549,10 +1617,13 @@ checks if the current user is allowed to access a given resource.
 Session will be invalidated if the login information cannot be found
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode
-\sphinxstyleliteralstrong{request} -- 
+\sphinxstyleliteralstrong{request} -- The http request made to the server
 
 \item[{Returns}] \leavevmode
+nothing if access granted
 
+\item[{Raises}] \leavevmode
+{\hyperref[_source/son_editor.app:son_editor.app.exceptions.UnauthorizedException]{\sphinxcrossref{\sphinxstyleliteralstrong{UnauthorizedException}}}} -- if user not logged in
 
 \end{description}\end{quote}
 
@@ -1560,14 +1631,8 @@ Session will be invalidated if the login information cannot be found
 
 
 
-\paragraph{Module contents}
-\label{_source/son_editor.app:module-son_editor.app}\label{_source/son_editor.app:module-contents}\index{son\_editor.app (module)}
-
 \subsubsection{son\_editor.impl package}
-\label{_source/son_editor.impl::doc}\label{_source/son_editor.impl:son-editor-impl-package}
-
-\paragraph{Submodules}
-\label{_source/son_editor.impl:submodules}
+\label{_source/son_editor.impl:son-editor-impl-package}\label{_source/son_editor.impl::doc}
 
 \paragraph{son\_editor.impl.catalogue\_servicesimpl module}
 \label{_source/son_editor.impl:son-editor-impl-catalogue-servicesimpl-module}\label{_source/son_editor.impl:module-son_editor.impl.catalogue_servicesimpl}\index{son\_editor.impl.catalogue\_servicesimpl (module)}\index{build\_URL() (in module son\_editor.impl.catalogue\_servicesimpl)}
@@ -1646,21 +1711,21 @@ Returns the parts of a given id
 \index{delete\_service\_catalogue() (in module son\_editor.impl.catalogue\_servicesimpl)}
 
 \begin{fulllineitems}
-\phantomsection\label{_source/son_editor.impl:son_editor.impl.catalogue_servicesimpl.delete_service_catalogue}\pysiglinewithargsret{\sphinxcode{son\_editor.impl.catalogue\_servicesimpl.}\sphinxbfcode{delete\_service\_catalogue}}{\emph{ws\_id}, \emph{catalogue\_id}, \emph{function\_id}, \emph{is\_vnf}}{}
-Delete the service in the catalogue
+\phantomsection\label{_source/son_editor.impl:son_editor.impl.catalogue_servicesimpl.delete_service_catalogue}\pysiglinewithargsret{\sphinxcode{son\_editor.impl.catalogue\_servicesimpl.}\sphinxbfcode{delete\_service\_catalogue}}{\emph{ws\_id}, \emph{catalogue\_id}, \emph{descriptor\_uid}, \emph{is\_vnf}}{}
+Delete the descriptor in the catalogue
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
 \item {} 
-\sphinxstyleliteralstrong{ws\_id} -- 
+\sphinxstyleliteralstrong{ws\_id} -- The workspace ID
 
 \item {} 
-\sphinxstyleliteralstrong{catalogue\_id} -- 
+\sphinxstyleliteralstrong{catalogue\_id} -- The catalogue ID
 
 \item {} 
-\sphinxstyleliteralstrong{function\_id} -- 
+\sphinxstyleliteralstrong{descriptor\_uid} -- The descriptors uid (vendor:name:version)
 
 \item {} 
-\sphinxstyleliteralstrong{is\_vnf} -- 
+\sphinxstyleliteralstrong{is\_vnf} -- If the descriptor is a VNF or NS
 
 \end{itemize}
 
@@ -1775,29 +1840,26 @@ Returns a service with the given service id
 \index{update\_service\_catalogue() (in module son\_editor.impl.catalogue\_servicesimpl)}
 
 \begin{fulllineitems}
-\phantomsection\label{_source/son_editor.impl:son_editor.impl.catalogue_servicesimpl.update_service_catalogue}\pysiglinewithargsret{\sphinxcode{son\_editor.impl.catalogue\_servicesimpl.}\sphinxbfcode{update\_service\_catalogue}}{\emph{ws\_id}, \emph{catalogue\_id}, \emph{function\_id}, \emph{function\_data}, \emph{is\_vnf}}{}
-Update the service in the catalogue
+\phantomsection\label{_source/son_editor.impl:son_editor.impl.catalogue_servicesimpl.update_service_catalogue}\pysiglinewithargsret{\sphinxcode{son\_editor.impl.catalogue\_servicesimpl.}\sphinxbfcode{update\_service\_catalogue}}{\emph{ws\_id}, \emph{catalogue\_id}, \emph{descriptor\_uid}, \emph{descriptor\_data}, \emph{is\_vnf}}{}
+Update the descriptor in the catalogue
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
 \item {} 
-\sphinxstyleliteralstrong{ws\_id} -- 
+\sphinxstyleliteralstrong{ws\_id} -- The workspace ID
 
 \item {} 
-\sphinxstyleliteralstrong{catalogue\_id} -- 
+\sphinxstyleliteralstrong{catalogue\_id} -- The catalogue id
 
 \item {} 
-\sphinxstyleliteralstrong{function\_id} -- 
+\sphinxstyleliteralstrong{descriptor\_uid} -- the descriptors uid (vendor:name:version)
 
 \item {} 
-\sphinxstyleliteralstrong{function\_data} -- 
+\sphinxstyleliteralstrong{descriptor\_data} -- The descriptor data as a dict containing a ``descriptor'' property
 
 \item {} 
-\sphinxstyleliteralstrong{is\_vnf} -- 
+\sphinxstyleliteralstrong{is\_vnf} -- if the descriptor is a VNF or NS
 
 \end{itemize}
-
-\item[{Returns}] \leavevmode
-
 
 \end{description}\end{quote}
 
@@ -1806,7 +1868,7 @@ Update the service in the catalogue
 
 
 \paragraph{son\_editor.impl.cataloguesimpl module}
-\label{_source/son_editor.impl:module-son_editor.impl.cataloguesimpl}\label{_source/son_editor.impl:son-editor-impl-cataloguesimpl-module}\index{son\_editor.impl.cataloguesimpl (module)}\index{create\_catalogue() (in module son\_editor.impl.cataloguesimpl)}
+\label{_source/son_editor.impl:son-editor-impl-cataloguesimpl-module}\label{_source/son_editor.impl:module-son_editor.impl.cataloguesimpl}\index{son\_editor.impl.cataloguesimpl (module)}\index{create\_catalogue() (in module son\_editor.impl.cataloguesimpl)}
 
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.impl:son_editor.impl.cataloguesimpl.create_catalogue}\pysiglinewithargsret{\sphinxcode{son\_editor.impl.cataloguesimpl.}\sphinxbfcode{create\_catalogue}}{\emph{workspace\_id: int}, \emph{catalogue\_data}}{}
@@ -1831,15 +1893,15 @@ Deletes a catalogue by its id
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
 \item {} 
-\sphinxstyleliteralstrong{workspace\_id} -- 
+\sphinxstyleliteralstrong{workspace\_id} -- The workspace ID
 
 \item {} 
-\sphinxstyleliteralstrong{catalogue\_id} -- 
+\sphinxstyleliteralstrong{catalogue\_id} -- The Catalogue ID
 
 \end{itemize}
 
 \item[{Returns}] \leavevmode
-
+The deleted catalogue descriptor
 
 \end{description}\end{quote}
 
@@ -1852,7 +1914,7 @@ Deletes a catalogue by its id
 Retrieves a catalogue by its id
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode
-\sphinxstyleliteralstrong{catalogue\_id} -- 
+\sphinxstyleliteralstrong{catalogue\_id} -- The catalogues ID
 
 \item[{Returns}] \leavevmode
 
@@ -1868,10 +1930,10 @@ Retrieves a catalogue by its id
 Retrieves all catalogues of a specific workspace
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode
-\sphinxstyleliteralstrong{workspace\_id} -- 
+\sphinxstyleliteralstrong{workspace\_id} -- the workspace id
 
 \item[{Returns}] \leavevmode
-
+list of catalogue descriptors of this workspace
 
 \end{description}\end{quote}
 
@@ -1883,16 +1945,16 @@ Retrieves all catalogues of a specific workspace
 \phantomsection\label{_source/son_editor.impl:son_editor.impl.cataloguesimpl.update_catalogue}\pysiglinewithargsret{\sphinxcode{son\_editor.impl.cataloguesimpl.}\sphinxbfcode{update\_catalogue}}{\emph{workspace\_id}, \emph{catalogue\_id}, \emph{catalogue\_data}}{}
 Updates a specific catalogue by its id. The catalogue
 applies the given name and url, that are in the json parameter.
-:param workspace\_id:
-:param catalogue\_id:
-:return:
+:param workspace\_id: The Workspace ID
+:param catalogue\_id: The Catalogue ID
+:return: The updated Catalogue descriptor
 
 \end{fulllineitems}
 
 
 
 \paragraph{son\_editor.impl.functionsimpl module}
-\label{_source/son_editor.impl:son-editor-impl-functionsimpl-module}\label{_source/son_editor.impl:module-son_editor.impl.functionsimpl}\index{son\_editor.impl.functionsimpl (module)}\index{create\_function() (in module son\_editor.impl.functionsimpl)}
+\label{_source/son_editor.impl:module-son_editor.impl.functionsimpl}\label{_source/son_editor.impl:son-editor-impl-functionsimpl-module}\index{son\_editor.impl.functionsimpl (module)}\index{create\_function() (in module son\_editor.impl.functionsimpl)}
 
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.impl:son_editor.impl.functionsimpl.create_function}\pysiglinewithargsret{\sphinxcode{son\_editor.impl.functionsimpl.}\sphinxbfcode{create\_function}}{\emph{ws\_id: int}, \emph{project\_id: int}, \emph{function\_data: dict}}{{ $\rightarrow$ dict}}
@@ -1900,13 +1962,13 @@ Creates a new vnf in the project
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
 \item {} 
-\sphinxstyleliteralstrong{ws\_id} -- 
+\sphinxstyleliteralstrong{ws\_id} -- The workspace ID
 
 \item {} 
-\sphinxstyleliteralstrong{project\_id} -- 
+\sphinxstyleliteralstrong{project\_id} -- The Project ID
 
 \item {} 
-\sphinxstyleliteralstrong{function\_data} -- 
+\sphinxstyleliteralstrong{function\_data} -- The function data to create
 
 \end{itemize}
 
@@ -1925,13 +1987,13 @@ Deletes the function
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
 \item {} 
-\sphinxstyleliteralstrong{ws\_id} -- 
+\sphinxstyleliteralstrong{ws\_id} -- The workspace ID
 
 \item {} 
-\sphinxstyleliteralstrong{project\_id} -- 
+\sphinxstyleliteralstrong{project\_id} -- The project ID
 
 \item {} 
-\sphinxstyleliteralstrong{function\_id} -- 
+\sphinxstyleliteralstrong{function\_id} -- The function ID
 
 \end{itemize}
 
@@ -1946,6 +2008,31 @@ the deleted function
 
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.impl:son_editor.impl.functionsimpl.delete_image_file}\pysiglinewithargsret{\sphinxcode{son\_editor.impl.functionsimpl.}\sphinxbfcode{delete\_image\_file}}{\emph{ws\_id}, \emph{project\_id}, \emph{vnf\_id}, \emph{filename}}{}
+Deletes the image file with the given name
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{ws\_id} -- The workspace ID
+
+\item {} 
+\sphinxstyleliteralstrong{project\_id} -- The project ID
+
+\item {} 
+\sphinxstyleliteralstrong{vnf\_id} -- The VNF ID
+
+\item {} 
+\sphinxstyleliteralstrong{filename} -- The name of the file to delete
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+A success message
+
+\item[{Raises}] \leavevmode
+{\hyperref[_source/son_editor.app:son_editor.app.exceptions.NotFound]{\sphinxcrossref{\sphinxstyleliteralstrong{NotFound}}}} -- if the image file could not be located
+
+\end{description}\end{quote}
+
 \end{fulllineitems}
 
 \index{get\_function\_project() (in module son\_editor.impl.functionsimpl)}
@@ -1956,18 +2043,18 @@ Get a single function from the specified project
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
 \item {} 
-\sphinxstyleliteralstrong{ws\_id} -- 
+\sphinxstyleliteralstrong{ws\_id} -- The Workspace ID
 
 \item {} 
-\sphinxstyleliteralstrong{project\_id} -- 
+\sphinxstyleliteralstrong{project\_id} -- The project ID
 
 \item {} 
-\sphinxstyleliteralstrong{vnf\_id} -- 
+\sphinxstyleliteralstrong{vnf\_id} -- The VNF ID
 
 \end{itemize}
 
 \item[{Returns}] \leavevmode
-
+The requested function descriptor
 
 \end{description}\end{quote}
 
@@ -1999,12 +2086,47 @@ Get a list of all functions
 
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.impl:son_editor.impl.functionsimpl.get_image_files}\pysiglinewithargsret{\sphinxcode{son\_editor.impl.functionsimpl.}\sphinxbfcode{get\_image\_files}}{\emph{ws\_id}, \emph{project\_id}, \emph{function\_id}}{}
+Returns a list of image file names located in the vnf folder
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{ws\_id} -- The Workspace ID
+
+\item {} 
+\sphinxstyleliteralstrong{project\_id} -- The project ID
+
+\item {} 
+\sphinxstyleliteralstrong{function\_id} -- The function ID
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+A List of image file names for this VNF
+
+\end{description}\end{quote}
+
 \end{fulllineitems}
 
 \index{get\_references() (in module son\_editor.impl.functionsimpl)}
 
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.impl:son_editor.impl.functionsimpl.get_references}\pysiglinewithargsret{\sphinxcode{son\_editor.impl.functionsimpl.}\sphinxbfcode{get\_references}}{\emph{function}, \emph{session}}{}
+Search for references to the function in the database
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{function} -- The referenced function
+
+\item {} 
+\sphinxstyleliteralstrong{session} -- The database session
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+A list of services referencing the given function.
+
+\end{description}\end{quote}
+
 \end{fulllineitems}
 
 \index{get\_uid() (in module son\_editor.impl.functionsimpl)}
@@ -2017,12 +2139,62 @@ Get a list of all functions
 
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.impl:son_editor.impl.functionsimpl.replace_function_refs}\pysiglinewithargsret{\sphinxcode{son\_editor.impl.functionsimpl.}\sphinxbfcode{replace\_function\_refs}}{\emph{refs}, \emph{vendor}, \emph{name}, \emph{version}, \emph{new\_vendor}, \emph{new\_name}, \emph{new\_version}}{}
+Replaces every reference in refs to the function with (name:vendor:version) with the new\_(name:vendor:version)
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{refs} -- The services referencing the function descriptors
+
+\item {} 
+\sphinxstyleliteralstrong{vendor} -- The old vendor
+
+\item {} 
+\sphinxstyleliteralstrong{name} -- The old name
+
+\item {} 
+\sphinxstyleliteralstrong{version} -- The old version
+
+\item {} 
+\sphinxstyleliteralstrong{new\_vendor} -- The new vendor
+
+\item {} 
+\sphinxstyleliteralstrong{new\_name} -- The new name
+
+\item {} 
+\sphinxstyleliteralstrong{new\_version} -- The new version
+
+\end{itemize}
+
+\end{description}\end{quote}
+
 \end{fulllineitems}
 
 \index{save\_image\_file() (in module son\_editor.impl.functionsimpl)}
 
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.impl:son_editor.impl.functionsimpl.save_image_file}\pysiglinewithargsret{\sphinxcode{son\_editor.impl.functionsimpl.}\sphinxbfcode{save\_image\_file}}{\emph{ws\_id}, \emph{project\_id}, \emph{function\_id}, \emph{file}}{}
+Saves the vnf image file into the vnfs folder
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{ws\_id} -- The workspace ID
+
+\item {} 
+\sphinxstyleliteralstrong{project\_id} -- The project ID
+
+\item {} 
+\sphinxstyleliteralstrong{function\_id} -- The function ID
+
+\item {} 
+\sphinxstyleliteralstrong{file} -- The image file
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+A success message
+
+\end{description}\end{quote}
+
 \end{fulllineitems}
 
 \index{update\_function() (in module son\_editor.impl.functionsimpl)}
@@ -2033,16 +2205,16 @@ Update the function descriptor
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
 \item {} 
-\sphinxstyleliteralstrong{ws\_id} -- 
+\sphinxstyleliteralstrong{ws\_id} -- The Workspace ID
 
 \item {} 
-\sphinxstyleliteralstrong{prj\_id} -- 
+\sphinxstyleliteralstrong{prj\_id} -- The Project ID
 
 \item {} 
-\sphinxstyleliteralstrong{func\_id} -- 
+\sphinxstyleliteralstrong{func\_id} -- The function ID
 
 \item {} 
-\sphinxstyleliteralstrong{func\_data} -- 
+\sphinxstyleliteralstrong{func\_data} -- The funtion Data for updating
 
 \end{itemize}
 
@@ -2057,12 +2229,31 @@ The updated function descriptor
 
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.impl:son_editor.impl.functionsimpl.validate_vnf}\pysiglinewithargsret{\sphinxcode{son\_editor.impl.functionsimpl.}\sphinxbfcode{validate\_vnf}}{\emph{schema\_index: int}, \emph{descriptor: dict}}{{ $\rightarrow$ None}}
+Validates the VNF against the VNF schema
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{schema\_index} -- The index of the schema repository
+
+\item {} 
+\sphinxstyleliteralstrong{descriptor} -- The descriptor to validate
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+Nothing if descriptor id valid
+
+\item[{Raises}] \leavevmode
+{\hyperref[_source/son_editor.app:son_editor.app.exceptions.InvalidArgument]{\sphinxcrossref{\sphinxstyleliteralstrong{InvalidArgument}}}} -- if the schema is not Valid
+
+\end{description}\end{quote}
+
 \end{fulllineitems}
 
 
 
 \paragraph{son\_editor.impl.gitimpl module}
-\label{_source/son_editor.impl:son-editor-impl-gitimpl-module}\label{_source/son_editor.impl:module-son_editor.impl.gitimpl}\index{son\_editor.impl.gitimpl (module)}\index{build\_github\_delete() (in module son\_editor.impl.gitimpl)}
+\label{_source/son_editor.impl:module-son_editor.impl.gitimpl}\label{_source/son_editor.impl:son-editor-impl-gitimpl-module}\index{son\_editor.impl.gitimpl (module)}\index{build\_github\_delete() (in module son\_editor.impl.gitimpl)}
 
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.impl:son_editor.impl.gitimpl.build_github_delete}\pysiglinewithargsret{\sphinxcode{son\_editor.impl.gitimpl.}\sphinxbfcode{build\_github\_delete}}{\emph{owner: str}, \emph{repo\_name: str}}{{ $\rightarrow$ str}}
@@ -2078,7 +2269,7 @@ Builds relative github api url to delete a repository
 \end{itemize}
 
 \item[{Returns}] \leavevmode
-
+the relative GitHub api url
 
 \end{description}\end{quote}
 
@@ -2092,10 +2283,7 @@ Checks if the given project path is a valid son project, otherwise it raises an 
 a consistent son file structure, so no semantics will be tested.
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode
-\sphinxstyleliteralstrong{project\_path} -- 
-
-\item[{Returns}] \leavevmode
-
+\sphinxstyleliteralstrong{project\_path} -- the path of the cloned project
 
 \end{description}\end{quote}
 
@@ -2137,18 +2325,18 @@ Commits and then pushes changes.
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
 \item {} 
-\sphinxstyleliteralstrong{ws\_id} -- 
+\sphinxstyleliteralstrong{ws\_id} -- The workspace ID
 
 \item {} 
-\sphinxstyleliteralstrong{project\_id} -- 
+\sphinxstyleliteralstrong{project\_id} -- The project ID
 
 \item {} 
-\sphinxstyleliteralstrong{commit\_message} -- 
+\sphinxstyleliteralstrong{commit\_message} -- The commit message
 
 \end{itemize}
 
 \item[{Returns}] \leavevmode
-
+a dictionary containing the result of the operation
 
 \end{description}\end{quote}
 
@@ -2173,7 +2361,7 @@ Creates a remote GitHub repository named remote\_repo\_name and pushes given git
 \end{itemize}
 
 \item[{Returns}] \leavevmode
-
+a dictionary containing the result of the operation
 
 \end{description}\end{quote}
 
@@ -2239,7 +2427,7 @@ Deletes given project on remote repository
 \end{itemize}
 
 \item[{Returns}] \leavevmode
-
+a dictionary containing the result of the operation
 
 \end{description}\end{quote}
 
@@ -2261,7 +2449,7 @@ Shows the local changes of the given project.
 \end{itemize}
 
 \item[{Returns}] \leavevmode
-
+a dictionary containing the result of the operation
 
 \end{description}\end{quote}
 
@@ -2270,7 +2458,7 @@ Shows the local changes of the given project.
 \index{get\_project() (in module son\_editor.impl.gitimpl)}
 
 \begin{fulllineitems}
-\phantomsection\label{_source/son_editor.impl:son_editor.impl.gitimpl.get_project}\pysiglinewithargsret{\sphinxcode{son\_editor.impl.gitimpl.}\sphinxbfcode{get\_project}}{\emph{ws\_id}, \emph{pj\_id: int}, \emph{session=\textless{}sqlalchemy.orm.session.Session object at 0x0000024A78D98588\textgreater{}}}{{ $\rightarrow$ son\_editor.models.project.Project}}
+\phantomsection\label{_source/son_editor.impl:son_editor.impl.gitimpl.get_project}\pysiglinewithargsret{\sphinxcode{son\_editor.impl.gitimpl.}\sphinxbfcode{get\_project}}{\emph{ws\_id}, \emph{pj\_id: int}, \emph{session=\textless{}sqlalchemy.orm.session.Session object at 0x000002BDC27C7748\textgreater{}}}{{ $\rightarrow$ son\_editor.models.project.Project}}
 Returns a project and raises 404, when project not found.
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
@@ -2299,10 +2487,10 @@ Project model
 Returns the workspace model of the given workspace
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode
-\sphinxstyleliteralstrong{ws\_id} -- 
+\sphinxstyleliteralstrong{ws\_id} -- The workspace ID
 
 \item[{Returns}] \leavevmode
-
+The corresponding workspace model
 
 \end{description}\end{quote}
 
@@ -2338,15 +2526,15 @@ Initializes a git repository in the given project
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
 \item {} 
-\sphinxstyleliteralstrong{ws\_id} -- 
+\sphinxstyleliteralstrong{ws\_id} -- The workpace ID
 
 \item {} 
-\sphinxstyleliteralstrong{project\_id} -- 
+\sphinxstyleliteralstrong{project\_id} -- The project ID to initialize
 
 \end{itemize}
 
 \item[{Returns}] \leavevmode
-
+a dictionary containing the result of the operation
 
 \end{description}\end{quote}
 
@@ -2362,7 +2550,7 @@ Checks if the given url is on github
 \sphinxstyleliteralstrong{netloc} -- http url
 
 \item[{Returns}] \leavevmode
-True
+True if on github, False else
 
 \end{description}\end{quote}
 
@@ -2375,7 +2563,7 @@ True
 Lists the available remote repositories.
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode
-\sphinxstyleliteralstrong{ws\_id} -- 
+\sphinxstyleliteralstrong{ws\_id} -- The workspace ID
 
 \item[{Returns}] \leavevmode
 \url{https://developer.github.com/v3/repos/\#response}
@@ -2389,10 +2577,9 @@ Lists the available remote repositories.
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.impl:son_editor.impl.gitimpl.pull}\pysiglinewithargsret{\sphinxcode{son\_editor.impl.gitimpl.}\sphinxbfcode{pull}}{\emph{ws\_id: int}, \emph{project\_id: int}}{}
 Pulls data from the given project\_id.
-:param user\_data: Session data to get access token for GitHub
 :param ws\_id: Workspace of the project
 :param project\_id: Project to pull.
-:return:
+:return: a dictionary containing the result of the operation
 
 \end{fulllineitems}
 
@@ -2400,6 +2587,13 @@ Pulls data from the given project\_id.
 
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.impl:son_editor.impl.gitimpl.setup_git_user_email}\pysiglinewithargsret{\sphinxcode{son\_editor.impl.gitimpl.}\sphinxbfcode{setup\_git\_user\_email}}{\emph{project\_full\_path: str}}{}
+Setting up the git user in the local git config to be able to make commits and push
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{project\_full\_path} -- The absolute project path
+
+\end{description}\end{quote}
+
 \end{fulllineitems}
 
 \index{status() (in module son\_editor.impl.gitimpl)}
@@ -2410,15 +2604,15 @@ Shows the git status of the repository
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
 \item {} 
-\sphinxstyleliteralstrong{ws\_id} -- 
+\sphinxstyleliteralstrong{ws\_id} -- The workspace ID
 
 \item {} 
-\sphinxstyleliteralstrong{pj\_id} -- 
+\sphinxstyleliteralstrong{pj\_id} -- The project ID
 
 \end{itemize}
 
 \item[{Returns}] \leavevmode
-
+a dictionary containing the result of the operation
 
 \end{description}\end{quote}
 
@@ -2427,38 +2621,50 @@ Shows the git status of the repository
 
 
 \paragraph{son\_editor.impl.nsfslookupimpl module}
-\label{_source/son_editor.impl:son-editor-impl-nsfslookupimpl-module}\label{_source/son_editor.impl:module-son_editor.impl.nsfslookupimpl}\index{son\_editor.impl.nsfslookupimpl (module)}\index{find\_by\_priority() (in module son\_editor.impl.nsfslookupimpl)}
+\label{_source/son_editor.impl:module-son_editor.impl.nsfslookupimpl}\label{_source/son_editor.impl:son-editor-impl-nsfslookupimpl-module}\index{son\_editor.impl.nsfslookupimpl (module)}\index{find\_by\_priority() (in module son\_editor.impl.nsfslookupimpl)}
 
 \begin{fulllineitems}
-\phantomsection\label{_source/son_editor.impl:son_editor.impl.nsfslookupimpl.find_by_priority}\pysiglinewithargsret{\sphinxcode{son\_editor.impl.nsfslookupimpl.}\sphinxbfcode{find\_by\_priority}}{\emph{user\_data}, \emph{ws\_id}, \emph{project\_id}, \emph{vendor}, \emph{name}, \emph{version}, \emph{is\_vnf}}{}
-Tries to find vnf / network services by descending priority project / private catalogue / public catalogue.
+\phantomsection\label{_source/son_editor.impl:son_editor.impl.nsfslookupimpl.find_by_priority}\pysiglinewithargsret{\sphinxcode{son\_editor.impl.nsfslookupimpl.}\sphinxbfcode{find\_by\_priority}}{\emph{user\_data}, \emph{ws\_id}, \emph{project\_id}, \emph{vendor}, \emph{name}, \emph{version}, \emph{is\_vnf}}{}~\begin{description}
+\item[{Tries to find vnf / network services by descending priority}] \leavevmode\begin{enumerate}
+\item {} 
+project
+
+\item {} 
+private catalogue
+
+\item {} 
+public catalogues.
+
+\end{enumerate}
+
+\end{description}
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
 \item {} 
-\sphinxstyleliteralstrong{user\_data} -- 
+\sphinxstyleliteralstrong{user\_data} -- Information about the current user
 
 \item {} 
-\sphinxstyleliteralstrong{ws\_id} -- 
+\sphinxstyleliteralstrong{ws\_id} -- The Workspace ID
 
 \item {} 
-\sphinxstyleliteralstrong{project\_id} -- 
+\sphinxstyleliteralstrong{project\_id} -- The project ID
 
 \item {} 
-\sphinxstyleliteralstrong{vendor} -- 
+\sphinxstyleliteralstrong{vendor} -- The descriptors vendor
 
 \item {} 
-\sphinxstyleliteralstrong{name} -- 
+\sphinxstyleliteralstrong{name} -- The descriptors name
 
 \item {} 
-\sphinxstyleliteralstrong{version} -- 
+\sphinxstyleliteralstrong{version} -- The descriptors versions
 
 \item {} 
-\sphinxstyleliteralstrong{is\_vnf} -- 
+\sphinxstyleliteralstrong{is\_vnf} -- if the descriptor is a VNF
 
 \end{itemize}
 
 \item[{Returns}] \leavevmode
-
+The descriptor if found
 
 \end{description}\end{quote}
 
@@ -2467,27 +2673,32 @@ Tries to find vnf / network services by descending priority project / private ca
 \index{find\_network\_service() (in module son\_editor.impl.nsfslookupimpl)}
 
 \begin{fulllineitems}
-\phantomsection\label{_source/son_editor.impl:son_editor.impl.nsfslookupimpl.find_network_service}\pysiglinewithargsret{\sphinxcode{son\_editor.impl.nsfslookupimpl.}\sphinxbfcode{find\_network\_service}}{\emph{user\_data}, \emph{ws\_id}, \emph{project\_id}, \emph{vendor}, \emph{name}, \emph{version}}{}
-Finds a network service in the priority: project / private catalogue / public catalogue
+\phantomsection\label{_source/son_editor.impl:son_editor.impl.nsfslookupimpl.find_network_service}\pysiglinewithargsret{\sphinxcode{son\_editor.impl.nsfslookupimpl.}\sphinxbfcode{find\_network\_service}}{\emph{user\_data}, \emph{ws\_id}, \emph{project\_id}, \emph{vendor}, \emph{name}, \emph{version}}{}~\begin{quote}
+
+Tries to find a network service by descending priority
+1. project
+2. private catalogue
+3. public catalogues.
+\end{quote}
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
 \item {} 
-\sphinxstyleliteralstrong{user\_data} -- 
+\sphinxstyleliteralstrong{user\_data} -- Information about the current user
 
 \item {} 
-\sphinxstyleliteralstrong{ws\_id} -- 
+\sphinxstyleliteralstrong{ws\_id} -- The Workspace ID
 
 \item {} 
-\sphinxstyleliteralstrong{project\_id} -- 
+\sphinxstyleliteralstrong{project\_id} -- The project ID
 
 \item {} 
-\sphinxstyleliteralstrong{vendor} -- Vendor name of the function
+\sphinxstyleliteralstrong{vendor} -- Vendor name of the network service
 
 \item {} 
-\sphinxstyleliteralstrong{name} -- Name of the function
+\sphinxstyleliteralstrong{name} -- Name of the network service
 
 \item {} 
-\sphinxstyleliteralstrong{version} -- The   version of the function
+\sphinxstyleliteralstrong{version} -- The   version of the network service
 
 \end{itemize}
 
@@ -2501,32 +2712,37 @@ If found, it returns the network service
 \index{find\_vnf() (in module son\_editor.impl.nsfslookupimpl)}
 
 \begin{fulllineitems}
-\phantomsection\label{_source/son_editor.impl:son_editor.impl.nsfslookupimpl.find_vnf}\pysiglinewithargsret{\sphinxcode{son\_editor.impl.nsfslookupimpl.}\sphinxbfcode{find\_vnf}}{\emph{user\_data}, \emph{ws\_id}, \emph{project\_id}, \emph{vendor}, \emph{name}, \emph{version}}{}
-Finds a vnf in the priority: project / private catalogue / public catalogue
+\phantomsection\label{_source/son_editor.impl:son_editor.impl.nsfslookupimpl.find_vnf}\pysiglinewithargsret{\sphinxcode{son\_editor.impl.nsfslookupimpl.}\sphinxbfcode{find\_vnf}}{\emph{user\_data}, \emph{ws\_id}, \emph{project\_id}, \emph{vendor}, \emph{name}, \emph{version}}{}~\begin{quote}
+
+Tries to find a vnf by descending priority
+1. project
+2. private catalogue
+3. public catalogues.
+\end{quote}
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
 \item {} 
-\sphinxstyleliteralstrong{user\_data} -- 
+\sphinxstyleliteralstrong{user\_data} -- Information about the current user
 
 \item {} 
-\sphinxstyleliteralstrong{ws\_id} -- 
+\sphinxstyleliteralstrong{ws\_id} -- The Workspace ID
 
 \item {} 
-\sphinxstyleliteralstrong{project\_id} -- 
+\sphinxstyleliteralstrong{project\_id} -- The project ID
 
 \item {} 
-\sphinxstyleliteralstrong{vendor} -- 
+\sphinxstyleliteralstrong{vendor} -- Vendor name of the function
 
 \item {} 
-\sphinxstyleliteralstrong{name} -- 
+\sphinxstyleliteralstrong{name} -- Name of the function
 
 \item {} 
-\sphinxstyleliteralstrong{version} -- 
+\sphinxstyleliteralstrong{version} -- The   version of the function
 
 \end{itemize}
 
 \item[{Returns}] \leavevmode
-
+If found, it returns the function
 
 \end{description}\end{quote}
 
@@ -2565,13 +2781,21 @@ If found, it returns the function. Otherwise it returns None
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.impl:son_editor.impl.nsfslookupimpl.get_project}\pysiglinewithargsret{\sphinxcode{son\_editor.impl.nsfslookupimpl.}\sphinxbfcode{get\_project}}{\emph{project\_id}}{}
 Retrieves the project which matches the given project id. Otherwise it raises NotFound Exception
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{project\_id} -- The project ID
+
+\item[{Returns}] \leavevmode
+The project model
+
+\end{description}\end{quote}
 
 \end{fulllineitems}
 
 
 
 \paragraph{son\_editor.impl.platform\_connector module}
-\label{_source/son_editor.impl:module-son_editor.impl.platform_connector}\label{_source/son_editor.impl:son-editor-impl-platform-connector-module}\index{son\_editor.impl.platform\_connector (module)}\index{create\_service\_on\_platform() (in module son\_editor.impl.platform\_connector)}
+\label{_source/son_editor.impl:son-editor-impl-platform-connector-module}\label{_source/son_editor.impl:module-son_editor.impl.platform_connector}\index{son\_editor.impl.platform\_connector (module)}\index{create\_service\_on\_platform() (in module son\_editor.impl.platform\_connector)}
 
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.impl:son_editor.impl.platform_connector.create_service_on_platform}\pysiglinewithargsret{\sphinxcode{son\_editor.impl.platform\_connector.}\sphinxbfcode{create\_service\_on\_platform}}{\emph{ws\_id}, \emph{platform\_id}, \emph{service\_data}}{}
@@ -2579,13 +2803,13 @@ Deploys the service on the referenced Platform
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
 \item {} 
-\sphinxstyleliteralstrong{ws\_id} -- 
+\sphinxstyleliteralstrong{ws\_id} -- The workspace ID
 
 \item {} 
-\sphinxstyleliteralstrong{platform\_id} -- 
+\sphinxstyleliteralstrong{platform\_id} -- The platform ID
 
 \item {} 
-\sphinxstyleliteralstrong{service\_data} -- 
+\sphinxstyleliteralstrong{service\_data} -- The service descriptor data
 
 \end{itemize}
 
@@ -2600,12 +2824,28 @@ A  message if the function was deployed successfully
 
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.impl:son_editor.impl.platform_connector.publish_referenced_functions}\pysiglinewithargsret{\sphinxcode{son\_editor.impl.platform\_connector.}\sphinxbfcode{publish\_referenced\_functions}}{\emph{ws\_id}, \emph{proj\_id}, \emph{descriptor}}{}
+Publishes the referenced functions to the private cataloge after packaging
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{ws\_id} -- The workspace ID
+
+\item {} 
+\sphinxstyleliteralstrong{proj\_id} -- The project ID
+
+\item {} 
+\sphinxstyleliteralstrong{descriptor} -- The service descriptor
+
+\end{itemize}
+
+\end{description}\end{quote}
+
 \end{fulllineitems}
 
 
 
 \paragraph{son\_editor.impl.platformsimpl module}
-\label{_source/son_editor.impl:module-son_editor.impl.platformsimpl}\label{_source/son_editor.impl:son-editor-impl-platformsimpl-module}\index{son\_editor.impl.platformsimpl (module)}\index{create\_platform() (in module son\_editor.impl.platformsimpl)}
+\label{_source/son_editor.impl:son-editor-impl-platformsimpl-module}\label{_source/son_editor.impl:module-son_editor.impl.platformsimpl}\index{son\_editor.impl.platformsimpl (module)}\index{create\_platform() (in module son\_editor.impl.platformsimpl)}
 
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.impl:son_editor.impl.platformsimpl.create_platform}\pysiglinewithargsret{\sphinxcode{son\_editor.impl.platformsimpl.}\sphinxbfcode{create\_platform}}{\emph{workspace\_id: int}, \emph{platform\_data}}{{ $\rightarrow$ dict}}
@@ -2613,15 +2853,15 @@ Create a new platform entry
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
 \item {} 
-\sphinxstyleliteralstrong{workspace\_id} -- 
+\sphinxstyleliteralstrong{workspace\_id} -- The workspace ID
 
 \item {} 
-\sphinxstyleliteralstrong{platform\_data} -- 
+\sphinxstyleliteralstrong{platform\_data} -- The platform info
 
 \end{itemize}
 
 \item[{Returns}] \leavevmode
-
+The newly created platform descriptor
 
 \end{description}\end{quote}
 
@@ -2635,10 +2875,10 @@ Deletes the platform from the workspace
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
 \item {} 
-\sphinxstyleliteralstrong{workspace\_id} -- 
+\sphinxstyleliteralstrong{workspace\_id} -- The workspace ID
 
 \item {} 
-\sphinxstyleliteralstrong{platform\_id} -- 
+\sphinxstyleliteralstrong{platform\_id} -- The platform ID
 
 \end{itemize}
 
@@ -2656,7 +2896,7 @@ the deleted platform description
 Get the platform definition
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode
-\sphinxstyleliteralstrong{platform\_id} -- 
+\sphinxstyleliteralstrong{platform\_id} -- The platform ID
 
 \item[{Returns}] \leavevmode
 The platform information
@@ -2672,10 +2912,10 @@ The platform information
 Get a list of platforms for this workspace
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode
-\sphinxstyleliteralstrong{workspace\_id} -- 
+\sphinxstyleliteralstrong{workspace\_id} -- The workspace ID
 
 \item[{Returns}] \leavevmode
-
+A list of all platforms defined for this workspace
 
 \end{description}\end{quote}
 
@@ -2689,10 +2929,10 @@ Update the platform entry
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
 \item {} 
-\sphinxstyleliteralstrong{workspace\_id} -- 
+\sphinxstyleliteralstrong{workspace\_id} -- The workspace ID
 
 \item {} 
-\sphinxstyleliteralstrong{platform\_id} -- 
+\sphinxstyleliteralstrong{platform\_id} -- The platform ID
 
 \end{itemize}
 
@@ -2706,7 +2946,7 @@ The updated platform definition
 
 
 \paragraph{son\_editor.impl.private\_catalogue\_impl module}
-\label{_source/son_editor.impl:son-editor-impl-private-catalogue-impl-module}\label{_source/son_editor.impl:module-son_editor.impl.private_catalogue_impl}\index{son\_editor.impl.private\_catalogue\_impl (module)}\index{get\_private\_nsfs\_list() (in module son\_editor.impl.private\_catalogue\_impl)}
+\label{_source/son_editor.impl:module-son_editor.impl.private_catalogue_impl}\label{_source/son_editor.impl:son-editor-impl-private-catalogue-impl-module}\index{son\_editor.impl.private\_catalogue\_impl (module)}\index{get\_private\_nsfs\_list() (in module son\_editor.impl.private\_catalogue\_impl)}
 
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.impl:son_editor.impl.private_catalogue_impl.get_private_nsfs_list}\pysiglinewithargsret{\sphinxcode{son\_editor.impl.private\_catalogue\_impl.}\sphinxbfcode{get\_private\_nsfs\_list}}{\emph{ws\_id}, \emph{is\_vnf}}{}
@@ -2736,18 +2976,12 @@ Publishes a function or service to the private catalogue repository
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
 \item {} 
-\sphinxstyleliteralstrong{ws\_id} -- 
+\sphinxstyleliteralstrong{ws\_id} -- The Workspace ID
 
 \item {} 
-\sphinxstyleliteralstrong{descriptor} -- 
-
-\item {} 
-\sphinxstyleliteralstrong{is\_vnf} -- 
+\sphinxstyleliteralstrong{descriptor} -- The descriptor to publish
 
 \end{itemize}
-
-\item[{Returns}] \leavevmode
-
 
 \end{description}\end{quote}
 
@@ -2761,24 +2995,24 @@ Finds a function in the private catalogue
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
 \item {} 
-\sphinxstyleliteralstrong{ws\_id} -- 
+\sphinxstyleliteralstrong{ws\_id} -- The workspace ID
 
 \item {} 
-\sphinxstyleliteralstrong{is\_vnf} -- 
+\sphinxstyleliteralstrong{is\_vnf} -- if descriptor is a VNF
 
 \item {} 
-\sphinxstyleliteralstrong{vendor} -- 
+\sphinxstyleliteralstrong{vendor} -- the descriptors vendor
 
 \item {} 
-\sphinxstyleliteralstrong{name} -- 
+\sphinxstyleliteralstrong{name} -- the descriptors name
 
 \item {} 
-\sphinxstyleliteralstrong{version} -- 
+\sphinxstyleliteralstrong{version} -- the descriptors version
 
 \end{itemize}
 
 \item[{Returns}] \leavevmode
-
+The requested descriptor if found, None if nothing found
 
 \end{description}\end{quote}
 
@@ -2787,7 +3021,7 @@ Finds a function in the private catalogue
 
 
 \paragraph{son\_editor.impl.projectsimpl module}
-\label{_source/son_editor.impl:son-editor-impl-projectsimpl-module}\label{_source/son_editor.impl:module-son_editor.impl.projectsimpl}\index{son\_editor.impl.projectsimpl (module)}
+\label{_source/son_editor.impl:module-son_editor.impl.projectsimpl}\label{_source/son_editor.impl:son-editor-impl-projectsimpl-module}\index{son\_editor.impl.projectsimpl (module)}
 Created on 05.08.2016
 
 @author: Jonas
@@ -2799,10 +3033,10 @@ Create a new Project in this workspace
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
 \item {} 
-\sphinxstyleliteralstrong{ws\_id} -- 
+\sphinxstyleliteralstrong{ws\_id} -- The workpace ID
 
 \item {} 
-\sphinxstyleliteralstrong{project\_data} -- 
+\sphinxstyleliteralstrong{project\_data} -- The project data to create
 
 \end{itemize}
 
@@ -2833,6 +3067,11 @@ The deleted project descriptor
 
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.impl:son_editor.impl.projectsimpl.get_project}\pysiglinewithargsret{\sphinxcode{son\_editor.impl.projectsimpl.}\sphinxbfcode{get\_project}}{\emph{ws\_id}, \emph{pj\_id}}{}
+Get a specific project 
+:param ws\_id: The workspace ID
+:param pj\_id: The project ID
+:return: The project descriptor
+
 \end{fulllineitems}
 
 \index{get\_project\_path() (in module son\_editor.impl.projectsimpl)}
@@ -2851,7 +3090,7 @@ Helper method to resolve the project path on disk for the given project
 \end{itemize}
 
 \item[{Returns}] \leavevmode
-
+The absolute project path
 
 \end{description}\end{quote}
 
@@ -2864,10 +3103,10 @@ Helper method to resolve the project path on disk for the given project
 Get a list of projects in this workspace
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode
-\sphinxstyleliteralstrong{ws\_id} -- 
+\sphinxstyleliteralstrong{ws\_id} -- The workspace ID
 
 \item[{Returns}] \leavevmode
-
+List of all projects
 
 \end{description}\end{quote}
 
@@ -2897,9 +3136,6 @@ Extracts the data from the dictionary and sets it on the database model
 
 \end{itemize}
 
-\item[{Returns}] \leavevmode
-
-
 \end{description}\end{quote}
 
 \end{fulllineitems}
@@ -2912,15 +3148,15 @@ Update the Project
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
 \item {} 
-\sphinxstyleliteralstrong{project\_data} -- 
+\sphinxstyleliteralstrong{project\_data} -- The project Data
 
 \item {} 
-\sphinxstyleliteralstrong{project\_id} -- 
+\sphinxstyleliteralstrong{project\_id} -- The project ID to update
 
 \end{itemize}
 
 \item[{Returns}] \leavevmode
-
+The updated project descriptor
 
 \end{description}\end{quote}
 
@@ -2929,7 +3165,7 @@ Update the Project
 
 
 \paragraph{son\_editor.impl.servicesimpl module}
-\label{_source/son_editor.impl:module-son_editor.impl.servicesimpl}\label{_source/son_editor.impl:son-editor-impl-servicesimpl-module}\index{son\_editor.impl.servicesimpl (module)}\index{create\_service() (in module son\_editor.impl.servicesimpl)}
+\label{_source/son_editor.impl:son-editor-impl-servicesimpl-module}\label{_source/son_editor.impl:module-son_editor.impl.servicesimpl}\index{son\_editor.impl.servicesimpl (module)}\index{create\_service() (in module son\_editor.impl.servicesimpl)}
 
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.impl:son_editor.impl.servicesimpl.create_service}\pysiglinewithargsret{\sphinxcode{son\_editor.impl.servicesimpl.}\sphinxbfcode{create\_service}}{\emph{ws\_id: int}, \emph{project\_id: int}, \emph{service\_data: dict}}{{ $\rightarrow$ dict}}
@@ -2980,6 +3216,22 @@ The descriptor of the deleted service
 
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.impl:son_editor.impl.servicesimpl.get_references}\pysiglinewithargsret{\sphinxcode{son\_editor.impl.servicesimpl.}\sphinxbfcode{get\_references}}{\emph{service}, \emph{session}}{}
+Searches for references to the service.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{service} -- The service
+
+\item {} 
+\sphinxstyleliteralstrong{session} -- the db\_session
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+a list of services referencing the given service
+
+\end{description}\end{quote}
+
 \end{fulllineitems}
 
 \index{get\_service() (in module son\_editor.impl.servicesimpl)}
@@ -3001,7 +3253,7 @@ Get the service by ID
 \end{itemize}
 
 \item[{Returns}] \leavevmode
-
+The requested service data
 
 \end{description}\end{quote}
 
@@ -3015,7 +3267,7 @@ Get a list of all services in this Project
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
 \item {} 
-\sphinxstyleliteralstrong{ws\_id} -- 
+\sphinxstyleliteralstrong{ws\_id} -- The workspace ID
 
 \item {} 
 \sphinxstyleliteralstrong{project\_id} -- The project ID
@@ -3046,24 +3298,26 @@ A list of service descriptors as dicts
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.impl:son_editor.impl.servicesimpl.update_service}\pysiglinewithargsret{\sphinxcode{son\_editor.impl.servicesimpl.}\sphinxbfcode{update\_service}}{\emph{ws\_id}, \emph{project\_id}, \emph{service\_id}, \emph{service\_data}}{}
 Update the service using the service data from the request
+
+Will also check for references by other services and create a copy if so
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
 \item {} 
-\sphinxstyleliteralstrong{ws\_id} -- 
+\sphinxstyleliteralstrong{ws\_id} -- The Workspace ID
 
 \item {} 
-\sphinxstyleliteralstrong{project\_id} -- 
+\sphinxstyleliteralstrong{project\_id} -- The project ID
 
 \item {} 
-\sphinxstyleliteralstrong{service\_id} -- 
+\sphinxstyleliteralstrong{service\_id} -- The service ID
 
 \item {} 
-\sphinxstyleliteralstrong{service\_data} -- 
+\sphinxstyleliteralstrong{service\_data} -- The service data containing the ``descriptor'' and optionally some ``meta'' data
 
 \end{itemize}
 
 \item[{Returns}] \leavevmode
-
+The updated service data
 
 \end{description}\end{quote}
 
@@ -3240,6 +3494,11 @@ especially if trying to remove .git files on windows
 
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.impl:son_editor.impl.workspaceimpl.test_url}\pysiglinewithargsret{\sphinxcode{son\_editor.impl.workspaceimpl.}\sphinxbfcode{test\_url}}{\emph{name}, \emph{url}}{}
+Tests the url for reachability
+:param name: the server name
+:param url: the server url
+:raises ExtNotReachable: if the external server could not be contacted
+
 \end{fulllineitems}
 
 \index{update\_workspace() (in module son\_editor.impl.workspaceimpl)}
@@ -3266,21 +3525,19 @@ The updated workspace
 
 
 
-\paragraph{Module contents}
-\label{_source/son_editor.impl:module-son_editor.impl}\label{_source/son_editor.impl:module-contents}\index{son\_editor.impl (module)}
-
 \subsubsection{son\_editor.models package}
-\label{_source/son_editor.models::doc}\label{_source/son_editor.models:son-editor-models-package}
-
-\paragraph{Submodules}
-\label{_source/son_editor.models:submodules}
+\label{_source/son_editor.models:son-editor-models-package}\label{_source/son_editor.models::doc}
 
 \paragraph{son\_editor.models.descriptor module}
-\label{_source/son_editor.models:son-editor-models-descriptor-module}\label{_source/son_editor.models:module-son_editor.models.descriptor}\index{son\_editor.models.descriptor (module)}\index{Descriptor (class in son\_editor.models.descriptor)}
+\label{_source/son_editor.models:module-son_editor.models.descriptor}\label{_source/son_editor.models:son-editor-models-descriptor-module}\index{son\_editor.models.descriptor (module)}\index{Descriptor (class in son\_editor.models.descriptor)}
 
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.models:son_editor.models.descriptor.Descriptor}\pysiglinewithargsret{\sphinxstrong{class }\sphinxcode{son\_editor.models.descriptor.}\sphinxbfcode{Descriptor}}{\emph{name=None}, \emph{version=None}, \emph{vendor=None}, \emph{descriptor=None}}{}
 Bases: \sphinxcode{sqlalchemy.ext.declarative.api.Base}
+
+The Base class for storing the function and the service descriptors.
+Both descriptors share the properties name, vendor and version 
+and are constrained to have a unique uid inside of a project
 \index{as\_dict() (son\_editor.models.descriptor.Descriptor method)}
 
 \begin{fulllineitems}
@@ -3337,6 +3594,8 @@ Bases: \sphinxcode{sqlalchemy.ext.declarative.api.Base}
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.models:son_editor.models.descriptor.Function}\pysiglinewithargsret{\sphinxstrong{class }\sphinxcode{son\_editor.models.descriptor.}\sphinxbfcode{Function}}{\emph{name=None}, \emph{version=None}, \emph{vendor=None}, \emph{descriptor=None}, \emph{project=None}}{}
 Bases: {\hyperref[_source/son_editor.models:son_editor.models.descriptor.Descriptor]{\sphinxcrossref{\sphinxcode{son\_editor.models.descriptor.Descriptor}}}}
+
+The Model for the function Descriptor
 \index{descriptor (son\_editor.models.descriptor.Function attribute)}
 
 \begin{fulllineitems}
@@ -3393,6 +3652,9 @@ Bases: {\hyperref[_source/son_editor.models:son_editor.models.descriptor.Descrip
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.models:son_editor.models.descriptor.Service}\pysiglinewithargsret{\sphinxstrong{class }\sphinxcode{son\_editor.models.descriptor.}\sphinxbfcode{Service}}{\emph{name=None}, \emph{version=None}, \emph{vendor=None}, \emph{descriptor=None}, \emph{project=None}, \emph{meta='\{\}'}}{}
 Bases: {\hyperref[_source/son_editor.models:son_editor.models.descriptor.Descriptor]{\sphinxcrossref{\sphinxcode{son\_editor.models.descriptor.Descriptor}}}}
+
+The Model for the service descriptor additionally contains 
+a meta property that can hold arbitrary meta-data about the service
 \index{as\_dict() (son\_editor.models.descriptor.Service method)}
 
 \begin{fulllineitems}
@@ -3464,6 +3726,9 @@ Bases: {\hyperref[_source/son_editor.models:son_editor.models.descriptor.Descrip
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.models:son_editor.models.private_descriptor.PrivateDescriptor}\pysiglinewithargsret{\sphinxstrong{class }\sphinxcode{son\_editor.models.private\_descriptor.}\sphinxbfcode{PrivateDescriptor}}{\emph{ws\_id=None}, \emph{name=None}, \emph{version=None}, \emph{vendor=None}, \emph{descriptor=None}}{}
 Bases: \sphinxcode{sqlalchemy.ext.declarative.api.Base}
+
+The private descriptor is the model for the 
+service and function descriptors in the private catalogue
 \index{as\_dict() (son\_editor.models.private\_descriptor.PrivateDescriptor method)}
 
 \begin{fulllineitems}
@@ -3520,6 +3785,9 @@ Bases: \sphinxcode{sqlalchemy.ext.declarative.api.Base}
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.models:son_editor.models.private_descriptor.PrivateFunction}\pysiglinewithargsret{\sphinxstrong{class }\sphinxcode{son\_editor.models.private\_descriptor.}\sphinxbfcode{PrivateFunction}}{\emph{ws\_id=None}, \emph{name=None}, \emph{version=None}, \emph{vendor=None}, \emph{descriptor=None}}{}
 Bases: {\hyperref[_source/son_editor.models:son_editor.models.private_descriptor.PrivateDescriptor]{\sphinxcrossref{\sphinxcode{son\_editor.models.private\_descriptor.PrivateDescriptor}}}}
+
+The Private function is the Model for the 
+Function descriptors in the private catalogue
 \index{descriptor (son\_editor.models.private\_descriptor.PrivateFunction attribute)}
 
 \begin{fulllineitems}
@@ -3576,6 +3844,9 @@ Bases: {\hyperref[_source/son_editor.models:son_editor.models.private_descriptor
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.models:son_editor.models.private_descriptor.PrivateService}\pysiglinewithargsret{\sphinxstrong{class }\sphinxcode{son\_editor.models.private\_descriptor.}\sphinxbfcode{PrivateService}}{\emph{ws\_id=None}, \emph{name=None}, \emph{version=None}, \emph{vendor=None}, \emph{descriptor=None}}{}
 Bases: {\hyperref[_source/son_editor.models:son_editor.models.private_descriptor.PrivateDescriptor]{\sphinxcrossref{\sphinxcode{son\_editor.models.private\_descriptor.PrivateDescriptor}}}}
+
+The Private service is the Model for the 
+Service descriptors in the private catalogue
 \index{descriptor (son\_editor.models.private\_descriptor.PrivateService attribute)}
 
 \begin{fulllineitems}
@@ -3635,6 +3906,10 @@ Bases: {\hyperref[_source/son_editor.models:son_editor.models.private_descriptor
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.models:son_editor.models.project.Project}\pysiglinewithargsret{\sphinxstrong{class }\sphinxcode{son\_editor.models.project.}\sphinxbfcode{Project}}{\emph{name=None}, \emph{rel\_path=None}, \emph{workspace=None}}{}
 Bases: \sphinxcode{sqlalchemy.ext.declarative.api.Base}
+
+The Project model corresponds to the project folders in the workpace.
+It stores references to the services and functions of one project in the database.
+If the project was shared via GitHub the repo\_url points to the respective repository.
 \index{as\_dict() (son\_editor.models.project.Project method)}
 
 \begin{fulllineitems}
@@ -3824,6 +4099,9 @@ Bases: {\hyperref[_source/son_editor.models:son_editor.models.repository.Reposit
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.models:son_editor.models.repository.Repository}\pysiglinewithargsret{\sphinxstrong{class }\sphinxcode{son\_editor.models.repository.}\sphinxbfcode{Repository}}{\emph{name=None}, \emph{url=None}, \emph{publish=False}}{}
 Bases: \sphinxcode{sqlalchemy.ext.declarative.api.Base}
+
+The repository model is the base class for the external 
+repositories that can be contacted through the given url
 \index{as\_dict() (son\_editor.models.repository.Repository method)}
 
 \begin{fulllineitems}
@@ -3866,11 +4144,14 @@ Bases: \sphinxcode{sqlalchemy.ext.declarative.api.Base}
 
 
 \paragraph{son\_editor.models.user module}
-\label{_source/son_editor.models:module-son_editor.models.user}\label{_source/son_editor.models:son-editor-models-user-module}\index{son\_editor.models.user (module)}\index{User (class in son\_editor.models.user)}
+\label{_source/son_editor.models:son-editor-models-user-module}\label{_source/son_editor.models:module-son_editor.models.user}\index{son\_editor.models.user (module)}\index{User (class in son\_editor.models.user)}
 
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.models:son_editor.models.user.User}\pysiglinewithargsret{\sphinxstrong{class }\sphinxcode{son\_editor.models.user.}\sphinxbfcode{User}}{\emph{name=None}, \emph{email=None}}{}
 Bases: \sphinxcode{sqlalchemy.ext.declarative.api.Base}
+
+The user model stores the username and his email that was registered at github.
+It is the root object for all data belonging to a user
 \index{email (son\_editor.models.user.User attribute)}
 
 \begin{fulllineitems}
@@ -3906,6 +4187,11 @@ Bases: \sphinxcode{sqlalchemy.ext.declarative.api.Base}
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.models:son_editor.models.workspace.Workspace}\pysiglinewithargsret{\sphinxstrong{class }\sphinxcode{son\_editor.models.workspace.}\sphinxbfcode{Workspace}}{\emph{name=None}, \emph{path=None}, \emph{owner=None}, \emph{schema\_index=0}}{}
 Bases: \sphinxcode{sqlalchemy.ext.declarative.api.Base}
+
+The workspace model stores information about the workspace and has 
+references to its children like the catalogues, platform and projects
+The schema\_index corresponds to the index of the schema\_remote\_masters
+that are configured in the server configuration
 \index{as\_dict() (son\_editor.models.workspace.Workspace method)}
 
 \begin{fulllineitems}
@@ -3983,17 +4269,11 @@ Bases: \sphinxcode{sqlalchemy.ext.declarative.api.Base}
 
 
 
-\paragraph{Module contents}
-\label{_source/son_editor.models:module-son_editor.models}\label{_source/son_editor.models:module-contents}\index{son\_editor.models (module)}
-
 \subsubsection{son\_editor.util package}
-\label{_source/son_editor.util::doc}\label{_source/son_editor.util:son-editor-util-package}
-
-\paragraph{Submodules}
-\label{_source/son_editor.util:submodules}
+\label{_source/son_editor.util:son-editor-util-package}\label{_source/son_editor.util::doc}
 
 \paragraph{son\_editor.util.constants module}
-\label{_source/son_editor.util:son-editor-util-constants-module}\label{_source/son_editor.util:module-son_editor.util.constants}\index{son\_editor.util.constants (module)}
+\label{_source/son_editor.util:module-son_editor.util.constants}\label{_source/son_editor.util:son-editor-util-constants-module}\index{son\_editor.util.constants (module)}
 Created on 22.07.2016
 
 @author: Jonas
@@ -4002,34 +4282,6 @@ Created on 22.07.2016
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.util:son_editor.util.constants.CATALOGUES}\pysigline{\sphinxcode{son\_editor.util.constants.}\sphinxbfcode{CATALOGUES}\sphinxstrong{ = `catalogues'}}
 The network service url constant
-
-\end{fulllineitems}
-
-\index{Category (class in son\_editor.util.constants)}
-
-\begin{fulllineitems}
-\phantomsection\label{_source/son_editor.util:son_editor.util.constants.Category}\pysigline{\sphinxstrong{class }\sphinxcode{son\_editor.util.constants.}\sphinxbfcode{Category}}
-Bases: \sphinxcode{enum.Enum}
-
-An enumeration.
-\index{catalogue (son\_editor.util.constants.Category attribute)}
-
-\begin{fulllineitems}
-\phantomsection\label{_source/son_editor.util:son_editor.util.constants.Category.catalogue}\pysigline{\sphinxbfcode{catalogue}\sphinxstrong{ = 2}}
-\end{fulllineitems}
-
-\index{platform (son\_editor.util.constants.Category attribute)}
-
-\begin{fulllineitems}
-\phantomsection\label{_source/son_editor.util:son_editor.util.constants.Category.platform}\pysigline{\sphinxbfcode{platform}\sphinxstrong{ = 3}}
-\end{fulllineitems}
-
-\index{project (son\_editor.util.constants.Category attribute)}
-
-\begin{fulllineitems}
-\phantomsection\label{_source/son_editor.util:son_editor.util.constants.Category.project}\pysigline{\sphinxbfcode{project}\sphinxstrong{ = 1}}
-\end{fulllineitems}
-
 
 \end{fulllineitems}
 
@@ -4142,21 +4394,10 @@ The project url constant
 
 \end{fulllineitems}
 
-\index{get\_parent() (in module son\_editor.util.constants)}
-
-\begin{fulllineitems}
-\phantomsection\label{_source/son_editor.util:son_editor.util.constants.get_parent}\pysiglinewithargsret{\sphinxcode{son\_editor.util.constants.}\sphinxbfcode{get\_parent}}{\emph{request}}{}
-Helper method to extract the parent category
-for the services and functions api calls
-:param request:
-:return:
-
-\end{fulllineitems}
-
 
 
 \paragraph{son\_editor.util.context module}
-\label{_source/son_editor.util:module-son_editor.util.context}\label{_source/son_editor.util:son-editor-util-context-module}\index{son\_editor.util.context (module)}\index{init\_test\_context() (in module son\_editor.util.context)}
+\label{_source/son_editor.util:son-editor-util-context-module}\label{_source/son_editor.util:module-son_editor.util.context}\index{son\_editor.util.context (module)}\index{init\_test\_context() (in module son\_editor.util.context)}
 
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.util:son_editor.util.context.init_test_context}\pysiglinewithargsret{\sphinxcode{son\_editor.util.context.}\sphinxbfcode{init\_test\_context}}{}{}~\begin{quote}
@@ -4165,7 +4406,7 @@ Initializes a test-case context and cleans up workspace location beforehand
 \end{quote}
 \begin{quote}\begin{description}
 \item[{Returns}] \leavevmode
-
+The test client
 
 \end{description}\end{quote}
 
@@ -4174,7 +4415,7 @@ Initializes a test-case context and cleans up workspace location beforehand
 
 
 \paragraph{son\_editor.util.descriptorutil module}
-\label{_source/son_editor.util:son-editor-util-descriptorutil-module}\label{_source/son_editor.util:module-son_editor.util.descriptorutil}\index{son\_editor.util.descriptorutil (module)}\index{get\_file\_name() (in module son\_editor.util.descriptorutil)}
+\label{_source/son_editor.util:module-son_editor.util.descriptorutil}\label{_source/son_editor.util:son-editor-util-descriptorutil-module}\index{son\_editor.util.descriptorutil (module)}\index{get\_file\_name() (in module son\_editor.util.descriptorutil)}
 
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.util:son_editor.util.descriptorutil.get_file_name}\pysiglinewithargsret{\sphinxcode{son\_editor.util.descriptorutil.}\sphinxbfcode{get\_file\_name}}{\emph{model}}{{ $\rightarrow$ str}}
@@ -4218,12 +4459,21 @@ None
 
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.util:son_editor.util.descriptorutil.get_schema}\pysiglinewithargsret{\sphinxcode{son\_editor.util.descriptorutil.}\sphinxbfcode{get\_schema}}{\emph{schema\_index}, \emph{schema\_id: str}}{{ $\rightarrow$ dict}}
+Get the requested schema
+:param schema\_index: The schema index referring to the ``schema''-index in the configuration file
+:param schema\_id: either ``vnf'' or ``ns''
+:return: The requested schema
+
 \end{fulllineitems}
 
 \index{get\_schemas() (in module son\_editor.util.descriptorutil)}
 
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.util:son_editor.util.descriptorutil.get_schemas}\pysiglinewithargsret{\sphinxcode{son\_editor.util.descriptorutil.}\sphinxbfcode{get\_schemas}}{}{}
+Get the schemas
+
+Will load the schemas if still empty
+
 \end{fulllineitems}
 
 \index{load\_ns\_vnf\_from\_disk() (in module son\_editor.util.descriptorutil)}
@@ -4260,6 +4510,8 @@ Loads the project descriptor from disk
 
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.util:son_editor.util.descriptorutil.load_schemas}\pysiglinewithargsret{\sphinxcode{son\_editor.util.descriptorutil.}\sphinxbfcode{load\_schemas}}{}{}
+Loads the schemas congigured under ``schemas'' from the schema remotes
+
 \end{fulllineitems}
 
 \index{load\_workspace\_descriptor() (in module son\_editor.util.descriptorutil)}
@@ -4270,9 +4522,6 @@ Loads the workspace descriptor from disk and updates the database model
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode
 \sphinxstyleliteralstrong{workspace} -- The workspace database model
-
-\item[{Returns}] \leavevmode
-
 
 \end{description}\end{quote}
 
@@ -4287,9 +4536,6 @@ Updates the project model with data from the project descriptor and vice versa
 \item[{Parameters}] \leavevmode
 \sphinxstyleliteralstrong{project} -- The projects database model
 
-\item[{Returns}] \leavevmode
-
-
 \end{description}\end{quote}
 
 \end{fulllineitems}
@@ -4302,9 +4548,6 @@ Updates the workspace descriptor with data from the workspace model
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode
 \sphinxstyleliteralstrong{workspace} -- The workspace model
-
-\item[{Returns}] \leavevmode
-
 
 \end{description}\end{quote}
 
@@ -4337,6 +4580,25 @@ None
 
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.util:son_editor.util.descriptorutil.write_private_descriptor}\pysiglinewithargsret{\sphinxcode{son\_editor.util.descriptorutil.}\sphinxbfcode{write\_private\_descriptor}}{\emph{workspace\_path: str}, \emph{is\_vnf: bool}, \emph{descriptor: dict}}{}
+Write the private descriptor into the private cataloge folder on disk
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{workspace\_path} -- The workspace path
+
+\item {} 
+\sphinxstyleliteralstrong{is\_vnf} -- If the descriptor is a vnf
+
+\item {} 
+\sphinxstyleliteralstrong{descriptor} -- the descriptor data
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+
+
+\end{description}\end{quote}
+
 \end{fulllineitems}
 
 \index{write\_project\_descriptor() (in module son\_editor.util.descriptorutil)}
@@ -4350,7 +4612,7 @@ Writes the project database model to disk
 
 
 \paragraph{son\_editor.util.publishutil module}
-\label{_source/son_editor.util:son-editor-util-publishutil-module}\label{_source/son_editor.util:module-son_editor.util.publishutil}\index{son\_editor.util.publishutil (module)}\index{pack\_project() (in module son\_editor.util.publishutil)}
+\label{_source/son_editor.util:module-son_editor.util.publishutil}\label{_source/son_editor.util:son-editor-util-publishutil-module}\index{son\_editor.util.publishutil (module)}\index{pack\_project() (in module son\_editor.util.publishutil)}
 
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.util:son_editor.util.publishutil.pack_project}\pysiglinewithargsret{\sphinxcode{son\_editor.util.publishutil.}\sphinxbfcode{pack\_project}}{\emph{project: son\_editor.models.project.Project}}{{ $\rightarrow$ str}}
@@ -4360,7 +4622,7 @@ Calls the son-package cli tool to pack the project and prepare it for deployment
 \sphinxstyleliteralstrong{project} -- The project to pack
 
 \item[{Returns}] \leavevmode
-
+The file name of the package file
 
 \end{description}\end{quote}
 
@@ -4382,7 +4644,7 @@ Pushes the package located at the package\_path to the specified Platform
 \end{itemize}
 
 \item[{Returns}] \leavevmode
-
+The uuid returned by the platform
 
 \end{description}\end{quote}
 
@@ -4399,6 +4661,8 @@ Created on 28.07.2016
 
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.util:son_editor.util.requestutil.get_config}\pysiglinewithargsret{\sphinxcode{son\_editor.util.requestutil.}\sphinxbfcode{get\_config}}{}{}
+Returns the current configuration
+
 \end{fulllineitems}
 
 \index{get\_json() (in module son\_editor.util.requestutil)}
@@ -4494,15 +4758,19 @@ String that has replaced strings
 
 \begin{fulllineitems}
 \phantomsection\label{_source/son_editor.util:son_editor.util.requestutil.update_config}\pysiglinewithargsret{\sphinxcode{son\_editor.util.requestutil.}\sphinxbfcode{update\_config}}{\emph{config}}{}
+Update the configuratiion file
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{config} -- The new configuration
+
+\item[{Returns}] \leavevmode
+Message if successful
+
+\end{description}\end{quote}
+
 \end{fulllineitems}
 
 
-
-\paragraph{Module contents}
-\label{_source/son_editor.util:module-son_editor.util}\label{_source/son_editor.util:module-contents}\index{son\_editor.util (module)}
-
-\subsection{Module contents}
-\label{_source/son_editor:module-son_editor}\label{_source/son_editor:module-contents}\index{son\_editor (module)}
 
 \chapter{Indices and tables}
 \label{index:indices-and-tables}\begin{itemize}
@@ -4522,8 +4790,6 @@ String that has replaced strings
 \begin{sphinxtheindex}
 \def\bigletter#1{{\Large\sffamily#1}\nopagebreak\vspace{1mm}}
 \bigletter{s}
-\item {\sphinxstyleindexentry{son\_editor}}\sphinxstyleindexpageref{_source/son_editor:module-son_editor}
-\item {\sphinxstyleindexentry{son\_editor.apis}}\sphinxstyleindexpageref{_source/son_editor.apis:module-son_editor.apis}
 \item {\sphinxstyleindexentry{son\_editor.apis.catalogue\_functionsapi}}\sphinxstyleindexpageref{_source/son_editor.apis:module-son_editor.apis.catalogue_functionsapi}
 \item {\sphinxstyleindexentry{son\_editor.apis.catalogue\_servicesapi}}\sphinxstyleindexpageref{_source/son_editor.apis:module-son_editor.apis.catalogue_servicesapi}
 \item {\sphinxstyleindexentry{son\_editor.apis.cataloguesapi}}\sphinxstyleindexpageref{_source/son_editor.apis:module-son_editor.apis.cataloguesapi}
@@ -4538,11 +4804,9 @@ String that has replaced strings
 \item {\sphinxstyleindexentry{son\_editor.apis.schemaapi}}\sphinxstyleindexpageref{_source/son_editor.apis:module-son_editor.apis.schemaapi}
 \item {\sphinxstyleindexentry{son\_editor.apis.userserviceapi}}\sphinxstyleindexpageref{_source/son_editor.apis:module-son_editor.apis.userserviceapi}
 \item {\sphinxstyleindexentry{son\_editor.apis.workspacesapi}}\sphinxstyleindexpageref{_source/son_editor.apis:module-son_editor.apis.workspacesapi}
-\item {\sphinxstyleindexentry{son\_editor.app}}\sphinxstyleindexpageref{_source/son_editor.app:module-son_editor.app}
 \item {\sphinxstyleindexentry{son\_editor.app.database}}\sphinxstyleindexpageref{_source/son_editor.app:module-son_editor.app.database}
 \item {\sphinxstyleindexentry{son\_editor.app.exceptions}}\sphinxstyleindexpageref{_source/son_editor.app:module-son_editor.app.exceptions}
 \item {\sphinxstyleindexentry{son\_editor.app.securityservice}}\sphinxstyleindexpageref{_source/son_editor.app:module-son_editor.app.securityservice}
-\item {\sphinxstyleindexentry{son\_editor.impl}}\sphinxstyleindexpageref{_source/son_editor.impl:module-son_editor.impl}
 \item {\sphinxstyleindexentry{son\_editor.impl.catalogue\_servicesimpl}}\sphinxstyleindexpageref{_source/son_editor.impl:module-son_editor.impl.catalogue_servicesimpl}
 \item {\sphinxstyleindexentry{son\_editor.impl.cataloguesimpl}}\sphinxstyleindexpageref{_source/son_editor.impl:module-son_editor.impl.cataloguesimpl}
 \item {\sphinxstyleindexentry{son\_editor.impl.functionsimpl}}\sphinxstyleindexpageref{_source/son_editor.impl:module-son_editor.impl.functionsimpl}
@@ -4556,14 +4820,12 @@ String that has replaced strings
 \item {\sphinxstyleindexentry{son\_editor.impl.usermanagement}}\sphinxstyleindexpageref{_source/son_editor.impl:module-son_editor.impl.usermanagement}
 \item {\sphinxstyleindexentry{son\_editor.impl.userserviceimpl}}\sphinxstyleindexpageref{_source/son_editor.impl:module-son_editor.impl.userserviceimpl}
 \item {\sphinxstyleindexentry{son\_editor.impl.workspaceimpl}}\sphinxstyleindexpageref{_source/son_editor.impl:module-son_editor.impl.workspaceimpl}
-\item {\sphinxstyleindexentry{son\_editor.models}}\sphinxstyleindexpageref{_source/son_editor.models:module-son_editor.models}
 \item {\sphinxstyleindexentry{son\_editor.models.descriptor}}\sphinxstyleindexpageref{_source/son_editor.models:module-son_editor.models.descriptor}
 \item {\sphinxstyleindexentry{son\_editor.models.private\_descriptor}}\sphinxstyleindexpageref{_source/son_editor.models:module-son_editor.models.private_descriptor}
 \item {\sphinxstyleindexentry{son\_editor.models.project}}\sphinxstyleindexpageref{_source/son_editor.models:module-son_editor.models.project}
 \item {\sphinxstyleindexentry{son\_editor.models.repository}}\sphinxstyleindexpageref{_source/son_editor.models:module-son_editor.models.repository}
 \item {\sphinxstyleindexentry{son\_editor.models.user}}\sphinxstyleindexpageref{_source/son_editor.models:module-son_editor.models.user}
 \item {\sphinxstyleindexentry{son\_editor.models.workspace}}\sphinxstyleindexpageref{_source/son_editor.models:module-son_editor.models.workspace}
-\item {\sphinxstyleindexentry{son\_editor.util}}\sphinxstyleindexpageref{_source/son_editor.util:module-son_editor.util}
 \item {\sphinxstyleindexentry{son\_editor.util.constants}}\sphinxstyleindexpageref{_source/son_editor.util:module-son_editor.util.constants}
 \item {\sphinxstyleindexentry{son\_editor.util.context}}\sphinxstyleindexpageref{_source/son_editor.util:module-son_editor.util.context}
 \item {\sphinxstyleindexentry{son\_editor.util.descriptorutil}}\sphinxstyleindexpageref{_source/son_editor.util:module-son_editor.util.descriptorutil}

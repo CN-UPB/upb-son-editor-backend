@@ -26,6 +26,8 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="son_editor.util package" href="son_editor.util.html" />
+    <link rel="prev" title="son_editor.impl package" href="son_editor.impl.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -43,15 +45,15 @@
             
   <div class="section" id="son-editor-models-package">
 <h1>son_editor.models package<a class="headerlink" href="#son-editor-models-package" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
-</div>
 <div class="section" id="module-son_editor.models.descriptor">
 <span id="son-editor-models-descriptor-module"></span><h2>son_editor.models.descriptor module<a class="headerlink" href="#module-son_editor.models.descriptor" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="son_editor.models.descriptor.Descriptor">
 <em class="property">class </em><code class="descclassname">son_editor.models.descriptor.</code><code class="descname">Descriptor</code><span class="sig-paren">(</span><em>name=None</em>, <em>version=None</em>, <em>vendor=None</em>, <em>descriptor=None</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.models.descriptor.Descriptor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">sqlalchemy.ext.declarative.api.Base</span></code></p>
+<p>The Base class for storing the function and the service descriptors.
+Both descriptors share the properties name, vendor and version 
+and are constrained to have a unique uid inside of a project</p>
 <dl class="method">
 <dt id="son_editor.models.descriptor.Descriptor.as_dict">
 <code class="descname">as_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.models.descriptor.Descriptor.as_dict" title="Permalink to this definition">¶</a></dt>
@@ -98,6 +100,7 @@
 <dt id="son_editor.models.descriptor.Function">
 <em class="property">class </em><code class="descclassname">son_editor.models.descriptor.</code><code class="descname">Function</code><span class="sig-paren">(</span><em>name=None</em>, <em>version=None</em>, <em>vendor=None</em>, <em>descriptor=None</em>, <em>project=None</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.models.descriptor.Function" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#son_editor.models.descriptor.Descriptor" title="son_editor.models.descriptor.Descriptor"><code class="xref py py-class docutils literal"><span class="pre">son_editor.models.descriptor.Descriptor</span></code></a></p>
+<p>The Model for the function Descriptor</p>
 <dl class="attribute">
 <dt id="son_editor.models.descriptor.Function.descriptor">
 <code class="descname">descriptor</code><a class="headerlink" href="#son_editor.models.descriptor.Function.descriptor" title="Permalink to this definition">¶</a></dt>
@@ -144,6 +147,8 @@
 <dt id="son_editor.models.descriptor.Service">
 <em class="property">class </em><code class="descclassname">son_editor.models.descriptor.</code><code class="descname">Service</code><span class="sig-paren">(</span><em>name=None</em>, <em>version=None</em>, <em>vendor=None</em>, <em>descriptor=None</em>, <em>project=None</em>, <em>meta='{}'</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.models.descriptor.Service" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#son_editor.models.descriptor.Descriptor" title="son_editor.models.descriptor.Descriptor"><code class="xref py py-class docutils literal"><span class="pre">son_editor.models.descriptor.Descriptor</span></code></a></p>
+<p>The Model for the service descriptor additionally contains 
+a meta property that can hold arbitrary meta-data about the service</p>
 <dl class="method">
 <dt id="son_editor.models.descriptor.Service.as_dict">
 <code class="descname">as_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.models.descriptor.Service.as_dict" title="Permalink to this definition">¶</a></dt>
@@ -203,6 +208,8 @@
 <dt id="son_editor.models.private_descriptor.PrivateDescriptor">
 <em class="property">class </em><code class="descclassname">son_editor.models.private_descriptor.</code><code class="descname">PrivateDescriptor</code><span class="sig-paren">(</span><em>ws_id=None</em>, <em>name=None</em>, <em>version=None</em>, <em>vendor=None</em>, <em>descriptor=None</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.models.private_descriptor.PrivateDescriptor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">sqlalchemy.ext.declarative.api.Base</span></code></p>
+<p>The private descriptor is the model for the 
+service and function descriptors in the private catalogue</p>
 <dl class="method">
 <dt id="son_editor.models.private_descriptor.PrivateDescriptor.as_dict">
 <code class="descname">as_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.models.private_descriptor.PrivateDescriptor.as_dict" title="Permalink to this definition">¶</a></dt>
@@ -249,6 +256,8 @@
 <dt id="son_editor.models.private_descriptor.PrivateFunction">
 <em class="property">class </em><code class="descclassname">son_editor.models.private_descriptor.</code><code class="descname">PrivateFunction</code><span class="sig-paren">(</span><em>ws_id=None</em>, <em>name=None</em>, <em>version=None</em>, <em>vendor=None</em>, <em>descriptor=None</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.models.private_descriptor.PrivateFunction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#son_editor.models.private_descriptor.PrivateDescriptor" title="son_editor.models.private_descriptor.PrivateDescriptor"><code class="xref py py-class docutils literal"><span class="pre">son_editor.models.private_descriptor.PrivateDescriptor</span></code></a></p>
+<p>The Private function is the Model for the 
+Function descriptors in the private catalogue</p>
 <dl class="attribute">
 <dt id="son_editor.models.private_descriptor.PrivateFunction.descriptor">
 <code class="descname">descriptor</code><a class="headerlink" href="#son_editor.models.private_descriptor.PrivateFunction.descriptor" title="Permalink to this definition">¶</a></dt>
@@ -295,6 +304,8 @@
 <dt id="son_editor.models.private_descriptor.PrivateService">
 <em class="property">class </em><code class="descclassname">son_editor.models.private_descriptor.</code><code class="descname">PrivateService</code><span class="sig-paren">(</span><em>ws_id=None</em>, <em>name=None</em>, <em>version=None</em>, <em>vendor=None</em>, <em>descriptor=None</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.models.private_descriptor.PrivateService" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#son_editor.models.private_descriptor.PrivateDescriptor" title="son_editor.models.private_descriptor.PrivateDescriptor"><code class="xref py py-class docutils literal"><span class="pre">son_editor.models.private_descriptor.PrivateDescriptor</span></code></a></p>
+<p>The Private service is the Model for the 
+Service descriptors in the private catalogue</p>
 <dl class="attribute">
 <dt id="son_editor.models.private_descriptor.PrivateService.descriptor">
 <code class="descname">descriptor</code><a class="headerlink" href="#son_editor.models.private_descriptor.PrivateService.descriptor" title="Permalink to this definition">¶</a></dt>
@@ -344,6 +355,9 @@
 <dt id="son_editor.models.project.Project">
 <em class="property">class </em><code class="descclassname">son_editor.models.project.</code><code class="descname">Project</code><span class="sig-paren">(</span><em>name=None</em>, <em>rel_path=None</em>, <em>workspace=None</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.models.project.Project" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">sqlalchemy.ext.declarative.api.Base</span></code></p>
+<p>The Project model corresponds to the project folders in the workpace.
+It stores references to the services and functions of one project in the database.
+If the project was shared via GitHub the repo_url points to the respective repository.</p>
 <dl class="method">
 <dt id="son_editor.models.project.Project.as_dict">
 <code class="descname">as_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.models.project.Project.as_dict" title="Permalink to this definition">¶</a></dt>
@@ -500,6 +514,8 @@
 <dt id="son_editor.models.repository.Repository">
 <em class="property">class </em><code class="descclassname">son_editor.models.repository.</code><code class="descname">Repository</code><span class="sig-paren">(</span><em>name=None</em>, <em>url=None</em>, <em>publish=False</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.models.repository.Repository" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">sqlalchemy.ext.declarative.api.Base</span></code></p>
+<p>The repository model is the base class for the external 
+repositories that can be contacted through the given url</p>
 <dl class="method">
 <dt id="son_editor.models.repository.Repository.as_dict">
 <code class="descname">as_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.models.repository.Repository.as_dict" title="Permalink to this definition">¶</a></dt>
@@ -539,6 +555,8 @@
 <dt id="son_editor.models.user.User">
 <em class="property">class </em><code class="descclassname">son_editor.models.user.</code><code class="descname">User</code><span class="sig-paren">(</span><em>name=None</em>, <em>email=None</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.models.user.User" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">sqlalchemy.ext.declarative.api.Base</span></code></p>
+<p>The user model stores the username and his email that was registered at github.
+It is the root object for all data belonging to a user</p>
 <dl class="attribute">
 <dt id="son_editor.models.user.User.email">
 <code class="descname">email</code><a class="headerlink" href="#son_editor.models.user.User.email" title="Permalink to this definition">¶</a></dt>
@@ -568,6 +586,10 @@
 <dt id="son_editor.models.workspace.Workspace">
 <em class="property">class </em><code class="descclassname">son_editor.models.workspace.</code><code class="descname">Workspace</code><span class="sig-paren">(</span><em>name=None</em>, <em>path=None</em>, <em>owner=None</em>, <em>schema_index=0</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.models.workspace.Workspace" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">sqlalchemy.ext.declarative.api.Base</span></code></p>
+<p>The workspace model stores information about the workspace and has 
+references to its children like the catalogues, platform and projects
+The schema_index corresponds to the index of the schema_remote_masters
+that are configured in the server configuration</p>
 <dl class="method">
 <dt id="son_editor.models.workspace.Workspace.as_dict">
 <code class="descname">as_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.models.workspace.Workspace.as_dict" title="Permalink to this definition">¶</a></dt>
@@ -631,9 +653,6 @@
 </dd></dl>
 
 </div>
-<div class="section" id="module-son_editor.models">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-son_editor.models" title="Permalink to this headline">¶</a></h2>
-</div>
 </div>
 
 
@@ -645,14 +664,12 @@
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">son_editor.models package</a><ul>
-<li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-son_editor.models.descriptor">son_editor.models.descriptor module</a></li>
 <li><a class="reference internal" href="#module-son_editor.models.private_descriptor">son_editor.models.private_descriptor module</a></li>
 <li><a class="reference internal" href="#module-son_editor.models.project">son_editor.models.project module</a></li>
 <li><a class="reference internal" href="#module-son_editor.models.repository">son_editor.models.repository module</a></li>
 <li><a class="reference internal" href="#module-son_editor.models.user">son_editor.models.user module</a></li>
 <li><a class="reference internal" href="#module-son_editor.models.workspace">son_editor.models.workspace module</a></li>
-<li><a class="reference internal" href="#module-son_editor.models">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -660,6 +677,12 @@
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">src</a><ul>
+  <li><a href="son_editor.html">son_editor package</a><ul>
+      <li>Previous: <a href="son_editor.impl.html" title="previous chapter">son_editor.impl package</a></li>
+      <li>Next: <a href="son_editor.util.html" title="next chapter">son_editor.util package</a></li>
+  </ul></li>
+  </ul></li>
   </ul></li>
 </ul>
 </div>
