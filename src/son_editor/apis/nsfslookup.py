@@ -12,7 +12,7 @@ from son_editor.util.constants import WORKSPACES, PROJECTS, NSFS, SERVICES, VNFS
 from son_editor.util.requestutil import prepare_response
 
 namespace = Namespace(WORKSPACES + '/<int:ws_id>/' + PROJECTS + '/<int:project_id>/' + NSFS,
-                      description="Project VNF Resources")
+                      description="Resource Lookup")
 vendor_name_version_path = "/<string:vendor>/<string:name>/<string:version>"
 
 funct = namespace.model("VNF", {
@@ -22,8 +22,21 @@ funct = namespace.model("VNF", {
 
 })
 
-funct_response = namespace.inherit("Response", funct, {
+serv = namespace.model("Service", {
+    'name': fields.String(required=True, description='The Service Name'),
+    'vendor': fields.String(required=True, description='The Service Vendor'),
+    'version': fields.String(required=True, description='The Service Version')
+
+})
+
+func_response = namespace.inherit("Response", funct, {
     "descriptor": fields.Nested(model=funct, description="The Complete VNF Descriptor"),
+    "id": fields.Integer(description='The Project ID'),
+    "project_id": fields.Integer(description='The parent project id'),
+})
+
+serv_response = namespace.inherit("Response", serv, {
+    "descriptor": fields.Nested(model=serv, description="The Complete Service Descriptor"),
     "id": fields.Integer(description='The Project ID'),
     "project_id": fields.Integer(description='The parent project id'),
 })
@@ -36,7 +49,7 @@ funct_response = namespace.inherit("Response", funct, {
 @namespace.param('name', 'The Network Service name')
 @namespace.param('version', 'The Network Service version')
 class Lookup(Resource):
-    @namespace.response(200, "OK", [funct_response])
+    @namespace.response(200, "OK", [serv_response])
     def get(self, ws_id, project_id, vendor, name, version):
         """Retrieves a network service by vendor name version
 
@@ -52,7 +65,7 @@ class Lookup(Resource):
 @namespace.param('name', 'The Virtual Nework Function name')
 @namespace.param('version', 'The Virtual Nework Function version')
 class Lookup(Resource):
-    @namespace.response(200, "OK", [funct_response])
+    @namespace.response(200, "OK", [func_response])
     def get(self, ws_id, project_id, vendor, name, version):
         """Retrieves a virtual network function by vendor name version
 

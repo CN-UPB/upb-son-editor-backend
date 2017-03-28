@@ -101,7 +101,7 @@ def get_project(ws_id, pj_id: int, session=db_session()) -> Project:
 
     :param ws_id: Workspace id
     :param pj_id: Project id
-    :param db session
+    :param session: db session
     :return: Project model
     """
     project = session.query(Project).join(Workspace) \

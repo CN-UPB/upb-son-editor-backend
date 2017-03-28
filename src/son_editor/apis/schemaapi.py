@@ -38,6 +38,8 @@ class Schemas(Resource):
 
     def get(self, ws_id):
         """
+        List Schemas
+        
         Returns a list of all schemas configured for this server
 
         :param ws_id:
