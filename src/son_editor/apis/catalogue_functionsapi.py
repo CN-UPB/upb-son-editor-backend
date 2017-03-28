@@ -14,26 +14,22 @@ from son_editor.impl.private_catalogue_impl import publish_private_nsfs
 from son_editor.util.constants import get_parent, Category, WORKSPACES, PROJECTS, CATALOGUES, PLATFORMS, VNFS
 from son_editor.util.requestutil import prepare_response, get_json
 
-
 namespace = Namespace(WORKSPACES + '/<int:ws_id>/' + CATALOGUES + "/<int:catalogue_id>/" + VNFS,
                       description="Catalogue VNF Resources")
 
-funct = Model("VNF", {
+funct = namespace.model("VNF", {
     'name': fields.String(required=True, description='The VNF Name'),
     'vendor': fields.String(required=True, description='The VNF Vendor'),
     'version': fields.String(required=True, description='The VNF Version')
 
 })
 
-funct_uid = Model("VNF", {
-    'id': fields.String(required=True, description='The VNF UID'),
-    'name': fields.String(required=True, description='The VNF Name'),
-    'vendor': fields.String(required=True, description='The VNF Vendor'),
-    'version': fields.String(required=True, description='The VNF Version')
-
+funct_nest = namespace.model("VNF", {
+    "descriptor": fields.Nested(model=funct, description="The Complete VNF Descriptor"),
+    'id': fields.String(required=True, description='The VNF UID')
 })
 
-uid = Model("VNF_UID", {
+id = namespace.model("VNF_UID", {
     'id': fields.String(required=True, description='The VNF UID')
 })
 
@@ -42,14 +38,6 @@ funct_response = funct.inherit("FunctionResponse", funct, {
     "id": fields.Integer(description='The Project ID'),
     "project_id": fields.Integer(description='The parent project id'),
 })
-
-message_response = namespace.model("Message", {
-    'message': fields.String(required=True, description="The result message")
-})
-
-namespace.add_model(funct.name, funct)
-namespace.add_model(uid.name, uid)
-namespace.add_model(funct_response.name, funct_response)
 
 
 @namespace.route('/')
@@ -67,7 +55,7 @@ class Functions(Resource):
         functions = catalogue_servicesimpl.get_all_in_catalogue(ws_id, catalogue_id, True)
         return prepare_response(functions)
 
-    @namespace.expect(funct)
+    @namespace.expect(id)
     @namespace.response(201, "Created", funct_response)
     def post(self, ws_id, catalogue_id):
         """Creates a new function
@@ -87,7 +75,7 @@ class Functions(Resource):
 class Function(Resource):
     """Resource methods for specific function descriptors"""
 
-    @namespace.expect(funct_uid)
+    @namespace.expect(funct_nest)
     @namespace.response(200, "Updated", funct_response)
     def put(self, ws_id, catalogue_id, vnf_id):
         """Updates a function
@@ -108,7 +96,7 @@ class Function(Resource):
         return prepare_response(deleted)
 
     @namespace.response(200, "OK", funct_response)
-    @namespace.expect(uid)
+    @namespace.expect(id)
     def get(self, ws_id, catalogue_id, vnf_id):
         """Get a specific function
 

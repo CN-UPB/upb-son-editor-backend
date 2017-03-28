@@ -19,7 +19,6 @@ logger = logging.getLogger(__name__)
 namespace = Namespace(WORKSPACES + '/<int:ws_id>/' + CATALOGUES + "/<int:catalogue_id>/" + SERVICES,
                       description="Catalogue Service Resources")
 
-
 serv = namespace.model("Service", {
     'name': fields.String(required=True, description='The Service Name'),
     'vendor': fields.String(required=True, description='The Service Vendor'),
@@ -29,7 +28,6 @@ serv = namespace.model("Service", {
 
 serv_update = namespace.model("Service Update", {
     "descriptor": fields.Nested(model=serv, description="The Complete Service Descriptor")
-
 })
 
 serv_id = namespace.model("Service ID", {
@@ -40,10 +38,6 @@ serv_response = namespace.inherit("ServiceResponse", serv, {
     "descriptor": fields.Nested(model=serv, description="The Complete Service Descriptor"),
     "id": fields.Integer(description='The Project ID'),
     "project_id": fields.Integer(description='The parent workspace id'),
-})
-
-message_response = namespace.model("Message", {
-    'message': fields.String(required=True, description="The result message")
 })
 
 
@@ -72,8 +66,7 @@ class Services(Resource):
     def post(self, ws_id, catalogue_id):
         """Create a new Service
 
-        Creates a new Service in this project or
-        publishes it in the catalogue or platform"""
+        Publishes a new Service in the catalogue"""
 
         vnf_data = get_json(request)
         service = catalogue_servicesimpl.create_in_catalogue(catalogue_id, vnf_data['id'], False)
@@ -88,18 +81,16 @@ class Service(Resource):
     @namespace.expect(serv_update)
     @namespace.expect(serv_id)
     @namespace.response(200, "Updated", serv_response)
-    @namespace.doc("Updates the given service in the project/catalogue or platform")
     def put(self, ws_id, catalogue_id, service_id):
         """Update the service
 
-        Updates the referenced service in the project or in the catalogue or platform"""
+        Updates the referenced service in the catalogue"""
 
         function_data = get_json(request)
         service = catalogue_servicesimpl.update_service_catalogue(ws_id, catalogue_id, service_id, function_data,
                                                                   False)
         return prepare_response(service)
 
-    @namespace.doc("Deletes a specific service by its id")
     @namespace.response(200, "Deleted", serv_response)
     def delete(self, ws_id, catalogue_id, service_id):
         """Delete the Service

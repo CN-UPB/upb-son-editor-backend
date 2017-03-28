@@ -12,7 +12,10 @@ class Information(Resource):
     """User information"""
     @staticmethod
     def get():
-        """ Returns github information about the current user """
+        """
+        User Information
+         
+        Returns github information about the current user """
         return prepare_response(get_user_info())
 
 
@@ -23,6 +26,13 @@ class Logout(Resource):
 
     @staticmethod
     def get():
+        """
+        Logout
+        
+        Logs out the current user
+        
+        :return: 
+        """
         return prepare_response(logout())
 
 
@@ -31,5 +41,7 @@ class Logout(Resource):
 class Login(Resource):
     @staticmethod
     def get():
-        """ Login the User with a referral code from the github oauth process"""
+        """
+         Login User
+         Login the User with a referral code from the github oauth process"""
         return login()

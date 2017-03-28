@@ -111,8 +111,19 @@ class Function(Resource):
 
 @namespace.route('/<int:vnf_id>/upload')
 class FunctionUpload(Resource):
+    """ VNF Image upload"""
     @staticmethod
     def post(ws_id, project_id, vnf_id):
+        """
+        Upload a VNF image file
+        
+        Will accept a file attachment and save it into the VNF folder
+        
+        :param ws_id: The Workspace ID
+        :param project_id: The Project ID
+        :param vnf_id: The VNF ID
+        :return: 
+        """
         if 'image' not in request.files:
             raise InvalidArgument("No file attached!")
         file = request.files['image']
@@ -120,13 +131,34 @@ class FunctionUpload(Resource):
 
     @staticmethod
     def get(ws_id, project_id, vnf_id):
+        """
+        List VNF Images
+        
+        Shows a list of all image files in the VNF Folder
+        :param ws_id: The workspace ID
+        :param project_id: The Project ID
+        :param vnf_id: The VNF ID
+        :return: A List of file names
+        """
         return prepare_response(functionsimpl.get_image_files(ws_id, project_id, vnf_id))
 
 
 @namespace.route('/<int:vnf_id>/upload/<filename>')
 class FunctionUpload(Resource):
+
     @staticmethod
     def delete(ws_id, project_id, vnf_id, filename):
+        """
+        Delete VNF Image
+        
+        Delete the VNF Image by file name
+        
+        :param ws_id: The workspace ID
+        :param project_id: The project ID
+        :param vnf_id: The VNF ID
+        :param filename: The filename to delete
+        :return: 
+        """
         return prepare_response(functionsimpl.delete_image_file(ws_id, project_id, vnf_id, filename))
 
 

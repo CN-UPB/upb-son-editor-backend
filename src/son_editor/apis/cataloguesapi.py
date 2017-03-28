@@ -15,6 +15,7 @@ namespace = Namespace(WORKSPACES + '/<int:ws_id>/' + CATALOGUES, description="Ca
 
 @namespace.route("/")
 @namespace.response(200, "OK")
+@namespace.param("ws_id", "The Workspace ID")
 class Catalogues(Resource):
     """Catalogues"""
 
@@ -24,6 +25,7 @@ class Catalogues(Resource):
         Lists catalogues in a specific workspace"""
         return prepare_response(cataloguesimpl.get_catalogues(ws_id))
 
+    #@namespace.param("payload", "Catalogue definition")
     def post(self, ws_id):
         """Creates a new service catalogue
 
@@ -32,6 +34,7 @@ class Catalogues(Resource):
 
 
 @namespace.route("/<int:catalogue_id>")
+@namespace.param("ws_id", "The Workspace ID")
 @namespace.param('catalogue_id', 'The Catalogue identifier')
 @namespace.response(200, "OK")
 class Catalogue(Resource):
@@ -47,7 +50,6 @@ class Catalogue(Resource):
         Updates a specific catalogue by its id"""
         return prepare_response(cataloguesimpl.update_catalogue(ws_id, catalogue_id, get_json(request)))
 
-    @namespace.doc()
     def delete(self, ws_id, catalogue_id):
         """Deletes a specific catalogue
 
