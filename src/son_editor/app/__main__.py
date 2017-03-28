@@ -105,7 +105,7 @@ def check_logged_in():
         check_access(request)
         return
     # Check if the user is not logged in
-    elif 'access_token' not in session and request.endpoint not in ['static', 'shutdown']:
+    elif 'access_token' not in session and request.endpoint not in ['static']:
         # show request for github login
         return handle_unauthorized("Please log in")
     # Check if the user is allowed access the requested workspace resource
@@ -116,7 +116,7 @@ def check_logged_in():
 
 
 def handle_unauthorized(msg: str):
-    args = {"scope": "user read:org repo delete_repo",
+    args = {"scope": "user:email repo delete_repo",
             "client_id": get_config()['authentication']['ClientID']}
     session["requested_endpoint"] = request.endpoint
     return prepare_response({
