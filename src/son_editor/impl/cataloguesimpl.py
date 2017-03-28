@@ -11,7 +11,7 @@ def get_catalogue(catalogue_id):
     """
     Retrieves a catalogue by its id
 
-    :param catalogue_id:
+    :param catalogue_id: The catalogues ID
     :return:
     """
     session = db_session()
@@ -26,8 +26,8 @@ def get_catalogues(workspace_id):
     """
     Retrieves all catalogues of a specific workspace
 
-    :param workspace_id:
-    :return:
+    :param workspace_id: the workspace id
+    :return: list of catalogue descriptors of this workspace
     """
     session = db_session()
     catalogues = session.query(Catalogue).filter(Catalogue.workspace_id == workspace_id).all()
@@ -68,9 +68,9 @@ def update_catalogue(workspace_id, catalogue_id, catalogue_data):
     """
     Updates a specific catalogue by its id. The catalogue
     applies the given name and url, that are in the json parameter.
-    :param workspace_id:
-    :param catalogue_id:
-    :return:
+    :param workspace_id: The Workspace ID
+    :param catalogue_id: The Catalogue ID
+    :return: The updated Catalogue descriptor
     """
     catalogue_name = shlex.quote(catalogue_data['name'])
     catalogue_url = shlex.quote(catalogue_data['url'])
@@ -105,9 +105,9 @@ def delete(workspace_id, catalogue_id):
     """
     Deletes a catalogue by its id
 
-    :param workspace_id:
-    :param catalogue_id:
-    :return:
+    :param workspace_id: The workspace ID
+    :param catalogue_id: The Catalogue ID
+    :return: The deleted catalogue descriptor
     """
     session = db_session()
     workspace = session.query(Workspace).filter(Workspace.id == workspace_id).first()

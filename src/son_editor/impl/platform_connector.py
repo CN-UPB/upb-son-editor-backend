@@ -13,6 +13,13 @@ logger = logging.getLogger(__name__)
 
 
 def publish_referenced_functions(ws_id, proj_id, descriptor):
+    """
+    Publishes the referenced functions to the private cataloge after packaging
+    
+    :param ws_id: The workspace ID 
+    :param proj_id: The project ID
+    :param descriptor: The service descriptor
+    """
     vnfs = descriptor["network_functions"]
     session = db_session()
     for vnf in vnfs:
@@ -28,9 +35,9 @@ def create_service_on_platform(ws_id, platform_id, service_data):
     """
     Deploys the service on the referenced Platform
 
-    :param ws_id:
-    :param platform_id:
-    :param service_data:
+    :param ws_id: The workspace ID
+    :param platform_id: The platform ID
+    :param service_data: The service descriptor data
     :return: A  message if the function was deployed successfully
     """
     # TODO test this!

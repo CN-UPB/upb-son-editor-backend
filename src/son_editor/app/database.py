@@ -27,9 +27,13 @@ Base.query = db_session.query_property()
 
 
 def init_db():
-    # import all modules here that might define models so that
-    # they will be registered properly on the metadata.  Otherwise
-    # you will have to import them first before calling init_db()
+    """
+    Import model modules
+    
+    Import all modules here that might define models so that
+        they will be registered properly on the metadata.  Otherwise
+        you will have to import them first before calling init_db()
+    """
     import son_editor.models.project
     import son_editor.models.user
     import son_editor.models.workspace
@@ -39,8 +43,12 @@ def init_db():
     Base.metadata.create_all(bind=engine)
 
 
-# Resets the database
 def reset_db():
+    """
+    Resets the database  
+    
+    only used in tests
+    """
     meta = Base.metadata
 
     with contextlib.closing(engine.connect()) as con:
@@ -51,6 +59,12 @@ def reset_db():
 
 
 def scan_workspaces_dir():
+    """
+    Scan workpaces directory
+    
+    Scans the workpaces directory for any users.
+        Will visit every one to add new workspaces etc via _scan_user_dir
+    """
     from son_editor.models.user import User
     wss_dir = os.path.normpath(os.path.expanduser(get_config()["workspaces-location"]))
     if os.path.exists(wss_dir):
@@ -68,6 +82,15 @@ def scan_workspaces_dir():
 
 
 def _scan_user_dir(ws_dir, user):
+    """
+    Scan users directory
+    
+    Scans the users directory for any workspaces.
+        Will visit every one to add new projects etc via _scan_workspace_dir
+        
+    :param ws_dir: the workspace dir to scan
+    :param user: the current user from the database to attach the workpace to
+    """
     from son_editor.models.workspace import Workspace
     session = db_session()
     for ws_name in os.listdir(os.path.join(ws_dir, user.name)):
@@ -87,6 +110,15 @@ def _scan_user_dir(ws_dir, user):
 
 
 def _scan_workspace_dir(ws_path, ws):
+    """
+    Scan a workspace directory
+
+    Scans the workspace directory for any projects.
+        Will visit every one to add new functions and services via scan_project_dir
+        
+    :param ws_path: the workspaces path to scan
+    :param ws: the current workspace from the database to attach the projects to
+    """
     from son_editor.models.project import Project
     session = db_session()
     # Scan private catalogue in workspace
@@ -108,11 +140,27 @@ def _scan_workspace_dir(ws_path, ws):
 
 
 def scan_project_dir(project_path, pj):
+    """
+    Scan project dir
+    
+    Scans the project dir for any new functions and services 
+        via _scan_for_functions and _scan_for_services 
+    
+    :param project_path: The path of the project to scan
+    :param pj: The project from the database to attach the descriptors to
+    :return: 
+    """
     _scan_for_services(os.path.join(project_path, "sources", "nsd"), pj)
     _scan_for_functions(os.path.join(project_path, "sources", "vnf"), pj)
 
 
 def _scan_private_catalogue(catalogue_dir, ws):
+    """
+    Scans the private Workspace catalogue for new service and function 
+        descriptors and adds them to the database 
+    :param catalogue_dir: The directory of the private catalogue in the workspace 
+    :param ws: The database workspace
+    """
     from son_editor.models.private_descriptor import PrivateFunction, PrivateService
     # Configure ns catalogue path
     ns_path = Path(catalogue_dir + "/ns_catalogue/")
@@ -123,6 +171,16 @@ def _scan_private_catalogue(catalogue_dir, ws):
 
 
 def _scan_catalogue(cat_path, model, ws):
+    """
+    Scan a private catalogue dir
+    
+    Scans the given catalogue path for new descriptors 
+    and writes it into the descriptor model
+    
+    :param cat_path: The catalogue path containing either nss or vnfs 
+    :param model: The descriptor model
+    :param ws: The workspace to attach the descriptors to
+    """
     from pathlib import Path
     from son_editor.models.private_descriptor import PrivateDescriptor
     session = db_session()
@@ -149,6 +207,14 @@ def _scan_catalogue(cat_path, model, ws):
 
 
 def _scan_for_services(services_dir, pj):
+    """
+    Scan project for services
+    
+    Scans the given directory for services and adds them to the project.
+    
+    :param services_dir: The services directory in the project
+    :param pj: The project model from the database
+    """
     from son_editor.models.descriptor import Service
     session = db_session()
     try:
@@ -179,6 +245,14 @@ def _scan_for_services(services_dir, pj):
 
 
 def _scan_for_functions(function_dir, pj):
+    """
+    Scan project for functions
+    
+    Scans the given directory for functions and adds them to the project.
+    
+    :param function_dir: The functions directory in the project
+    :param pj: The project model from the database
+    """
     session = db_session()
     from son_editor.models.descriptor import Function
     try:

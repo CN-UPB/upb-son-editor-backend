@@ -45,8 +45,132 @@
             
   <div class="section" id="son-editor-apis-package">
 <h1>son_editor.apis package<a class="headerlink" href="#son-editor-apis-package" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-son_editor.apis.catalogue_functionsapi">
+<span id="son-editor-apis-catalogue-functionsapi-module"></span><h2>son_editor.apis.catalogue_functionsapi module<a class="headerlink" href="#module-son_editor.apis.catalogue_functionsapi" title="Permalink to this headline">¶</a></h2>
+<p>Created on 22.07.2016</p>
+<p>&#64;author: Jonas</p>
+<dl class="class">
+<dt id="son_editor.apis.catalogue_functionsapi.Function">
+<em class="property">class </em><code class="descclassname">son_editor.apis.catalogue_functionsapi.</code><code class="descname">Function</code><span class="sig-paren">(</span><em>api=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.catalogue_functionsapi.Function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">flask_restplus.resource.Resource</span></code></p>
+<p>Resource methods for specific function descriptors</p>
+<dl class="method">
+<dt id="son_editor.apis.catalogue_functionsapi.Function.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><em>ws_id</em>, <em>catalogue_id</em>, <em>vnf_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.catalogue_functionsapi.Function.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes a  function</p>
+<p>Deletes a function in the project or catalogue by its id</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="son_editor.apis.catalogue_functionsapi.Function.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>ws_id</em>, <em>catalogue_id</em>, <em>vnf_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.catalogue_functionsapi.Function.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a specific function</p>
+<p>Gets a specific function information by its id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.apis.catalogue_functionsapi.Function.methods">
+<code class="descname">methods</code><em class="property"> = ['DELETE', 'GET', 'PUT']</em><a class="headerlink" href="#son_editor.apis.catalogue_functionsapi.Function.methods" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="son_editor.apis.catalogue_functionsapi.Function.put">
+<code class="descname">put</code><span class="sig-paren">(</span><em>ws_id</em>, <em>catalogue_id</em>, <em>vnf_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.catalogue_functionsapi.Function.put" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates a function</p>
+<p>Updates a function in the project or catalogue by its id</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="son_editor.apis.catalogue_functionsapi.Functions">
+<em class="property">class </em><code class="descclassname">son_editor.apis.catalogue_functionsapi.</code><code class="descname">Functions</code><span class="sig-paren">(</span><em>api=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.catalogue_functionsapi.Functions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">flask_restplus.resource.Resource</span></code></p>
+<p>Resource methods for all function descriptors of this directory</p>
+<dl class="method">
+<dt id="son_editor.apis.catalogue_functionsapi.Functions.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>ws_id</em>, <em>catalogue_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.catalogue_functionsapi.Functions.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>List all functions</p>
+<p>Lists all available functions in the given project or catalogue.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.apis.catalogue_functionsapi.Functions.methods">
+<code class="descname">methods</code><em class="property"> = ['GET', 'POST']</em><a class="headerlink" href="#son_editor.apis.catalogue_functionsapi.Functions.methods" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="son_editor.apis.catalogue_functionsapi.Functions.post">
+<code class="descname">post</code><span class="sig-paren">(</span><em>ws_id</em>, <em>catalogue_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.catalogue_functionsapi.Functions.post" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new function</p>
+<p>Creates a new function in the project or catalogue</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-son_editor.apis.catalogue_servicesapi">
+<span id="son-editor-apis-catalogue-servicesapi-module"></span><h2>son_editor.apis.catalogue_servicesapi module<a class="headerlink" href="#module-son_editor.apis.catalogue_servicesapi" title="Permalink to this headline">¶</a></h2>
+<p>Created on 22.07.2016</p>
+<p>&#64;author: Jonas</p>
+<dl class="class">
+<dt id="son_editor.apis.catalogue_servicesapi.Service">
+<em class="property">class </em><code class="descclassname">son_editor.apis.catalogue_servicesapi.</code><code class="descname">Service</code><span class="sig-paren">(</span><em>api=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.catalogue_servicesapi.Service" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">flask_restplus.resource.Resource</span></code></p>
+<dl class="method">
+<dt id="son_editor.apis.catalogue_servicesapi.Service.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><em>ws_id</em>, <em>catalogue_id</em>, <em>service_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.catalogue_servicesapi.Service.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete the Service</p>
+<p>Deletes the service from the Project or Catalogue</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="son_editor.apis.catalogue_servicesapi.Service.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>ws_id</em>, <em>catalogue_id</em>, <em>service_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.catalogue_servicesapi.Service.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a specific Service</p>
+<p>Returns the referenced service from the Project or catalogue</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.apis.catalogue_servicesapi.Service.methods">
+<code class="descname">methods</code><em class="property"> = ['DELETE', 'GET', 'PUT']</em><a class="headerlink" href="#son_editor.apis.catalogue_servicesapi.Service.methods" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="son_editor.apis.catalogue_servicesapi.Service.put">
+<code class="descname">put</code><span class="sig-paren">(</span><em>ws_id</em>, <em>catalogue_id</em>, <em>service_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.catalogue_servicesapi.Service.put" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the service</p>
+<p>Updates the referenced service in the catalogue</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="son_editor.apis.catalogue_servicesapi.Services">
+<em class="property">class </em><code class="descclassname">son_editor.apis.catalogue_servicesapi.</code><code class="descname">Services</code><span class="sig-paren">(</span><em>api=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.catalogue_servicesapi.Services" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">flask_restplus.resource.Resource</span></code></p>
+<p>Api Methods for all services in this resource</p>
+<dl class="method">
+<dt id="son_editor.apis.catalogue_servicesapi.Services.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>ws_id</em>, <em>catalogue_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.catalogue_servicesapi.Services.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a list of all Services
+Returns a list of all services available in this resource</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.apis.catalogue_servicesapi.Services.methods">
+<code class="descname">methods</code><em class="property"> = ['GET', 'POST']</em><a class="headerlink" href="#son_editor.apis.catalogue_servicesapi.Services.methods" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="son_editor.apis.catalogue_servicesapi.Services.post">
+<code class="descname">post</code><span class="sig-paren">(</span><em>ws_id</em>, <em>catalogue_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.catalogue_servicesapi.Services.post" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new Service</p>
+<p>Publishes a new Service in the catalogue</p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="module-son_editor.apis.cataloguesapi">
 <span id="son-editor-apis-cataloguesapi-module"></span><h2>son_editor.apis.cataloguesapi module<a class="headerlink" href="#module-son_editor.apis.cataloguesapi" title="Permalink to this headline">¶</a></h2>
@@ -110,118 +234,47 @@
 </dd></dl>
 
 </div>
-<div class="section" id="module-son_editor.apis.functionsapi">
-<span id="son-editor-apis-functionsapi-module"></span><h2>son_editor.apis.functionsapi module<a class="headerlink" href="#module-son_editor.apis.functionsapi" title="Permalink to this headline">¶</a></h2>
-<p>Created on 22.07.2016</p>
-<p>&#64;author: Jonas</p>
+<div class="section" id="module-son_editor.apis.configapi">
+<span id="son-editor-apis-configapi-module"></span><h2>son_editor.apis.configapi module<a class="headerlink" href="#module-son_editor.apis.configapi" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
-<dt id="son_editor.apis.functionsapi.Function">
-<em class="property">class </em><code class="descclassname">son_editor.apis.functionsapi.</code><code class="descname">Function</code><span class="sig-paren">(</span><em>api=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.functionsapi.Function" title="Permalink to this definition">¶</a></dt>
+<dt id="son_editor.apis.configapi.Configuration">
+<em class="property">class </em><code class="descclassname">son_editor.apis.configapi.</code><code class="descname">Configuration</code><span class="sig-paren">(</span><em>api=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.configapi.Configuration" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">flask_restplus.resource.Resource</span></code></p>
-<p>Resource methods for specific function descriptors</p>
+<p>Web configuration</p>
 <dl class="method">
-<dt id="son_editor.apis.functionsapi.Function.delete">
-<code class="descname">delete</code><span class="sig-paren">(</span><em>ws_id</em>, <em>parent_id</em>, <em>vnf_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.functionsapi.Function.delete" title="Permalink to this definition">¶</a></dt>
-<dd><p>Deletes a  function</p>
-<p>Deletes a function in the project or catalogue by its id</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="son_editor.apis.functionsapi.Function.get">
-<code class="descname">get</code><span class="sig-paren">(</span><em>ws_id</em>, <em>parent_id</em>, <em>vnf_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.functionsapi.Function.get" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get a specific function</p>
-<p>Gets a specific function information by its id</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="son_editor.apis.functionsapi.Function.methods">
-<code class="descname">methods</code><em class="property"> = ['DELETE', 'GET', 'PUT']</em><a class="headerlink" href="#son_editor.apis.functionsapi.Function.methods" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="son_editor.apis.functionsapi.Function.put">
-<code class="descname">put</code><span class="sig-paren">(</span><em>ws_id</em>, <em>parent_id</em>, <em>vnf_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.functionsapi.Function.put" title="Permalink to this definition">¶</a></dt>
-<dd><p>Updates a function</p>
-<p>Updates a function in the project or catalogue by its id</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="son_editor.apis.functionsapi.FunctionUpload">
-<em class="property">class </em><code class="descclassname">son_editor.apis.functionsapi.</code><code class="descname">FunctionUpload</code><span class="sig-paren">(</span><em>api=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.functionsapi.FunctionUpload" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">flask_restplus.resource.Resource</span></code></p>
-<dl class="staticmethod">
-<dt id="son_editor.apis.functionsapi.FunctionUpload.delete">
-<em class="property">static </em><code class="descname">delete</code><span class="sig-paren">(</span><em>ws_id</em>, <em>parent_id</em>, <em>vnf_id</em>, <em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.functionsapi.FunctionUpload.delete" title="Permalink to this definition">¶</a></dt>
+<dt id="son_editor.apis.configapi.Configuration.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.configapi.Configuration.get" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="son_editor.apis.functionsapi.FunctionUpload.methods">
-<code class="descname">methods</code><em class="property"> = ['DELETE']</em><a class="headerlink" href="#son_editor.apis.functionsapi.FunctionUpload.methods" title="Permalink to this definition">¶</a></dt>
+<dt id="son_editor.apis.configapi.Configuration.methods">
+<code class="descname">methods</code><em class="property"> = ['GET', 'POST']</em><a class="headerlink" href="#son_editor.apis.configapi.Configuration.methods" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="son_editor.apis.configapi.Configuration.post">
+<code class="descname">post</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.configapi.Configuration.post" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
-<dl class="class">
-<dt id="son_editor.apis.functionsapi.Functions">
-<em class="property">class </em><code class="descclassname">son_editor.apis.functionsapi.</code><code class="descname">Functions</code><span class="sig-paren">(</span><em>api=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.functionsapi.Functions" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">flask_restplus.resource.Resource</span></code></p>
-<p>Resource methods for all function descriptors of this directory</p>
-<dl class="method">
-<dt id="son_editor.apis.functionsapi.Functions.get">
-<code class="descname">get</code><span class="sig-paren">(</span><em>ws_id</em>, <em>parent_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.functionsapi.Functions.get" title="Permalink to this definition">¶</a></dt>
-<dd><p>List all functions</p>
-<p>Lists all available functions in the given project or catalogue.</p>
+<dl class="function">
+<dt id="son_editor.apis.configapi.authenticate">
+<code class="descclassname">son_editor.apis.configapi.</code><code class="descname">authenticate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.configapi.authenticate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends a 401 response that enables basic auth</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="son_editor.apis.functionsapi.Functions.methods">
-<code class="descname">methods</code><em class="property"> = ['GET', 'POST']</em><a class="headerlink" href="#son_editor.apis.functionsapi.Functions.methods" title="Permalink to this definition">¶</a></dt>
+<dl class="function">
+<dt id="son_editor.apis.configapi.check_auth">
+<code class="descclassname">son_editor.apis.configapi.</code><code class="descname">check_auth</code><span class="sig-paren">(</span><em>username</em>, <em>password</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.configapi.check_auth" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function is called to check if a username /
+password combination is valid.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="son_editor.apis.configapi.requires_auth">
+<code class="descclassname">son_editor.apis.configapi.</code><code class="descname">requires_auth</code><span class="sig-paren">(</span><em>f</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.configapi.requires_auth" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
-
-<dl class="method">
-<dt id="son_editor.apis.functionsapi.Functions.post">
-<code class="descname">post</code><span class="sig-paren">(</span><em>ws_id</em>, <em>parent_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.functionsapi.Functions.post" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates a new function</p>
-<p>Creates a new function in the project or catalogue</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="son_editor.apis.functionsapi.PrivateService">
-<em class="property">class </em><code class="descclassname">son_editor.apis.functionsapi.</code><code class="descname">PrivateService</code><span class="sig-paren">(</span><em>api=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.functionsapi.PrivateService" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">flask_restplus.resource.Resource</span></code></p>
-<dl class="method">
-<dt id="son_editor.apis.functionsapi.PrivateService.get">
-<code class="descname">get</code><span class="sig-paren">(</span><em>ws_id</em>, <em>parent_id</em>, <em>vnf_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.functionsapi.PrivateService.get" title="Permalink to this definition">¶</a></dt>
-<dd><p>Publish function to private</p>
-<p>Publishes the function to the workspace wide catalogue</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>ws_id</strong> &#8211; </li>
-<li><strong>parent_id</strong> &#8211; </li>
-<li><strong>vnf_id</strong> &#8211; </li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="son_editor.apis.functionsapi.PrivateService.methods">
-<code class="descname">methods</code><em class="property"> = ['GET']</em><a class="headerlink" href="#son_editor.apis.functionsapi.PrivateService.methods" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
 
 </div>
 <div class="section" id="module-son_editor.apis.gitapi">
@@ -399,43 +452,43 @@
 
 </dd></dl>
 
-<dl class="class">
-<dt id="son_editor.apis.misc.Shutdown">
-<em class="property">class </em><code class="descclassname">son_editor.apis.misc.</code><code class="descname">Shutdown</code><span class="sig-paren">(</span><em>api=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.misc.Shutdown" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">flask_restplus.resource.Resource</span></code></p>
-<dl class="method">
-<dt id="son_editor.apis.misc.Shutdown.get">
-<code class="descname">get</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.misc.Shutdown.get" title="Permalink to this definition">¶</a></dt>
-<dd><p>Shutdown the server</p>
-<p>Only works if issued from localhost</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="son_editor.apis.misc.Shutdown.methods">
-<code class="descname">methods</code><em class="property"> = ['GET']</em><a class="headerlink" href="#son_editor.apis.misc.Shutdown.methods" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
 </div>
 <div class="section" id="module-son_editor.apis.nsfslookup">
 <span id="son-editor-apis-nsfslookup-module"></span><h2>son_editor.apis.nsfslookup module<a class="headerlink" href="#module-son_editor.apis.nsfslookup" title="Permalink to this headline">¶</a></h2>
 <p>Created on 22.07.2016</p>
 <p>&#64;author: Jonas</p>
 <dl class="class">
-<dt id="son_editor.apis.nsfslookup.Lookup">
-<em class="property">class </em><code class="descclassname">son_editor.apis.nsfslookup.</code><code class="descname">Lookup</code><span class="sig-paren">(</span><em>api=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.nsfslookup.Lookup" title="Permalink to this definition">¶</a></dt>
+<dt id="son_editor.apis.nsfslookup.FunctionLookup">
+<em class="property">class </em><code class="descclassname">son_editor.apis.nsfslookup.</code><code class="descname">FunctionLookup</code><span class="sig-paren">(</span><em>api=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.nsfslookup.FunctionLookup" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">flask_restplus.resource.Resource</span></code></p>
 <dl class="method">
-<dt id="son_editor.apis.nsfslookup.Lookup.get">
-<code class="descname">get</code><span class="sig-paren">(</span><em>ws_id</em>, <em>project_id</em>, <em>vendor</em>, <em>name</em>, <em>version</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.nsfslookup.Lookup.get" title="Permalink to this definition">¶</a></dt>
+<dt id="son_editor.apis.nsfslookup.FunctionLookup.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>ws_id</em>, <em>project_id</em>, <em>vendor</em>, <em>name</em>, <em>version</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.nsfslookup.FunctionLookup.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieves a virtual network function by vendor name version</p>
 <p>Finds a specific virtual network with given vendor / name / version</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="son_editor.apis.nsfslookup.Lookup.methods">
-<code class="descname">methods</code><em class="property"> = ['GET']</em><a class="headerlink" href="#son_editor.apis.nsfslookup.Lookup.methods" title="Permalink to this definition">¶</a></dt>
+<dt id="son_editor.apis.nsfslookup.FunctionLookup.methods">
+<code class="descname">methods</code><em class="property"> = ['GET']</em><a class="headerlink" href="#son_editor.apis.nsfslookup.FunctionLookup.methods" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="son_editor.apis.nsfslookup.ServiceLookup">
+<em class="property">class </em><code class="descclassname">son_editor.apis.nsfslookup.</code><code class="descname">ServiceLookup</code><span class="sig-paren">(</span><em>api=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.nsfslookup.ServiceLookup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">flask_restplus.resource.Resource</span></code></p>
+<dl class="method">
+<dt id="son_editor.apis.nsfslookup.ServiceLookup.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>ws_id</em>, <em>project_id</em>, <em>vendor</em>, <em>name</em>, <em>version</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.nsfslookup.ServiceLookup.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves a network service by vendor name version</p>
+<p>Finds a specific network service with given vendor / name / version</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.apis.nsfslookup.ServiceLookup.methods">
+<code class="descname">methods</code><em class="property"> = ['GET']</em><a class="headerlink" href="#son_editor.apis.nsfslookup.ServiceLookup.methods" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -459,8 +512,8 @@
 <dl class="method">
 <dt id="son_editor.apis.platformsapi.Platform.get">
 <code class="descname">get</code><span class="sig-paren">(</span><em>ws_id</em>, <em>platform_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.platformsapi.Platform.get" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get service Platform
-Retrieves a service platform by its id</p>
+<dd><p>Get service Platform</p>
+<p>Retrieves a service platform by its id</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -471,8 +524,26 @@ Retrieves a service platform by its id</p>
 <dl class="method">
 <dt id="son_editor.apis.platformsapi.Platform.put">
 <code class="descname">put</code><span class="sig-paren">(</span><em>ws_id</em>, <em>platform_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.platformsapi.Platform.put" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update platform
-Updates a service platform by its id</p>
+<dd><p>Update platform</p>
+<p>Updates a service platform by its id</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="son_editor.apis.platformsapi.PlatformServices">
+<em class="property">class </em><code class="descclassname">son_editor.apis.platformsapi.</code><code class="descname">PlatformServices</code><span class="sig-paren">(</span><em>api=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.platformsapi.PlatformServices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">flask_restplus.resource.Resource</span></code></p>
+<dl class="attribute">
+<dt id="son_editor.apis.platformsapi.PlatformServices.methods">
+<code class="descname">methods</code><em class="property"> = ['POST']</em><a class="headerlink" href="#son_editor.apis.platformsapi.PlatformServices.methods" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="son_editor.apis.platformsapi.PlatformServices.post">
+<code class="descname">post</code><span class="sig-paren">(</span><em>ws_id</em>, <em>platform_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.platformsapi.PlatformServices.post" title="Permalink to this definition">¶</a></dt>
+<dd><p>Upload a service package</p>
+<p>Packages and uploads a network service to the platform</p>
 </dd></dl>
 
 </dd></dl>
@@ -498,6 +569,238 @@ Updates a service platform by its id</p>
 <code class="descname">post</code><span class="sig-paren">(</span><em>ws_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.platformsapi.Platforms.post" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a new service platform</p>
 <p>Creates a new service platform in the given workspace</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-son_editor.apis.project_functionsapi">
+<span id="son-editor-apis-project-functionsapi-module"></span><h2>son_editor.apis.project_functionsapi module<a class="headerlink" href="#module-son_editor.apis.project_functionsapi" title="Permalink to this headline">¶</a></h2>
+<p>Created on 22.07.2016</p>
+<p>&#64;author: Jonas</p>
+<dl class="class">
+<dt id="son_editor.apis.project_functionsapi.Function">
+<em class="property">class </em><code class="descclassname">son_editor.apis.project_functionsapi.</code><code class="descname">Function</code><span class="sig-paren">(</span><em>api=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.project_functionsapi.Function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">flask_restplus.resource.Resource</span></code></p>
+<p>Resource methods for specific function descriptors</p>
+<dl class="method">
+<dt id="son_editor.apis.project_functionsapi.Function.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><em>ws_id</em>, <em>project_id</em>, <em>vnf_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.project_functionsapi.Function.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes a  function</p>
+<p>Deletes a function in the project or catalogue by its id</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="son_editor.apis.project_functionsapi.Function.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>ws_id</em>, <em>project_id</em>, <em>vnf_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.project_functionsapi.Function.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a specific function</p>
+<p>Gets a specific function information by its id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.apis.project_functionsapi.Function.methods">
+<code class="descname">methods</code><em class="property"> = ['DELETE', 'GET', 'PUT']</em><a class="headerlink" href="#son_editor.apis.project_functionsapi.Function.methods" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="son_editor.apis.project_functionsapi.Function.put">
+<code class="descname">put</code><span class="sig-paren">(</span><em>ws_id</em>, <em>project_id</em>, <em>vnf_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.project_functionsapi.Function.put" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates a function</p>
+<p>Updates a function in the project or catalogue by its id</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="son_editor.apis.project_functionsapi.FunctionUpload">
+<em class="property">class </em><code class="descclassname">son_editor.apis.project_functionsapi.</code><code class="descname">FunctionUpload</code><span class="sig-paren">(</span><em>api=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.project_functionsapi.FunctionUpload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">flask_restplus.resource.Resource</span></code></p>
+<dl class="staticmethod">
+<dt id="son_editor.apis.project_functionsapi.FunctionUpload.delete">
+<em class="property">static </em><code class="descname">delete</code><span class="sig-paren">(</span><em>ws_id</em>, <em>project_id</em>, <em>vnf_id</em>, <em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.project_functionsapi.FunctionUpload.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete VNF Image</p>
+<p>Delete the VNF Image by file name</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ws_id</strong> &#8211; The workspace ID</li>
+<li><strong>project_id</strong> &#8211; The project ID</li>
+<li><strong>vnf_id</strong> &#8211; The VNF ID</li>
+<li><strong>filename</strong> &#8211; The filename to delete</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.apis.project_functionsapi.FunctionUpload.methods">
+<code class="descname">methods</code><em class="property"> = ['DELETE']</em><a class="headerlink" href="#son_editor.apis.project_functionsapi.FunctionUpload.methods" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="son_editor.apis.project_functionsapi.Functions">
+<em class="property">class </em><code class="descclassname">son_editor.apis.project_functionsapi.</code><code class="descname">Functions</code><span class="sig-paren">(</span><em>api=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.project_functionsapi.Functions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">flask_restplus.resource.Resource</span></code></p>
+<p>Resource methods for all function descriptors of this directory</p>
+<dl class="method">
+<dt id="son_editor.apis.project_functionsapi.Functions.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>ws_id</em>, <em>project_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.project_functionsapi.Functions.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>List all functions</p>
+<p>Lists all available functions in the given project or catalogue.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.apis.project_functionsapi.Functions.methods">
+<code class="descname">methods</code><em class="property"> = ['GET', 'POST']</em><a class="headerlink" href="#son_editor.apis.project_functionsapi.Functions.methods" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="son_editor.apis.project_functionsapi.Functions.post">
+<code class="descname">post</code><span class="sig-paren">(</span><em>ws_id</em>, <em>project_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.project_functionsapi.Functions.post" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new function</p>
+<p>Creates a new function in the project or catalogue</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="son_editor.apis.project_functionsapi.PrivateFunction">
+<em class="property">class </em><code class="descclassname">son_editor.apis.project_functionsapi.</code><code class="descname">PrivateFunction</code><span class="sig-paren">(</span><em>api=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.project_functionsapi.PrivateFunction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">flask_restplus.resource.Resource</span></code></p>
+<dl class="method">
+<dt id="son_editor.apis.project_functionsapi.PrivateFunction.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>ws_id</em>, <em>project_id</em>, <em>vnf_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.project_functionsapi.PrivateFunction.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Publish function to private</p>
+<p>Publishes the function to the workspace wide catalogue</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ws_id</strong> &#8211; The Workspace ID</li>
+<li><strong>project_id</strong> &#8211; The Project ID</li>
+<li><strong>vnf_id</strong> &#8211; The VNF ID</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict with &#8220;message&#8221; property</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.apis.project_functionsapi.PrivateFunction.methods">
+<code class="descname">methods</code><em class="property"> = ['GET']</em><a class="headerlink" href="#son_editor.apis.project_functionsapi.PrivateFunction.methods" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-son_editor.apis.project_servicesapi">
+<span id="son-editor-apis-project-servicesapi-module"></span><h2>son_editor.apis.project_servicesapi module<a class="headerlink" href="#module-son_editor.apis.project_servicesapi" title="Permalink to this headline">¶</a></h2>
+<p>Created on 22.07.2016</p>
+<p>&#64;author: Jonas</p>
+<dl class="class">
+<dt id="son_editor.apis.project_servicesapi.PrivateService">
+<em class="property">class </em><code class="descclassname">son_editor.apis.project_servicesapi.</code><code class="descname">PrivateService</code><span class="sig-paren">(</span><em>api=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.project_servicesapi.PrivateService" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">flask_restplus.resource.Resource</span></code></p>
+<p>Private service publishing method</p>
+<dl class="method">
+<dt id="son_editor.apis.project_servicesapi.PrivateService.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>ws_id</em>, <em>project_id</em>, <em>service_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.project_servicesapi.PrivateService.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Publish service to private</p>
+<p>Publishes the service to the workspace wide catalogue</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ws_id</strong> &#8211; The Workspace ID</li>
+<li><strong>project_id</strong> &#8211; The Project ID</li>
+<li><strong>service_id</strong> &#8211; The Service ID</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A dict with a &#8220;message&#8221; property.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.apis.project_servicesapi.PrivateService.methods">
+<code class="descname">methods</code><em class="property"> = ['GET']</em><a class="headerlink" href="#son_editor.apis.project_servicesapi.PrivateService.methods" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="son_editor.apis.project_servicesapi.Service">
+<em class="property">class </em><code class="descclassname">son_editor.apis.project_servicesapi.</code><code class="descname">Service</code><span class="sig-paren">(</span><em>api=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.project_servicesapi.Service" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">flask_restplus.resource.Resource</span></code></p>
+<dl class="method">
+<dt id="son_editor.apis.project_servicesapi.Service.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><em>ws_id</em>, <em>project_id</em>, <em>service_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.project_servicesapi.Service.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete the Service</p>
+<p>Deletes the service from the Project or Catalogue</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="son_editor.apis.project_servicesapi.Service.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>ws_id</em>, <em>project_id</em>, <em>service_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.project_servicesapi.Service.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a specific Service</p>
+<p>Returns the referenced service from the Project or catalogue</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.apis.project_servicesapi.Service.methods">
+<code class="descname">methods</code><em class="property"> = ['DELETE', 'GET', 'PUT']</em><a class="headerlink" href="#son_editor.apis.project_servicesapi.Service.methods" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="son_editor.apis.project_servicesapi.Service.put">
+<code class="descname">put</code><span class="sig-paren">(</span><em>ws_id</em>, <em>project_id</em>, <em>service_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.project_servicesapi.Service.put" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the service</p>
+<p>Updates the referenced service in the project or in the catalogue or platform</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="son_editor.apis.project_servicesapi.Services">
+<em class="property">class </em><code class="descclassname">son_editor.apis.project_servicesapi.</code><code class="descname">Services</code><span class="sig-paren">(</span><em>api=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.project_servicesapi.Services" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">flask_restplus.resource.Resource</span></code></p>
+<p>Api Methods for all services in this resource</p>
+<dl class="method">
+<dt id="son_editor.apis.project_servicesapi.Services.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>ws_id</em>, <em>project_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.project_servicesapi.Services.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a list of all Services
+Returns a list of all services available in this resource</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="son_editor.apis.project_servicesapi.Services.methods">
+<code class="descname">methods</code><em class="property"> = ['GET', 'POST']</em><a class="headerlink" href="#son_editor.apis.project_servicesapi.Services.methods" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="son_editor.apis.project_servicesapi.Services.post">
+<code class="descname">post</code><span class="sig-paren">(</span><em>ws_id</em>, <em>project_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.project_servicesapi.Services.post" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new Service</p>
+<p>Creates a new Service in this project or
+publishes it in the catalogue or platform</p>
 </dd></dl>
 
 </dd></dl>
@@ -565,32 +868,29 @@ Updates a service platform by its id</p>
 </dd></dl>
 
 </div>
-<div class="section" id="module-son_editor.apis.servicesapi">
-<span id="son-editor-apis-servicesapi-module"></span><h2>son_editor.apis.servicesapi module<a class="headerlink" href="#module-son_editor.apis.servicesapi" title="Permalink to this headline">¶</a></h2>
-<p>Created on 22.07.2016</p>
-<p>&#64;author: Jonas</p>
+<div class="section" id="module-son_editor.apis.schemaapi">
+<span id="son-editor-apis-schemaapi-module"></span><h2>son_editor.apis.schemaapi module<a class="headerlink" href="#module-son_editor.apis.schemaapi" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
-<dt id="son_editor.apis.servicesapi.PrivateService">
-<em class="property">class </em><code class="descclassname">son_editor.apis.servicesapi.</code><code class="descname">PrivateService</code><span class="sig-paren">(</span><em>api=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.servicesapi.PrivateService" title="Permalink to this definition">¶</a></dt>
+<dt id="son_editor.apis.schemaapi.Schema">
+<em class="property">class </em><code class="descclassname">son_editor.apis.schemaapi.</code><code class="descname">Schema</code><span class="sig-paren">(</span><em>api=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.schemaapi.Schema" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">flask_restplus.resource.Resource</span></code></p>
-<p>Private service publishing method</p>
+<p>Single schema retrieval</p>
 <dl class="method">
-<dt id="son_editor.apis.servicesapi.PrivateService.get">
-<code class="descname">get</code><span class="sig-paren">(</span><em>ws_id</em>, <em>parent_id</em>, <em>service_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.servicesapi.PrivateService.get" title="Permalink to this definition">¶</a></dt>
-<dd><p>Publish service to private</p>
-<p>Publishes the service to the workspace wide catalogue</p>
+<dt id="son_editor.apis.schemaapi.Schema.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>ws_id</em>, <em>schema_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.schemaapi.Schema.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get schema</p>
+<p>Returns the requested schema from the schema_master at schema_index from this workspace</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>ws_id</strong> &#8211; </li>
-<li><strong>parent_id</strong> &#8211; </li>
-<li><strong>service_id</strong> &#8211; </li>
+<li><strong>ws_id</strong> &#8211; The workspace ID</li>
+<li><strong>schema_id</strong> &#8211; Either &#8220;ns&#8221; or &#8220;vnf&#8221;</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The requested schema</p>
 </td>
 </tr>
 </tbody>
@@ -598,68 +898,38 @@ Updates a service platform by its id</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="son_editor.apis.servicesapi.PrivateService.methods">
-<code class="descname">methods</code><em class="property"> = ['GET']</em><a class="headerlink" href="#son_editor.apis.servicesapi.PrivateService.methods" title="Permalink to this definition">¶</a></dt>
+<dt id="son_editor.apis.schemaapi.Schema.methods">
+<code class="descname">methods</code><em class="property"> = ['GET']</em><a class="headerlink" href="#son_editor.apis.schemaapi.Schema.methods" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
-<dt id="son_editor.apis.servicesapi.Service">
-<em class="property">class </em><code class="descclassname">son_editor.apis.servicesapi.</code><code class="descname">Service</code><span class="sig-paren">(</span><em>api=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.servicesapi.Service" title="Permalink to this definition">¶</a></dt>
+<dt id="son_editor.apis.schemaapi.Schemas">
+<em class="property">class </em><code class="descclassname">son_editor.apis.schemaapi.</code><code class="descname">Schemas</code><span class="sig-paren">(</span><em>api=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.schemaapi.Schemas" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">flask_restplus.resource.Resource</span></code></p>
+<p>Get all schemas for this server</p>
 <dl class="method">
-<dt id="son_editor.apis.servicesapi.Service.delete">
-<code class="descname">delete</code><span class="sig-paren">(</span><em>ws_id</em>, <em>parent_id</em>, <em>service_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.servicesapi.Service.delete" title="Permalink to this definition">¶</a></dt>
-<dd><p>Delete the Service</p>
-<p>Deletes the service from the Project or Catalogue</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="son_editor.apis.servicesapi.Service.get">
-<code class="descname">get</code><span class="sig-paren">(</span><em>ws_id</em>, <em>parent_id</em>, <em>service_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.servicesapi.Service.get" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return a specific Service</p>
-<p>Returns the referenced service from the Project or catalogue</p>
+<dt id="son_editor.apis.schemaapi.Schemas.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>ws_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.schemaapi.Schemas.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>List Schemas</p>
+<p>Returns a list of all schemas configured for this server</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ws_id</strong> &#8211; The workspace ID</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A list of schemas</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="son_editor.apis.servicesapi.Service.methods">
-<code class="descname">methods</code><em class="property"> = ['DELETE', 'GET', 'PUT']</em><a class="headerlink" href="#son_editor.apis.servicesapi.Service.methods" title="Permalink to this definition">¶</a></dt>
+<dt id="son_editor.apis.schemaapi.Schemas.methods">
+<code class="descname">methods</code><em class="property"> = ['GET']</em><a class="headerlink" href="#son_editor.apis.schemaapi.Schemas.methods" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
-
-<dl class="method">
-<dt id="son_editor.apis.servicesapi.Service.put">
-<code class="descname">put</code><span class="sig-paren">(</span><em>ws_id</em>, <em>parent_id</em>, <em>service_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.servicesapi.Service.put" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update the service</p>
-<p>Updates the referenced service in the project or in the catalogue or platform</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="son_editor.apis.servicesapi.Services">
-<em class="property">class </em><code class="descclassname">son_editor.apis.servicesapi.</code><code class="descname">Services</code><span class="sig-paren">(</span><em>api=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.servicesapi.Services" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">flask_restplus.resource.Resource</span></code></p>
-<p>Api Methods for all services in this resource</p>
-<dl class="method">
-<dt id="son_editor.apis.servicesapi.Services.get">
-<code class="descname">get</code><span class="sig-paren">(</span><em>ws_id</em>, <em>parent_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.servicesapi.Services.get" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get a list of all Services
-Returns a list of all services available in this resource</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="son_editor.apis.servicesapi.Services.methods">
-<code class="descname">methods</code><em class="property"> = ['GET', 'POST']</em><a class="headerlink" href="#son_editor.apis.servicesapi.Services.methods" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="son_editor.apis.servicesapi.Services.post">
-<code class="descname">post</code><span class="sig-paren">(</span><em>ws_id</em>, <em>parent_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.servicesapi.Services.post" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new Service</p>
-<p>Creates a new Service in this project or
-publishes it in the catalogue or platform</p>
-</dd></dl>
 
 </dd></dl>
 
@@ -674,7 +944,8 @@ publishes it in the catalogue or platform</p>
 <dl class="staticmethod">
 <dt id="son_editor.apis.userserviceapi.Information.get">
 <em class="property">static </em><code class="descname">get</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.userserviceapi.Information.get" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns github information about the current user</p>
+<dd><p>User Information</p>
+<p>Returns github information about the current user</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -691,7 +962,8 @@ publishes it in the catalogue or platform</p>
 <dl class="staticmethod">
 <dt id="son_editor.apis.userserviceapi.Login.get">
 <em class="property">static </em><code class="descname">get</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.userserviceapi.Login.get" title="Permalink to this definition">¶</a></dt>
-<dd><p>Login the User with a referral code from the github oauth process</p>
+<dd><p>Login User</p>
+<p>Login the User with a referral code from the github oauth process</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -709,7 +981,17 @@ publishes it in the catalogue or platform</p>
 <dl class="staticmethod">
 <dt id="son_editor.apis.userserviceapi.Logout.get">
 <em class="property">static </em><code class="descname">get</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.userserviceapi.Logout.get" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Logout</p>
+<p>Logs out the current user</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">&#8220;Logged out&#8221;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="son_editor.apis.userserviceapi.Logout.methods">
@@ -721,8 +1003,7 @@ publishes it in the catalogue or platform</p>
 </div>
 <div class="section" id="module-son_editor.apis.workspacesapi">
 <span id="son-editor-apis-workspacesapi-module"></span><h2>son_editor.apis.workspacesapi module<a class="headerlink" href="#module-son_editor.apis.workspacesapi" title="Permalink to this headline">¶</a></h2>
-<p>&#8221;
-Created on 18.07.2016</p>
+<p>Created on 18.07.2016</p>
 <p>&#64;author: Jonas</p>
 <dl class="class">
 <dt id="son_editor.apis.workspacesapi.PrivateFunctions">
@@ -734,16 +1015,6 @@ Created on 18.07.2016</p>
 <code class="descname">get</code><span class="sig-paren">(</span><em>ws_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.workspacesapi.PrivateFunctions.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>List private Catalogue functions</p>
 <p>Lists all functions in the Private workspace wide catalogue</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ws_id</strong> &#8211; </td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
 </dd></dl>
 
 <dl class="attribute">
@@ -763,16 +1034,6 @@ Created on 18.07.2016</p>
 <code class="descname">get</code><span class="sig-paren">(</span><em>ws_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.workspacesapi.PrivateServices.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>List private Catalogue services</p>
 <p>Lists all services in the Private workspace wide catalogue</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ws_id</strong> &#8211; </td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
 </dd></dl>
 
 <dl class="attribute">
@@ -809,8 +1070,8 @@ Created on 18.07.2016</p>
 <dl class="method">
 <dt id="son_editor.apis.workspacesapi.Workspace.put">
 <code class="descname">put</code><span class="sig-paren">(</span><em>ws_id</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.workspacesapi.Workspace.put" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update workspace
-Updates a specific workspace by its id</p>
+<dd><p>Update workspace</p>
+<p>Updates a specific workspace by its id</p>
 </dd></dl>
 
 </dd></dl>
@@ -842,14 +1103,6 @@ Updates a specific workspace by its id</p>
 </dd></dl>
 
 </div>
-<div class="section" id="module-son_editor.apis">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-son_editor.apis" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="son_editor.apis.init">
-<code class="descclassname">son_editor.apis.</code><code class="descname">init</code><span class="sig-paren">(</span><em>api</em><span class="sig-paren">)</span><a class="headerlink" href="#son_editor.apis.init" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</div>
 </div>
 
 
@@ -861,18 +1114,20 @@ Updates a specific workspace by its id</p>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">son_editor.apis package</a><ul>
-<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-son_editor.apis.catalogue_functionsapi">son_editor.apis.catalogue_functionsapi module</a></li>
+<li><a class="reference internal" href="#module-son_editor.apis.catalogue_servicesapi">son_editor.apis.catalogue_servicesapi module</a></li>
 <li><a class="reference internal" href="#module-son_editor.apis.cataloguesapi">son_editor.apis.cataloguesapi module</a></li>
-<li><a class="reference internal" href="#module-son_editor.apis.functionsapi">son_editor.apis.functionsapi module</a></li>
+<li><a class="reference internal" href="#module-son_editor.apis.configapi">son_editor.apis.configapi module</a></li>
 <li><a class="reference internal" href="#module-son_editor.apis.gitapi">son_editor.apis.gitapi module</a></li>
 <li><a class="reference internal" href="#module-son_editor.apis.misc">son_editor.apis.misc module</a></li>
 <li><a class="reference internal" href="#module-son_editor.apis.nsfslookup">son_editor.apis.nsfslookup module</a></li>
 <li><a class="reference internal" href="#module-son_editor.apis.platformsapi">son_editor.apis.platformsapi module</a></li>
+<li><a class="reference internal" href="#module-son_editor.apis.project_functionsapi">son_editor.apis.project_functionsapi module</a></li>
+<li><a class="reference internal" href="#module-son_editor.apis.project_servicesapi">son_editor.apis.project_servicesapi module</a></li>
 <li><a class="reference internal" href="#module-son_editor.apis.projectsapi">son_editor.apis.projectsapi module</a></li>
-<li><a class="reference internal" href="#module-son_editor.apis.servicesapi">son_editor.apis.servicesapi module</a></li>
+<li><a class="reference internal" href="#module-son_editor.apis.schemaapi">son_editor.apis.schemaapi module</a></li>
 <li><a class="reference internal" href="#module-son_editor.apis.userserviceapi">son_editor.apis.userserviceapi module</a></li>
 <li><a class="reference internal" href="#module-son_editor.apis.workspacesapi">son_editor.apis.workspacesapi module</a></li>
-<li><a class="reference internal" href="#module-son_editor.apis">Module contents</a></li>
 </ul>
 </li>
 </ul>

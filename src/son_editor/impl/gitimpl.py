@@ -34,7 +34,7 @@ def build_github_delete(owner: str, repo_name: str) -> str:
 
     :param owner: Owner of the github repository
     :param repo_name: Repository name
-    :return:
+    :return: the relative GitHub api url
     """
     return Github.API_URL + Github.API_DELETE_REPO.format(owner, repo_name)
 
@@ -44,7 +44,7 @@ def is_github(netloc):
     Checks if the given url is on github
 
     :param netloc: http url
-    :return: True
+    :return: True if on github, False else
     """
 
     if netloc.lower() in Github.DOMAINS:
@@ -101,7 +101,7 @@ def get_project(ws_id, pj_id: int, session=db_session()) -> Project:
 
     :param ws_id: Workspace id
     :param pj_id: Project id
-    :param db session
+    :param session: db session
     :return: Project model
     """
     project = session.query(Project).join(Workspace) \
@@ -117,8 +117,7 @@ def check_son_validity(project_path: str):
     Checks if the given project path is a valid son project, otherwise it raises an exception. Valid means, it has
     a consistent son file structure, so no semantics will be tested.
 
-    :param project_path:
-    :return:
+    :param project_path: the path of the cloned project
     """
     missing_files = []
 
@@ -150,8 +149,8 @@ def get_workspace(ws_id: int) -> Workspace:
     """
     Returns the workspace model of the given workspace
 
-    :param ws_id:
-    :return:
+    :param ws_id: The workspace ID
+    :return: The corresponding workspace model
     """
     workspace = db_session().query(Workspace).filter(Workspace.id == ws_id).first()
     if not workspace:
@@ -163,9 +162,9 @@ def init(ws_id: int, project_id: int):
     """
     Initializes a git repository in the given project
 
-    :param ws_id:
-    :param project_id:
-    :return:
+    :param ws_id: The workpace ID
+    :param project_id: The project ID to initialize
+    :return: a dictionary containing the result of the operation
     """
     project = get_project(ws_id, project_id)
 
@@ -178,6 +177,11 @@ def init(ws_id: int, project_id: int):
 
 
 def setup_git_user_email(project_full_path: str):
+    """
+    Setting up the git user in the local git config to be able to make commits and push
+    
+    :param project_full_path: The absolute project path
+    """
     user = usermanagement.get_user(session['user_data']['login'])
     git_command(['config', 'user.name', user.name], cwd=project_full_path)
     git_command(['config', 'user.email', user.email], cwd=project_full_path)
@@ -188,10 +192,10 @@ def commit_and_push(ws_id: int, project_id: int, commit_message: str):
     """
     Commits and then pushes changes.
 
-    :param ws_id:
-    :param project_id:
-    :param commit_message:
-    :return:
+    :param ws_id: The workspace ID
+    :param project_id: The project ID
+    :param commit_message: The commit message
+    :return: a dictionary containing the result of the operation
     """
     project = get_project(ws_id, project_id)
 
@@ -249,7 +253,7 @@ def create_commit_and_push(ws_id: int, project_id: int, remote_repo_name: str):
     :param ws_id: Workspace ID
     :param project_id: Project ID to create and push it
     :param remote_repo_name: Remote repository name
-    :return:
+    :return: a dictionary containing the result of the operation
     """
     database_session = db_session()
     try:
@@ -301,7 +305,7 @@ def delete(ws_id: int, project_id: int, remote_repo_name: str, organization_name
     :param ws_id: Workspace of the project
     :param remote_repo_name: Remote repository name
     :param organization_name: Optional parameter to specify the organization / login
-    :return:
+    :return: a dictionary containing the result of the operation
     """
     if organization_name is None:
         owner = session['user_data']['login']
@@ -323,6 +327,13 @@ def delete(ws_id: int, project_id: int, remote_repo_name: str, organization_name
 
 
 def _do_delete(owner, remote_repo_name):
+    """
+    Executes the delete api call at the given remote repo
+    
+    :param owner: The  github user name of the repository owner
+    :param remote_repo_name: The remote repository name
+    :return: The APIs answer
+    """
     return requests.delete(build_github_delete(owner, remote_repo_name), headers=create_oauth_header())
 
 
@@ -332,7 +343,7 @@ def diff(ws_id: int, pj_id: int):
 
     :param ws_id: Workspace of the project.
     :param pj_id: Given project to show from.
-    :return:
+    :return: a dictionary containing the result of the operation
     """
     project = get_project(ws_id, pj_id)
     project_full_path = os.path.join(project.workspace.path, PROJECT_REL_PATH, project.rel_path)
@@ -348,9 +359,9 @@ def status(ws_id: int, pj_id: int):
     """
     Shows the git status of the repository
 
-    :param ws_id:
-    :param pj_id:
-    :return:
+    :param ws_id: The workspace ID
+    :param pj_id: The project ID
+    :return: a dictionary containing the result of the operation
     """
     project = get_project(ws_id, pj_id)
     project_full_path = os.path.join(project.workspace.path, PROJECT_REL_PATH, project.rel_path)
@@ -368,10 +379,9 @@ def status(ws_id: int, pj_id: int):
 def pull(ws_id: int, project_id: int):
     """
     Pulls data from the given project_id.
-    :param user_data: Session data to get access token for GitHub
     :param ws_id: Workspace of the project
     :param project_id: Project to pull.
-    :return:
+    :return: a dictionary containing the result of the operation
     """
     dbsession = db_session()
     project = get_project(ws_id, project_id, session=dbsession)
@@ -410,7 +420,7 @@ def list():
     """
     Lists the available remote repositories.
 
-    :param ws_id:
+    :param ws_id: The workspace ID
     :return: https://developer.github.com/v3/repos/#response
     """
     result = requests.get(Github.API_URL + Github.API_LIST_REPOS.format(session['user_data']['login']),
@@ -419,6 +429,11 @@ def list():
 
 
 def _repo_name_from_url(url_decode: str):
+    """
+    Extracts the repository name from its URL
+    :param url_decode: 
+    :return: 
+    """
     github_project_name = os.path.split(url_decode.path)[-1]
     return github_project_name.replace('.git', '')
 

@@ -15,7 +15,7 @@ def pack_project(project: Project) -> str:
     Calls the son-package cli tool to pack the project and prepare it for deployment
 
     :param project: The project to pack
-    :return:
+    :return: The file name of the package file
     """
     ws_path = project.workspace.path
     pj_path = os.path.join(ws_path, 'projects', project.rel_path)
@@ -45,7 +45,7 @@ def push_to_platform(package_path: str, ws: Workspace) -> str:
 
     :param package_path: the location of package to be pushed on disk
     :param platform: The platform to upload to
-    :return:
+    :return: The uuid returned by the platform
     """
 
     # TODO use platform id instead of default platform for ws

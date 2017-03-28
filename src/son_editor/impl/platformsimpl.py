@@ -11,7 +11,7 @@ def get_platform(platform_id: int) -> dict:
     """
     Get the platform definition
 
-    :param platform_id:
+    :param platform_id: The platform ID
     :return: The platform information
     """
     session = db_session()
@@ -26,8 +26,8 @@ def get_platforms(workspace_id: int) -> list:
     """
     Get a list of platforms for this workspace
 
-    :param workspace_id:
-    :return:
+    :param workspace_id: The workspace ID
+    :return: A list of all platforms defined for this workspace
     """
     session = db_session()
     platforms = session.query(Platform).filter(Platform.workspace_id == workspace_id).all()
@@ -39,9 +39,9 @@ def create_platform(workspace_id: int, platform_data) -> dict:
     """
     Create a new platform entry
 
-    :param workspace_id:
-    :param platform_data:
-    :return:
+    :param workspace_id: The workspace ID
+    :param platform_data: The platform info
+    :return: The newly created platform descriptor
     """
     platform_name = shlex.quote(platform_data['name'])
     platform_url = shlex.quote(platform_data['url'])
@@ -68,8 +68,8 @@ def update_platform(workspace_id: int, platform_id: int, platform_data) -> dict:
     """
     Update the platform entry
 
-    :param workspace_id:
-    :param platform_id:
+    :param workspace_id: The workspace ID
+    :param platform_id: The platform ID
     :return: The updated platform definition
     """
     platform_name = shlex.quote(platform_data['name'])
@@ -105,8 +105,8 @@ def delete(workspace_id: int, platform_id: int) -> dict:
     """
     Deletes the platform from the workspace
 
-    :param workspace_id:
-    :param platform_id:
+    :param workspace_id: The workspace ID
+    :param platform_id: The platform ID
     :return: the deleted platform description
     """
     session = db_session()

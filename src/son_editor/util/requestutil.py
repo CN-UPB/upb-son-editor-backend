@@ -15,6 +15,12 @@ CONFIG = yaml.safe_load(resource_string(Requirement.parse("upb-son-editor-backen
 
 
 def update_config(config):
+    """
+    Update the configuratiion file
+         
+    :param config: The new configuration
+    :return: Message if successful
+    """
     global CONFIG
     CONFIG = config
     filename = resource_filename(Requirement.parse("upb-son-editor-backend"), config_path)
@@ -25,6 +31,7 @@ def update_config(config):
 
 
 def get_config():
+    """ Returns the current configuration"""
     return CONFIG
 
 

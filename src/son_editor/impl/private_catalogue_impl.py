@@ -13,10 +13,8 @@ def publish_private_nsfs(ws_id: int, descriptor: dict, is_vnf: bool):
     """
     Publishes a function or service to the private catalogue repository
 
-    :param ws_id:
-    :param descriptor:
-    :param is_vnf:
-    :return:
+    :param ws_id: The Workspace ID
+    :param descriptor: The descriptor to publish
     """
     try:
         name = descriptor['name']
@@ -52,12 +50,12 @@ def query_private_nsfs(ws_id, vendor, name, version, is_vnf):
     """
     Finds a function in the private catalogue
 
-    :param ws_id:
-    :param is_vnf:
-    :param vendor:
-    :param name:
-    :param version:
-    :return:
+    :param ws_id: The workspace ID
+    :param is_vnf: if descriptor is a VNF
+    :param vendor: the descriptors vendor
+    :param name: the descriptors name
+    :param version: the descriptors version
+    :return: The requested descriptor if found, None if nothing found
     """
     session = db_session()
     if is_vnf:

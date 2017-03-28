@@ -31,7 +31,7 @@ PROJECT_REL_PATH = "projects"
 REQUIRED_SON_PROJECT_FILES = ['project.yml']
 
 
-class Github():
+class Github:
     """
     Holds GitHub API relevant strings.
     """
@@ -49,24 +49,3 @@ class Github():
         1. Argument is Username
     """
     API_LIST_REPOS = '/users/{}/repos'
-
-
-class Category(Enum):
-    project = 1
-    catalogue = 2
-    platform = 3
-
-
-def get_parent(request):
-    """
-    Helper method to extract the parent category
-    for the services and functions api calls
-    :param request:
-    :return:
-    """
-    parent = str(request.url_rule).split(sep="/")[3]
-    return {
-        PROJECTS: Category.project,
-        CATALOGUES: Category.catalogue,
-        PLATFORMS: Category.platform
-    }[parent]

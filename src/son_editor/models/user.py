@@ -5,6 +5,8 @@ from son_editor.app.database import Base
 
 
 class User(Base):
+    """ The user model stores the username and his email that was registered at github.
+    It is the root object for all data belonging to a user"""
     __tablename__ = 'user'
     id = Column(Integer, primary_key=True)
     name = Column(String(50), unique=True)

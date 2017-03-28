@@ -11,7 +11,12 @@ logger = logging.getLogger(__name__)
 
 
 def get_project(project_id):
-    """ Retrieves the project which matches the given project id. Otherwise it raises NotFound Exception """
+    """
+    Retrieves the project which matches the given project id. Otherwise it raises NotFound Exception
+     
+    :param project_id: The project ID 
+    :return: The project model
+    """
     session = db_session()
     current_project = session.query(Project).filter(Project.id == project_id).first()
     if current_project is not None:
@@ -38,16 +43,19 @@ def get_function(functions, vendor, name, version):
 
 def find_by_priority(user_data, ws_id, project_id, vendor, name, version, is_vnf):
     """
-    Tries to find vnf / network services by descending priority project / private catalogue / public catalogue.
+    Tries to find vnf / network services by descending priority
+     1. project
+     2. private catalogue
+     3. public catalogues.
 
-    :param user_data:
-    :param ws_id:
-    :param project_id:
-    :param vendor:
-    :param name:
-    :param version:
-    :param is_vnf:
-    :return:
+    :param user_data: Information about the current user
+    :param ws_id: The Workspace ID
+    :param project_id: The project ID
+    :param vendor: The descriptors vendor
+    :param name: The descriptors name
+    :param version: The descriptors versions
+    :param is_vnf: if the descriptor is a VNF
+    :return: The descriptor if found
     """
     # 1. Try to find in project
     project = get_project(project_id)
@@ -84,14 +92,17 @@ def find_by_priority(user_data, ws_id, project_id, vendor, name, version, is_vnf
 
 def find_network_service(user_data, ws_id, project_id, vendor, name, version):
     """
-    Finds a network service in the priority: project / private catalogue / public catalogue
+     Tries to find a network service by descending priority
+     1. project
+     2. private catalogue
+     3. public catalogues.
 
-    :param user_data:
-    :param ws_id:
-    :param project_id:
-    :param vendor: Vendor name of the function
-    :param name: Name of the function
-    :param version: The   version of the function
+    :param user_data: Information about the current user
+    :param ws_id: The Workspace ID
+    :param project_id: The project ID
+    :param vendor: Vendor name of the network service
+    :param name: Name of the network service
+    :param version: The   version of the network service
     :return: If found, it returns the network service
     """
     return find_by_priority(user_data, ws_id, project_id, vendor, name, version, False)
@@ -99,14 +110,17 @@ def find_network_service(user_data, ws_id, project_id, vendor, name, version):
 
 def find_vnf(user_data, ws_id, project_id, vendor, name, version):
     """
-    Finds a vnf in the priority: project / private catalogue / public catalogue
+     Tries to find a vnf by descending priority
+     1. project
+     2. private catalogue
+     3. public catalogues.
 
-    :param user_data:
-    :param ws_id:
-    :param project_id:
-    :param vendor:
-    :param name:
-    :param version:
-    :return:
+    :param user_data: Information about the current user
+    :param ws_id: The Workspace ID
+    :param project_id: The project ID
+    :param vendor: Vendor name of the function
+    :param name: Name of the function
+    :param version: The   version of the function
+    :return: If found, it returns the function
     """
     return find_by_priority(user_data, ws_id, project_id, vendor, name, version, True)

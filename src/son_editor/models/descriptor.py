@@ -8,6 +8,12 @@ from son_editor.app.database import Base
 
 
 class Descriptor(Base):
+    """
+    The Base class for storing the function and the service descriptors.
+    Both descriptors share the properties name, vendor and version 
+    and are constrained to have a unique uid inside of a project
+    """
+
     __tablename__ = 'descriptor'
     id = Column(Integer, primary_key=True)
     name = Column(String(50))
@@ -36,6 +42,8 @@ class Descriptor(Base):
 
 
 class Function(Descriptor):
+    """The Model for the function Descriptor"""
+
     __tablename__ = 'function'
     id = Column(Integer, ForeignKey('descriptor.id'), primary_key=True)
     project = relationship("Project", back_populates="functions")
@@ -54,6 +62,9 @@ class Function(Descriptor):
 
 
 class Service(Descriptor):
+    """ The Model for the service descriptor additionally contains 
+    a meta property that can hold arbitrary meta-data about the service"""
+
     __tablename__ = 'service'
     id = Column(Integer, ForeignKey('descriptor.id'), primary_key=True)
     project = relationship("Project", back_populates="services")

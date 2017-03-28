@@ -21,7 +21,7 @@ def get_services(ws_id: int, project_id: int) -> list:
     """
     Get a list of all services in this Project
 
-    :param ws_id:
+    :param ws_id: The workspace ID
     :param project_id: The project ID
     :return: A list of service descriptors as dicts
     """
@@ -95,12 +95,14 @@ def create_service(ws_id: int, project_id: int, service_data: dict) -> dict:
 def update_service(ws_id, project_id, service_id, service_data):
     """
     Update the service using the service data from the request
+    
+    Will also check for references by other services and create a copy if so
 
-    :param ws_id:
-    :param project_id:
-    :param service_id:
-    :param service_data:
-    :return:
+    :param ws_id: The Workspace ID
+    :param project_id: The project ID
+    :param service_id: The service ID
+    :param service_data: The service data containing the "descriptor" and optionally some "meta" data
+    :return: The updated service data
     """
     session = db_session()
     project = session.query(Project). \
@@ -223,6 +225,13 @@ def delete_service(project_id: int, service_id: int) -> dict:
 
 
 def get_references(service, session):
+    """
+    Searches for references to the service.
+    
+    :param service: The service 
+    :param session:  the db_session
+    :return: a list of services referencing the given service
+    """
     references = []
     # fuzzy search to get all services that have all strings
     maybe_references = session.query(Service). \
@@ -250,7 +259,7 @@ def get_service(ws_id, parent_id, service_id):
     :param ws_id: The workspace ID of the Project
     :param parent_id: The project ID
     :param service_id: the Service ID
-    :return:
+    :return: The requested service data
     """
     session = db_session()
     service = session.query(Service).filter_by(id=service_id).first()

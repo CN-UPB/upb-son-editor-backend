@@ -43,10 +43,20 @@ config_model = namespace.model("Config", {})
 
 @namespace.route("")
 class Configuration(Resource):
+    """ Web configuration """
     @requires_auth
     def get(self):
+        """ Show Configuration
+        
+        Show the current server configuration (requires authentication via Basic Auth)
+        """
         return prepare_response(get_config())
 
     @namespace.expect(config_model)
+    @namespace.doc("Update Configuration")
+    @requires_auth
     def post(self):
+        """ Update Configuration
+        Update the server configuration (requires authentication via Basic Auth)
+        """
         return prepare_response(update_config(get_json(request)))

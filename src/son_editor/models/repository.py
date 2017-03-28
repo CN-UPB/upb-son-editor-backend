@@ -7,6 +7,9 @@ from son_editor.app.database import Base
 
 
 class Repository(Base):
+    """ The repository model is the base class for the external 
+    repositories that can be contacted through the given url"""
+
     __tablename__ = 'repository'
     id = Column(Integer, primary_key=True)
     name = Column(String(50))

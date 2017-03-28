@@ -8,6 +8,9 @@ from son_editor.app.database import Base
 
 
 class PrivateDescriptor(Base):
+    """The private descriptor is the model for the 
+    service and function descriptors in the private catalogue"""
+
     __tablename__ = 'private_descriptor'
     id = Column(Integer, ForeignKey('base_descriptor.id'), primary_key=True)
     ws_id = Column(Integer, ForeignKey('workspace.id'))
@@ -35,6 +38,8 @@ class PrivateDescriptor(Base):
 
 
 class PrivateFunction(PrivateDescriptor):
+    """The Private function is the Model for the 
+    Function descriptors in the private catalogue"""
     __tablename__ = 'private_function'
     id = Column(Integer, ForeignKey('private_descriptor.id'), primary_key=True)
     workspace = relationship("Workspace", back_populates="priv_functions")
@@ -44,6 +49,9 @@ class PrivateFunction(PrivateDescriptor):
 
 
 class PrivateService(PrivateDescriptor):
+    """The Private service is the Model for the 
+    Service descriptors in the private catalogue"""
+
     __tablename__ = 'private_service'
     id = Column(Integer, ForeignKey('private_descriptor.id'), primary_key=True)
     workspace = relationship("Workspace", back_populates="priv_services")

@@ -6,6 +6,12 @@ from son_editor.app.database import Base
 
 
 class Workspace(Base):
+    """
+    The workspace model stores information about the workspace and has 
+    references to its children like the catalogues, platform and projects
+    The schema_index corresponds to the index of the schema_remote_masters
+    that are configured in the server configuration 
+    """
     __tablename__ = 'workspace'
     id = Column(Integer, primary_key=True)
     name = Column(String(50))
